@@ -21,31 +21,27 @@ function Reveal({children,className=''}){
 const metrics = {
   fcvf: [
     ['4','user interviews'],
-    ['2','interface directions compared'],
-    ['1','live-score bias removed']
+    ['2','interface directions compared']
   ],
   finsimple: [
-    ['30%','ahead of schedule across internship work'],
-    ['5','cross-functional teams'],
-    ['20+','tasks managed'],
-    ['15%','reliability improvement across internship work']
-  ],
-  scheduler: [
-    ['3','availability states'],
-    ['4','quick-fill actions'],
-    ['10+','coordination features beyond the grid']
-  ],
-  chat: [
-    ['4','real-time interaction types'],
-    ['5','tapback reactions']
+    ['30%','ahead of schedule · broader internship'],
+    ['5','cross-functional teams · broader internship']
   ],
   estee: [
     ['Top 5','challenge finalist']
   ]
 };
 
+const ownership = {
+  fcvf:'User interviews · design evaluation · frontend implementation · testing',
+  finsimple:'Requirements · AEM components · API integration · testing · stakeholder coordination',
+  scheduler:'Product design · full-stack implementation · real-time interactions · deployment',
+  chat:'Socket.IO event handling · synchronized state · interaction design · frontend implementation',
+  estee:'Product concept · UX/UI design · frontend development'
+};
 
-function AuraField(){
+
+function AuraField({tone='default'}){
   const field=useRef(null);
   useEffect(()=>{
     const move=(e)=>{
@@ -57,7 +53,7 @@ function AuraField(){
     window.addEventListener('pointermove',move,{passive:true});
     return ()=>window.removeEventListener('pointermove',move);
   },[]);
-  return <div ref={field} className="auraField" aria-hidden="true">
+  return <div ref={field} className={`auraField tone-${tone}`} aria-hidden="true">
     <span className="auraBloom bloom1"/>
     <span className="auraBloom bloom2"/>
     <span className="auraBloom bloom3"/>
@@ -73,7 +69,7 @@ const projects = [
     id:'fcvf',
     title:'Customer Value Framework',
     company:'Ford Motor Company',
-    summary:'Rebuilt an Excel-based customer-value assessment as a web application. User interviews shaped the multi-page design and surfaced a live-score bias that could influence how people answered.',
+    summary:'Replaced an Excel-based customer-value assessment with a web application shaped by user interviews and design testing.',
     media:'fcvf',
     facts:['4 user interviews','Live score removed after research']
   },
@@ -81,33 +77,33 @@ const projects = [
     id:'finsimple',
     title:'FinSimple',
     company:'Ford Credit',
-    summary:'Owned customer-facing feature work from requirements through UI, integration, testing, and stakeholder coordination inside an existing Ford Credit financial product.',
+    summary:'Shipped customer-facing feature work inside an existing financial platform across UI, APIs, Salesforce, testing, and stakeholder coordination.',
     media:'finsimple',
-    facts:['End-to-end feature ownership','AEM · APIs · Salesforce · GraphQL']
+    facts:['End-to-end feature work','30% ahead · broader internship']
   },
   {
     id:'scheduler',
     title:'Collaborative Scheduling Platform',
     company:'CSE 477',
-    summary:'Started with When2Meet’s strongest interaction — the shared availability heatmap — and extended the workflow around common coordination gaps: tentative availability, repetitive entry, consensus, venue choice, and follow-up planning.',
+    summary:'Extended a When2Meet-style scheduler with tentative availability, faster entry, best-time calculation, venue voting, and event coordination.',
     media:'scheduler',
-    facts:['3 availability states','Heatmap kept; workflow extended']
+    facts:['Interactive sandbox','Flask · Socket.IO · MySQL']
   },
   {
     id:'chat',
     title:'Synchronized Group Chat',
     company:'CSE 477',
-    summary:'A multi-user chat application using an iMessage-style interaction model, with join/leave events, typing state, reactions, and synchronized messages.',
+    summary:'Built a multi-user chat with synchronized messages, presence, typing state, and reactions using a familiar iMessage-style interface.',
     media:'chat',
-    facts:['Real-time rooms + presence','iMessage interaction model']
+    facts:['Real-time rooms + presence','Socket.IO']
   },
   {
     id:'estee',
     title:'Estée Lauder — Double Wear',
     company:'Estée Lauder × Kode With Klossy',
-    summary:'Designed a digital product-discovery experience that combined product education, brand consistency, and paths to purchase.',
+    summary:'Designed a branded product-discovery experience connecting education, shade exploration, and purchase.',
     media:'estee',
-    facts:['Top 5 finalist','Discover → learn → explore → buy']
+    facts:['Top 5 finalist']
   }
 ];
 
@@ -161,7 +157,7 @@ function MiniScheduler(){
     <div className="miniQuick"><span>Quick fill</span><button onClick={()=>quickFill('all')}>Free all</button><button onClick={()=>quickFill('weekdays')}>Weekdays 9–5</button><button onClick={()=>quickFill('evenings')}>Evenings</button></div>
     <div className="miniView"><div><button className={view==='mine'?'active':''} onClick={()=>setView('mine')}>My Availability</button><button className={view==='heatmap'?'active':''} onClick={()=>setView('heatmap')}>Group Heatmap</button></div>{view==='mine'&&<div className="miniModes">{['available','maybe','unavailable'].map(m=><button key={m} className={mode===m?'active':''} onClick={()=>setMode(m)}>{m}</button>)}</div>}</div>
     <div className="calendarHead"><span></span>{days.map(d=><span key={d}>{d}</span>)}</div>
-    <div className="calendarGrid">{times.map((t,r)=><React.Fragment key={t}><span className="timeLabel">{t}</span>{days.map((d,c)=>{const i=r*5+c;const cell=cells[i];const cls=view==='heatmap'?`heat heat-${Math.min(3,cell.available)}`:`status-${cell.status||'empty'}`;return <button key={d} aria-label={`${d} ${t}`} className={`slot ${cls}`} onClick={()=>view==='mine'&&setCells(a=>a.map((x,j)=>j===i?{...x,status:mode}:x))}/>})}</React.Fragment>)}</div>
+    <div className="calendarGrid">{times.map((t,r)=><React.Fragment key={t}><span className="timeLabel">{t}</span>{days.map((d,c)=>{const i=r*5+c;const cell=cells[i];const cls=view==='heatmap'?`heat heat-${Math.min(3,cell.available)}`:`status-${cell.status||'empty'}`;return <button key={d} aria-label={`${d} ${t}`} className={`slot ${cls}`} onClick={()=>view==='mine'&&setCells(a=>a.map((x,j)=>j===i?{...x,status:x.status===mode?'':mode}:x))}/>})}</React.Fragment>)}</div>
     <div className="miniFooter"><span>Best time: Tue 10:30</span><span>Venue voting · Event chat · Notes</span></div>
   </div>
 }
@@ -179,17 +175,17 @@ function MiniChat(){
 function EsteeVisual(){return <div className="esteeGrid"><img src="project-media/el-home.webp" alt="Estée Lauder Double Wear landing experience"/><img src="project-media/el-benefits.webp" alt="Double Wear product benefits"/><img src="project-media/el-shades.webp" alt="Double Wear shade exploration"/><img src="project-media/el-shop.webp" alt="Double Wear purchase options"/></div>}
 
 function ProjectCover({type}){
-  if(type==='fcvf') return <div className="editorialCover fordEditorial"><img className="editorialLogo" src="company-logos/ford.png" alt="Ford"/><div className="screenFloat"><img src="project-media/ford-after.webp" alt="Ford Customer Value Framework web application"/></div><div className="coverCaption">Customer Value Framework</div></div>;
-  if(type==='finsimple') return <div className="editorialCover finEditorial"><img className="editorialLogo credit" src="company-logos/ford-credit.jpg" alt="Ford Credit"/><div className="screenFloat"><img src="project-media/finsimple-live.png" alt="FinSimple Previous Estimates product"/></div><div className="coverCaption">Previous Estimates</div></div>;
+  if(type==='fcvf') return <div className="editorialCover fordEditorial autoCover photoCover"><img className="autoPhoto" src="https://images.unsplash.com/photo-1568068158767-9463ba730cf6?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=82&w=1800" alt="Black Ford vehicle photographed by ot design on Unsplash"/><div className="photoShade"/><img className="editorialLogo" src="company-logos/ford.png" alt="Ford"/><div className="autoCopy"><span>Ford Motor Company</span><strong>Customer Value Framework</strong></div><span className="photoCredit">Photo: ot design · Unsplash</span></div>;
+  if(type==='finsimple') return <div className="editorialCover finEditorial autoCover photoCover"><img className="autoPhoto" src="https://images.unsplash.com/photo-1579272154060-4e7a4d0f5033?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=82&w=1800" alt="Black Ford Fiesta ST photographed by Obi on Unsplash"/><div className="photoShade creditShade"/><img className="editorialLogo credit" src="company-logos/ford-credit.jpg" alt="Ford Credit"/><div className="financeOverlay"><span>Customer financing</span><strong>Existing product · enterprise systems</strong></div><span className="photoCredit">Photo: Obi · Unsplash</span></div>;
   if(type==='scheduler') return <div className="editorialCover schedulerEditorial"><SchedulerPreview/></div>;
   if(type==='chat') return <div className="editorialCover chatEditorial"><MiniChat/></div>;
   return <div className="editorialCover esteeEditorial"><img src="project-media/el-home.webp" alt="Estée Lauder Double Wear digital experience"/><div className="esteeStack"><img src="project-media/el-benefits.webp" alt="Double Wear product benefits"/><img src="project-media/el-shades.webp" alt="Double Wear shade exploration"/></div></div>;
 }
 
-function ProjectCard({project,index,onOpen}){
+function ProjectCard({project,index,onOpen,onAura}){
   const featured=project.id==='scheduler';
   return <Reveal className={featured?'projectCardReveal featured':''}>
-    <article className={`projectCard ${featured?'featured':''}`} onClick={()=>onOpen(project.id)}>
+    <article className={`projectCard ${featured?'featured':''}`} onMouseEnter={()=>onAura?.(project.id)} onMouseLeave={()=>onAura?.('default')} onClick={()=>onOpen(project.id)}>
       <div className="projectCardMedia"><ProjectCover type={project.media}/></div>
       <div className="projectCardBody">
         <div className="projectCardTop"><span>{project.company}</span></div>
@@ -221,6 +217,7 @@ function SchedulerSandbox(){
     note:i===8?'class until 10:30':''
   })));
   const [dragging,setDragging]=useState(false);
+  const dragAction=useRef('paint');
   const [venues,setVenues]=useState([{name:'MSU Library',votes:2},{name:'Minskoff Pavilion',votes:1}]);
   const [venue,setVenue]=useState('MSU Library');
   const [newVenue,setNewVenue]=useState('');
@@ -237,7 +234,8 @@ function SchedulerSandbox(){
     }
     return {day:days[bestI%5],time:times[Math.floor(bestI/5)]};
   },[cells]);
-  const paint=i=>{if(view==='heatmap')return;setCells(a=>a.map((c,j)=>j===i?{...c,status:mode}:c))};
+  const paint=(i,action=dragAction.current)=>{if(view==='heatmap')return;setCells(a=>a.map((c,j)=>j===i?{...c,status:action==='erase'?'':mode}:c))};
+  const beginDrag=(i)=>{if(view==='heatmap')return;const shouldErase=cells[i]?.status===mode;dragAction.current=shouldErase?'erase':'paint';setDragging(true);paint(i,dragAction.current)};
   const quick=type=>setCells(prev=>prev.map((c,i)=>{
     const row=Math.floor(i/5);
     if(type==='clear')return {...c,status:''};
@@ -253,28 +251,28 @@ function SchedulerSandbox(){
     <div className="schedulerActionRow"><button onClick={()=>setShareOpen(v=>!v)}>🔗 Share Event Link</button><button>💬 Copy for Discord</button><button>✉️ Copy for Email</button><button>📅 Export Calendar</button><button onClick={()=>quick('clear')}>Clear My Availability</button></div>
     {shareOpen&&<div className="shareBox"><strong>Invite link</strong><code>portfolio-demo.local/event/design-sync</code></div>}
     <div className="bestMeet"><div><span>Best Time to Meet</span><strong>{best.day} · {best.time}–{times[Math.min(times.length-1,Math.floor(cells.findIndex(c=>c===cells[(times.indexOf(best.time)*5)+(days.indexOf(best.day))])/5)+1)] || '10:00'}</strong></div><p>Highest available count, then fewest unavailable responses, then earliest tied slot.</p></div>
-    <div className="schedulerBody"><div className="fullCalendar"><p className="gridHint">Click or drag to apply your selected status. Right-click a cell to add a note.</p><div className="calendarHead"><span></span>{days.map(d=><span key={d}>{d}</span>)}</div><div className="calendarGrid" onMouseLeave={()=>setDragging(false)}>{times.map((t,r)=><React.Fragment key={t}><span className="timeLabel">{t}</span>{days.map((d,c)=>{const i=r*5+c;const cell=cells[i];const cls=view==='heatmap'?`heat heat-${Math.min(3,cell.available)}`:`status-${cell.status||'empty'}`;return <button key={d} title={`${cell.note?cell.note+' · ':''}Available: ${cell.available} · Maybe: ${cell.maybe} · Unavailable: ${cell.unavailable}`} className={`slot ${cls} ${cell.note?'hasNote':''}`} onMouseDown={()=>{setDragging(true);paint(i)}} onMouseEnter={()=>dragging&&paint(i)} onMouseUp={()=>setDragging(false)} onContextMenu={e=>{e.preventDefault();const note=window.prompt('Add a note for this time slot',cell.note||'');if(note!==null)setCells(a=>a.map((x,j)=>j===i?{...x,note}:x))}}/>})}</React.Fragment>)}</div></div>
+    <div className="sandboxAnnotations"><div><strong>Maybe</strong><span>Keep uncertain times without treating them as fully free.</span></div><div><strong>Quick fill</strong><span>Mark predictable blocks without repeating the same clicks.</span></div><div><strong>Best time</strong><span>Turn the heatmap into a recommendation.</span></div><div><strong>Venue + chat</strong><span>Keep the next decisions in the same workflow.</span></div></div><div className="schedulerBody"><div className="fullCalendar"><p className="gridHint">Click or drag to apply a status. Drag the same status across filled cells again to clear them. Right-click a cell to add a note.</p><div className="calendarHead"><span></span>{days.map(d=><span key={d}>{d}</span>)}</div><div className="calendarGrid" onMouseLeave={()=>setDragging(false)}>{times.map((t,r)=><React.Fragment key={t}><span className="timeLabel">{t}</span>{days.map((d,c)=>{const i=r*5+c;const cell=cells[i];const cls=view==='heatmap'?`heat heat-${Math.min(3,cell.available)}`:`status-${cell.status||'empty'}`;return <button key={d} title={`${cell.note?cell.note+' · ':''}Available: ${cell.available} · Maybe: ${cell.maybe} · Unavailable: ${cell.unavailable}`} className={`slot ${cls} ${cell.note?'hasNote':''}`} onMouseDown={()=>beginDrag(i)} onMouseEnter={()=>dragging&&paint(i)} onMouseUp={()=>setDragging(false)} onContextMenu={e=>{e.preventDefault();const note=window.prompt('Add a note for this time slot',cell.note||'');if(note!==null)setCells(a=>a.map((x,j)=>j===i?{...x,note}:x))}}/>})}</React.Fragment>)}</div></div>
       <aside className="schedulerAside"><div className="sideCard"><h3>Participants</h3><p><span className="responded"></span> Neha · Responded</p><p><span className="responded"></span> Maya · Responded</p><p><span className="pending"></span> Alex · Pending</p></div><div className="sideCard"><h3>Venue Voting</h3>{venues.map(v=><button className={venue===v.name?'venue active':'venue'} key={v.name} onClick={()=>setVenue(v.name)}><span>{v.name}</span><strong>{v.votes+(venue===v.name?1:0)} votes</strong></button>)}<div className="venueAdd"><input value={newVenue} onChange={e=>setNewVenue(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addVenue()} placeholder="Add venue…"/><button onClick={addVenue}>Add</button></div></div><div className="sideCard"><h3>Event Chat</h3><div className="eventChat">{chat.map((m,i)=><p key={i}>{m}</p>)}</div><div className="inlineComposer"><input value={chatText} onChange={e=>setChatText(e.target.value)} placeholder="Drop a quick note…"/><button onClick={()=>{if(chatText.trim()){setChat(c=>[...c,`Neha: ${chatText.trim()}`]);setChatText('')}}}>Send</button></div></div></aside>
     </div>
   </div>
 }
 function ChatSandbox(){
  const seed=[{system:'Neha joined the room'},{who:'Maya',text:'did everyone push?'},{who:'me',text:'yep just finished the socket changes'}];
- const [msgs,setMsgs]=useState(seed); const [text,setText]=useState(''); const [typing,setTyping]=useState(false);
+ const [msgs,setMsgs]=useState(seed); const [text,setText]=useState(''); const [typing,setTyping]=useState(false); const typingTimer=useRef(null);
  const add=()=>{if(!text.trim())return;setMsgs(m=>[...m,{who:'me',text:text.trim()}]);setText('')};
  const react=(i,r)=>setMsgs(m=>m.map((x,j)=>j===i?{...x,reaction:r}:x));
- return <div className="chatSandbox"><div className="chatTitle"><h2>Real-Time Chat</h2><span>Room: main</span></div><div className="chatWindow">{msgs.map((m,i)=>m.system?<div className="systemMsg" key={i}>{m.system}</div>:<div className={m.who==='me'?'chatLine mine':'chatLine theirs'} key={i}><button className="chatBubble" onDoubleClick={()=>react(i,'❤️')}>{m.text}{m.reaction&&<span className="reaction">{m.reaction}</span>}</button></div>)}{typing&&<div className="typingBubble"><i></i><i></i><i></i></div>}</div><div className="chatEntry"><input value={text} onChange={e=>{setText(e.target.value);setTyping(true);window.clearTimeout(window.__typing);window.__typing=window.setTimeout(()=>setTyping(false),900)}} onKeyDown={e=>e.key==='Enter'&&add()} placeholder="Type a message..."/><button onClick={add}>Send</button><button onClick={()=>setMsgs(m=>[...m,{system:'Neha left the room'}])}>Leave</button></div><p className="sandboxNote">Double-click a message to add a tapback. Typing and join/leave states mirror the original Socket.IO project behavior.</p></div>
+ return <div className="chatSandbox"><div className="chatTitle"><h2>Real-Time Chat</h2><span>Room: main</span></div><div className="chatWindow">{msgs.map((m,i)=>m.system?<div className="systemMsg" key={i}>{m.system}</div>:<div className={m.who==='me'?'chatLine mine':'chatLine theirs'} key={i}><button className="chatBubble" onDoubleClick={()=>react(i,'❤️')}>{m.text}{m.reaction&&<span className="reaction">{m.reaction}</span>}</button></div>)}{typing&&<div className="typingBubble"><i></i><i></i><i></i></div>}</div><div className="chatEntry"><input value={text} onChange={e=>{setText(e.target.value);setTyping(true);if(typingTimer.current)window.clearTimeout(typingTimer.current);typingTimer.current=window.setTimeout(()=>setTyping(false),900)}} onKeyDown={e=>e.key==='Enter'&&add()} placeholder="Type a message..."/><button onClick={add}>Send</button><button onClick={()=>setMsgs(m=>[...m,{system:'Neha left the room'}])}>Leave</button></div><p className="sandboxNote">Double-click a message to add a tapback. Typing and join/leave states mirror the original Socket.IO project behavior.</p></div>
 }
 
 function CaseStudy({id,onBack}){
  const p=projects.find(x=>x.id===id);
  if(!p)return null;
- return <main className="casePage"><button className="backBtn" onClick={onBack}>← Projects</button><header className="caseHeader"><p>{p.company}</p><h1>{p.title}</h1><div className="caseIntro">{p.summary}</div>{metrics[id]&&<MetricStrip items={metrics[id]}/>}</header><section className="caseHeroMedia"><ProjectCover type={p.media}/></section>
- {id==='fcvf'&&<><CaseSection title="Context"><p>FCVF was created to give product teams a more consistent, data-driven way to evaluate customer value. The existing assessment lived in Excel, which was long to complete, difficult to navigate, and exposed underlying formulas.</p></CaseSection><CaseSection title="What I learned from users"><div className="factGrid"><Fact title="Less overwhelming">Users preferred seeing the assessment in smaller sections instead of facing every question at once.</Fact><Fact title="A hidden bias">The page showed a live score while people answered. In interviews, I realized users could watch the score change and adjust responses to steer the result.</Fact><Fact title="Design change">We removed the live score from the answering experience so the interface would not encourage people to optimize for a target score.</Fact><Fact title="Direction">Feedback supported the multi-page structure, with navigation and progress cues refined around that choice.</Fact></div></CaseSection><CaseSection title="My role"><p>I worked across four user interviews, design comparison, requirements discussions, frontend implementation, testing, and product-owner conversations about what to prioritize next.</p></CaseSection><CaseSection title="Decision"><p>The important decision was not simply “multi-page instead of one-page.” Research changed both the structure of the assessment and what information the product should reveal while someone was answering. That protected the integrity of the assessment while making it easier to complete.</p></CaseSection></>}
- {id==='finsimple'&&<><CaseSection title="Context"><p>My second Ford internship moved from a greenfield intern-built application to FinSimple, a deployed financial product with existing customers, shared libraries, data dependencies, and production environments.</p></CaseSection><CaseSection title="Previous Estimates"><p>I owned work across requirements, UI/component development, integration, testing, and stakeholder coordination. The Previous Estimates experience progressed from dummy data to an AEM component and then into the finished customer-facing flow.</p><div className="progression"><img src="project-media/finsimple-dummy.png" alt="Dummy data stage"/><img src="project-media/finsimple-aem.png" alt="AEM component stage"/><img src="project-media/finsimple-live.png" alt="Finished FinSimple stage"/></div></CaseSection><CaseSection title="System around the UI"><div className="architecture"><span>Customer UI</span><b>→</b><span>AEM / UCL</span><b>→</b><span>GraphQL / APIs</span><b>→</b><span>Salesforce / GCP</span></div><p>A feature that looked small on the page depended on a much larger workflow: record creation in Salesforce, field population, PDF attachments, API behavior, and failure handling across systems.</p></CaseSection><CaseSection title="Internship outcomes"><p>The delivery metrics shown above describe my broader internship work, not only the Previous Estimates feature. Across that work, I managed 20+ tasks across five teams and contributed to delivery that finished 30% ahead of schedule.</p></CaseSection></>}
- {id==='scheduler'&&<><section className="productDelta"><div><span>Kept from When2Meet</span><strong>Fast grid input + shared heatmap</strong></div><b>→</b><div><span>Extended around it</span><strong>Nuance, faster entry, recommendation, venues, notes, chat, sharing + calendar handoff</strong></div></section><section className="sandboxSection schedulerShowcase"><SchedulerSandbox/></section><CaseSection title="Starting point"><p>I used When2Meet because its grid and heatmap already solve the hardest visualization problem well: showing where a group overlaps. I kept that mental model instead of redesigning something users already understand.</p></CaseSection><CaseSection title="Pain points I wanted to solve"><div className="factGrid"><Fact title="Availability is not always binary">Real schedules include “maybe,” not just free or unavailable.</Fact><Fact title="Entering time is repetitive">Quick-fill presets reduce the work of marking predictable blocks.</Fact><Fact title="A heatmap still needs interpretation">Best Time to Meet turns overlap into a recommendation instead of leaving the group to compare every cell manually.</Fact><Fact title="Scheduling does not end with a time">Venue voting, participant status, notes, chat, sharing, and calendar export keep the rest of the coordination in one flow.</Fact></div></CaseSection><CaseSection title="What I built"><div className="architecture"><span>My availability</span><b>→</b><span>Group heatmap</span><b>→</b><span>Best time</span><b>→</b><span>Venue + chat</span></div><p>The grid supports single-cell editing and click-and-drag status application. Heatmap intensity updates around collective availability, while the side panels keep the remaining event decisions in the same workspace.</p></CaseSection><CaseSection title="Architecture"><div className="architecture"><span>Browser</span><b>↔</b><span>Socket.IO</span><b>↔</b><span>Flask</span><b>↔</b><span>MySQL</span></div><p>Docker and Google Cloud Run were used for deployment. This portfolio sandbox preserves the product behavior with local browser state so it can run on GitHub Pages without the original backend.</p></CaseSection></>}
- {id==='chat'&&<><section className="sandboxSection"><ChatSandbox/></section><CaseSection title="Interaction model"><p>The interface follows iMessage conventions: the current user’s messages appear blue and right-aligned, other users’ messages appear gray and left-aligned, and room events are shown as system messages.</p></CaseSection><CaseSection title="Real-time behavior"><div className="factGrid"><Fact title="Messages">Clients receive new messages through Socket.IO.</Fact><Fact title="Presence">Join and leave events are broadcast to the room.</Fact><Fact title="Typing">Typing state is emitted while another user is composing a message.</Fact><Fact title="Tapbacks">Messages support reactions including heart, thumbs-up, laughter, exclamation, and question reactions.</Fact></div></CaseSection></>}
- {id==='estee'&&<><CaseSection title="Brief"><p>The goal was to keep the experience recognizably Estée Lauder while adding promotional elements, explaining why customers should buy Double Wear, and making purchase options easy to reach.</p></CaseSection><CaseSection title="Design approach"><div className="factGrid"><Fact title="Brand consistency">Matched Estée Lauder’s colors, typography, and visual style.</Fact><Fact title="Product education">Used concise benefits, visuals, and interactive elements to make the product easier to understand.</Fact><Fact title="Purchase path">Linked customers to multiple reputable retailers after product exploration.</Fact><Fact title="Customer journey">Structured the experience around discover → learn → explore → buy.</Fact></div></CaseSection></>}
+ return <main className="casePage"><button className="backBtn" onClick={onBack}>← Projects</button><header className="caseHeader"><p>{p.company}</p><h1>{p.title}</h1><div className="caseIntro">{p.summary}</div><div className="ownershipLine"><strong>My work</strong><span>{ownership[id]}</span></div>{metrics[id]&&<MetricStrip items={metrics[id]}/>}</header><section className="caseHeroMedia evidenceFirst"><ProjectVisual type={p.media}/></section>
+ {id==='fcvf'&&<><CaseSection title="Context"><p>FCVF was created to give product teams a more consistent, data-driven way to evaluate customer value. The existing assessment lived in Excel, which was long to complete, difficult to navigate, and exposed underlying formulas.</p></CaseSection><CaseSection title="Research changed the product"><div className="researchDecision"><div><span>During interviews</span><strong>Users saw every question at once and could watch the live score change as they answered.</strong></div><b>→</b><div><span>What we found</span><strong>The score could influence later answers, creating response bias.</strong></div><b>→</b><div><span>Design change</span><strong>Use a multi-page flow and remove the live score while the assessment is in progress.</strong></div></div></CaseSection><CaseSection title="My role"><p>I worked across four user interviews, design comparison, requirements discussions, frontend implementation, testing, and product-owner conversations.</p></CaseSection><CaseSection title="Final experience"><div className="finalArtifact"><img src="project-media/ford-after.webp" alt="Final Ford Customer Value Framework web experience"/><p>The final web experience used a multi-page flow and kept the live score out of the in-progress assessment.</p></div></CaseSection></>}
+ {id==='finsimple'&&<><CaseSection title="Context"><p>My second Ford internship moved from a greenfield intern-built application to FinSimple, a deployed financial product with existing customers, shared libraries, data dependencies, and production environments.</p></CaseSection><CaseSection title="Previous Estimates"><p>I owned work across requirements, UI/component development, integration, testing, and stakeholder coordination. The Previous Estimates experience progressed from dummy data to an AEM component and then into the finished customer-facing flow.</p><div className="progression"><img src="project-media/finsimple-dummy.png" alt="Dummy data stage"/><img src="project-media/finsimple-aem.png" alt="AEM component stage"/><img src="project-media/finsimple-live.png" alt="Finished FinSimple stage"/></div></CaseSection><CaseSection title="Customer journey"><div className="journeyFlow"><div><strong>Customer</strong><span>Starts a financing/account workflow</span></div><b>→</b><div><strong>Web experience</strong><span>Collects and displays the needed information</span></div><b>→</b><div><strong>Service + API layer</strong><span>Moves existing customer and contract data</span></div><b>→</b><div><strong>Salesforce</strong><span>Creates/populates the downstream record</span></div></div></CaseSection><CaseSection title="System around the UI"><p>A small interface change could depend on record creation, field population, PDF attachments, API behavior, and failure handling across AEM, GraphQL/APIs, Salesforce, and GCP.</p></CaseSection><CaseSection title="Broader internship outcomes"><p>The delivery metrics above describe my broader internship work, not only Previous Estimates. Across that work, I managed 20+ tasks across five teams and contributed to delivery that finished 30% ahead of schedule.</p></CaseSection><CaseSection title="Shipped result"><div className="finalArtifact"><img src="project-media/finsimple-live.png" alt="Finished FinSimple Previous Estimates feature"/><p>Previous Estimates moved from dummy data to an AEM implementation and into the customer-facing FinSimple experience.</p></div></CaseSection></>}
+ {id==='scheduler'&&<><section className="productDelta"><div><span>Kept from When2Meet</span><strong>Fast grid input + shared heatmap</strong></div><b>→</b><div><span>Extended around it</span><strong>Nuance, faster entry, recommendation, venues, notes, chat, sharing + calendar handoff</strong></div></section><section className="sandboxSection schedulerShowcase"><SchedulerSandbox/></section><CaseSection title="When2Meet baseline"><p>I kept the grid-based availability input and shared heatmap because they already make group overlap easy to understand.</p></CaseSection><CaseSection title="Added to the workflow"><div className="factGrid"><Fact title="Availability is not always binary">Real schedules include “maybe,” not just free or unavailable.</Fact><Fact title="Entering time is repetitive">Quick-fill presets reduce the work of marking predictable blocks.</Fact><Fact title="A heatmap still needs interpretation">Best Time to Meet turns overlap into a recommendation instead of leaving the group to compare every cell manually.</Fact><Fact title="Scheduling does not end with a time">Venue voting, participant status, notes, chat, sharing, and calendar export keep the rest of the coordination in one flow.</Fact></div></CaseSection><CaseSection title="What changed"><div className="architecture"><span>Available / Maybe / Unavailable</span><b>→</b><span>Quick fill</span><b>→</b><span>Group heatmap</span><b>→</b><span>Best time</span><b>→</b><span>Venue + chat</span></div></CaseSection><CaseSection title="Architecture"><div className="architecture"><span>Browser</span><b>↔</b><span>Socket.IO</span><b>↔</b><span>Flask</span><b>↔</b><span>MySQL</span></div><p>Docker and Google Cloud Run were used for deployment. This portfolio sandbox preserves the product behavior with local browser state so it can run on GitHub Pages without the original backend.</p></CaseSection><CaseSection title="Finished system"><p>The original application ran with Flask, Socket.IO, MySQL, Docker, and Google Cloud Run. The portfolio sandbox recreates the core product behavior in-browser so it can be tested directly.</p></CaseSection></>}
+ {id==='chat'&&<><section className="sandboxSection"><ChatSandbox/></section><CaseSection title="Interaction model"><p>The interface follows iMessage conventions: the current user’s messages appear blue and right-aligned, other users’ messages appear gray and left-aligned, and room events are shown as system messages.</p></CaseSection><CaseSection title="Real-time behavior"><div className="factGrid"><Fact title="Messages">Clients receive new messages through Socket.IO.</Fact><Fact title="Presence">Join and leave events are broadcast to the room.</Fact><Fact title="Typing">Typing state is emitted while another user is composing a message.</Fact><Fact title="Tapbacks">Messages support reactions including heart, thumbs-up, laughter, exclamation, and question reactions.</Fact></div></CaseSection><CaseSection title="Finished system"><p>The working chat synchronized messages and room events across connected users while keeping the interface intentionally familiar.</p></CaseSection></>}
+ {id==='estee'&&<><CaseSection title="Brief"><p>The goal was to keep the experience recognizably Estée Lauder while adding promotional elements, explaining why customers should buy Double Wear, and making purchase options easy to reach.</p></CaseSection><CaseSection title="Design approach"><div className="factGrid"><Fact title="Brand consistency">Matched Estée Lauder’s colors, typography, and visual style.</Fact><Fact title="Product education">Used concise benefits, visuals, and interactive elements to make the product easier to understand.</Fact><Fact title="Purchase path">Linked customers to multiple reputable retailers after product exploration.</Fact><Fact title="Customer journey">Structured the experience around discover → learn → explore → buy.</Fact></div></CaseSection><CaseSection title="Final screens"><EsteeVisual/></CaseSection></>}
  </main>
 }
 function CaseSection({title,children}){return <section className="caseSection"><h2>{title}</h2><div>{children}</div></section>}
@@ -293,21 +291,22 @@ function TechnicalCard({title,subtitle,kind,description}){
   </article>
 }
 
-function CompanyLogo({src,alt}){return <div className="companyLogo"><img src={src} alt={alt}/></div>}
+function CompanyLogo({src='',alt='',label=''}){return <div className="companyLogo">{src?<img src={src} alt={alt}/>:<strong className="logoText">{label}</strong>}</div>}
 function Home({openCase}){
+ const [auraTone,setAuraTone]=useState('default');
  return <>
- <AuraField/>
- <header className="siteHeader"><a className="wordmark" href="#top">Neha Chinimilli</a><nav><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#technical">Technical work</a><a href="resume.pdf" target="_blank" rel="noreferrer">Resume</a></nav></header>
+ <AuraField tone={auraTone}/>
+ <header className="siteHeader"><a className="wordmark" href="#top">Neha Chinimilli</a><nav><div className="navProjects"><a href="#projects">Projects</a><div className="navMenu"><button onClick={()=>openCase('fcvf')}>Customer Value Framework</button><button onClick={()=>openCase('scheduler')}>Collaborative Scheduler</button><button onClick={()=>openCase('finsimple')}>FinSimple</button><a href="#technical">Technical work</a></div></div><a href="#experience">Experience</a><a href="#technical">Technical work</a><a href="resume.pdf" target="_blank" rel="noreferrer">Resume</a><a href="mailto:chinimi2@msu.edu">Email</a></nav></header>
  <main id="top">
   <section className="hero"><div className="heroInner"><h1>Neha Chinimilli</h1><p>Computer Science + Supply Chain Management at Michigan State University.</p><div className="heroLinks"><a href="#projects">Projects</a><a href="resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></div></div></section>
-  <section id="projects" className="section projectsSection"><div className="sectionTitle compactTitle"><h2>Projects</h2><p>Five projects. Click any card for the full build, decisions, and evidence.</p></div><div className="projectCardGrid">{projects.map((p,i)=><ProjectCard project={p} index={i} key={p.id} onOpen={openCase}/>)}</div></section>
-  <section id="experience" className="section experienceSection"><div className="sectionTitle compactTitle"><h2>Experience</h2><p>Role, scope, and what I worked on.</p></div><div className="experienceCards"><Reveal><article className="experienceCard"><CompanyLogo src="company-logos/accenture.svg" alt="Accenture"/><div><div className="experienceMeta"><span>2026 · San Francisco</span></div><h3>Accenture</h3><h4>Technology Summer Analyst</h4><p>Standardized and prototyped enterprise AI enablement workflows for a frontier AI lab account, including a 10-tab automation data contract and synthesis of ~2,200 learner responses.</p></div></article></Reveal><Reveal><article className="experienceCard"><CompanyLogo src="company-logos/ford-credit.jpg" alt="Ford Credit"/><div><div className="experienceMeta"><span>2024–2025 · Dearborn</span></div><h3>Ford Credit</h3><h4>Software Engineering Intern · 2 summers</h4><p>Owned customer-facing feature work across requirements, UI, integrations, testing, release workflows, and production reliability in a deployed financial platform.</p></div></article></Reveal><Reveal><article className="experienceCard"><CompanyLogo src="company-logos/ford.png" alt="Ford Motor Company"/><div><div className="experienceMeta"><span>2023 · Dearborn</span></div><h3>Ford Motor Company</h3><h4>Software Engineering Intern</h4><p>Built a customer-value web product from MVP through full-stack implementation, using four user interviews to change the design and remove a response-biasing live score.</p></div></article></Reveal></div></section>
+  <section id="projects" className="section projectsSection"><div className="sectionTitle compactTitle"><h2>Projects</h2></div><div className="projectCardGrid">{projects.map((p,i)=><ProjectCard project={p} index={i} key={p.id} onOpen={openCase} onAura={setAuraTone}/>)}</div></section>
+  <section id="experience" className="section experienceSection"><div className="sectionTitle compactTitle"><h2>Experience</h2></div><div className="experienceCards"><Reveal className="experienceFeatured"><article className="experienceCard featuredExperience"><CompanyLogo src="company-logos/accenture.svg" alt="Accenture"/><div><div className="experienceMeta"><span>2026 · San Francisco</span></div><h3>Accenture</h3><h4>Technology Summer Analyst</h4><p>Structured an enterprise AI enablement workflow, translated manual judgment into automation requirements, synthesized customer evidence, and prototyped an enablement experience for a frontier AI lab account.</p><div className="experienceEvidence"><span><strong>~2,200</strong> learner responses</span><span><strong>10-tab</strong> automation data contract</span><span><strong>Prototype</strong> tested + demonstrated</span></div></div></article></Reveal><Reveal><article className="experienceCard"><CompanyLogo src="company-logos/ford-credit.jpg" alt="Ford Credit"/><div><div className="experienceMeta"><span>2024–2025 · Dearborn</span></div><h3>Ford Credit</h3><h4>Software Engineering Intern · 2 summers</h4><p>Shipped customer-facing financial-product work across requirements, UI, APIs, Salesforce, testing, releases, and production reliability.</p></div></article></Reveal><Reveal><article className="experienceCard"><CompanyLogo src="company-logos/ford.png" alt="Ford Motor Company"/><div><div className="experienceMeta"><span>2023 · Dearborn</span></div><h3>Ford Motor Company</h3><h4>Software Engineering Intern</h4><p>Built a customer-value web application from MVP through full-stack implementation and used four user interviews to change the design.</p></div></article></Reveal><Reveal><article className="experienceCard"><CompanyLogo label="SCG" alt="Spectrum Consulting Group"/><div><div className="experienceMeta"><span>2022–2026 · East Lansing</span></div><h3>Spectrum Consulting Group</h3><h4>Consultant · Client Acquisition Lead</h4><p>Built research, KPI, and decision frameworks for client work spanning performance measurement, growth strategy, and product commercialization.</p></div></article></Reveal></div></section>
   <section id="technical" className="section technicalSection">
-    <div className="sectionTitle compactTitle"><h2>Technical work</h2><p>Game architecture, simulation, and rendering systems.</p></div>
+    <div className="sectionTitle compactTitle"><h2>Technical work</h2></div>
     <div className="techGrid">
-      <TechnicalCard title="Spartan Touchdown" subtitle="CSE 335 · C++ · wxWidgets · team development" kind="game" description="Built a team side-scrolling football game with XML-defined levels, reusable game objects, collision behavior, visitor-based traversal, automated tests, and a shared Kanban workflow. Level content could be composed and tuned without hard-coding every object into the game loop."/>
-      <TechnicalCard title="2D Stable Fluids" subtitle="CSE 472 · C++ · simulation" kind="fluids" description="Implemented backtraced velocity advection, interpolation, buoyancy, and sparse-matrix velocity diffusion, then exposed controls for density, velocity, grid visibility, stepping, reset, and viscosity so the simulation could be tuned and observed interactively."/>
-      <TechnicalCard title="Ray Tracer" subtitle="CSE 472 · C++ · computer graphics" kind="ray" description="Built a ray-tracing pipeline with camera rays, nearest-object intersections, materials, texture mapping, multiple lights, shadow rays, and reflections. Visual errors had to be traced through the full rendering path rather than patched at the surface."/>
+      <TechnicalCard title="Spartan Touchdown" subtitle="CSE 335 · C++ · wxWidgets · team development" kind="game" description="Team-built C++ football game with XML-defined levels, reusable game objects, collision systems, tests, and Kanban delivery."/>
+      <TechnicalCard title="2D Stable Fluids" subtitle="CSE 472 · C++ · simulation" kind="fluids" description="Interactive C++ simulation with advection, buoyancy, sparse-matrix diffusion, and adjustable fluid behavior."/>
+      <TechnicalCard title="Ray Tracer" subtitle="CSE 472 · C++ · computer graphics" kind="ray" description="C++ renderer implementing intersections, materials, texture mapping, lighting, shadows, and reflections."/>
     </div>
   </section>
   <section className="section aboutSection"><div className="sectionTitle"><h2>About</h2></div><div className="aboutGrid"><p>B.S. Computer Science + B.A. Supply Chain Management, Michigan State University.</p><div><a href="resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a><a href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer">LinkedIn ↗</a><a href="mailto:chinimi2@msu.edu">chinimi2@msu.edu</a></div></div></section>
@@ -316,8 +315,9 @@ function Home({openCase}){
 }
 function App(){
  const [caseId,setCaseId]=useState(null);
- if(caseId)return <CaseStudy id={caseId} onBack={()=>{setCaseId(null);window.scrollTo(0,0)}}/>;
- return <Home openCase={id=>{setCaseId(id);window.scrollTo(0,0)}}/>;
+ const transition=(fn)=>{const d=document;if(d.startViewTransition)d.startViewTransition(fn);else fn()};
+ if(caseId)return <CaseStudy id={caseId} onBack={()=>transition(()=>{setCaseId(null);window.scrollTo(0,0)})}/>;
+ return <Home openCase={id=>transition(()=>{setCaseId(id);window.scrollTo(0,0)})}/>;
 }
 
 createRoot(document.getElementById('root')).render(<App/>);
