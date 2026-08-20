@@ -1,7 +1,7 @@
 {
   "name": "neha-pm-portfolio",
   "private": true,
-  "version": "11.0.0",
+  "version": "13.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
