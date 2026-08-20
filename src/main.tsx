@@ -1,18 +1,43 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
+
+
+function Reveal({children,className=''}){
+  const ref=useRef(null);
+  const [visible,setVisible]=useState(false);
+  useEffect(()=>{
+    const el=ref.current;
+    if(!el)return;
+    const observer=new IntersectionObserver(([entry])=>{
+      if(entry.isIntersecting){setVisible(true);observer.disconnect();}
+    },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+    observer.observe(el);
+    return ()=>observer.disconnect();
+  },[]);
+  return <div ref={ref} className={`reveal ${visible?'visible':''} ${className}`}>{children}</div>
+}
 
 const metrics = {
   fcvf: [
     ['2','interface directions compared'],
-    ['1','user-led design interview I led'],
-    ['1','PO-prioritized save feature surfaced from research']
+    ['3','customer-value scores in the framework'],
+    ['1','MVP delivered before full build']
   ],
   finsimple: [
     ['30%','ahead of schedule'],
-    ['5','cross-functional teams'],
-    ['20+','tasks managed'],
-    ['15%','system reliability improvement']
+    ['15%','system reliability improvement'],
+    ['6%','error reduction'],
+    ['20+','tasks across 5 teams']
+  ],
+  scheduler: [
+    ['3','availability states'],
+    ['4','quick-fill actions'],
+    ['10+','coordination features beyond the grid']
+  ],
+  chat: [
+    ['4','real-time interaction types'],
+    ['5','tapback reactions']
   ],
   estee: [
     ['Top 5','challenge finalist']
@@ -37,36 +62,41 @@ const projects = [
     id:'fcvf',
     title:'Customer Value Framework',
     company:'Ford Motor Company',
-    summary:'Ford’s customer-value assessment was originally completed in Excel. I helped compare one-page and multi-page versions of a web replacement, gathered user feedback, and contributed to the React implementation.',
-    media:'fcvf'
+    summary:'Rebuilt an Excel-based customer-value assessment as a multi-page web application, using user feedback to choose the interaction model and prioritize what to build next.',
+    media:'fcvf',
+    facts:['Excel → web product','2 interface directions']
   },
   {
     id:'finsimple',
     title:'FinSimple',
     company:'Ford Credit',
-    summary:'Worked inside a deployed financial product across AEM, shared components, APIs, Salesforce, and GCP. The work taught me how a small customer-facing change depends on a much larger production system.',
-    media:'finsimple'
+    summary:'Shipped customer-facing work inside an existing Ford Credit financial product across AEM, shared components, APIs, Salesforce, GraphQL, and GCP.',
+    media:'finsimple',
+    facts:['30% ahead of schedule','15% reliability improvement']
   },
   {
     id:'scheduler',
     title:'Collaborative Scheduling Platform',
     company:'CSE 477',
-    summary:'An extended When2Meet-style scheduling product. I kept the shared availability grid, then added features for common coordination gaps: tentative availability, quick-fill presets, best-time calculation, participant status, venue voting, notes, event chat, sharing, and calendar export.',
-    media:'scheduler'
+    summary:'Extended the When2Meet model to address common coordination gaps: tentative availability, quick-fill presets, automatic best-time calculation, participant status, venue voting, notes, event chat, sharing, and calendar export.',
+    media:'scheduler',
+    facts:['When2Meet + 10+ extensions','Flask · Socket.IO · MySQL']
   },
   {
     id:'chat',
     title:'Synchronized Group Chat',
     company:'CSE 477',
     summary:'A multi-user chat application using an iMessage-style interaction model, with join/leave events, typing state, reactions, and synchronized messages.',
-    media:'chat'
+    media:'chat',
+    facts:['Real-time rooms + presence','iMessage interaction model']
   },
   {
     id:'estee',
     title:'Estée Lauder — Double Wear',
     company:'Estée Lauder × Kode With Klossy',
     summary:'Designed a digital product-discovery experience that combined product education, brand consistency, and paths to purchase.',
-    media:'estee'
+    media:'estee',
+    facts:['Top 5 finalist','Discover → learn → explore → buy']
   }
 ];
 
@@ -125,6 +155,30 @@ function MiniChat(){
 }
 
 function EsteeVisual(){return <div className="esteeGrid"><img src="project-media/el-home.webp" alt="Estée Lauder Double Wear landing experience"/><img src="project-media/el-benefits.webp" alt="Double Wear product benefits"/><img src="project-media/el-shades.webp" alt="Double Wear shade exploration"/><img src="project-media/el-shop.webp" alt="Double Wear purchase options"/></div>}
+
+function ProjectCover({type}){
+  if(type==='fcvf') return <div className="editorialCover fordEditorial"><img className="editorialLogo" src="company-logos/ford.png" alt="Ford"/><div className="screenFloat"><img src="project-media/ford-after.webp" alt="Ford Customer Value Framework web application"/></div><div className="coverCaption">Customer Value Framework</div></div>;
+  if(type==='finsimple') return <div className="editorialCover finEditorial"><img className="editorialLogo credit" src="company-logos/ford-credit.jpg" alt="Ford Credit"/><div className="screenFloat"><img src="project-media/finsimple-live.png" alt="FinSimple Previous Estimates product"/></div><div className="coverCaption">Previous Estimates</div></div>;
+  if(type==='scheduler') return <div className="editorialCover schedulerEditorial"><div className="schedulerCoverTag">Interactive preview</div><MiniScheduler/></div>;
+  if(type==='chat') return <div className="editorialCover chatEditorial"><MiniChat/></div>;
+  return <div className="editorialCover esteeEditorial"><img src="project-media/el-home.webp" alt="Estée Lauder Double Wear digital experience"/><div className="esteeStack"><img src="project-media/el-benefits.webp" alt="Double Wear product benefits"/><img src="project-media/el-shades.webp" alt="Double Wear shade exploration"/></div></div>;
+}
+
+function ProjectCard({project,index,onOpen}){
+  const featured=project.id==='scheduler';
+  return <Reveal className={featured?'projectCardReveal featured':''}>
+    <article className={`projectCard ${featured?'featured':''}`} onClick={()=>onOpen(project.id)}>
+      <div className="projectCardMedia"><ProjectCover type={project.media}/></div>
+      <div className="projectCardBody">
+        <div className="projectCardTop"><span>{project.company}</span><span>{String(index+1).padStart(2,'0')}</span></div>
+        <h3>{project.title}</h3>
+        <p>{project.summary}</p>
+        <div className="projectFacts">{project.facts?.map(f=><span key={f}>{f}</span>)}</div>
+        <button type="button" onClick={(e)=>{e.stopPropagation();onOpen(project.id)}}>View case study <span>↗</span></button>
+      </div>
+    </article>
+  </Reveal>
+}
 
 function ProjectVisual({type}){
   if(type==='fcvf') return <FCVFVisual/>;
@@ -193,33 +247,51 @@ function ChatSandbox(){
 function CaseStudy({id,onBack}){
  const p=projects.find(x=>x.id===id);
  if(!p)return null;
- return <main className="casePage"><button className="backBtn" onClick={onBack}>← Projects</button><header className="caseHeader"><p>{p.company}</p><h1>{p.title}</h1><div className="caseIntro">{p.summary}</div>{metrics[id]&&<MetricStrip items={metrics[id]}/>}</header>
- {id==='fcvf'&&<><section className="caseVisual"><FCVFVisual/></section><CaseSection title="Context"><p>FCVF was created to give product teams a more consistent, data-driven way to evaluate customer value. The existing assessment lived in Excel, which was long to complete, difficult to navigate, and exposed underlying formulas.</p></CaseSection><CaseSection title="What I did"><div className="factGrid"><Fact title="User research">Led a user interview for the design and used interview findings in product discussions.</Fact><Fact title="Design comparison">Helped compare one-page and multi-page approaches, then moved forward with the multi-page version after feedback.</Fact><Fact title="Prioritization">In a PO meeting, focused the discussion on features surfaced by customer interviews; save/load functionality became the next priority.</Fact><Fact title="Implementation">Contributed to the web application and the transition from a long form to a structured multi-page experience.</Fact></div></CaseSection><CaseSection title="Decision"><p>The team selected the multi-page approach after A/B testing and user feedback indicated it was easier to use. Navigation and progress cues were then refined around that structure.</p></CaseSection></>}
- {id==='finsimple'&&<><section className="caseVisual"><FinSimpleVisual/></section><CaseSection title="Context"><p>My second Ford internship moved from a greenfield intern-built application to FinSimple, a deployed financial product with existing customers, shared libraries, data dependencies, and production environments.</p></CaseSection><CaseSection title="Previous Estimates"><p>I worked on the Previous Estimates experience in AEM. The project progressed from dummy data to an AEM component and then into the finished customer-facing flow.</p><div className="progression"><img src="project-media/finsimple-dummy.png" alt="Dummy data stage"/><img src="project-media/finsimple-aem.png" alt="AEM component stage"/><img src="project-media/finsimple-live.png" alt="Finished FinSimple stage"/></div></CaseSection><CaseSection title="System around the UI"><div className="architecture"><span>Customer UI</span><b>→</b><span>AEM / UCL</span><b>→</b><span>GraphQL / APIs</span><b>→</b><span>Salesforce / GCP</span></div><p>My work also involved questions around Salesforce record creation failures, PDF attachment handling, field population, and how information moved across the customer workflow.</p></CaseSection></>}
- {id==='scheduler'&&<><section className="sandboxSection"><SchedulerSandbox/></section><CaseSection title="Starting point"><p>The assignment was explicitly to build an extended version of When2Meet. I kept the core idea — a shared grid and visual overlap — then added product features around coordination problems that the basic model does not solve on its own.</p></CaseSection><CaseSection title="What I extended"><div className="factGrid"><Fact title="More realistic availability">Added Available, Maybe, and Unavailable instead of a single binary state.</Fact><Fact title="Less repetitive input">Added quick-fill presets for all slots, weekdays 9–5, evenings, and clearing availability.</Fact><Fact title="Faster consensus">Added a Best Time to Meet calculation using availability count, conflicts, and tie-breaking.</Fact><Fact title="Coordination beyond time">Added participant response status, venue voting, notes, event chat, sharing, and calendar export.</Fact></div></CaseSection><CaseSection title="Interaction model"><div className="architecture"><span>My availability</span><b>→</b><span>Group heatmap</span><b>→</b><span>Best time</span><b>→</b><span>Venue + chat</span></div><p>The grid supports single-cell editing and click-and-drag status application. Heatmap intensity updates around collective availability, while the side panels keep the remaining event decisions in the same workspace.</p></CaseSection><CaseSection title="Architecture"><div className="architecture"><span>Browser</span><b>↔</b><span>Socket.IO</span><b>↔</b><span>Flask</span><b>↔</b><span>MySQL</span></div><p>Docker and Google Cloud Run were used for deployment. This portfolio sandbox preserves the product behavior with local browser state so it can run on GitHub Pages without the original backend.</p></CaseSection></>}
+ return <main className="casePage"><button className="backBtn" onClick={onBack}>← Projects</button><header className="caseHeader"><p>{p.company}</p><h1>{p.title}</h1><div className="caseIntro">{p.summary}</div>{metrics[id]&&<MetricStrip items={metrics[id]}/>}</header><section className="caseHeroMedia"><ProjectCover type={p.media}/></section>
+ {id==='fcvf'&&<><CaseSection title="Context"><p>FCVF was created to give product teams a more consistent, data-driven way to evaluate customer value. The existing assessment lived in Excel, which was long to complete, difficult to navigate, and exposed underlying formulas.</p></CaseSection><CaseSection title="What I did"><div className="factGrid"><Fact title="User research">Led a user interview for the design and used interview findings in product discussions.</Fact><Fact title="Design comparison">Helped compare one-page and multi-page approaches, then moved forward with the multi-page version after feedback.</Fact><Fact title="Prioritization">In a PO meeting, focused the discussion on features surfaced by customer interviews; save/load functionality became the next priority.</Fact><Fact title="Implementation">Contributed to the web application and the transition from a long form to a structured multi-page experience.</Fact></div></CaseSection><CaseSection title="Decision"><p>The team selected the multi-page approach after A/B testing and user feedback indicated it was easier to use. Navigation and progress cues were then refined around that structure.</p></CaseSection></>}
+ {id==='finsimple'&&<><CaseSection title="Context"><p>My second Ford internship moved from a greenfield intern-built application to FinSimple, a deployed financial product with existing customers, shared libraries, data dependencies, and production environments.</p></CaseSection><CaseSection title="Previous Estimates"><p>I worked on the Previous Estimates experience in AEM. The project progressed from dummy data to an AEM component and then into the finished customer-facing flow.</p><div className="progression"><img src="project-media/finsimple-dummy.png" alt="Dummy data stage"/><img src="project-media/finsimple-aem.png" alt="AEM component stage"/><img src="project-media/finsimple-live.png" alt="Finished FinSimple stage"/></div></CaseSection><CaseSection title="System around the UI"><div className="architecture"><span>Customer UI</span><b>→</b><span>AEM / UCL</span><b>→</b><span>GraphQL / APIs</span><b>→</b><span>Salesforce / GCP</span></div><p>My work also involved questions around Salesforce record creation failures, PDF attachment handling, field population, and how information moved across the customer workflow.</p></CaseSection></>}
+ {id==='scheduler'&&<><section className="productDelta"><div><span>When2Meet core</span><strong>Shared availability grid + overlap</strong></div><b>→</b><div><span>What I added</span><strong>Nuance, faster input, consensus, venues, notes, chat, sharing + calendar handoff</strong></div></section><section className="sandboxSection schedulerShowcase"><SchedulerSandbox/></section><CaseSection title="Starting point"><p>The assignment was explicitly to build an extended version of When2Meet. I kept the core idea — a shared grid and visual overlap — then added product features around coordination problems that the basic model does not solve on its own.</p></CaseSection><CaseSection title="What I extended"><div className="factGrid"><Fact title="More realistic availability">Added Available, Maybe, and Unavailable instead of a single binary state.</Fact><Fact title="Less repetitive input">Added quick-fill presets for all slots, weekdays 9–5, evenings, and clearing availability.</Fact><Fact title="Faster consensus">Added a Best Time to Meet calculation using availability count, conflicts, and tie-breaking.</Fact><Fact title="Coordination beyond time">Added participant response status, venue voting, notes, event chat, sharing, and calendar export.</Fact></div></CaseSection><CaseSection title="Interaction model"><div className="architecture"><span>My availability</span><b>→</b><span>Group heatmap</span><b>→</b><span>Best time</span><b>→</b><span>Venue + chat</span></div><p>The grid supports single-cell editing and click-and-drag status application. Heatmap intensity updates around collective availability, while the side panels keep the remaining event decisions in the same workspace.</p></CaseSection><CaseSection title="Architecture"><div className="architecture"><span>Browser</span><b>↔</b><span>Socket.IO</span><b>↔</b><span>Flask</span><b>↔</b><span>MySQL</span></div><p>Docker and Google Cloud Run were used for deployment. This portfolio sandbox preserves the product behavior with local browser state so it can run on GitHub Pages without the original backend.</p></CaseSection></>}
  {id==='chat'&&<><section className="sandboxSection"><ChatSandbox/></section><CaseSection title="Interaction model"><p>The interface follows iMessage conventions: the current user’s messages appear blue and right-aligned, other users’ messages appear gray and left-aligned, and room events are shown as system messages.</p></CaseSection><CaseSection title="Real-time behavior"><div className="factGrid"><Fact title="Messages">Clients receive new messages through Socket.IO.</Fact><Fact title="Presence">Join and leave events are broadcast to the room.</Fact><Fact title="Typing">Typing state is emitted while another user is composing a message.</Fact><Fact title="Tapbacks">Messages support reactions including heart, thumbs-up, laughter, exclamation, and question reactions.</Fact></div></CaseSection></>}
- {id==='estee'&&<><section className="caseVisual"><EsteeVisual/></section><CaseSection title="Brief"><p>The goal was to keep the experience recognizably Estée Lauder while adding promotional elements, explaining why customers should buy Double Wear, and making purchase options easy to reach.</p></CaseSection><CaseSection title="Design approach"><div className="factGrid"><Fact title="Brand consistency">Matched Estée Lauder’s colors, typography, and visual style.</Fact><Fact title="Product education">Used concise benefits, visuals, and interactive elements to make the product easier to understand.</Fact><Fact title="Purchase path">Linked customers to multiple reputable retailers after product exploration.</Fact><Fact title="Customer journey">Structured the experience around discover → learn → explore → buy.</Fact></div></CaseSection></>}
+ {id==='estee'&&<><CaseSection title="Brief"><p>The goal was to keep the experience recognizably Estée Lauder while adding promotional elements, explaining why customers should buy Double Wear, and making purchase options easy to reach.</p></CaseSection><CaseSection title="Design approach"><div className="factGrid"><Fact title="Brand consistency">Matched Estée Lauder’s colors, typography, and visual style.</Fact><Fact title="Product education">Used concise benefits, visuals, and interactive elements to make the product easier to understand.</Fact><Fact title="Purchase path">Linked customers to multiple reputable retailers after product exploration.</Fact><Fact title="Customer journey">Structured the experience around discover → learn → explore → buy.</Fact></div></CaseSection></>}
  </main>
 }
 function CaseSection({title,children}){return <section className="caseSection"><h2>{title}</h2><div>{children}</div></section>}
 function Fact({title,children}){return <div className="fact"><h3>{title}</h3><p>{children}</p></div>}
 
-function TechnicalCard({title,subtitle,kind}){return <article className="techCard"><div className={`techVisual ${kind}`}><div></div></div><h3>{title}</h3><p>{subtitle}</p></article>}
+function TechnicalCard({title,subtitle,kind,description}){
+  return <article className="techCard">
+    <div className={`techVisual ${kind}`}>
+      {kind==='game' && <div className="spartanScene"><img className="spartanBg" src="project-media/spartan-background.png" alt="Spartan Touchdown level artwork"/><div className="spartanGround"></div><img className="spartySprite" src="project-media/sparty.png" alt="Sparty power-up from Spartan Touchdown"/><img className="coinSprite coinOne" src="project-media/coin100.png" alt="100 point coin"/><img className="coinSprite coinTwo" src="project-media/coin100.png" alt=""/><img className="enemySprite" src="project-media/um-enemy.png" alt="Michigan enemy from Spartan Touchdown"/><img className="goalSprite" src="project-media/goalpost.png" alt="Goalpost from Spartan Touchdown"/></div>}
+      {kind==='fluids' && <img src="project-media/stable-fluids.png" alt="2D Stable Fluids simulation with interactive controls"/>}
+      {kind==='ray' && <div className="rayDiagram"><span>camera ray</span><i></i><span>intersection</span><i></i><span>lighting + reflection</span></div>}
+    </div>
+    <h3>{title}</h3>
+    <p className="techMeta">{subtitle}</p>
+    <p className="techDescription">{description}</p>
+  </article>
+}
 
+function CompanyLogo({src,alt}){return <div className="companyLogo"><img src={src} alt={alt}/></div>}
 function Home({openCase}){
  return <>
  <AuraField/>
  <header className="siteHeader"><a className="wordmark" href="#top">Neha Chinimilli</a><nav><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#technical">Technical work</a><a href="resume.pdf" target="_blank" rel="noreferrer">Resume</a></nav></header>
  <main id="top">
-  <section className="hero"><div className="heroInner"><h1>Neha Chinimilli</h1><p>Computer Science + Supply Chain at Michigan State University. Experience across product development, enterprise software, AI adoption, and consulting.</p><div className="heroLinks"><a href="#projects">Projects</a><a href="resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></div></div></section>
-  <section id="projects" className="section"><div className="sectionTitle"><h2>Projects</h2></div>{projects.map((p,i)=><article className={`projectRow ${i%2?'reverse':''}`} key={p.id}><div className="projectMedia"><ProjectVisual type={p.media}/></div><div className="projectCopy"><p className="company">{p.company}</p><h3>{p.title}</h3><p>{p.summary}</p>{metrics[p.id]&&<MetricStrip items={metrics[p.id]}/>}<button onClick={()=>openCase(p.id)}>View case study →</button></div></article>)}</section>
-  <section id="experience" className="section experienceSection"><div className="sectionTitle"><h2>Experience</h2></div><div className="jobs"><article><div><h3>Accenture</h3><p>Technology Summer Analyst</p></div><p>OpenAI go-to-market work across adoption, enablement, and client-facing initiatives.</p><time>2026 · San Francisco</time></article><article><div><h3>Ford Credit</h3><p>Software Engineering Intern</p></div><p>Customer-facing financial products, integrations, release workflows, and production systems.</p><time>2024–2025 · Dearborn</time></article><article><div><h3>Ford Motor Company</h3><p>Software Engineering Intern</p></div><p>Built a web product from an Excel-based workflow with user research, product-owner feedback, and full-stack implementation.</p><time>2023 · Dearborn</time></article></div></section>
-  <section id="technical" className="section technicalSection"><div className="sectionTitle"><h2>More technical work</h2><p>Smaller projects that show implementation depth without turning each one into a product case study.</p></div><div className="techGrid"><TechnicalCard title="CSE 335 Team Game" subtitle="C++ · wxWidgets · Kanban" kind="game"/><TechnicalCard title="2D Stable Fluids" subtitle="C++ · OpenGL · simulation" kind="fluids"/><TechnicalCard title="Ray Tracer" subtitle="C++ · graphics · rendering" kind="ray"/></div></section>
-  <section className="section aboutSection"><div className="sectionTitle"><h2>About</h2></div><div className="aboutGrid"><p>I’m completing a B.S. in Computer Science and B.A. in Supply Chain Management at Michigan State University.</p><div><a href="resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a><a href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer">LinkedIn ↗</a><a href="mailto:chinimi2@msu.edu">chinimi2@msu.edu</a></div></div></section>
+  <section className="hero"><div className="heroInner"><h1>Neha Chinimilli</h1><p>Computer Science + Supply Chain at Michigan State University. Ford Motor Company, Ford Credit, and Accenture.</p><div className="heroLinks"><a href="#projects">Projects</a><a href="resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></div></div></section>
+  <section id="projects" className="section projectsSection"><div className="sectionTitle compactTitle"><h2>Projects</h2><p>Five projects. Click any card for the full build, decisions, and evidence.</p></div><div className="projectCardGrid">{projects.map((p,i)=><ProjectCard project={p} index={i} key={p.id} onOpen={openCase}/>)}</div></section>
+  <section id="experience" className="section experienceSection"><div className="sectionTitle compactTitle"><h2>Experience</h2><p>Role, scope, and what I worked on.</p></div><div className="experienceCards"><Reveal><article className="experienceCard"><CompanyLogo src="company-logos/accenture.svg" alt="Accenture"/><div><div className="experienceMeta"><span>2026 · San Francisco</span></div><h3>Accenture</h3><h4>Technology Summer Analyst</h4><p>Frontier AI lab account work across client adoption, enablement, and go-to-market programs.</p></div></article></Reveal><Reveal><article className="experienceCard"><CompanyLogo src="company-logos/ford-credit.jpg" alt="Ford Credit"/><div><div className="experienceMeta"><span>2024–2025 · Dearborn</span></div><h3>Ford Credit</h3><h4>Software Engineering Intern · 2 summers</h4><p>Customer-facing financial experiences, enterprise integrations, release workflows, and production reliability.</p></div></article></Reveal><Reveal><article className="experienceCard"><CompanyLogo src="company-logos/ford.png" alt="Ford Motor Company"/><div><div className="experienceMeta"><span>2023 · Dearborn</span></div><h3>Ford Motor Company</h3><h4>Software Engineering Intern</h4><p>Customer-value web product from MVP and user feedback through full-stack implementation.</p></div></article></Reveal></div></section>
+  <section id="technical" className="section technicalSection">
+    <div className="sectionTitle compactTitle"><h2>Technical work</h2><p>Game architecture, simulation, and rendering systems.</p></div>
+    <div className="techGrid">
+      <TechnicalCard title="Spartan Touchdown" subtitle="CSE 335 · C++ · wxWidgets · team development" kind="game" description="Built a team side-scrolling football game with XML-defined levels, reusable game objects, collision behavior, visitor-based traversal, automated tests, and a shared Kanban workflow. Level content could be composed and tuned without hard-coding every object into the game loop."/>
+      <TechnicalCard title="2D Stable Fluids" subtitle="CSE 472 · C++ · simulation" kind="fluids" description="Implemented backtraced velocity advection, interpolation, buoyancy, and sparse-matrix velocity diffusion, then exposed controls for density, velocity, grid visibility, stepping, reset, and viscosity so the simulation could be tuned and observed interactively."/>
+      <TechnicalCard title="Ray Tracer" subtitle="CSE 472 · C++ · computer graphics" kind="ray" description="Built a ray-tracing pipeline with camera rays, nearest-object intersections, materials, texture mapping, multiple lights, shadow rays, and reflections. Visual errors had to be traced through the full rendering path rather than patched at the surface."/>
+    </div>
+  </section>
+  <section className="section aboutSection"><div className="sectionTitle"><h2>About</h2></div><div className="aboutGrid"><p>B.S. Computer Science + B.A. Supply Chain Management, Michigan State University.</p><div><a href="resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a><a href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer">LinkedIn ↗</a><a href="mailto:chinimi2@msu.edu">chinimi2@msu.edu</a></div></div></section>
  </main><footer>© 2026 Neha Chinimilli</footer>
  </>
 }
-
 function App(){
  const [caseId,setCaseId]=useState(null);
  if(caseId)return <CaseStudy id={caseId} onBack={()=>{setCaseId(null);window.scrollTo(0,0)}}/>;
