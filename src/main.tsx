@@ -81,7 +81,7 @@ const projects = [
   },
   {
     id:'accenture',
-    title:'Enterprise AI Enablement',
+    title:'AI Enablement Operations',
     company:'Accenture · frontier AI lab account',
     summary:'Structured a manual enablement workflow, translated judgment into automation requirements, synthesized customer evidence, and tested an early prototype.',
     media:'accenture',
@@ -90,7 +90,7 @@ const projects = [
   {
     id:'scheduler',
     title:'Collaborative Scheduling Platform',
-    company:'CSE 477',
+    company:'',
     summary:'Kept When2Meet’s fast grid and heatmap, then extended the workflow with tentative availability, faster entry, recommendations, venues, and event coordination.',
     media:'scheduler',
     facts:['Interactive sandbox','Flask · Socket.IO · MySQL']
@@ -106,7 +106,7 @@ const projects = [
   {
     id:'chat',
     title:'Synchronized Group Chat',
-    company:'CSE 477',
+    company:'',
     summary:'Built a multi-user chat with synchronized messages, presence, typing state, and reactions using an iMessage-style interface.',
     media:'chat',
     facts:['Real-time rooms + presence','Socket.IO']
@@ -189,7 +189,7 @@ function MiniChat(){
 
 function AccentureVisual(){
   return <div className="accentureVisual workflowCanvas" aria-label="Simplified enterprise AI enablement workflow">
-    <div className="workflowTitle"><span>Enterprise AI enablement</span><strong>Turning manual assignment into testable logic</strong></div>
+    <div className="workflowTitle"><span>Trainer assignment</span><strong>Matching worked — the local time did not</strong></div>
     <div className="workflowColumns">
       <div className="workflowNode"><span>Request</span><strong>Customer · region · topic · timing</strong></div>
       <b aria-hidden="true">→</b>
@@ -380,7 +380,7 @@ function Home({openCase}){
  <main id="main-content">
   <section id="top" className="hero"><div className="heroInner"><h1>Neha Chinimilli</h1><p className="heroThesis">Computer Science + Supply Chain Management at Michigan State University</p><div className="heroLinks"><a className="primaryHeroLink" href="#featured">View work ↓</a><a href="resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></div></div></section>
   <section id="featured" className="section projectsSection"><div className="sectionTitle compactTitle"><h2>Selected work</h2></div><div className="flagshipEditorial"><div className="flagshipLead"><ProjectCard project={featured[0]} index={0} featured={true} onOpen={openCase} onAura={setAuraTone}/></div><div className="flagshipPair">{featured.slice(1).map((p,i)=><ProjectCard project={p} index={i+1} key={p.id} featured={true} onOpen={openCase} onAura={setAuraTone}/>)}</div></div></section>
-  <section id="more" className="section moreSection"><div className="sectionTitle compactTitle"><h2>More things I’ve built</h2></div><div className="moreBuildGrid visualGallery">{more.map(p=><MoreProjectCard key={p.id} project={p} onOpen={openCase}/>)}<article className="moreBuildCard static galleryWide"><div className="moreBuildVisual"><div className="techVisual game"><div className="spartanScene"><img loading="lazy" decoding="async" className="spartanBg" src="project-media/spartan-background.png" alt="Spartan Touchdown level artwork"/><div className="spartanGround"></div><img loading="lazy" decoding="async" className="spartySprite" src="project-media/sparty.png" alt="Sparty power-up from Spartan Touchdown"/><img loading="lazy" decoding="async" className="coinSprite coinOne" src="project-media/coin100.png" alt="100 point coin"/><img loading="lazy" decoding="async" className="enemySprite" src="project-media/um-enemy.png" alt="Michigan enemy from Spartan Touchdown"/><img loading="lazy" decoding="async" className="goalSprite" src="project-media/goalpost.png" alt="Goalpost from Spartan Touchdown"/></div></div></div><div className="moreBuildCopy"><span>CSE 335 · C++ · wxWidgets</span><h3>Spartan Touchdown</h3><p>Team-built C++ football game.</p></div></article><article className="moreBuildCard static galleryTall"><div className="moreBuildVisual"><div className="techVisual fluids"><img loading="lazy" decoding="async" src="project-media/stable-fluids.png" alt="2D Stable Fluids simulation"/></div></div><div className="moreBuildCopy"><span>CSE 472 · C++</span><h3>2D Stable Fluids</h3><p>Interactive C++ fluid simulation.</p></div></article><article className="moreBuildCard static"><div className="moreBuildVisual"><div className="techVisual ray"><div className="rayDiagram"><span>camera ray</span><i></i><span>intersection</span><i></i><span>lighting + reflection</span></div></div></div><div className="moreBuildCopy"><span>CSE 472 · C++</span><h3>Ray Tracer</h3><p>C++ renderer with lighting, shadows, textures, and reflections.</p></div></article></div></section>
+  <section id="more" className="section moreSection"><div className="sectionTitle compactTitle"><h2>More things I’ve built</h2></div><div className="moreBuildGrid visualGallery">{more.map(p=><MoreProjectCard key={p.id} project={p} onOpen={openCase}/>)}<article className="moreBuildCard static galleryWide"><div className="moreBuildVisual"><div className="techVisual game"><div className="spartanScene"><img loading="lazy" decoding="async" className="spartanBg" src="project-media/spartan-background.png" alt="Spartan Touchdown level artwork"/><div className="spartanGround"></div><img loading="lazy" decoding="async" className="spartySprite" src="project-media/sparty.png" alt="Sparty power-up from Spartan Touchdown"/><img loading="lazy" decoding="async" className="coinSprite coinOne" src="project-media/coin100.png" alt="100 point coin"/><img loading="lazy" decoding="async" className="enemySprite" src="project-media/um-enemy.png" alt="Michigan enemy from Spartan Touchdown"/><img loading="lazy" decoding="async" className="goalSprite" src="project-media/goalpost.png" alt="Goalpost from Spartan Touchdown"/></div></div></div><div className="moreBuildCopy"><span>C++ · wxWidgets</span><h3>Spartan Touchdown</h3><p>Team-built C++ football game.</p></div></article><article className="moreBuildCard static galleryTall"><div className="moreBuildVisual"><div className="techVisual fluids"><img loading="lazy" decoding="async" src="project-media/stable-fluids.png" alt="2D Stable Fluids simulation"/></div></div><div className="moreBuildCopy"><span>C++</span><h3>2D Stable Fluids</h3><p>Interactive C++ fluid simulation.</p></div></article></div></section>
   <section id="experience" className="section experienceSection"><div className="sectionTitle compactTitle"><h2>Experience</h2></div><div className="experienceTimeline"><Reveal><article className="timelineRow"><CompanyLogo src="company-logos/accenture.svg" alt="Accenture"/><div className="timelineMain"><h3>Accenture</h3><h4>Technology Summer Analyst</h4><p>Frontier AI lab account · enablement workflows, automation requirements, evidence synthesis, and prototyping.</p><button className="inlineCaseLink" onClick={()=>openCase('accenture')}>View case study →</button></div><time>2026</time></article></Reveal><Reveal><article className="timelineRow"><CompanyLogo src="company-logos/ford-credit.jpg" alt="Ford Credit"/><div className="timelineMain"><h3>Ford Credit</h3><h4>Software Engineering Intern · 2 summers</h4><p>Customer financial products · APIs · Salesforce · releases and production systems.</p></div><time>2024–25</time></article></Reveal><Reveal><article className="timelineRow"><CompanyLogo src="company-logos/ford.png" alt="Ford Motor Company"/><div className="timelineMain"><h3>Ford Motor Company</h3><h4>Software Engineering Intern</h4><p>Customer Value Framework · user interviews · full-stack implementation.</p></div><time>2023</time></article></Reveal><Reveal><article className="timelineRow"><CompanyLogo label="SCG" alt="Spectrum Consulting Group"/><div className="timelineMain"><h3>Spectrum Consulting Group</h3><h4>Consultant · Client Acquisition Lead</h4><p>KPI systems · growth strategy · product commercialization.</p></div><time>2022–26</time></article></Reveal></div></section>
  </main><footer className="siteFooter"><span>© 2026 Neha Chinimilli</span><nav aria-label="Footer"><a href="mailto:chinimi2@msu.edu">Email</a><a href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer">LinkedIn ↗</a><a href="resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></nav></footer>
  </>

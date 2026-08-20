@@ -235,3 +235,40 @@ button:focus-visible,a:focus-visible,[role="link"]:focus-visible,input:focus-vis
 @media(max-width:480px){.siteHeader{position:relative;display:block}.siteHeader nav{max-width:100%;margin-top:8px}.hero{min-height:400px}.heroLinks{gap:18px;flex-wrap:wrap}.timelineRow{gap:14px}.timelineRow time{position:static}.moreBuildVisual{height:250px}}
 @media(prefers-contrast:more){:root{--hair:rgba(20,28,24,.32)}.projectCard p,.moreBuildCopy p,.timelineMain p,.caseSection p{color:#28332d}.siteHeader{background:rgba(246,241,231,.97)}.projectFacts span{border-color:rgba(20,28,24,.30)}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.auraField{display:none}.reveal{opacity:1!important;transform:none!important}.moreBuildCard,.projectCard,.editorialCover,img{transition:none!important}}
+
+/* V23 — editorial/product tone correction */
+:root{--v23-radius:12px;--v23-rule:rgba(35,42,39,.14)}
+/* Restrained interface; the aura remains the expressive layer. */
+.projectCard,.moreBuildCard{border-radius:var(--v23-radius)!important;box-shadow:0 8px 28px rgba(35,42,39,.035)!important}
+.projectCardMedia,.moreBuildVisual{border-radius:calc(var(--v23-radius) - 1px)!important;overflow:hidden}
+.projectCardBody{padding:30px!important}
+.projectCardTop span,.moreBuildCopy>span{letter-spacing:0!important;text-transform:none!important;font-weight:500!important}
+.projectCardTop span:empty,.moreBuildCopy>span:empty{display:none}
+.projectFacts{gap:0!important;border-top:1px solid var(--v23-rule);border-bottom:1px solid var(--v23-rule)}
+.projectFacts span{background:none!important;border:0!important;border-radius:0!important;padding:12px 22px 12px 0!important;margin-right:22px!important;color:#46514b!important}
+.projectFacts .factEmphasis{font-weight:700!important;color:#303a35!important}
+.projectCopy h3,.projectCard h3{line-height:1.06!important;letter-spacing:-.03em!important}
+.flagshipLead .projectCard h3{font-size:clamp(38px,4.1vw,56px)!important}
+.flagshipPair .projectCard h3{font-size:clamp(31px,3vw,40px)!important}
+/* Supporting work is an image gallery, not a stack of UI cards. */
+.moreBuildCard{background:transparent!important;border:0!important;box-shadow:none!important}
+.moreBuildVisual{border:1px solid rgba(35,42,39,.08)!important;background:#ebe7df!important}
+.moreBuildCopy{padding:15px 2px 8px!important}
+.moreBuildCopy h3{font-size:27px!important;margin:4px 0 4px!important}
+.moreBuildCopy p{font-size:16px!important;margin-top:4px!important}
+.moreBuildCopy button{border:0!important;border-bottom:1px solid currentColor!important;border-radius:0!important;background:none!important;padding:0 0 2px!important;min-height:32px!important}
+/* Remove the generic infographic feel from Accenture. */
+.accentureEditorial{border-radius:0!important;background:transparent!important;padding:18px 0!important}
+.workflowCanvas{position:relative;background:transparent!important;padding:30px 8px!important;border-top:1px solid var(--v23-rule)!important;border-bottom:1px solid var(--v23-rule)!important}
+.workflowTitle{border:0!important;padding-bottom:8px!important}
+.workflowTitle span{font-size:16px!important}.workflowTitle strong{font-family:Georgia,serif;font-weight:400!important;font-size:clamp(27px,3vw,40px)!important;letter-spacing:-.025em}
+.workflowColumns{opacity:.76;padding:18px 0 12px!important}.workflowNode{background:transparent!important;border-top:1px solid var(--v23-rule);border-radius:0!important;padding:14px 4px!important;min-height:94px!important}.workflowNode span{font-size:14px!important}.workflowNode strong{font-size:16px!important}
+.workflowEvidence{border-top:1px solid var(--v23-rule);margin:8px 0 0!important}.workflowEvidence>div{border:0!important;padding:18px 18px 8px 0!important}.workflowEvidence strong{font-size:clamp(31px,3vw,44px)!important}
+.aiEdgeCase{margin-top:18px!important;border:0!important;border-left:2px solid rgba(164,93,70,.48)!important;border-radius:0!important;background:rgba(238,180,154,.10)!important;padding:18px 20px!important}.aiEdgeCase strong{font-family:Georgia,serif;font-size:clamp(30px,3.4vw,46px)!important;font-weight:400!important;letter-spacing:-.025em}.aiEdgeCase span{text-transform:none!important;letter-spacing:0!important}
+/* Preserve pills only where they communicate actual product state. */
+.previewModes span{border-radius:7px!important}
+/* Less bubbly chrome overall. */
+.comparisonVisual,.finsimpleVisual,.esteeGrid{border-radius:12px!important}.comparisonVisual figure,.finsimpleVisual img,.esteeGrid img{border-radius:7px!important}
+/* Readable, disciplined editorial typography. */
+.sectionTitle h2{font-size:clamp(44px,5vw,64px)!important;line-height:1.02!important}.projectCard p{max-width:60ch}.metric span{font-size:15px!important}.moreBuildCopy>span{font-size:14px!important;color:#59625d!important}
+@media(max-width:760px){.projectCardBody{padding:24px!important}.sectionTitle h2{font-size:40px!important}.moreBuildCopy h3{font-size:25px!important}}
