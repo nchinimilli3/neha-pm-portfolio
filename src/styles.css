@@ -99,3 +99,88 @@ html{scroll-behavior:smooth}
 
 /* V16 — licensed photography covers */
 .photoCover{padding:0!important;background:#d9ddd9!important}.autoPhoto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 52%;z-index:0;transition:transform .8s cubic-bezier(.2,.75,.2,1),filter .8s ease}.projectCard:hover .autoPhoto{transform:scale(1.035);filter:saturate(1.04) contrast(1.02)}.photoShade{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(14,21,19,.05) 18%,rgba(14,21,19,.08) 50%,rgba(14,21,19,.46) 100%)}.creditShade{background:linear-gradient(180deg,rgba(11,20,25,.08),rgba(11,20,25,.12) 52%,rgba(11,20,25,.52) 100%)}.photoCover .editorialLogo,.photoCover .autoCopy,.photoCover .financeOverlay,.photoCredit{z-index:3}.photoCredit{position:absolute;right:16px;top:16px;padding:5px 8px;border-radius:999px;background:rgba(249,247,242,.78);backdrop-filter:blur(8px);font-size:10px;color:#56605b;line-height:1}.photoCover .autoCopy,.photoCover .financeOverlay{background:rgba(249,247,242,.88)}@media(max-width:620px){.photoCredit{display:none}.autoPhoto{object-position:center}}
+
+/* V17 scheduler pointer-drag reliability */
+.interactiveGrid{touch-action:none;user-select:none;-webkit-user-select:none;cursor:crosshair}.interactiveGrid .slot{touch-action:none;-webkit-user-drag:none}.interactiveGrid .slot:active{cursor:grabbing}
+
+/* V18 — full picky/detail pass */
+:root{
+  --page:#f6f1e7;--ink:#232a27;--muted:#5d6661;--hair:rgba(35,42,39,.13);
+  --card:rgba(250,248,243,.82);--radius-lg:28px;--radius-md:20px;--radius-sm:12px;
+  --shadow-sm:0 14px 38px rgba(35,42,39,.055);--shadow-md:0 25px 65px rgba(35,42,39,.10);
+  --ease:cubic-bezier(.2,.78,.2,1)
+}
+body{font-family:"DM Sans",ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
+::selection{background:rgba(167,209,195,.58);color:var(--ink)}
+button,a,[role="link"]{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[role="link"]:focus-visible,input:focus-visible{outline:3px solid rgba(48,108,88,.34);outline-offset:4px;border-radius:8px}
+img{max-width:100%}
+
+/* Navigation: conventional, crisp, Safari-safe */
+.siteHeader{padding-block:16px;background:rgba(246,241,231,.82);-webkit-backdrop-filter:blur(22px) saturate(1.08);backdrop-filter:blur(22px) saturate(1.08)}
+.wordmark{letter-spacing:-.02em}.siteHeader nav{align-items:center}.siteHeader nav>a,.navProjects>a{position:relative;padding:5px 0}.siteHeader nav>a:after,.navProjects>a:after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;background:currentColor;transition:right .28s var(--ease)}.siteHeader nav>a:hover:after,.navProjects>a:hover:after{right:0}
+.navMenu{-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+
+/* Hero: tighter editorial rhythm */
+.hero{min-height:min(650px,78vh)}.heroInner{max-width:1180px}.hero h1{margin-bottom:24px}.hero p{max-width:690px}.heroLinks{margin-top:28px}.heroLinks a{transition:opacity .2s ease}.heroLinks a:hover{opacity:.62}
+.section{padding:86px 0}.sectionTitle{margin-bottom:42px}.compactTitle h2{font-size:clamp(46px,5.2vw,68px)}
+
+/* Cards: one system, no accidental inconsistencies */
+.projectCardGrid{gap:26px}.projectCard{border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);transition:transform .38s var(--ease),box-shadow .38s var(--ease),border-color .38s ease;background:var(--card);-webkit-backdrop-filter:blur(13px);backdrop-filter:blur(13px)}
+.projectCard:hover,.projectCard:focus-visible{transform:translateY(-5px);box-shadow:var(--shadow-md);border-color:rgba(35,42,39,.21)}
+.projectCard:focus-visible{outline-offset:5px}.projectCardMedia{padding:14px 14px 0}.projectCardBody{padding:23px 25px 26px}.projectCardTop{margin-bottom:11px}.projectCard h3{font-size:34px;margin-bottom:11px}.projectCard p{max-width:58ch;margin-bottom:16px}.projectFacts span{padding:6px 9px;background:rgba(255,255,255,.44)}.projectCard button{margin-top:18px;padding-top:12px}.projectCard.featured .projectCardBody{padding:32px}.projectCard.featured h3{font-size:40px}
+.editorialCover{border-radius:18px;min-height:0;aspect-ratio:16/10}.projectCard.featured .editorialCover{aspect-ratio:auto;min-height:390px}.autoCover{min-height:0}.photoCover{min-height:0!important}.autoPhoto{object-position:center 55%}.photoShade{background:linear-gradient(180deg,rgba(14,21,19,.02) 20%,rgba(14,21,19,.08) 57%,rgba(14,21,19,.52) 100%)}.photoCover .autoCopy,.photoCover .financeOverlay{-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 12px 35px rgba(14,21,19,.10)}
+.photoCredit{opacity:.82}.editorialLogo{box-shadow:0 10px 25px rgba(0,0,0,.10)}
+.schedulerEditorial{min-height:0;aspect-ratio:16/9;padding:18px}.projectCard.featured .schedulerEditorial{aspect-ratio:auto;min-height:390px}.schedulerPreview{box-shadow:0 18px 45px rgba(35,42,39,.095)}
+.chatEditorial{aspect-ratio:16/10}.chatEditorial .phoneShell{transform:scale(.75);box-shadow:0 22px 55px rgba(28,36,33,.14)}
+.esteeEditorial{aspect-ratio:16/10}.esteeEditorial>img{height:100%}.esteeStack img{height:100%}
+
+/* Aura: slower, softer, more atmospheric than screensaver-like */
+.auraField{transition:transform 1.4s var(--ease),filter 1.25s ease;transform:translate(var(--mx,0),var(--my,0));filter:saturate(.94)}
+.auraBloom{opacity:.27;filter:blur(64px);animation-timing-function:cubic-bezier(.45,.05,.55,.95)!important;will-change:transform}
+.bloom1{animation-duration:34s}.bloom2{animation-duration:39s}.bloom3{animation-duration:46s}.bloom4{animation-duration:37s}.bloom5{animation-duration:43s}.bloom6{animation-duration:52s}.bloom7{animation-duration:48s}
+@keyframes auraPulse{0%,100%{opacity:.23}50%{opacity:.33}}
+.bloom2,.bloom5{animation-name:auraDrift2,auraPulse;animation-duration:39s,9s}.bloom3,.bloom6{animation-name:auraDrift3,auraPulse;animation-duration:46s,12s}
+.projectsSection,.experienceSection,.technicalSection{position:relative}
+.projectsSection:before,.experienceSection:before,.technicalSection:before{content:"";position:absolute;inset:7% -4% 7%;z-index:-1;background:rgba(246,241,231,.12);pointer-events:none}
+
+/* Experience: aligned logos + predictable density */
+.experienceCards{gap:20px}.experienceCard{border-radius:22px;padding:25px;gap:20px}.experienceCard:hover{transform:translateY(-3px)}.companyLogo,.experienceCard .companyLogo,.featuredExperience .companyLogo{display:grid;place-items:center;background:rgba(255,255,255,.78);border-radius:14px;padding:12px;overflow:hidden}.experienceCard .companyLogo{width:96px;height:72px}.featuredExperience .companyLogo{width:112px;height:84px}.companyLogo img{width:100%;height:100%;object-fit:contain}.experienceCard p{max-width:68ch}.experienceEvidence span{background:rgba(255,255,255,.45)}
+
+/* Technical work: output first, copy second */
+.techGrid{gap:28px}.techCard{transition:transform .32s var(--ease)}.techCard:hover{transform:translateY(-4px)}.techVisual{border-radius:18px;box-shadow:0 12px 36px rgba(35,42,39,.05)}.techCard h3{font-size:27px;margin-top:16px}.techDescription{max-width:38ch!important}.rayDiagram{width:90%}
+
+/* Case studies: consistent reading width and visual rhythm */
+.casePage{padding-top:28px}.backBtn{margin-bottom:48px}.caseHeader{max-width:980px}.caseHeader h1{margin-bottom:24px}.caseIntro{max-width:760px}.ownershipLine{max-width:850px;margin-top:24px}.caseHeroMedia{padding:0;margin-top:46px;margin-bottom:62px}.caseHeroMedia .comparisonVisual,.caseHeroMedia .finsimpleVisual,.caseHeroMedia .miniScheduler,.caseHeroMedia .esteeGrid{border-radius:22px}.caseSection{grid-template-columns:230px minmax(0,1fr);gap:48px;padding:46px 0}.caseSection h2{font-size:34px;line-height:1.08}.caseSection>div{max-width:850px}.caseSection>div>p{max-width:68ch;line-height:1.64}.factGrid{gap:22px}.fact p{max-width:46ch}.progression{gap:14px}.progression img{height:auto;aspect-ratio:1.45}.researchDecision>div,.journeyFlow>div{background:rgba(255,255,255,.58)}
+.finalArtifact{gap:32px}.finalArtifact img{max-height:500px}.finalArtifact p{max-width:38ch}
+
+/* Scheduler sandbox: product-like controls, reliable drag, mobile-safe */
+.schedulerSandbox{border-radius:22px;padding:20px}.schedulerSandbox button{transition:background .16s ease,border-color .16s ease,transform .12s ease,box-shadow .16s ease}.schedulerSandbox button:hover{border-color:rgba(35,42,39,.28)}.schedulerSandbox button:active{transform:translateY(1px)}
+.interactiveGrid{cursor:cell}.is-grid-dragging,.is-grid-dragging *{cursor:grabbing!important;user-select:none!important;-webkit-user-select:none!important}.interactiveGrid .slot{transition:background .11s ease,border-color .11s ease,box-shadow .11s ease}.interactiveGrid .slot:hover{box-shadow:inset 0 0 0 2px rgba(41,101,80,.18)}.slot.hasNote{position:relative}.slot.hasNote:after{content:"";position:absolute;right:4px;top:4px;width:5px;height:5px;border-radius:50%;background:#465e55}.gridHint{max-width:66ch}.quickRow,.schedulerActionRow{gap:7px}.quickRow button,.schedulerActionRow button{white-space:nowrap}.shareBox code{overflow-wrap:anywhere}.fullCalendar{min-width:0;overflow-x:auto;padding-bottom:4px}.fullCalendar .calendarHead,.fullCalendar .calendarGrid{min-width:610px}.schedulerAside{min-width:0}.venueAdd input,.inlineComposer input{min-width:0}.bestMeet p{max-width:64ch}
+
+/* Chat details */
+.chatBubble{cursor:default}.typingBubble i{animation-duration:1.15s}.chatEntry input,.composer input{font-size:16px}.phoneShell{box-shadow:0 18px 52px rgba(28,36,33,.10)}
+
+/* Footer replaces redundant About section */
+.siteFooter{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:30px clamp(22px,5vw,72px)}.siteFooter nav{display:flex;gap:20px}.siteFooter a{text-decoration:none;color:#4f5853}.siteFooter a:hover{text-decoration:underline;text-underline-offset:4px}
+
+/* Image loading + compositing polish */
+.projectCardMedia img,.casePage img,.techVisual img{transform:translateZ(0);backface-visibility:hidden}.autoPhoto{background:#d9ddd9}
+
+/* 13-inch laptop and tablet QA */
+@media(max-width:1280px){.siteHeader{padding-inline:32px}.siteHeader nav{gap:18px}.section{width:min(1160px,calc(100% - 40px))}.projectCard h3{font-size:32px}.projectCard.featured h3{font-size:38px}.projectCard.featured{grid-template-columns:minmax(0,1.32fr) minmax(300px,.68fr)}.casePage{width:min(1100px,calc(100% - 40px))}}
+@media(max-width:1000px){.projectCardGrid{grid-template-columns:1fr}.projectCardReveal.featured{grid-column:auto}.projectCard.featured{grid-template-columns:1fr}.projectCard.featured .editorialCover{min-height:360px}.experienceCards{grid-template-columns:1fr}.experienceFeatured{grid-column:auto}.caseSection{grid-template-columns:1fr;gap:18px}.caseSection h2{font-size:32px}.journeyFlow,.researchDecision{grid-template-columns:1fr}.journeyFlow>b,.researchDecision>b{transform:rotate(90deg);justify-self:center}.sandboxAnnotations{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){
+  .siteHeader{position:sticky;top:0;padding:12px 18px;gap:14px}.wordmark{font-size:16px}.siteHeader nav{display:flex;gap:14px;overflow-x:auto;max-width:70vw;justify-content:flex-start;scrollbar-width:none}.siteHeader nav::-webkit-scrollbar{display:none}.siteHeader .navProjects{display:none}.siteHeader nav a{font-size:14px;flex:0 0 auto}
+  .hero{min-height:430px}.heroInner{width:calc(100% - 36px)}.hero h1{font-size:clamp(50px,15vw,68px);margin-bottom:18px}.hero p{font-size:19px}.heroLinks{margin-top:24px}
+  .section{width:calc(100% - 36px);padding:64px 0}.sectionTitle{margin-bottom:30px}.compactTitle h2{font-size:44px}
+  .projectCardMedia{padding:9px 9px 0}.projectCardBody,.projectCard.featured .projectCardBody{padding:20px}.projectCard h3,.projectCard.featured h3{font-size:30px}.projectCard p{font-size:16px}.projectFacts span{font-size:12px}.editorialCover,.projectCard.featured .editorialCover{aspect-ratio:4/3;min-height:0}.schedulerEditorial{padding:9px}.schedulerPreview{padding:13px}.chatEditorial .phoneShell{transform:scale(.69)}
+  .autoCopy,.financeOverlay{left:12px!important;right:auto!important;bottom:12px!important;max-width:calc(100% - 24px)}.photoCover .autoCopy,.photoCover .financeOverlay{padding:8px 10px}.editorialLogo{left:12px;top:12px;width:54px!important;height:54px!important}.photoCredit{display:none}
+  .experienceCard,.featuredExperience{grid-template-columns:1fr}.featuredExperience .companyLogo{width:96px;height:72px}.experienceEvidence{gap:7px}
+  .techGrid{grid-template-columns:1fr}.techDescription{max-width:none!important}
+  .casePage{width:calc(100% - 32px);padding-top:20px}.backBtn{margin-bottom:36px}.caseHeader h1{font-size:52px}.caseIntro{font-size:19px}.ownershipLine{font-size:15px}.caseHeroMedia{margin-top:34px;margin-bottom:44px}.caseSection{padding:36px 0}.caseSection h2{font-size:29px}.factGrid{grid-template-columns:1fr}.progression{grid-template-columns:1fr}.finalArtifact{grid-template-columns:1fr}.schedulerBody{grid-template-columns:1fr!important}.sandboxAnnotations{grid-template-columns:1fr}.eventHero,.viewRow,.bestMeet{align-items:flex-start;flex-direction:column}.quickRow,.schedulerActionRow{overflow-x:auto;flex-wrap:nowrap;padding-bottom:5px}.quickRow::-webkit-scrollbar,.schedulerActionRow::-webkit-scrollbar{height:0}.schedulerAside{display:grid;grid-template-columns:1fr}.siteFooter{align-items:flex-start;flex-direction:column}.siteFooter nav{flex-wrap:wrap}
+}
+@media(max-width:430px){.siteHeader nav{max-width:66vw}.siteHeader nav a:nth-of-type(2){display:none}.projectCard{border-radius:22px}.projectCard h3,.projectCard.featured h3{font-size:28px}.previewBar div span,.previewLegend{display:none}.previewCalendarHead,.previewCalendar{grid-template-columns:42px repeat(5,1fr);gap:3px}.previewCalendar i{height:28px}.experienceEvidence span{width:100%;justify-content:space-between}.caseHeader h1{font-size:46px}.schedulerSandbox{padding:13px}.eventHero h2{font-size:30px}.siteFooter{font-size:14px}}
+
+/* Motion safety */
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.auraBloom{animation:none!important}.auraField{transform:none!important}.projectCard:hover,.projectCard:focus-visible,.techCard:hover,.experienceCard:hover{transform:none}.autoPhoto,.schedulerPreview,.projectCardMedia .editorialCover{transition:none!important}.interactiveGrid .slot{transition:none}}
