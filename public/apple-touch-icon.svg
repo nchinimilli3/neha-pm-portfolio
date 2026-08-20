@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="16" fill="#f4efe5"/>
-  <circle cx="18" cy="18" r="12" fill="#f29d82" opacity=".92"/>
-  <circle cx="45" cy="20" r="14" fill="#9fd8c6" opacity=".88"/>
-  <circle cx="34" cy="45" r="15" fill="#c7b8e8" opacity=".88"/>
-  <path d="M18 45V19h6l16 17V19h6v26h-6L24 28v17z" fill="#202522"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
+  <defs><radialGradient id="g" cx="20%" cy="15%" r="90%"><stop offset="0" stop-color="#ffb19a"/><stop offset=".5" stop-color="#d5c4ef"/><stop offset="1" stop-color="#a9dfce"/></radialGradient></defs>
+  <rect width="180" height="180" rx="44" fill="#f4efe5"/>
+  <path d="M10 92C26 39 63 23 96 41c27 15 31 40 74 30v73c-34 18-68 14-96-4-28-19-44-31-64-19Z" fill="url(#g)" opacity=".94"/>
+  <path d="M47 130V50h19l49 52V50h18v80h-18L65 78v52Z" fill="#202522"/>
+  <circle cx="139" cy="38" r="12" fill="#f28f72" opacity=".9"/>
 </svg>
