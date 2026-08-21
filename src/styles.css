@@ -538,3 +538,136 @@ small,.freshness,.liveSources,.morningTimeline span,.iosTabBar small{font-size:m
 .toolLogoSection{max-width:1180px;margin:10px auto 54px;padding:0 32px}.toolLogoSection h2{font-size:14px;font-weight:600;letter-spacing:.01em;margin:0 0 16px;color:var(--ink)}.toolLogoRow{display:flex;align-items:center;gap:22px;flex-wrap:wrap}.toolLogoWrap{position:relative;display:grid;place-items:center;width:28px;height:28px}.toolLogoWrap img{display:block;max-width:24px;max-height:24px;width:auto;height:auto;object-fit:contain;opacity:.82;transition:opacity .18s ease,transform .18s ease}.toolLogoWrap:hover img,.toolLogoWrap:focus-within img{opacity:1;transform:translateY(-1px)}.toolLogoWrap:after{content:attr(data-tool);position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%) translateY(3px);background:#171716;color:#fff;font-size:11px;line-height:1;padding:6px 8px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:.15s ease}.toolLogoWrap:hover:after{opacity:1;transform:translateX(-50%) translateY(0)}
 .casePage .caseSection{max-width:1180px}.casePage .caseSectionBody{max-width:880px}.casePage .factGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.casePage .researchDecision,.casePage .journeyFlow,.casePage .architecture{max-width:none}.casePage .caseHeader{max-width:1180px}.casePage .caseIntro{max-width:760px}.casePage .ownershipLine{max-width:920px}.casePage .caseHeroMedia{max-width:1180px}.casePage .metricStrip{max-width:1050px}
 @media(max-width:760px){.toolLogoSection{padding:0 20px;margin-bottom:36px}.toolLogoRow{gap:18px}.casePage .factGrid{grid-template-columns:1fr}}
+
+/* =========================
+   V33 — cohesive interaction + case-study system
+   ========================= */
+
+/* One visual language: seamless surfaces, consistent media, soft aura interaction. */
+.projectCard,.moreBuildCard,.smallBuild{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:18px!important;overflow:visible!important}
+.projectCardAction,.moreBuildAction{border-radius:18px!important;overflow:visible!important}
+.projectCardMedia,.moreBuildVisual{position:relative!important;aspect-ratio:16/10!important;min-height:0!important;height:auto!important;padding:0!important;border-radius:16px!important;overflow:hidden!important;background:#e8e5df!important;isolation:isolate}
+.projectCardMedia>* ,.moreBuildVisual>*{width:100%!important;height:100%!important;min-height:0!important;border-radius:inherit!important;overflow:hidden!important}
+.projectCardMedia img,.moreBuildVisual img,.homepageMockup img,.accenturePhotoCover>img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important;border-radius:inherit!important;display:block}
+.homepageMockup,.editorialCover,.accenturePhotoCover{margin:0!important;width:100%!important;height:100%!important;border-radius:inherit!important;overflow:hidden!important}
+.projectCardBody,.moreBuildCopy{padding:20px 4px 8px!important;background:transparent!important}
+.projectCardTop span,.moreBuildCopy>span:first-child{font-size:14px!important;line-height:1.35!important;color:#636b66!important}
+.projectCard h3,.moreBuildCard h3{margin-top:7px!important}
+.projectCardBody>p{max-width:48ch!important}
+.projectTextLink:after{display:none!important;content:none!important;width:0!important}
+.projectTextLink{display:inline-block!important;border:0!important;text-decoration:none!important}
+.moreBuildVisual>*{transform:none!important;transition:none!important}
+.moreBuildCard.clickable:hover .moreBuildVisual>*{transform:none!important}
+.moreBuildCard.clickable:hover{background:transparent!important}
+
+/* Soft aura edge glow, project-specific and never a hard neon outline. */
+.projectCard,.moreBuildCard{--card-glow:rgba(156,124,243,.18);transition:box-shadow .32s ease,filter .32s ease!important}
+.project-fcvf,.project-finsimple{--card-glow:rgba(95,142,218,.24)}
+.project-accenture{--card-glow:rgba(145,92,217,.24)}
+.project-scheduler{--card-glow:rgba(72,164,154,.20)}
+.project-commute{--card-glow:rgba(232,105,154,.19)}
+.project-estee{--card-glow:rgba(196,136,103,.18)}
+.project-chat{--card-glow:rgba(87,130,216,.20)}
+@media (hover:hover) and (pointer:fine){
+ .projectCard:hover,.moreBuildCard.clickable:hover{box-shadow:0 0 0 1px color-mix(in srgb,var(--card-glow) 70%,transparent),0 0 26px var(--card-glow)!important;filter:saturate(1.015)}
+ .projectCard:focus-within,.moreBuildCard:focus-within{box-shadow:0 0 0 2px color-mix(in srgb,var(--card-glow) 78%,#8e83b8 22%),0 0 24px var(--card-glow)!important}
+}
+
+/* Skeleton loading shape: final geometry exists before the image resolves. */
+.projectCardMedia:before,.moreBuildVisual:before,.caseImageButton:before,.photoTile:before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(100deg,#e6e3dd 18%,#f2efe9 34%,#e6e3dd 52%);background-size:220% 100%;animation:v33Skeleton 1.45s ease-in-out infinite}
+.projectCardMedia>* ,.moreBuildVisual>* ,.caseImageButton img,.photoTile img{position:relative;z-index:1}
+@keyframes v33Skeleton{0%{background-position:180% 0}100%{background-position:-45% 0}}
+
+/* Credits are invisible during normal viewing and only whisper on hover. */
+.creditImage{position:relative}.creditImage figcaption,.photoLaptop figcaption,.usagePhoto figcaption,.commutePreviewPhoto figcaption{position:absolute!important;right:8px!important;bottom:7px!important;z-index:8!important;margin:0!important;padding:3px 5px!important;border-radius:5px!important;background:rgba(20,21,20,.66)!important;color:rgba(255,255,255,.92)!important;font-size:9px!important;line-height:1.2!important;letter-spacing:.01em!important;opacity:0!important;pointer-events:none!important;transition:opacity .18s ease!important}
+@media (hover:hover) and (pointer:fine){.creditImage:hover figcaption,.photoLaptop:hover figcaption,.usagePhoto:hover figcaption,.commutePreviewPhoto:hover figcaption{opacity:.82!important}}
+
+/* Aura is deliberately visible in motion, still soft and organic. */
+.auraField{opacity:.64!important}
+.auraBloom{animation:v33AuraDrift 10s cubic-bezier(.45,.05,.4,.95) infinite alternate,v33AuraPulse 6.8s ease-in-out infinite!important;will-change:transform,opacity}
+.bloom1{animation-duration:10s,7s!important}.bloom2{animation-duration:12s,8s!important;animation-delay:-3s,-2s!important}.bloom3{animation-duration:14s,9s!important;animation-delay:-6s,-4s!important}.bloom4{animation-duration:11s,7.5s!important;animation-delay:-8s,-1s!important}.bloom5{animation-duration:15s,10s!important;animation-delay:-5s,-6s!important}.bloom6{animation-duration:13s,8.5s!important;animation-delay:-9s,-4s!important}.bloom7{animation-duration:17s,11s!important;animation-delay:-12s,-7s!important}
+@keyframes v33AuraDrift{0%{transform:translate3d(-44px,-26px,0) scale(.94)}45%{transform:translate3d(48px,34px,0) scale(1.07)}100%{transform:translate3d(-8px,78px,0) scale(.99)}}
+@keyframes v33AuraPulse{0%,100%{opacity:.46;filter:blur(34px)}50%{opacity:.76;filter:blur(45px)}}
+.tone-fcvf .bloom1,.tone-fcvf .bloom4,.tone-finsimple .bloom1,.tone-finsimple .bloom4{background:rgba(64,127,209,.55)!important}.tone-fcvf .bloom2,.tone-fcvf .bloom6,.tone-finsimple .bloom2,.tone-finsimple .bloom6{background:rgba(132,121,214,.48)!important}.tone-fcvf .bloom3,.tone-fcvf .bloom7,.tone-finsimple .bloom3,.tone-finsimple .bloom7{background:rgba(102,178,224,.42)!important}
+.tone-accenture .bloom1,.tone-accenture .bloom4{background:rgba(157,103,220,.51)!important}.tone-accenture .bloom2,.tone-accenture .bloom6{background:rgba(203,158,229,.45)!important}.tone-accenture .bloom3,.tone-accenture .bloom7{background:rgba(125,107,207,.38)!important}
+.tone-estee .bloom1,.tone-estee .bloom4{background:rgba(210,159,130,.43)!important}.tone-estee .bloom2,.tone-estee .bloom6{background:rgba(231,177,191,.42)!important}
+.tone-photography .bloom1,.tone-photography .bloom4{background:rgba(91,153,174,.36)!important}.tone-photography .bloom2,.tone-photography .bloom6{background:rgba(227,141,107,.34)!important}.tone-photography .bloom3{background:rgba(168,183,119,.30)!important}
+
+/* Experience type should never read as fine print. */
+.v28Experience .experienceSummary{grid-template-columns:64px minmax(0,1fr) auto 34px!important;gap:20px!important;padding:24px 0!important}
+.v28Experience .experienceSummary h3{font-size:23px!important}
+.experienceRole{font-size:17px!important;line-height:1.35!important;font-weight:590!important;display:block!important;margin:1px 0 0!important;color:#39423d!important}
+.experienceLocation{font-size:15px!important;line-height:1.35!important;display:block!important;margin-top:2px!important}
+.v28Experience .experienceSummary p{font-size:15px!important;line-height:1.45!important;margin-top:8px!important}
+.v28Experience .experienceSummary time{font-size:15px!important;line-height:1.3!important;white-space:nowrap!important;max-width:none!important;color:#5d655f!important}
+
+/* About: show the portrait, do not crop it. Size it to the actual copy block rather than a giant panel. */
+.aboutSection{grid-template-columns:minmax(240px,330px) minmax(360px,1fr)!important;gap:clamp(44px,8vw,110px)!important;align-items:start!important}
+.aboutPhoto{width:100%!important;max-width:330px!important;align-self:start!important}
+.aboutPhoto img{width:100%!important;height:auto!important;max-height:440px!important;aspect-ratio:auto!important;object-fit:contain!important;object-position:center top!important;border-radius:20px!important;display:block!important}
+.aboutCopy{padding-top:2px!important}.aboutCopy h2{font-size:42px!important}.aboutCopy p{font-size:18px!important;line-height:1.58!important}.outsideWork{margin-top:28px!important}.outsideWork summary{font-size:17px!important}.outsideWork p{font-size:16px!important}.photoCta{display:inline-block;margin-left:5px;text-decoration:none;font-weight:620;color:#6550a5;border-bottom:1px solid rgba(101,80,165,.32)}
+
+/* Case-study canvas: full-page aura with no visible wrapper seam. */
+.casePage{position:relative!important;width:100%!important;max-width:none!important;margin:0!important;padding:34px max(26px,calc((100vw - 1280px)/2)) 100px!important;overflow:visible!important;isolation:isolate;background:transparent!important}
+.casePage>.auraField{position:fixed!important;inset:-12vh -8vw!important;z-index:0!important;opacity:.42!important;pointer-events:none!important;filter:none!important}
+.casePage>*:not(.auraField){position:relative;z-index:2}
+.casePage .backBtn{margin-left:auto!important;margin-right:auto!important;display:block!important;width:min(1180px,100%)!important;text-align:left!important;border:0!important;text-decoration:none!important}
+.caseHeader,.caseHeroMedia,.toolLogoSection,.caseSection,.productDelta,.sandboxSection{width:min(1180px,100%)!important;margin-left:auto!important;margin-right:auto!important}
+.caseHeader{padding:0!important;margin-top:42px!important;margin-bottom:34px!important}
+.caseCompanyBar{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:0 0 22px;margin-bottom:18px;border-bottom:1px solid rgba(29,34,31,.10)}
+.caseCompanyBar span{font-size:clamp(21px,2.1vw,29px);font-weight:590;letter-spacing:-.025em;color:#323a35}
+.caseCompanyBar img{max-width:118px;max-height:44px;width:auto;height:auto;object-fit:contain}
+.caseHeader>p{display:none!important}.caseHeader h1{font-size:clamp(54px,7vw,88px)!important}
+.caseIntro{font-size:21px!important;max-width:830px!important}.ownershipLine span{font-size:17px!important}
+.caseHeader .metricStrip{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(165px,1fr))!important;gap:12px!important;align-items:stretch!important}
+.caseHeader .metric{display:flex!important;flex-direction:column!important;justify-content:space-between!important;min-height:118px!important;padding:18px!important;margin:0!important;border-radius:15px!important;background:rgba(255,255,255,.42)!important}
+.caseHeader .metric strong{font-size:31px!important}.caseHeader .metric span{font-size:14px!important;line-height:1.35!important;margin-top:18px!important}
+.caseHeroMedia{border-radius:19px!important;overflow:hidden!important}.caseHeroMedia>*{max-width:100%}
+
+/* Predictable editorial direction: never alternate the reader's eye left/right. */
+.caseSection,.caseSection:nth-of-type(even){display:grid!important;grid-template-columns:minmax(190px,245px) minmax(0,1fr)!important;gap:clamp(34px,5vw,68px)!important;padding:56px 0!important;align-items:start!important}
+.caseSection:nth-of-type(even)>h2,.caseSection:nth-of-type(even)>.caseSectionBody{grid-column:auto!important;grid-row:auto!important}
+.caseSection h2{font-size:clamp(28px,3vw,39px)!important;line-height:1.12!important}
+.caseSectionBody{max-width:890px!important;min-width:0}.caseSectionBody>p{font-size:18px!important;line-height:1.6!important;max-width:820px!important}
+
+/* Image expansion is explicit and consistent. */
+.expandableImage{position:relative;display:block;width:100%;padding:0;border:0;background:#e8e5df;border-radius:15px;overflow:hidden;cursor:zoom-in;text-align:left;color:inherit;isolation:isolate}
+.expandableImage img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;border-radius:inherit}
+.expandableImage>span{position:absolute;left:10px;bottom:10px;z-index:3;padding:5px 7px;border-radius:7px;background:rgba(22,24,22,.72);color:#fff;font-size:11px;line-height:1.2}
+.expandableImage>i{position:absolute;right:10px;top:10px;z-index:3;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:rgba(250,249,245,.88);font-style:normal;font-size:13px}
+.expandableImage:focus-visible{outline:2px solid #7565ad;outline-offset:3px}
+.imageLightbox{position:fixed!important;inset:0!important;z-index:1000!important;display:grid!important;place-items:center!important;padding:clamp(18px,4vw,56px)!important;background:rgba(18,19,18,.88)!important;backdrop-filter:blur(10px)!important;cursor:zoom-out!important}
+.imageLightbox>img{max-width:min(1500px,94vw)!important;max-height:88vh!important;width:auto!important;height:auto!important;object-fit:contain!important;border-radius:12px!important;box-shadow:0 26px 90px rgba(0,0,0,.35)!important;cursor:default!important}
+.lightboxClose{position:fixed!important;top:20px!important;right:24px!important;z-index:1001!important;width:44px!important;height:44px!important;border:0!important;border-radius:50%!important;background:rgba(255,255,255,.92)!important;color:#1c1e1d!important;font-size:28px!important;line-height:1!important;cursor:pointer!important}
+
+/* FCVF now tells the actual progression: Excel -> lean MVP -> designed one-page -> multi-page. */
+.fcvfProblemGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:26px}.fcvfProblemGrid>div{padding:18px;border-top:1px solid rgba(28,34,31,.13)}.fcvfProblemGrid strong{display:block;font-size:17px}.fcvfProblemGrid span{display:block;margin-top:7px;font-size:15px;line-height:1.45;color:#5b645e}
+.biasCallout{margin-top:24px;padding:24px 26px;border-radius:17px;background:linear-gradient(135deg,rgba(92,150,215,.11),rgba(138,121,210,.11));border:1px solid rgba(89,123,187,.13)}.biasCallout>span{font-size:12px;font-weight:700;letter-spacing:.035em;text-transform:uppercase;color:#5c62a7}.biasCallout h3{font-size:24px;margin:7px 0 8px}.biasCallout p{margin:0;font-size:16px;line-height:1.56;color:#4f5852;max-width:760px}
+.iterationTimeline{display:grid;gap:34px}.iterationTimeline article{display:grid;grid-template-columns:minmax(280px,.92fr) minmax(300px,1.08fr);gap:26px;align-items:start}.iterationTimeline article+article{padding-top:34px;border-top:1px solid rgba(28,34,31,.09)}.iterationTimeline article>div{padding-top:3px}.iterationTimeline article>div strong{display:block;font-size:13px;text-transform:uppercase;letter-spacing:.035em;color:#626b66;margin-top:13px}.iterationTimeline article>div strong:first-child{margin-top:0}.iterationTimeline article>div p{font-size:16px;line-height:1.5;margin:4px 0 0;color:#424a45}
+.fcvfEvidencePair{display:grid;grid-template-columns:1.25fr .75fr;gap:14px;margin-bottom:20px}.fcvfEvidencePair .expandableImage img{aspect-ratio:1.7}.fcvfEvidencePair .expandableImage:nth-child(2) img{object-fit:contain;background:#fff}
+.progression{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:13px!important}.progression .expandableImage img{aspect-ratio:1.25!important}
+.finalArtifact .expandableImage{max-width:900px}.finalArtifact .expandableImage img{aspect-ratio:1.65}
+
+/* Photography page: deliberately simpler than the PM work. */
+.photoPage{position:relative;min-height:100vh;padding:28px clamp(20px,5vw,72px) 88px;isolation:isolate;overflow:hidden;background:#f6f1e7}.photoPage>.auraField{position:fixed;inset:0;z-index:0;opacity:.28!important}.photoPage>*:not(.auraField){position:relative;z-index:2}.photoPageHeader{display:flex;justify-content:space-between;align-items:center;max-width:1320px;margin:auto}.photoPageHeader button{border:0;background:transparent;padding:8px 0;cursor:pointer;font-size:15px}.photoPageHeader span{font-size:14px;color:#66706a}.photoIntro{max-width:1320px;margin:80px auto 48px}.photoIntro>p{font-size:14px;margin:0 0 10px;color:#656d68}.photoIntro h1{font-size:clamp(54px,8vw,108px);font-weight:420;letter-spacing:-.055em;line-height:.95;margin:0;max-width:900px}.photoIntro>span{display:block;margin-top:22px;font-size:18px;color:#555e58}.photoGrid{max-width:1320px;margin:auto;display:grid;grid-template-columns:repeat(12,1fr);gap:16px;align-items:start}.photoTile{position:relative;border:0;padding:0;background:#e7e3dc;border-radius:16px;overflow:hidden;cursor:zoom-in;min-height:280px}.photoTile img{display:block;width:100%;height:100%;object-fit:cover}.photoTile>span{position:absolute;left:11px;bottom:10px;z-index:3;padding:4px 7px;border-radius:6px;background:rgba(19,21,20,.62);color:#fff;font-size:10px;opacity:0;transition:opacity .18s ease}.photoTile-1{grid-column:span 5;aspect-ratio:2/3}.photoTile-2{grid-column:span 4;aspect-ratio:2/3;margin-top:90px}.photoTile-3{grid-column:span 3;aspect-ratio:2/3;margin-top:28px}.photoTile-4{grid-column:2/span 4;aspect-ratio:2/3;margin-top:-26px}.photoTile-5{grid-column:7/span 5;aspect-ratio:3/4;margin-top:42px}@media(hover:hover) and (pointer:fine){.photoTile:hover>span{opacity:.9}.photoTile:hover{box-shadow:0 0 0 1px rgba(105,148,150,.16),0 0 28px rgba(105,148,150,.12)}}.photoPlaces{max-width:1120px;margin:94px auto 0;padding-top:24px;border-top:1px solid rgba(30,35,32,.12);display:grid;grid-template-columns:1fr 1fr;gap:40px}.photoPlaces span{font-size:13px;color:#67706a}.photoPlaces strong{display:block;font-size:21px;margin-top:6px}.photoPlaces p{margin:0;font-size:16px;color:#5b645e}
+
+@media(max-width:800px){
+ .projectCardMedia,.moreBuildVisual{aspect-ratio:16/10!important}
+ .v28Experience .experienceSummary{grid-template-columns:54px minmax(0,1fr) 28px!important}.v28Experience .experienceSummary time{grid-column:2!important;grid-row:2!important;display:block!important;justify-self:start!important;margin-top:6px!important}.experienceRole{font-size:16px!important}.experienceLocation{font-size:14px!important}
+ .aboutSection{grid-template-columns:1fr!important;gap:28px!important}.aboutPhoto{max-width:280px!important}.aboutPhoto img{max-height:none!important}.aboutCopy h2{font-size:36px!important}
+ .casePage{padding:26px 20px 72px!important}.casePage .backBtn{width:100%!important}.caseHeader{margin-top:30px!important}.caseCompanyBar img{max-width:92px;max-height:36px}.caseCompanyBar span{font-size:20px}.caseHeader .metricStrip{grid-template-columns:repeat(2,minmax(0,1fr))!important}.caseHeader .metric{min-height:104px!important}
+ .caseSection,.caseSection:nth-of-type(even){grid-template-columns:1fr!important;gap:16px!important;padding:42px 0!important}.caseSection:nth-of-type(even)>h2,.caseSection:nth-of-type(even)>.caseSectionBody{grid-column:1!important;grid-row:auto!important}
+ .fcvfProblemGrid{grid-template-columns:1fr!important}.iterationTimeline article{grid-template-columns:1fr!important}.fcvfEvidencePair{grid-template-columns:1fr!important}.progression{grid-template-columns:1fr!important}.progression .expandableImage img{aspect-ratio:16/10!important}
+ .photoIntro{margin-top:56px}.photoGrid{grid-template-columns:1fr 1fr;gap:12px}.photoTile,.photoTile-1,.photoTile-2,.photoTile-3,.photoTile-4,.photoTile-5{grid-column:auto!important;aspect-ratio:3/4!important;margin-top:0!important;min-height:0}.photoTile-1{grid-column:1/-1!important;aspect-ratio:4/5!important}.photoPlaces{grid-template-columns:1fr;gap:18px;margin-top:62px}
+}
+@media(max-width:520px){.caseHeader .metricStrip{grid-template-columns:1fr 1fr!important}.photoGrid{grid-template-columns:1fr}.photoTile,.photoTile-1{grid-column:1!important;aspect-ratio:4/5!important}}
+@media(prefers-reduced-motion:reduce){.auraBloom,.projectCardMedia:before,.moreBuildVisual:before,.caseImageButton:before,.photoTile:before{animation:none!important}.projectCard,.moreBuildCard{transition:none!important}}
+.smallBuildGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+@media(max-width:800px){.smallBuildGrid{grid-template-columns:1fr!important}}
+/* V33 final spacing pass */
+.projectCardBody,.moreBuildCopy{padding:20px 12px 10px!important}
+.aboutPhoto{max-width:250px!important}.aboutPhoto img{max-height:375px!important}
+@media(max-width:800px){.aboutPhoto{max-width:235px!important}.aboutPhoto img{max-height:353px!important}}
+.balancedProjectGrid,.funLeadGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:26px!important}.funLeadGrid .moreBuildCard:first-child{grid-row:auto!important}.smallBuild .techVisual{height:auto!important;aspect-ratio:16/10!important;border-radius:16px!important}.smallBuild{padding:0 12px 10px!important}
+@media(max-width:800px){.balancedProjectGrid,.funLeadGrid{grid-template-columns:1fr!important}}
+.casePage img{cursor:zoom-in}.caseCompanyBar img,.toolLogoSection img{cursor:default!important}
