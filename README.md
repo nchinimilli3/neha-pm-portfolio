@@ -1,19 +1,19 @@
-# Neha PM Portfolio — V15
+# Neha Chinimilli — Portfolio V30
 
-React + TypeScript + Vite portfolio optimized for entry-level APM/product/strategy recruiting.
+Vite + React portfolio for product, strategy, and consulting recruiting.
 
-## Local preview
+## Local run
 
 ```bash
 npm install
 npm run dev
 ```
 
-## GitHub Pages
+## Production check
 
-The repository includes `.github/workflows/deploy.yml` and the Vite base path for `neha-pm-portfolio`.
+```bash
+npm run build
+npm run preview
+```
 
-Upload the **contents of this folder** to the root of the GitHub repository.
-
-## Current version
-V18 is the current source of truth. See `V18-CHANGES.md` for the final picky/detail pass.
+GitHub Pages deployment is configured in `.github/workflows/deploy.yml`. Vite uses a relative asset base so the build works at either a user-site root or repository subpath.
