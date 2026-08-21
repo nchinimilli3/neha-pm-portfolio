@@ -1,0 +1,22 @@
+# V32 checklist
+
+- [x] Preserve V31 iPhone demo/frame foundation
+- [x] Apply latest user-supplied copy facts
+- [x] Explicit user in every serious case
+- [x] Keep detailed intern execution evidence
+- [x] Update Accenture copy / six-region scope / QA example
+- [x] Update Ford 2023 ownership and research-to-build story
+- [x] Update Ford Credit sole-intern + technical delivery depth
+- [x] Update Spectrum engagement range
+- [x] Update Palmer 20+ / 300+
+- [x] Update Estée Lauder C-suite presentation
+- [x] Strengthen FCVF user and product purpose
+- [x] Strengthen Scheduler user provenance
+- [x] Strengthen Commute first-user / broader-user framing
+- [x] Add `Tools used` visual logo system
+- [x] Hover/tooltips + accessible names for tool logos
+- [x] Reduce generic decision-template repetition where evidence already tells the story
+- [x] Widen case-study content grid
+- [x] Preserve Canva homepage mockups and original case-study artifacts
+- [x] TypeScript/JSX syntax parse check
+- [ ] Full Vite production build (React dependencies are not bundled in the source ZIP and registry install is unavailable in this runtime)
