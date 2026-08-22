@@ -2706,200 +2706,751 @@ input,select,button{accent-color:var(--color-focus)}
 }
 
 /* =========================================================
-   V38 — recruiter hierarchy, responsive QA, demo polish
+   V39 — consolidated responsive + product polish pass
+   Replaces the V38 override block so these decisions live in one place.
    ========================================================= */
 
+/* ---------- page grid + first impression ---------- */
+.siteHeader,
+.heroInner,
+.section,
+.siteFooter{
+  width:min(1420px,calc(100% - 64px))!important;
+  max-width:1420px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  box-sizing:border-box!important;
+}
+.heroInner{padding-left:0!important;padding-right:0!important;max-width:1420px!important}
+.heroThesis{
+  max-width:none!important;
+  font-weight:720!important;
+  letter-spacing:-.032em!important;
+  color:#26312c!important;
+}
 .heroTagline{
-  max-width:760px;
-  margin:22px 0 0;
-  font-size:clamp(17px,1.35vw,21px);
-  line-height:1.55;
-  letter-spacing:-.018em;
-  color:#4e5651;
+  max-width:650px!important;
+  margin:20px 0 0!important;
+  font-size:clamp(17px,1.25vw,20px)!important;
+  line-height:1.5!important;
+  letter-spacing:-.018em!important;
+  color:#565f5a!important;
 }
-.heroInner{max-width:980px!important}
 
-/* Let experience copy use the real container width. */
-.experienceSummary>div,
-.experienceDetail>div,
-.expStory,
-.expStory>p,
-.expColumns,
-.expMetricRow{max-width:none!important;width:100%!important}
-.experienceSummary{grid-template-columns:56px minmax(0,1fr) auto 32px!important}
+/* ---------- project cards ---------- */
+.balancedProjectGrid,.funLeadGrid,.smallBuildGrid,
+.projectCardReveal,.projectCard,.projectCardAction,.projectCardMedia,.projectCardBody,
+.moreBuildCard,.moreBuildAction,.moreBuildVisual,.moreBuildCopy{min-width:0!important;max-width:100%!important}
+.projectCardAction,.moreBuildAction{width:100%!important;overflow:hidden!important}
+.projectCardBody>p,.moreBuildCopy>p{max-width:none!important;width:100%!important;overflow-wrap:normal!important;word-break:normal!important}
+.projectCardTop{margin-bottom:8px!important}
+.projectCardTop span,.moreBuildCopy>span:first-child{
+  font-size:16px!important;
+  line-height:1.25!important;
+  font-weight:720!important;
+  letter-spacing:-.012em!important;
+  color:#39433e!important;
+}
+.project-fcvf .projectCardTop span{color:#285a8e!important}
+.project-accenture .projectCardTop span{color:#6a4d9f!important}
+.project-finsimple .projectCardTop span{color:#315c88!important}
+.project-scheduler .projectCardTop span{color:#3e7467!important}
+.projectCard h3{margin-top:2px!important}
+.homepageMockup,.accenturePhotoCover,.editorialCover,.homepageAppPreview{width:100%!important;height:100%!important;overflow:hidden!important}
+.homepageMockup img,.accenturePhotoCover>img{width:100%!important;height:100%!important;display:block!important;object-fit:cover!important}
+.accenturePhotoCover{min-height:0!important;border-radius:inherit!important}
+.accenturePhotoMark{left:18px!important;bottom:16px!important;background:rgba(19,16,20,.72)!important;padding:8px 11px!important;border-radius:9px!important}
+
+/* ---------- experience: full width, no open-card bubble ---------- */
+.experienceAccordion,.experienceItem,.experienceSummary,.experienceDetail,.experienceDetail>div,
+.experienceSummary>div,.expStory,.expStory>p,.expColumns,.expMetricRow{max-width:none!important;width:100%!important;box-sizing:border-box!important}
+.experienceItem,.experienceItem.open{
+  background:transparent!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+  border:0!important;
+}
+.experienceSummary{
+  grid-template-columns:58px minmax(0,1fr) auto 34px!important;
+  gap:18px!important;
+  padding:22px 4px!important;
+  background:transparent!important;
+  border:0!important;
+}
 .experienceSummary>div{min-width:0!important}
-.experienceSummary p{max-width:none!important;width:100%!important}
-.experienceDetail>div{padding-right:8px!important}
-.expColumns{grid-template-columns:repeat(3,minmax(0,1fr))!important}
-.expColumns.two{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-
-/* Case-study hero: actual evidence on the right, never an empty card. */
-.caseLead{
-  width:min(1180px,calc(100% - 64px));
-  margin:0 auto 54px;
-  display:grid;
-  grid-template-columns:minmax(0,1.08fr) minmax(360px,.92fr);
-  gap:clamp(42px,6vw,88px);
-  align-items:center;
+.experienceSummary h3{
+  font-size:23px!important;
+  line-height:1.12!important;
+  font-weight:730!important;
+  letter-spacing:-.025em!important;
 }
-.caseLead .caseHeader,
+.experience-accenture .experienceSummary h3{color:#6a4d9f!important}
+.experience-fordcredit .experienceSummary h3,.experience-ford .experienceSummary h3{color:#285a8e!important}
+.experience-spectrum .experienceSummary h3{color:#4f6c64!important}
+.experienceSummary p{max-width:none!important;width:100%!important;margin-top:6px!important}
+.experienceDetail{background:transparent!important;border:0!important;padding:0!important}
+.experienceDetail>div{padding:10px 4px 34px 76px!important;background:transparent!important;border:0!important}
+.expColumns{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:28px!important}
+.expColumns.two{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+.expMetricRow{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:18px!important;align-items:start!important}
+.expMetricRow span{min-width:0!important}
+@media(min-width:1180px){
+  .experienceSummary p{white-space:nowrap!important}
+}
+
+/* ---------- case-study hero: one deliberate layout, no mystery bubble ---------- */
+.caseLead{
+  width:min(1420px,calc(100% - 64px))!important;
+  max-width:1420px!important;
+  margin:40px auto 62px!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1.08fr) minmax(360px,.92fr)!important;
+  align-items:center!important;
+  gap:clamp(52px,7vw,116px)!important;
+}
+.caseLead .caseHeader{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+}
 .caseLead .caseHeroMedia{
   width:100%!important;
   max-width:none!important;
   margin:0!important;
-  padding-left:0!important;
-  padding-right:0!important;
+  padding:0!important;
+  min-width:0!important;
+  min-height:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+  display:grid!important;
+  place-items:center!important;
 }
-.caseLead .caseHeader{padding-top:0!important;padding-bottom:0!important}
-.caseLead .caseHeroMedia{min-width:0!important;display:grid!important;place-items:center!important}
-.caseLead .caseHeroMedia>*{width:100%!important;max-width:100%!important}
-.caseLead .caseArtifactHero{margin:0!important;border-radius:18px!important;overflow:hidden!important;background:rgba(255,255,255,.45)!important}
-.caseLead .caseArtifactHero img{width:100%!important;height:auto!important;display:block!important;object-fit:contain!important}
-.caseLead .workflowCanvas{min-height:360px!important;height:auto!important;margin:0!important}
-.caseLead .commutePreview{min-height:520px!important}
-.caseLead .schedulerPreview,.caseLead .miniScheduler,.caseLead .phoneShell{margin:0!important;max-width:none!important}
-.caseLead .metricStrip{margin-top:26px!important}
+.caseLead .caseHeroMedia>*{max-width:100%!important}
+.caseCompanyBar{
+  display:block!important;
+  width:auto!important;
+  margin:0 0 16px!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+}
+.caseCompanyBar span{font-size:16px!important;font-weight:690!important;letter-spacing:-.012em!important;color:#535c57!important}
+.caseHeroLogoWrap{
+  width:100%!important;
+  min-height:300px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.caseHeroLogoWrap img{display:block!important;width:auto!important;height:auto!important;max-width:82%!important;max-height:260px!important;object-fit:contain!important}
+.fordHeroMark img{max-width:78%!important}
+.accentureHeroMark img{max-width:74%!important}
+.fordCreditHeroMark img{max-width:86%!important}
+.caseHeader h1{max-width:none!important;text-wrap:balance!important}
+.caseIntro,.ownershipLine{width:100%!important;max-width:none!important}
+.caseIntro{font-size:clamp(18px,1.6vw,22px)!important;line-height:1.48!important}
 
-/* Brand mark in company bar is allowed to be confident, not a tiny icon. */
-.caseCompanyBar{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:24px!important}
-.caseCompanyBar img{width:auto!important;max-width:150px!important;max-height:44px!important;object-fit:contain!important}
+/* Metrics are scale/evidence, not a wall of cards. */
+.caseHeader .metricStrip{
+  width:100%!important;
+  max-width:none!important;
+  margin-top:30px!important;
+  padding:0!important;
+  display:grid!important;
+  gap:22px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+}
+.caseHeader .metricCount-5{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+.caseHeader .metricCount-4{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+.caseHeader .metricCount-3{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.caseHeader .metric{
+  min-width:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.caseHeader .metric strong{display:block!important;font-size:clamp(27px,2.3vw,36px)!important;font-weight:650!important;line-height:1!important}
+.caseHeader .metric span{display:block!important;margin-top:7px!important;font-size:12px!important;line-height:1.35!important;color:#69716d!important}
 
-/* Project cards: no fixed-width overflow, no clipped text. */
-.balancedProjectGrid,.funLeadGrid{min-width:0!important}
-.projectCard,.projectCardAction,.projectCardMedia,.projectCardBody,.moreBuildCard,.moreBuildCard>*{min-width:0!important;max-width:100%!important}
-.projectCardAction{width:100%!important;overflow:hidden!important}
-.projectCardBody{overflow-wrap:anywhere!important}
-.projectCard h3,.moreBuildCard h3{max-width:100%!important;overflow-wrap:normal!important;word-break:normal!important}
-.projectCard p,.moreBuildCard p{max-width:100%!important}
-.homepageMockup{width:100%!important;max-width:100%!important;overflow:hidden!important}
-.homepageMockup img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important}
+/* Case-study reading rhythm. */
+.casePage .toolLogoSection,.casePage .caseSection,.casePage .sandboxSection{
+  width:min(1260px,calc(100% - 64px))!important;
+  max-width:1260px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  box-sizing:border-box!important;
+}
+.caseSection,.caseSection:nth-of-type(even){display:block!important;padding:50px 0!important;border:0!important}
+.caseSection>h2,.caseSection:nth-of-type(even)>h2{width:100%!important;max-width:none!important;margin:0 0 18px!important;grid-column:auto!important;grid-row:auto!important}
+.caseSectionBody,.caseSection>div,.caseSection:nth-of-type(even)>.caseSectionBody{
+  width:100%!important;
+  max-width:none!important;
+  grid-column:auto!important;
+  grid-row:auto!important;
+}
+.caseSectionBody>p,.caseSection>div>p{max-width:92ch!important}
+.workflowCanvas{
+  margin:26px 0 0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.workflowNode{background:rgba(255,255,255,.5)!important;border:1px solid rgba(35,42,39,.08)!important}
+.accentureUserGrid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
 
-/* Actual app UI is the preview source. */
-.homepageAppPreview{height:100%;display:grid;place-items:center;padding:clamp(20px,3vw,44px);background:radial-gradient(circle at 12% 12%,rgba(63,178,158,.13),transparent 34%),radial-gradient(circle at 90% 82%,rgba(172,127,210,.15),transparent 38%),rgba(247,244,238,.65)}
-.chatAppPreview .phoneShell{width:min(100%,560px)!important;min-height:330px!important;max-height:390px!important;pointer-events:none!important;transform:none!important}
+/* ---------- tech stack: real logos first, names only on hover/focus ---------- */
+.toolLogoSection{
+  display:grid!important;
+  grid-template-columns:minmax(220px,.34fr) minmax(0,1fr)!important;
+  gap:54px!important;
+  align-items:center!important;
+  padding:30px 0 42px!important;
+  border:0!important;
+  background:transparent!important;
+}
+.toolLogoHeading p{max-width:36ch!important}
+.toolLogoRow{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:14px!important;
+  overflow:visible!important;
+}
+.toolLogoWrap{
+  position:relative!important;
+  width:52px!important;
+  height:52px!important;
+  min-width:52px!important;
+  padding:9px!important;
+  display:grid!important;
+  place-items:center!important;
+  border:1px solid rgba(34,40,37,.08)!important;
+  border-radius:13px!important;
+  background:rgba(255,255,255,.62)!important;
+  box-shadow:0 6px 18px rgba(34,40,37,.035)!important;
+  outline:none!important;
+  cursor:default!important;
+  box-sizing:border-box!important;
+}
+.toolLogoWrap img{width:100%!important;height:100%!important;object-fit:contain!important;opacity:.94!important;transform:none!important}
+.toolLogoWrap.fallback{background:rgba(255,255,255,.62)!important;border:1px solid rgba(34,40,37,.08)!important}
+.toolLogoFallback{font-size:11px!important;font-weight:720!important;letter-spacing:-.02em!important;color:#3f4944!important;text-align:center!important}
+.toolLogoLabel{
+  position:absolute!important;
+  z-index:20!important;
+  left:50%!important;
+  bottom:calc(100% + 9px)!important;
+  transform:translate(-50%,5px)!important;
+  width:max-content!important;
+  max-width:190px!important;
+  padding:7px 9px!important;
+  border:1px solid rgba(34,40,37,.08)!important;
+  border-radius:9px!important;
+  background:rgba(251,249,245,.98)!important;
+  box-shadow:0 10px 30px rgba(34,40,37,.11)!important;
+  color:#2f3733!important;
+  font-size:11px!important;
+  font-weight:620!important;
+  line-height:1.2!important;
+  white-space:nowrap!important;
+  opacity:0!important;
+  pointer-events:none!important;
+  transition:opacity .15s ease,transform .15s ease!important;
+}
+.toolLogoWrap:hover .toolLogoLabel,.toolLogoWrap:focus .toolLogoLabel,.toolLogoWrap:focus-visible .toolLogoLabel{opacity:1!important;transform:translate(-50%,0)!important}
+.toolLogoWrap:focus-visible{box-shadow:0 0 0 3px rgba(86,114,205,.14),0 6px 18px rgba(34,40,37,.035)!important}
 
-/* Commute card is a composed product preview rather than a tucked screenshot. */
-.commutePreviewClean{
+/* ---------- Commute: preview = product, and the product fits the phone ---------- */
+.commutePreviewV39{
+  position:relative!important;
+  width:100%!important;
+  height:100%!important;
   min-height:500px!important;
   display:grid!important;
-  grid-template-columns:minmax(180px,.72fr) minmax(250px,1fr)!important;
-  align-items:center!important;
-  gap:24px!important;
-  padding:30px 34px 0!important;
+  place-items:center!important;
+  padding:28px!important;
   overflow:hidden!important;
+  background:
+    radial-gradient(circle at 14% 22%,rgba(226,142,179,.18),transparent 30%),
+    radial-gradient(circle at 88% 75%,rgba(83,163,149,.17),transparent 34%),
+    radial-gradient(circle at 70% 8%,rgba(140,119,196,.15),transparent 30%),
+    #f1eee7!important;
 }
-.commutePreviewMeta{align-self:center!important;padding:0!important;z-index:2}
-.commutePreviewMeta>strong{font-size:clamp(34px,4vw,56px)!important;line-height:.98!important;letter-spacing:-.055em!important}
-.commutePreviewMeta>small{font-size:16px!important;margin-top:10px!important}
-.commutePreviewMeta>p{font-size:14px!important;line-height:1.5!important;max-width:34ch!important;margin-top:18px!important}
-.commutePreviewDevice{align-self:end!important;display:grid!important;place-items:end center!important;height:100%!important;min-width:0!important}
-.commutePreviewDeviceFrame{width:min(100%,300px)!important;margin:0 auto -35px!important}
-.commutePreviewShell .iosScreenContent{height:calc(100% - 53px)!important;overflow:hidden!important}
+.commutePreviewGlow{position:absolute!important;inset:0!important;pointer-events:none!important}
+.commutePreviewDevice{position:relative!important;z-index:2!important;width:100%!important;height:100%!important;display:grid!important;place-items:center!important}
+.commutePreviewDeviceFrame{width:min(300px,72%)!important;margin:0!important;align-self:center!important}
+.commutePreviewShell .iosScreenContent{height:calc(100% - 58px)!important;overflow:hidden!important}
+.commutePreviewScreen{pointer-events:none!important}
 
-/* Main commute demo: one fixed iPhone viewport. Main screens do not scroll. */
-.commuteShowcase .immersiveSandbox{overflow:hidden!important}
-.iphoneDemoStage{width:100%!important;overflow:visible!important}
-.commuteShowcase .iosPhoneDevice{width:min(100%,360px)!important}
-.iosScreenContent{height:calc(100% - 53px)!important;overflow:hidden!important}
-.iosOnboarding,.iosAppScreen{overflow:hidden!important;min-height:0!important}
-.iosOnboarding{padding-top:18px!important;padding-bottom:20px!important}
-.iosOnboarding h2{margin:10px 0 8px!important;font-size:29px!important}
-.iosOnboarding .iosSub,.iosOnboarding>p{margin-bottom:14px!important}
-.routineItem{padding:10px 0!important}
-.routineSummary{padding:12px 0!important}
-.iosField{padding:10px 0!important}
-.bufferRow{padding:11px 0!important}
-.calendarPreview{margin:6px 0 14px!important;padding:12px!important}
-.nativeSettingRow{margin:8px 0 14px!important}
-.alarmPreference{margin:10px 0 14px!important;padding:10px 0!important}
-.iosPrimary{padding:13px 16px!important}
-.iosTextBtn{padding:9px!important}
-.iosWelcome{padding-bottom:24px!important;gap:11px!important}
-.iosWelcome h2{font-size:35px!important;margin:8px 0!important}
-.iosWelcome p{margin-bottom:12px!important}
-.todayScreen{padding-top:18px!important}
-.appTop{margin-bottom:16px!important}
-.destinationLine{padding-bottom:10px!important}
-.bigMoment{margin:8px -7px 5px!important;padding:18px 12px 17px!important}
-.bigMoment strong{font-size:48px!important}
-.routeRecommendation{padding:11px 12px!important}
-.routeReason{margin:8px 0!important;font-size:11px!important;line-height:1.35!important}
-.liveStrip{margin-top:7px!important}
-.sleepAction{padding-top:8px!important}
-.iosTabBar{height:62px!important;padding-top:5px!important;padding-bottom:7px!important}
-.iosAppScreen{padding-bottom:68px!important}
-/* Sheets are native detail views; only these may scroll if content exceeds one screen. */
-.iosFullSheet{overscroll-behavior:contain!important;scrollbar-width:none!important}
-.iosFullSheet::-webkit-scrollbar{display:none}
+.commuteShowcase .immersiveSandbox{
+  padding:28px!important;
+  overflow:visible!important;
+  background:linear-gradient(145deg,rgba(241,237,230,.72),rgba(245,242,236,.44))!important;
+  border:0!important;
+  border-radius:26px!important;
+  box-shadow:none!important;
+}
+.iphoneDemoStage{padding:0!important;overflow:visible!important}
+.commuteShowcase .iosPhoneDevice{width:min(100%,360px)!important;margin:0 auto!important}
+.iosDemoShell{
+  --ios-bg:#f7f6f3!important;
+  --ios-surface:#fff!important;
+  --ios-separator:rgba(44,49,47,.11)!important;
+  --ios-secondary:#6d716f!important;
+  --ios-accent:#6257a8!important;
+  background:
+    radial-gradient(circle at 98% 4%,rgba(103,180,164,.11),transparent 30%),
+    radial-gradient(circle at 2% 18%,rgba(223,134,173,.08),transparent 27%),
+    var(--ios-bg)!important;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Arial,sans-serif!important;
+}
+.iosStatus{height:58px!important;padding:22px 29px 0!important;align-items:flex-start!important;overflow:visible!important}
+.iosStatus>span:first-child{font-size:11px!important;font-weight:690!important;line-height:1!important}
+.iosStatusIcons{display:flex!important;align-items:center!important;gap:4px!important;transform:none!important;height:13px!important;color:#111!important}
+.iosStatusIcons svg{display:block!important;flex:none!important}
+.statusSignal{width:16px!important;height:11px!important;fill:#111!important}
+.status5g{font-size:8.5px!important;font-style:normal!important;font-weight:680!important;line-height:1!important;margin-left:1px!important}
+.statusWifi{width:16px!important;height:12px!important;fill:none!important;stroke:#111!important;stroke-width:1.6!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+.statusWifi circle{fill:#111!important;stroke:none!important}
+.statusBattery{width:23px!important;height:12px!important;fill:none!important;stroke:#111!important;stroke-width:1.3!important;stroke-linecap:round!important}
+.statusBattery .batteryFill{fill:#111!important;stroke:none!important}
+.signalBars,.wifiMark,.batteryMark{display:none!important}
+.iosScreenContent{height:calc(100% - 58px)!important;overflow:hidden!important}
+.iosOnboarding,.iosAppScreen{
+  height:100%!important;
+  min-height:0!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+  padding:17px 20px 24px!important;
+  background:transparent!important;
+}
+.iosWelcome{padding-top:20px!important;padding-bottom:25px!important;gap:10px!important}
+.iosWelcome h2{font-size:34px!important;line-height:1.02!important;margin:7px 0!important;font-weight:720!important}
+.iosOnboarding h2{font-size:28px!important;line-height:1.04!important;margin:8px 0 7px!important;font-weight:700!important}
+.iosOnboarding p,.iosSub,.welcomeCopy p{font-size:12px!important;line-height:1.4!important;margin-bottom:12px!important;color:#6b706d!important}
+.iosNavRow{margin-bottom:12px!important}
+.routineEditor{padding:0 12px!important}
+.routineItem{padding:9px 0!important}
+.routineItem>span{font-size:13px!important}
+.routineItem strong{font-size:12px!important}
+.routineItem button,.bufferRow button{width:29px!important;height:29px!important;font-size:16px!important}
+.routineSummary{padding:10px 2px!important;font-size:12px!important}
+.iosField{padding:8px 0!important;margin-bottom:7px!important;border:0!important}
+.iosField label,.iosField>span{font-size:10px!important;margin-bottom:4px!important}
+.iosField input{min-height:39px!important;font-size:12px!important;padding:0 11px!important}
+.bufferRow{padding:9px 0!important;margin-bottom:10px!important}
+.nativeSettingRow{margin:7px 0 13px!important;padding:10px!important}
+.alarmPreference{margin:8px 0 12px!important;padding:10px!important;font-size:12px!important}
+.iosPrimary{min-height:43px!important;padding:11px 15px!important;border-radius:12px!important;font-size:12px!important;background:#272827!important}
+.iosTextBtn{padding:8px!important;font-size:11px!important}
+.iosOnboarding>.iosPrimary:last-child{margin-top:12px!important}
 
-/* Tech stack: local fallbacks are visible, legible, consistent. */
-.casePage .toolLogoWrap.fallback{background:transparent!important;border:0!important}
-.casePage .toolLogoFallback{width:34px!important;height:28px!important;overflow:visible!important}
+/* Native-looking Calendar event, contained entirely inside the phone. */
+.calendarEventPreview{
+  display:grid!important;
+  grid-template-columns:44px 3px minmax(0,1fr)!important;
+  gap:10px!important;
+  align-items:center!important;
+  width:100%!important;
+  min-width:0!important;
+  margin:8px 0 14px!important;
+  padding:11px!important;
+  box-sizing:border-box!important;
+  border:1px solid rgba(44,49,47,.08)!important;
+  border-radius:13px!important;
+  background:#fff!important;
+}
+.calendarDateBadge{width:42px!important;height:44px!important;border-radius:9px!important;overflow:hidden!important;background:#f5f5f3!important;text-align:center!important;display:flex!important;flex-direction:column!important;justify-content:center!important}
+.calendarDateBadge span{font-size:7.5px!important;line-height:1!important;font-weight:720!important;color:#ff4c45!important}
+.calendarDateBadge strong{font-size:19px!important;line-height:1.05!important;font-weight:640!important;color:#252827!important}
+.calendarEventPreview>i{width:3px!important;height:38px!important;border-radius:3px!important;background:#7d6bc2!important}
+.calendarEventBody{min-width:0!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;text-align:left!important}
+.calendarEventBody span{font-size:9px!important;line-height:1.2!important;color:#7b7f7d!important}
+.calendarEventBody strong{font-size:13px!important;line-height:1.25!important;margin:2px 0!important;color:#222624!important}
+.calendarEventBody small{max-width:100%!important;font-size:9px!important;line-height:1.25!important;color:#6f7471!important;white-space:normal!important}
 
-/* Large monitors: use space without turning paragraphs into banners. */
+/* Home screen: more visual character, less dashboard-copy texture. */
+.appTop{margin-bottom:11px!important}
+.appTop>div>span{text-transform:none!important;letter-spacing:0!important;font-size:10px!important;color:#767b78!important}
+.appTop h3{font-size:19px!important;letter-spacing:-.025em!important;font-weight:690!important}
+.destinationLine{padding:7px 0 10px!important}
+.destinationLine span{font-size:9px!important;color:#797d7b!important}
+.destinationLine strong{font-size:13px!important}
+.destinationLine>b{font-size:12px!important}
+.bigMoment{
+  margin:9px -8px 7px!important;
+  padding:17px 13px 16px!important;
+  border:0!important;
+  border-radius:18px!important;
+  background:
+    radial-gradient(circle at 88% 18%,rgba(102,177,162,.24),transparent 38%),
+    radial-gradient(circle at 12% 86%,rgba(224,139,174,.19),transparent 40%),
+    rgba(135,117,193,.08)!important;
+}
+.bigMoment>span{font-size:10px!important;color:#686d6a!important}
+.bigMoment strong{font-size:46px!important;line-height:.98!important;letter-spacing:-.06em!important;font-weight:720!important;color:#3f3a63!important;background:none!important;-webkit-text-fill-color:initial!important}
+.bigMoment small{font-size:10px!important}
+.routeRecommendation{margin-top:10px!important;padding:10px 11px!important;border:0!important;border-radius:14px!important;background:rgba(255,255,255,.76)!important;box-shadow:0 5px 18px rgba(44,49,47,.04)!important;gap:8px!important}
+.routeBadge{width:33px!important;height:33px!important;border-radius:10px!important;background:#4f857b!important;color:#fff!important;flex:none!important}
+.routeRecommendation>span{min-width:0!important;flex:1!important}
+.routeRecommendation>span small{font-size:8.5px!important;color:#7a7f7c!important}
+.routeRecommendation>span strong{font-size:14px!important;line-height:1.15!important}
+.routeRecommendation>span em{font-size:9px!important;line-height:1.2!important;font-style:normal!important;color:#69706c!important;white-space:normal!important}
+.routeTimes{flex:none!important;text-align:right!important}
+.routeTimes b{font-size:11px!important}
+.routeTimes small{font-size:8.5px!important}
+.routeReason{margin:7px 1px!important;font-size:9.5px!important;line-height:1.35!important;color:#6a706d!important}
+.liveStrip{margin-top:6px!important;gap:6px!important}
+.liveStrip button,.liveStrip>span{min-height:29px!important;padding:6px 7px!important;font-size:8.5px!important;border-radius:9px!important;background:rgba(255,255,255,.7)!important;border:1px solid rgba(44,49,47,.08)!important}
+.sleepAction{padding:9px 1px!important;font-size:11px!important;color:#6652a4!important}
+.iosTabBar{height:61px!important;padding:5px 14px 7px!important}
+.iosTabBar svg{width:18px!important;height:18px!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+.iosTabBar button:first-child svg{fill:currentColor!important;stroke:none!important}
+.iosTabBar small{font-size:8.5px!important}
+.iosAppScreen{padding-bottom:65px!important}
+
+/* Detail screens fit too. */
+.iosFullSheet{
+  inset:58px 0 0!important;
+  padding:12px 20px 66px!important;
+  overflow:hidden!important;
+  background:#f7f6f3!important;
+}
+.sheetNav{margin-bottom:13px!important;padding-bottom:5px!important}
+.iosFullSheet h2{font-size:25px!important;line-height:1.05!important;margin:0 0 12px!important}
+.sheetLead,.iosFullSheet>p{font-size:11px!important;line-height:1.4!important;margin:0 0 12px!important}
+.routeFacts>div,.sleepChoices button{padding:10px!important}
+.conditionRows label{padding:8px 0!important;font-size:11px!important}
+.conditionRows input[type=range]{margin-top:5px!important}
+.iosFinePrint{font-size:9px!important;line-height:1.3!important;margin-top:8px!important}
+.fixedPrimary{position:static!important;margin-top:10px!important}
+.resetDemo{margin-top:18px!important;font-size:11px!important;color:#7a4a4a!important}
+
+/* ---------- About: one paragraph system + restrained editorial popovers ---------- */
+.aboutSection{grid-template-columns:minmax(240px,330px) minmax(0,1fr)!important;gap:clamp(48px,7vw,104px)!important;align-items:start!important}
+.aboutCopy{min-width:0!important}
+.aboutCopy p{max-width:76ch!important}
+.aboutCopy strong{font-weight:660!important}
+.hobbyLine{position:relative!important}
+.hobbyPopover{position:relative!important;display:inline!important}
+.hobbyPopoverTrigger{
+  appearance:none!important;
+  border:0!important;
+  border-bottom:1px dotted rgba(76,85,80,.48)!important;
+  background:transparent!important;
+  padding:0!important;
+  margin:0!important;
+  color:inherit!important;
+  font:inherit!important;
+  cursor:pointer!important;
+}
+.hobbyPopoverCard{
+  position:absolute!important;
+  z-index:30!important;
+  left:50%!important;
+  bottom:calc(100% + 12px)!important;
+  transform:translate(-50%,6px)!important;
+  width:max-content!important;
+  min-width:220px!important;
+  max-width:min(290px,80vw)!important;
+  padding:14px 16px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:5px!important;
+  border:1px solid rgba(38,44,41,.08)!important;
+  border-radius:12px!important;
+  background:rgba(250,248,243,.98)!important;
+  box-shadow:0 18px 48px rgba(34,39,36,.13)!important;
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+  transition:opacity .16s ease,transform .16s ease,visibility .16s!important;
+  text-align:left!important;
+}
+.hobbyPopoverCard strong{font-size:11px!important;font-weight:700!important;letter-spacing:.01em!important;color:#6a706d!important;margin-bottom:4px!important}
+.hobbyPopoverCard>span{font-size:13px!important;line-height:1.35!important;color:#2f3632!important;white-space:nowrap!important}
+.hobbyPopover:hover .hobbyPopoverCard,.hobbyPopover:focus-within .hobbyPopoverCard{opacity:1!important;visibility:visible!important;transform:translate(-50%,0)!important}
+.hobbyPopoverTrigger:focus-visible{outline:2px solid rgba(98,87,168,.25)!important;outline-offset:3px!important;border-radius:3px!important}
+.aboutActions{display:flex!important;align-items:flex-start!important;gap:22px!important;flex-wrap:wrap!important;margin-top:24px!important}
+.photoCta{display:inline-flex!important;align-items:center!important;min-height:44px!important;font-size:14px!important;font-weight:650!important;text-decoration:none!important}
+.bookRecForm{margin:0!important;padding:0!important;border:0!important;background:transparent!important;min-width:min(100%,330px)!important}
+.bookRecRow{display:flex!important;align-items:center!important;gap:8px!important}
+.bookRecRow input{min-height:42px!important;min-width:210px!important;border:1px solid rgba(38,44,41,.12)!important;border-radius:10px!important;background:rgba(255,255,255,.55)!important;padding:0 12px!important;font-size:13px!important}
+.bookRecRow button{min-height:42px!important;border-radius:10px!important;padding:0 13px!important}
+
+/* ---------- Photography routing + orientation-aware stage ---------- */
+.photoCollectionNav{display:flex!important;flex-wrap:wrap!important;gap:9px!important}
+.photoCollectionNav button{
+  appearance:none!important;
+  border:1px solid rgba(38,44,41,.10)!important;
+  border-radius:999px!important;
+  background:rgba(255,255,255,.48)!important;
+  padding:9px 13px!important;
+  color:#414a45!important;
+  font:inherit!important;
+  font-size:12px!important;
+  cursor:pointer!important;
+}
+.photoCarousel{width:100%!important}
+.photoCarouselStage{
+  display:grid!important;
+  place-items:center!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border:0!important;
+  border-radius:16px!important;
+  background:#e9e4da!important;
+  transition:max-width .2s ease,aspect-ratio .2s ease!important;
+}
+.photoCarouselStage.landscape{aspect-ratio:3/2!important;max-width:100%!important}
+.photoCarouselStage.portrait{aspect-ratio:4/5!important;max-width:720px!important;margin-left:auto!important;margin-right:auto!important}
+.photoCarouselStage.square{aspect-ratio:1/1!important;max-width:820px!important;margin-left:auto!important;margin-right:auto!important}
+.photoCarouselStage img{width:100%!important;height:100%!important;object-fit:contain!important;display:block!important;background:#e9e4da!important}
+.photoFilmstrip img{object-fit:cover!important}
+
+/* ---------- responsive QA ---------- */
 @media(min-width:1600px){
-  .siteHeader,.section,.heroInner,.siteFooter{max-width:1420px!important}
+  .siteHeader,.heroInner,.section,.siteFooter{width:min(1480px,calc(100% - 112px))!important;max-width:1480px!important}
+  .caseLead{width:min(1480px,calc(100% - 112px))!important;max-width:1480px!important}
+  .casePage .toolLogoSection,.casePage .caseSection,.casePage .sandboxSection{width:min(1320px,calc(100% - 112px))!important;max-width:1320px!important}
   .balancedProjectGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:42px!important}
   .projectCardMedia{min-height:430px!important}
-  .caseLead,.casePage .toolLogoSection,.casePage .caseSection,.casePage .sandboxSection{width:min(1320px,calc(100% - 96px))!important;max-width:1320px!important}
-  .caseLead{grid-template-columns:minmax(0,1fr) minmax(460px,.95fr)!important}
-  .caseSection>div,.caseSectionBody{max-width:900px}
-  .experienceSection,.educationSection,.projectsSection,.moreSection,.aboutSection{max-width:1420px!important}
 }
 
-@media(max-width:980px){
-  .caseLead{grid-template-columns:1fr!important;width:min(100% - 48px,880px)!important;gap:30px!important;align-items:start!important}
-  .caseLead .caseHeroMedia{max-width:760px!important}
+@media(max-width:1100px){
+  .caseLead{grid-template-columns:1fr!important;gap:28px!important;align-items:start!important}
+  .caseHeroLogoWrap{min-height:180px!important;justify-content:flex-start!important}
+  .caseHeroLogoWrap img{max-height:160px!important;max-width:55%!important}
+  .accentureUserGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .toolLogoSection{grid-template-columns:1fr!important;gap:18px!important}
   .expColumns,.expColumns.two{grid-template-columns:1fr!important}
-  .commutePreviewClean{grid-template-columns:.8fr 1fr!important}
 }
 
 @media(max-width:760px){
   html,body,#root{max-width:100%!important;overflow-x:hidden!important}
-  .siteHeader,.section,.hero,.siteFooter{width:100%!important;max-width:100%!important;box-sizing:border-box!important}
-  .heroInner,.section,.siteFooter{padding-left:20px!important;padding-right:20px!important}
-  .heroTagline{font-size:16px!important;line-height:1.5!important;margin-top:18px!important}
-  .balancedProjectGrid,.funLeadGrid,.smallBuildGrid{width:100%!important;grid-template-columns:minmax(0,1fr)!important;gap:28px!important}
+  .siteHeader,.heroInner,.section,.siteFooter,
+  .caseLead,.casePage .toolLogoSection,.casePage .caseSection,.casePage .sandboxSection{
+    width:calc(100% - 40px)!important;
+    max-width:none!important;
+  }
+  .heroTagline{font-size:16px!important;line-height:1.48!important}
+  .balancedProjectGrid,.funLeadGrid,.smallBuildGrid{grid-template-columns:minmax(0,1fr)!important;width:100%!important;gap:28px!important}
   .projectCardReveal,.projectCard,.projectCardAction,.projectCardMedia,.projectCardBody,.moreBuildCard{width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important}
-  .projectCardAction{display:block!important}
-  .projectCardMedia{height:auto!important;min-height:0!important;aspect-ratio:1.24/1!important}
-  .projectCardMedia .homepageMockup,.projectCardMedia .editorialCover,.projectCardMedia>.homepageAppPreview{height:100%!important;min-height:0!important}
-  .projectCardBody{padding:24px 4px 30px!important}
-  .projectCard h3{font-size:clamp(30px,9vw,42px)!important;line-height:1.02!important;letter-spacing:-.045em!important}
-  .projectCard p{font-size:16px!important;line-height:1.5!important}
-  .caseLead{width:calc(100% - 40px)!important;margin-bottom:42px!important}
-  .caseLead .caseHeroMedia{width:100%!important}
-  .caseLead .workflowCanvas{min-height:0!important}
-  .caseCompanyBar img{max-width:115px!important;max-height:34px!important}
-  .caseLead .metricStrip{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px 16px!important;padding:14px!important}
-  .caseLead .metric{min-width:0!important}
-  .caseLead .metric strong{font-size:26px!important}
-  .experienceSummary{grid-template-columns:46px minmax(0,1fr) 28px!important}
-  .experienceSummary time{display:block!important;grid-column:2!important;grid-row:auto!important;justify-self:start!important;margin-top:3px!important}
-  .experienceDetail>div{padding-left:0!important;padding-right:0!important}
-  .experienceSummary p{font-size:14px!important;line-height:1.45!important}
-  .commutePreviewClean{grid-template-columns:1fr!important;padding:24px 22px 0!important;min-height:0!important;gap:8px!important}
-  .commutePreviewMeta{padding-bottom:4px!important}
-  .commutePreviewMeta>p{display:none!important}
-  .commutePreviewMeta>strong{font-size:38px!important}
-  .commutePreviewDevice{height:330px!important}
-  .commutePreviewDeviceFrame{width:230px!important;margin-bottom:-54px!important}
-  .chatAppPreview{padding:20px 14px!important}
-  .chatAppPreview .phoneShell{min-height:260px!important;max-height:320px!important}
-  .commuteShowcase .immersiveSandbox{padding:18px 10px!important;border-radius:20px!important}
-  .commuteShowcase .iosPhoneDevice{width:min(100%,330px)!important}
+  .projectCardMedia{height:auto!important;min-height:0!important;aspect-ratio:1.22/1!important}
+  .projectCardBody{padding:22px 2px 28px!important}
+  .projectCardTop span,.moreBuildCopy>span:first-child{font-size:14px!important}
+  .projectCard h3{font-size:clamp(30px,9vw,40px)!important;line-height:1.02!important}
+  .projectCard p{font-size:15px!important;line-height:1.5!important}
+  .experienceSummary{grid-template-columns:48px minmax(0,1fr) 30px!important;gap:13px!important;padding:18px 0!important}
+  .experienceSummary time{grid-column:2!important;grid-row:auto!important;justify-self:start!important;margin-top:4px!important}
+  .experienceSummary h3{font-size:20px!important}
+  .experienceSummary p{white-space:normal!important;font-size:14px!important;line-height:1.45!important}
+  .experienceDetail>div{padding:6px 0 28px 61px!important}
+  .expMetricRow{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .caseLead{margin-top:28px!important;margin-bottom:42px!important}
+  .caseHeroLogoWrap{min-height:130px!important}
+  .caseHeroLogoWrap img{max-width:62%!important;max-height:120px!important}
+  .caseHeader .metricStrip{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px 20px!important}
+  .caseSection{padding:38px 0!important}
+  .accentureUserGrid{grid-template-columns:1fr!important}
+  .journeyFlow.aiJourney{grid-template-columns:1fr!important;gap:8px!important}
+  .journeyFlow.aiJourney>b{transform:rotate(90deg)!important;justify-self:center!important}
+  .evidenceNumbers{grid-template-columns:1fr!important}
+  .toolLogoRow{gap:10px!important}
+  .toolLogoWrap{width:48px!important;height:48px!important;min-width:48px!important;padding:8px!important}
+  .commutePreviewV39{min-height:0!important;height:100%!important;padding:20px!important}
+  .commutePreviewDeviceFrame{width:min(225px,70%)!important}
+  .commuteShowcase .immersiveSandbox{padding:18px 8px!important;border-radius:20px!important}
+  .commuteShowcase .iosPhoneDevice{width:min(100%,326px)!important}
+  .aboutSection{grid-template-columns:1fr!important;gap:34px!important}
+  .aboutPhoto{max-width:460px!important}
+  .aboutActions{display:block!important}
+  .bookRecForm{margin-top:10px!important;max-width:360px!important}
+  .hobbyPopoverCard{left:0!important;transform:translate(0,6px)!important}
+  .hobbyPopover:hover .hobbyPopoverCard,.hobbyPopover:focus-within .hobbyPopoverCard{transform:translate(0,0)!important}
+  .photoCarouselStage.portrait{max-width:82vw!important}
 }
 
 @media(max-width:430px){
-  .heroInner,.section,.siteFooter{padding-left:16px!important;padding-right:16px!important}
-  .projectCardMedia{aspect-ratio:1.15/1!important}
-  .projectCardBody{padding:20px 2px 26px!important}
-  .projectCardTop span{font-size:13px!important}
-  .projectCard h3{font-size:34px!important}
-  .caseLead{width:calc(100% - 32px)!important}
-  .caseLead .caseHeader h1{font-size:clamp(38px,12vw,54px)!important;overflow-wrap:anywhere!important}
-  .caseLead .caseIntro{font-size:17px!important}
+  .siteHeader,.heroInner,.section,.siteFooter,
+  .caseLead,.casePage .toolLogoSection,.casePage .caseSection,.casePage .sandboxSection{width:calc(100% - 32px)!important}
+  .projectCardMedia{aspect-ratio:1.12/1!important}
+  .projectCard h3{font-size:33px!important}
+  .experienceDetail>div{padding-left:0!important}
+  .caseHeader h1{font-size:clamp(38px,12vw,52px)!important;overflow-wrap:normal!important}
+  .caseHeader .metricStrip{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .commutePreviewDeviceFrame{width:min(205px,68%)!important}
   .commuteShowcase .iosPhoneDevice{width:min(100%,306px)!important}
-  .commutePreviewDevice{height:290px!important}
-  .commutePreviewDeviceFrame{width:205px!important}
+  .bookRecRow{flex-wrap:wrap!important}
+  .bookRecRow input{width:100%!important;min-width:0!important}
+  .bookRecRow button{width:100%!important}
+  .photoCarouselStage.portrait{max-width:88vw!important}
 }
+
+
+/* V39 QA corrections: specific overrides found during viewport inspection. */
+.v28Experience .experienceAccordion{
+  width:100%!important;
+  max-width:none!important;
+  margin-left:0!important;
+  margin-right:0!important;
+}
+.v28Experience .experienceItem,
+.v28Experience .experienceItem.open,
+.v28Experience .experienceItem:hover{
+  overflow:visible!important;
+  margin:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  border-left:0!important;
+  border-right:0!important;
+}
+.v28Experience .experienceItem.open{border-top:1px solid rgba(32,39,35,.08)!important;border-bottom:1px solid rgba(32,39,35,.08)!important}
+.v28Experience .experienceDetail>div{
+  width:100%!important;
+  max-width:none!important;
+  padding:16px 4px 34px 76px!important;
+  border-top:0!important;
+  overflow:visible!important;
+}
+.v28Experience .expStory>p{width:100%!important;max-width:none!important}
+.caseHeader .metric strong{white-space:nowrap!important;word-break:normal!important;overflow-wrap:normal!important}
+
+/* Preview canvas must have one column; an old two-column rule was still placing the phone off-center. */
+.commutePreviewV39{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr)!important}
+.project-commute .moreBuildVisual .commutePreviewV39{min-height:0!important;height:100%!important;padding:14px!important}
+.project-commute .moreBuildVisual .commutePreviewDeviceFrame{
+  width:auto!important;
+  height:88%!important;
+  max-width:74%!important;
+  max-height:92%!important;
+  aspect-ratio:630/1302!important;
+}
+/* Status bar + content now consume exactly one phone viewport, so nothing can extend below the hardware. */
+.iosDemoShell .iosScreenContent,
+.commutePreviewShell .iosScreenContent{
+  display:block!important;
+  height:calc(100% - 58px)!important;
+  min-height:0!important;
+  overflow:hidden!important;
+}
+.iosDemoShell .iosScreenContent>.iosOnboarding,
+.iosDemoShell .iosScreenContent>.iosAppScreen{
+  height:100%!important;
+  min-height:0!important;
+  overflow:hidden!important;
+}
+.iosOnboarding>.iosPrimary{flex:0 0 auto!important}
+.iosOnboarding>.iosTextBtn{flex:0 0 auto!important}
+
+/* Logo row: let the marks do the visual work instead of wrapping every one in another bubble. */
+.toolLogoWrap{
+  width:46px!important;
+  height:46px!important;
+  min-width:46px!important;
+  padding:5px!important;
+  border:0!important;
+  border-radius:10px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.toolLogoWrap:hover,.toolLogoWrap:focus-visible{background:rgba(255,255,255,.48)!important}
+.toolLogoWrap img{max-width:36px!important;max-height:36px!important}
+.toolLogoWrap.fallback{border:0!important;background:rgba(255,255,255,.42)!important}
+
+/* Orientation controls the gallery stage itself, not a taller legacy grid row. */
+.photoCarousel{grid-template-rows:auto auto!important;align-items:start!important}
+.photoCarouselStage{align-self:start!important}
+@media(max-width:800px){
+  .photoCarousel{grid-template-rows:auto auto auto!important}
+  .v28Experience .experienceDetail>div{padding-left:0!important;padding-right:0!important}
+  .project-commute .moreBuildVisual .commutePreviewDeviceFrame{height:86%!important;max-width:68%!important}
+}
+/* Commute card is deliberately more visual than the other build thumbnails. */
+.project-commute .moreBuildVisual{aspect-ratio:1/1!important}
+.project-commute .moreBuildVisual .commutePreviewDeviceFrame{
+  height:112%!important;
+  width:auto!important;
+  max-width:none!important;
+  max-height:none!important;
+  align-self:start!important;
+  margin-top:16px!important;
+}
+@media(max-width:760px){
+  .project-commute .moreBuildVisual{aspect-ratio:1/1!important}
+  .project-commute .moreBuildVisual .commutePreviewDeviceFrame{height:112%!important;margin-top:14px!important;max-width:none!important}
+}
+/* Final Commute thumbnail composition: full, readable product in the same phone UI as the demo. */
+.project-commute .moreBuildVisual{aspect-ratio:1.1/1!important}
+.project-commute .moreBuildVisual .commutePreviewDeviceFrame{
+  height:90%!important;
+  width:auto!important;
+  max-width:none!important;
+  max-height:90%!important;
+  align-self:center!important;
+  margin-top:0!important;
+}
+@media(max-width:760px){
+  .project-commute .moreBuildVisual{aspect-ratio:.86/1!important}
+  .project-commute .moreBuildVisual .commutePreviewDeviceFrame{height:90%!important;max-height:90%!important;margin-top:0!important}
+}
+/* V39 final preview fit: preserve the same UI but scale its desktop-sized component metrics into the thumbnail phone. */
+.commutePreviewShell .iosScreenContent{
+  position:absolute!important;
+  top:58px!important;
+  left:0!important;
+  width:128.21%!important;
+  height:calc((100% - 58px) / .78)!important;
+  transform:scale(.78)!important;
+  transform-origin:top left!important;
+}
+.project-commute .moreBuildVisual .commutePreviewDeviceFrame{height:94%!important;max-height:94%!important}
+@media(max-width:760px){
+  .project-commute .moreBuildVisual .commutePreviewDeviceFrame{height:94%!important;max-height:94%!important}
+}
+/* V39 thumbnail final: give the actual product enough vertical room rather than cropping or shrinking it. */
+.project-commute .moreBuildVisual{aspect-ratio:.74/1!important}
+.project-commute .moreBuildVisual .commutePreviewDeviceFrame{height:94%!important;max-height:94%!important;width:auto!important}
+.commutePreviewShell .iosScreenContent{
+  position:relative!important;
+  top:auto!important;
+  left:auto!important;
+  width:100%!important;
+  height:calc(100% - 58px)!important;
+  transform:none!important;
+}
+@media(max-width:760px){.project-commute .moreBuildVisual{aspect-ratio:.70/1!important}}
+/* Keep the native tab bar anchored to the device viewport rather than in document flow. */
+.iosDemoShell .iosTabBar{position:absolute!important;left:0!important;right:0!important;bottom:0!important;z-index:42!important}
+/* Give the product thumbnail a true device portrait canvas so the full home screen is visible. */
+.project-commute .moreBuildVisual{aspect-ratio:.66/1!important}
+@media(max-width:760px){.project-commute .moreBuildVisual{aspect-ratio:.58/1!important}}
+/* Desktop matches the tall editorial device-card proportion from the approved mockup. */
+.project-commute .moreBuildVisual{aspect-ratio:.90/1!important}
+@media(max-width:760px){.project-commute .moreBuildVisual{aspect-ratio:.58/1!important}}

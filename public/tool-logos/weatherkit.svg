@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="WeatherKit">
+  <defs>
+    <linearGradient id="wk" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#67b8ff"/>
+      <stop offset="1" stop-color="#5b78e6"/>
+    </linearGradient>
+  </defs>
+  <circle cx="25" cy="23" r="10" fill="#ffbf3f"/>
+  <g stroke="#ffbf3f" stroke-width="3" stroke-linecap="round">
+    <path d="M25 6v5M25 35v5M8 23h5M37 23h5M13 11l4 4M33 31l4 4M37 11l-4 4"/>
+  </g>
+  <path d="M17 48h29a9 9 0 0 0 0-18 14 14 0 0 0-26-3 10.5 10.5 0 0 0-3 21Z" fill="url(#wk)"/>
+</svg>
