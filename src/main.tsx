@@ -420,6 +420,10 @@ function SchedulerSandbox(){
   const [chat,setChat]=useState(['Maya: Tuesday morning works for me.']);
   const [chatText,setChatText]=useState('');
   const [shareOpen,setShareOpen]=useState(false);
+  const [toast,setToast]=useState('');
+  const toastTimer=useRef(null);
+  const flash=message=>{setToast(message);if(toastTimer.current)window.clearTimeout(toastTimer.current);toastTimer.current=window.setTimeout(()=>setToast(''),1600)};
+  useEffect(()=>()=>{if(toastTimer.current)window.clearTimeout(toastTimer.current)},[]);
   const best=useMemo(()=>{
     let bestI=0;
     for(let i=1;i<cells.length;i++){
@@ -462,25 +466,29 @@ function SchedulerSandbox(){
     window.addEventListener('pointercancel',up);
     return ()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',up)};
   },[view,mode]);
-  const quick=type=>setCells(prev=>prev.map((c,i)=>{
+  const quick=type=>{setCells(prev=>prev.map((c,i)=>{
     const row=Math.floor(i/5);
     if(type==='clear')return {...c,status:''};
     if(type==='all')return {...c,status:'available'};
     if(type==='evenings')return {...c,status:row>=5?'available':''};
     return {...c,status:row<=5?'available':''};
-  }));
-  const copyText=async(label,text)=>{try{await navigator.clipboard.writeText(text);setCopyState(label);window.setTimeout(()=>setCopyState(''),1400)}catch{setCopyState('')}};
-  const exportCalendar=()=>{const body=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Neha Portfolio//Scheduler Demo//EN','BEGIN:VEVENT','SUMMARY:Design Sync','LOCATION:Minskoff Pavilion - Room 240','DTSTART:20260915T103000','DTEND:20260915T110000','END:VEVENT','END:VCALENDAR'].join('\r\n');const blob=new Blob([body],{type:'text/calendar'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='design-sync.ics';a.click();URL.revokeObjectURL(url)};
-  const addVenue=()=>{const v=newVenue.trim();if(!v)return;setVenues(x=>[...x,{name:v,votes:0}]);setNewVenue('')};
+  }));flash(type==='all'?'Filled all slots as available':type==='evenings'?'Filled evening availability':type==='clear'?'Cleared your availability':'Filled weekdays 9–5')};
+  const copyText=async(label,text)=>{try{await navigator.clipboard.writeText(text);setCopyState(label);flash(label==='link'?'Invite link copied':label==='discord'?'Discord copy ready':'Email copy ready');window.setTimeout(()=>setCopyState(''),1400)}catch{setCopyState('');flash('Clipboard unavailable')}};
+  const exportCalendar=()=>{const body=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Neha Portfolio//Scheduler Demo//EN','BEGIN:VEVENT','SUMMARY:Design Sync','LOCATION:Minskoff Pavilion - Room 240','DTSTART:20260915T103000','DTEND:20260915T110000','END:VEVENT','END:VCALENDAR'].join('\r\n');const blob=new Blob([body],{type:'text/calendar'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='design-sync.ics';a.click();URL.revokeObjectURL(url);flash('Calendar exported')};
+  const addVenue=()=>{const v=newVenue.trim();if(!v)return;setVenues(x=>[...x,{name:v,votes:0}]);setNewVenue('');flash(`Added venue: ${v}`)};
+  const sendChat=()=>{const value=chatText.trim();if(!value)return;setChat(c=>[...c,`Neha: ${value}`]);setChatText('');flash('Message sent')};
+  const toggleNote=i=>{const hadNote=Boolean(cells[i]?.note);setCells(a=>a.map((x,j)=>j===i?{...x,note:x.note?'':'Class / hold'}:x));flash(hadNote?'Note removed':'Note added')};
   return <div className="schedulerSandbox">
     <div className="eventHero"><div><h2>Design Sync</h2><p>Sep 15-19 · 9:00 AM-12:00 PM</p><span className="locationPill">Minskoff Pavilion · Room 240</span></div><div className="eventStats"><span>2 days left</span><strong>3 participants</strong></div></div>
     <div className="quickRow"><span>Quick fill:</span><button onClick={()=>quick('all')}>Free all slots</button><button onClick={()=>quick('weekdays')}>Weekdays 9-5</button><button onClick={()=>quick('evenings')}>Evenings</button><button onClick={()=>quick('clear')}>Clear all</button></div>
     <div className="viewRow"><div><button className={view==='mine'?'active':''} onClick={()=>setView('mine')}>My Availability</button><button className={view==='heatmap'?'active':''} onClick={()=>setView('heatmap')}>Group Heatmap</button></div>{view==='mine'&&<div className="modeRow">{['available','maybe','unavailable'].map(m=><button className={mode===m?'active':''} key={m} onClick={()=>setMode(m)}>{m[0].toUpperCase()+m.slice(1)}</button>)}</div>}</div>
     <div className="schedulerActionRow"><button onClick={()=>{setShareOpen(v=>!v);copyText('link','#projects/scheduler')}}>{copyState==='link'?'Copied':'Share link'}</button><button onClick={()=>copyText('discord','Design Sync · Sep 15-19 · Add your availability: #projects/scheduler')}>{copyState==='discord'?'Copied':'Copy for Discord'}</button><button onClick={()=>copyText('email','Design Sync: please add your availability: #projects/scheduler')}>{copyState==='email'?'Copied':'Copy for Email'}</button><button onClick={exportCalendar}>Export calendar</button><button onClick={()=>quick('clear')}>Clear My Availability</button></div>
+    <div className="schedulerMicroRow"><span className="microPill activeMode">Mode: {view==='mine'?mode:'heatmap'}</span><span className="microPill">Best slot recalculates live</span>{dragging&&<span className="microPill accent">Painting…</span>}</div>
     {shareOpen&&<div className="shareBox"><strong>Invite link</strong><code>#projects/scheduler</code></div>}
+    {toast&&<div className="sandboxToast" role="status">{toast}</div>}
     <div className="bestMeet"><div><span>Best Time to Meet</span><strong>{best.day} · {best.time}-{times[Math.min(times.length-1,times.indexOf(best.time)+1)]}</strong></div><p>Highest available count, then fewest unavailable responses, then earliest tied slot.</p></div>
-    <div className="schedulerBody"><div className="fullCalendar"><p className="gridHint">Click or drag to apply a status. Drag the same status across filled cells again to clear them. Right-click a cell to add a note.</p><div className="calendarHead"><span></span>{days.map(d=><span key={d}>{d}</span>)}</div><div className="calendarGrid interactiveGrid">{times.map((t,r)=><React.Fragment key={t}><span className="timeLabel">{t}</span>{days.map((d,c)=>{const i=r*5+c;const cell=cells[i];const cls=view==='heatmap'?`heat heat-${Math.min(3,cell.available)}`:`status-${cell.status||'empty'}`;return <button key={d} data-slot-index={i} title={`${cell.note?cell.note+' · ':''}Available: ${cell.available} · Maybe: ${cell.maybe} · Unavailable: ${cell.unavailable}`} aria-pressed={view==='mine'?cell.status===mode:undefined} className={`slot ${cls} ${cell.note?'hasNote':''}`} onPointerDown={e=>beginDrag(i,e)} onContextMenu={e=>{e.preventDefault();setCells(a=>a.map((x,j)=>j===i?{...x,note:x.note?'':'Class / hold'}:x))}}/>})}</React.Fragment>)}</div></div>
-      <aside className="schedulerAside"><div className="sideCard"><h3>Participants</h3><p><span className="responded"></span> Neha · Responded</p><p><span className="responded"></span> Maya · Responded</p><p><span className="pending"></span> Alex · Pending</p></div><div className="sideCard"><h3>Venue Voting</h3>{venues.map(v=><button className={venue===v.name?'venue active':'venue'} key={v.name} onClick={()=>setVenue(v.name)}><span>{v.name}</span><strong>{v.votes+(venue===v.name?1:0)} votes</strong></button>)}<div className="venueAdd"><input value={newVenue} onChange={e=>setNewVenue(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addVenue()} placeholder="Add venue…"/><button onClick={addVenue}>Add</button></div></div><div className="sideCard"><h3>Event Chat</h3><div className="eventChat">{chat.map((m,i)=><p key={i}>{m}</p>)}</div><div className="inlineComposer"><input value={chatText} onChange={e=>setChatText(e.target.value)} placeholder="Drop a quick note…"/><button onClick={()=>{if(chatText.trim()){setChat(c=>[...c,`Neha: ${chatText.trim()}`]);setChatText('')}}}>Send</button></div></div></aside>
+    <div className="schedulerBody"><div className="fullCalendar"><p className="gridHint">Click or drag to apply a status. Drag the same status across filled cells again to clear them. Right-click a cell to add a note.</p><div className="calendarHead"><span></span>{days.map(d=><span key={d}>{d}</span>)}</div><div className="calendarGrid interactiveGrid">{times.map((t,r)=><React.Fragment key={t}><span className="timeLabel">{t}</span>{days.map((d,c)=>{const i=r*5+c;const cell=cells[i];const cls=view==='heatmap'?`heat heat-${Math.min(3,cell.available)}`:`status-${cell.status||'empty'}`;return <button key={d} data-slot-index={i} title={`${cell.note?cell.note+' · ':''}Available: ${cell.available} · Maybe: ${cell.maybe} · Unavailable: ${cell.unavailable}`} aria-pressed={view==='mine'?cell.status===mode:undefined} className={`slot ${cls} ${cell.note?'hasNote':''}`} onPointerDown={e=>beginDrag(i,e)} onContextMenu={e=>{e.preventDefault();toggleNote(i)}}/>})}</React.Fragment>)}</div></div>
+      <aside className="schedulerAside"><div className="sideCard"><h3>Participants</h3><p><span className="responded"></span> Neha · Responded</p><p><span className="responded"></span> Maya · Responded</p><p><span className="pending"></span> Alex · Pending</p></div><div className="sideCard"><h3>Venue Voting</h3>{venues.map(v=><button className={venue===v.name?'venue active':'venue'} key={v.name} onClick={()=>{setVenue(v.name);flash(`${v.name} selected`)}}><span>{v.name}</span><strong>{v.votes+(venue===v.name?1:0)} votes</strong></button>)}<div className="venueAdd"><input value={newVenue} onChange={e=>setNewVenue(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addVenue()} placeholder="Add venue…"/><button onClick={addVenue}>Add</button></div></div><div className="sideCard"><h3>Event Chat</h3><div className="eventChat">{chat.map((m,i)=><p key={i}>{m}</p>)}</div><div className="inlineComposer"><input value={chatText} onChange={e=>setChatText(e.target.value)} onKeyDown={e=>e.key==='Enter'&&sendChat()} placeholder="Drop a quick note…"/><button onClick={sendChat}>Send</button></div></div></aside>
     </div>
   </div>
 }
@@ -563,14 +571,14 @@ const photoCollections=[
     id:'san-francisco',
     title:'San Francisco',
     note:'California',
-    description:'City light, coastlines, and the Bay.',
+    description:'Architecture, bridges, neighborhoods, and Bay light.',
     photos:[
-      {src:'photography/gallery/sf/sf-1.JPG',alt:'Cliffside cave and cypress landscape above turquoise water'},
-      {src:'photography/gallery/sf/sf-2.jpg',alt:'Curving coastline with teal water viewed from above'},
-      {src:'photography/gallery/sf/sf-3.jpg',alt:'San Francisco skyline behind pastel Painted Ladies homes'},
-      {src:'photography/gallery/sf/sf-4.jpg',alt:'Golden Gate Bridge in haze above flowering foreground'},
-      {src:'photography/gallery/sf/sf-5.jpg',alt:'Dark water and sunset light over the Bay'},
-      {src:'photography/gallery/sf/sf-6.jpg',alt:'Bay view framed by trees and a house on the edge of the frame'}
+      {src:'photography/gallery/sf/sf-1.jpg',alt:'Golden Gate Bridge framed between tall trees'},
+      {src:'photography/gallery/sf/sf-2.jpg',alt:'Love locks in sharp focus with the Golden Gate Bridge behind them'},
+      {src:'photography/gallery/sf/sf-3.jpg',alt:'Golden Gate Bridge and Baker Beach framed by tree branches'},
+      {src:'photography/gallery/sf/sf-4.jpg',alt:'Detailed Victorian homes in warm San Francisco light'},
+      {src:'photography/gallery/sf/sf-5.jpg',alt:'Golden Gate Bridge in hazy evening light above flowering plants'},
+      {src:'photography/gallery/sf/sf-6.jpg',alt:'A palm tree layered against a hazy San Francisco skyline'}
     ]
   },
   {
@@ -604,6 +612,20 @@ const photoCollections=[
     ]
   },
   {
+    id:'hawaii',
+    title:'Hawaii',
+    note:'Hawaiʻi',
+    description:'Tropical color, coastlines, fruit stands, and changing weather.',
+    photos:[
+      {src:'photography/gallery/hawaii/hawaii-1.jpg',alt:'Rainbow over a rocky Hawaiian coastline'},
+      {src:'photography/gallery/hawaii/hawaii-2.jpg',alt:'Tropical palms and a small island building'},
+      {src:'photography/gallery/hawaii/hawaii-3.jpg',alt:'Banana plants and tropical greenery at a roadside farm'},
+      {src:'photography/gallery/hawaii/hawaii-4.jpg',alt:'Papaya, citrus, cacao, and sugarcane displayed at a tropical farm stand'},
+      {src:'photography/gallery/hawaii/hawaii-5.jpg',alt:'Warm sunset over the ocean in Hawaii'},
+      {src:'photography/gallery/hawaii/hawaii-6.jpg',alt:'Bright tropical flowers against lush green foliage'}
+    ]
+  },
+  {
     id:'chicago',
     title:'Chicago',
     note:'Illinois',
@@ -619,14 +641,48 @@ const photoCollections=[
 function PhotographyPage({onBack}){
   const [lightbox,setLightbox]=useState(null);
   const featured=photoCollections.find(section=>section.id==='san-francisco')?.photos?.[2]||photoCollections[0].photos[0];
-  return <main className="photoPage photoGalleryPage"><AuraField tone="photography"/><header className="photoPageHeader"><button type="button" onClick={onBack}>← Portfolio</button><span>Photography</span></header><section className="photoGalleryIntro"><div className="photoGalleryCopy"><p>Film photography</p><h1>Selected work.</h1><span>UMich grad, MSU grad, San Francisco, Lake Tahoe, Yosemite, and Chicago.</span><small>Image-first, lightly organized, and meant to feel like a real gallery rather than a scrapbook.</small></div><figure className="photoHeroShot"><img loading="eager" decoding="async" src={featured.src} alt={featured.alt}/></figure></section><nav className="photoCollectionNav" aria-label="Photography collections">{photoCollections.map(section=><a key={section.id} href={`#${section.id}`}>{section.title}</a>)}</nav><section className="photoGalleryStatement"><p>I shoot mostly on 35mm film and usually carry a camera when I am exploring somewhere new. This page keeps the presentation quiet so the photos do the work.</p></section>{photoCollections.map(section=><section id={section.id} key={section.id} className="photoCollectionSection"><div className="photoCollectionMeta"><p>{section.note}</p><h2>{section.title}</h2><span>{section.description}</span></div><div className="photoMasonry" aria-label={`${section.title} photo collection`}>{section.photos.map((photo,index)=><button type="button" className={`photoGalleryTile ${index===0?'lead':''}`} key={photo.src} onClick={()=>setLightbox(photo)} aria-label={`Open image from ${section.title}`}><img loading="lazy" decoding="async" src={photo.src} alt={photo.alt}/></button>)}</div></section>)}<ImageLightbox image={lightbox} onClose={()=>setLightbox(null)}/></main>
+  return <main className="photoPage photoGalleryPage"><AuraField tone="photography"/><header className="photoPageHeader"><button type="button" onClick={onBack}>← Portfolio</button><span>Photography</span></header><section className="photoGalleryIntro"><div className="photoGalleryCopy"><p>Film photography</p><h1>Selected work.</h1><span>UMich grad, MSU grad, San Francisco, Lake Tahoe, Yosemite, Hawaii, and Chicago.</span><small>Image-first, lightly organized, and meant to feel like a real gallery rather than a scrapbook.</small></div><figure className="photoHeroShot"><img loading="eager" decoding="async" src={featured.src} alt={featured.alt}/></figure></section><nav className="photoCollectionNav" aria-label="Photography collections">{photoCollections.map(section=><a key={section.id} href={`#${section.id}`}>{section.title}</a>)}</nav><section className="photoGalleryStatement"><p>I shoot mostly on 35mm film and usually carry a camera when I am exploring somewhere new. This page keeps the presentation quiet so the photos do the work.</p></section>{photoCollections.map(section=><section id={section.id} key={section.id} className="photoCollectionSection"><div className="photoCollectionMeta"><p>{section.note}</p><h2>{section.title}</h2><span>{section.description}</span></div><div className="photoMasonry" aria-label={`${section.title} photo collection`}>{section.photos.map((photo,index)=><button type="button" className={`photoGalleryTile ${index===0?'lead':''}`} key={photo.src} onClick={()=>setLightbox(photo)} aria-label={`Open image from ${section.title}`}><img loading="lazy" decoding="async" src={photo.src} alt={photo.alt}/></button>)}</div></section>)}<ImageLightbox image={lightbox} onClose={()=>setLightbox(null)}/></main>
 }
 
-function ToolLogo({slug,name,mark}){
- const [failed,setFailed]=useState(false);
- return <span className={`toolLogoWrap ${failed?'fallback':''}`} data-tool={name} aria-label={name} title={name}>{failed?<span className="toolLogoFallback" aria-hidden="true">{mark}</span>:<img loading="lazy" decoding="async" src={`https://cdn.simpleicons.org/${slug}/3F3D3A`} alt="" onError={()=>setFailed(true)}/>}</span>
+const toolLogoMap={
+  openai:{name:'OpenAI',mark:'AI',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/openai.svg','https://cdn.simpleicons.org/openai/3F3D3A']},
+  excel:{name:'Microsoft Excel',mark:'XL',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/microsoftexcel.svg','https://cdn.simpleicons.org/microsoftexcel/217346']},
+  powerpoint:{name:'Microsoft PowerPoint',mark:'PP',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/microsoftpowerpoint.svg','https://cdn.simpleicons.org/microsoftpowerpoint/B7472A']},
+  powerbi:{name:'Power BI',mark:'BI',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/powerbi.svg','https://cdn.simpleicons.org/powerbi/F2C811']},
+  salesforce:{name:'Salesforce',mark:'SF',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/salesforce.svg','https://cdn.simpleicons.org/salesforce/00A1E0']},
+  adobe:{name:'Adobe Experience Manager',mark:'Ae',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/adobe.svg','https://cdn.simpleicons.org/adobe/FF0000']},
+  postman:{name:'Postman',mark:'PM',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/postman.svg','https://cdn.simpleicons.org/postman/FF6C37']},
+  graphql:{name:'GraphQL',mark:'GQ',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/graphql.svg','https://cdn.simpleicons.org/graphql/E10098']},
+  figma:{name:'Figma',mark:'FG',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/figma.svg','https://cdn.simpleicons.org/figma/F24E1E']},
+  html:{name:'HTML5',mark:'H5',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/html5.svg','https://cdn.simpleicons.org/html5/E34F26']},
+  css:{name:'CSS3',mark:'CSS',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/css3.svg','https://cdn.simpleicons.org/css3/1572B6']},
+  javascript:{name:'JavaScript',mark:'JS',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/javascript.svg','https://cdn.simpleicons.org/javascript/F7DF1E']},
+  react:{name:'React',mark:'R',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/react.svg','https://cdn.simpleicons.org/react/61DAFB']},
+  mui:{name:'Material UI',mark:'MUI',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/mui.svg','https://cdn.simpleicons.org/mui/007FFF']},
+  flask:{name:'Flask',mark:'FL',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/flask.svg','https://cdn.simpleicons.org/flask/3F3D3A']},
+  mysql:{name:'MySQL',mark:'MY',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/mysql.svg','https://cdn.simpleicons.org/mysql/4479A1']},
+  socketio:{name:'Socket.IO',mark:'IO',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/socketdotio.svg','https://cdn.simpleicons.org/socketdotio/3F3D3A']},
+  docker:{name:'Docker',mark:'DK',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/docker.svg','https://cdn.simpleicons.org/docker/2496ED']},
+  googlecloud:{name:'Google Cloud',mark:'GC',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/googlecloud.svg','https://cdn.simpleicons.org/googlecloud/4285F4']},
+  python:{name:'Python',mark:'PY',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/python.svg','https://cdn.simpleicons.org/python/3776AB']}
+};
+const toolSets={
+  fcvf:['excel','figma','html','css','javascript'],
+  accenture:['openai','salesforce','powerbi','excel','powerpoint'],
+  finsimple:['adobe','salesforce','graphql','postman','figma'],
+  scheduler:['python','flask','mysql','socketio','docker','googlecloud'],
+  chat:['javascript','html','css','socketio'],
+  estee:['figma'],
+  commute:['figma']
+};
+function ToolLogo({tool}){
+ const safeTool=tool||{name:'Tool',mark:'•',urls:[]};
+ const [attempt,setAttempt]=useState(0);
+ const failed=attempt>=safeTool.urls.length;
+ useEffect(()=>setAttempt(0),[safeTool.name]);
+ return <span className={`toolLogoWrap ${failed?'fallback':''}`} data-tool={safeTool.name} aria-label={safeTool.name} title={safeTool.name}>{failed?<span className="toolLogoFallback" aria-hidden="true">{safeTool.mark}</span>:<img loading="lazy" decoding="async" src={safeTool.urls[attempt]} alt="" referrerPolicy="no-referrer" onError={()=>setAttempt(v=>v+1)}/>}</span>
 }
-function ToolLogoStrip({id}){const items=toolSets[id]||[];if(!items.length)return null;return <section className="toolLogoSection"><h2>Tech Stack</h2><div className="toolLogoRow">{items.map(k=>{const [slug,name,mark]=toolLogoMap[k];return <ToolLogo key={k} slug={slug} name={name} mark={mark}/>})}</div></section>}
+function ToolLogoStrip({id}){const items=toolSets[id]||[];if(!items.length)return null;return <section className="toolLogoSection"><h2>Tech Stack</h2><div className="toolLogoRow">{items.map(k=><ToolLogo key={k} tool={toolLogoMap[k]}/>)}</div></section>}
 
 
 function CaseStudy({id,onBack}){
@@ -752,7 +808,7 @@ function App(){
  const [current,setCurrent]=useState(route);
  const homeScroll=useRef(0);
  useEffect(()=>{const onHash=()=>setCurrent(route());window.addEventListener('hashchange',onHash);return()=>window.removeEventListener('hashchange',onHash)},[]);
- const transition=(fn)=>{const d=document;if(d.startViewTransition)d.startViewTransition(fn);else fn()};
+ const transition=(fn)=>fn();
  const openCase=(id)=>{homeScroll.current=window.scrollY;transition(()=>{window.location.hash=`/projects/${id}`;setCurrent({type:'case',id});requestAnimationFrame(()=>window.scrollTo(0,0))})};
  const closeRoute=()=>transition(()=>{history.pushState(null,'',window.location.pathname+window.location.search);setCurrent({type:'home'});requestAnimationFrame(()=>window.scrollTo(0,homeScroll.current))});
  if(current.type==='case')return <CaseStudy id={current.id} onBack={closeRoute}/>;
