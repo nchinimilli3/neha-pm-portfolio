@@ -2704,3 +2704,202 @@ input,select,button{accent-color:var(--color-focus)}
 @media(max-width:480px){
   .casePage .toolLogoRow{grid-template-columns:1fr!important}
 }
+
+/* =========================================================
+   V38 — recruiter hierarchy, responsive QA, demo polish
+   ========================================================= */
+
+.heroTagline{
+  max-width:760px;
+  margin:22px 0 0;
+  font-size:clamp(17px,1.35vw,21px);
+  line-height:1.55;
+  letter-spacing:-.018em;
+  color:#4e5651;
+}
+.heroInner{max-width:980px!important}
+
+/* Let experience copy use the real container width. */
+.experienceSummary>div,
+.experienceDetail>div,
+.expStory,
+.expStory>p,
+.expColumns,
+.expMetricRow{max-width:none!important;width:100%!important}
+.experienceSummary{grid-template-columns:56px minmax(0,1fr) auto 32px!important}
+.experienceSummary>div{min-width:0!important}
+.experienceSummary p{max-width:none!important;width:100%!important}
+.experienceDetail>div{padding-right:8px!important}
+.expColumns{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.expColumns.two{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+
+/* Case-study hero: actual evidence on the right, never an empty card. */
+.caseLead{
+  width:min(1180px,calc(100% - 64px));
+  margin:0 auto 54px;
+  display:grid;
+  grid-template-columns:minmax(0,1.08fr) minmax(360px,.92fr);
+  gap:clamp(42px,6vw,88px);
+  align-items:center;
+}
+.caseLead .caseHeader,
+.caseLead .caseHeroMedia{
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding-left:0!important;
+  padding-right:0!important;
+}
+.caseLead .caseHeader{padding-top:0!important;padding-bottom:0!important}
+.caseLead .caseHeroMedia{min-width:0!important;display:grid!important;place-items:center!important}
+.caseLead .caseHeroMedia>*{width:100%!important;max-width:100%!important}
+.caseLead .caseArtifactHero{margin:0!important;border-radius:18px!important;overflow:hidden!important;background:rgba(255,255,255,.45)!important}
+.caseLead .caseArtifactHero img{width:100%!important;height:auto!important;display:block!important;object-fit:contain!important}
+.caseLead .workflowCanvas{min-height:360px!important;height:auto!important;margin:0!important}
+.caseLead .commutePreview{min-height:520px!important}
+.caseLead .schedulerPreview,.caseLead .miniScheduler,.caseLead .phoneShell{margin:0!important;max-width:none!important}
+.caseLead .metricStrip{margin-top:26px!important}
+
+/* Brand mark in company bar is allowed to be confident, not a tiny icon. */
+.caseCompanyBar{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:24px!important}
+.caseCompanyBar img{width:auto!important;max-width:150px!important;max-height:44px!important;object-fit:contain!important}
+
+/* Project cards: no fixed-width overflow, no clipped text. */
+.balancedProjectGrid,.funLeadGrid{min-width:0!important}
+.projectCard,.projectCardAction,.projectCardMedia,.projectCardBody,.moreBuildCard,.moreBuildCard>*{min-width:0!important;max-width:100%!important}
+.projectCardAction{width:100%!important;overflow:hidden!important}
+.projectCardBody{overflow-wrap:anywhere!important}
+.projectCard h3,.moreBuildCard h3{max-width:100%!important;overflow-wrap:normal!important;word-break:normal!important}
+.projectCard p,.moreBuildCard p{max-width:100%!important}
+.homepageMockup{width:100%!important;max-width:100%!important;overflow:hidden!important}
+.homepageMockup img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important}
+
+/* Actual app UI is the preview source. */
+.homepageAppPreview{height:100%;display:grid;place-items:center;padding:clamp(20px,3vw,44px);background:radial-gradient(circle at 12% 12%,rgba(63,178,158,.13),transparent 34%),radial-gradient(circle at 90% 82%,rgba(172,127,210,.15),transparent 38%),rgba(247,244,238,.65)}
+.chatAppPreview .phoneShell{width:min(100%,560px)!important;min-height:330px!important;max-height:390px!important;pointer-events:none!important;transform:none!important}
+
+/* Commute card is a composed product preview rather than a tucked screenshot. */
+.commutePreviewClean{
+  min-height:500px!important;
+  display:grid!important;
+  grid-template-columns:minmax(180px,.72fr) minmax(250px,1fr)!important;
+  align-items:center!important;
+  gap:24px!important;
+  padding:30px 34px 0!important;
+  overflow:hidden!important;
+}
+.commutePreviewMeta{align-self:center!important;padding:0!important;z-index:2}
+.commutePreviewMeta>strong{font-size:clamp(34px,4vw,56px)!important;line-height:.98!important;letter-spacing:-.055em!important}
+.commutePreviewMeta>small{font-size:16px!important;margin-top:10px!important}
+.commutePreviewMeta>p{font-size:14px!important;line-height:1.5!important;max-width:34ch!important;margin-top:18px!important}
+.commutePreviewDevice{align-self:end!important;display:grid!important;place-items:end center!important;height:100%!important;min-width:0!important}
+.commutePreviewDeviceFrame{width:min(100%,300px)!important;margin:0 auto -35px!important}
+.commutePreviewShell .iosScreenContent{height:calc(100% - 53px)!important;overflow:hidden!important}
+
+/* Main commute demo: one fixed iPhone viewport. Main screens do not scroll. */
+.commuteShowcase .immersiveSandbox{overflow:hidden!important}
+.iphoneDemoStage{width:100%!important;overflow:visible!important}
+.commuteShowcase .iosPhoneDevice{width:min(100%,360px)!important}
+.iosScreenContent{height:calc(100% - 53px)!important;overflow:hidden!important}
+.iosOnboarding,.iosAppScreen{overflow:hidden!important;min-height:0!important}
+.iosOnboarding{padding-top:18px!important;padding-bottom:20px!important}
+.iosOnboarding h2{margin:10px 0 8px!important;font-size:29px!important}
+.iosOnboarding .iosSub,.iosOnboarding>p{margin-bottom:14px!important}
+.routineItem{padding:10px 0!important}
+.routineSummary{padding:12px 0!important}
+.iosField{padding:10px 0!important}
+.bufferRow{padding:11px 0!important}
+.calendarPreview{margin:6px 0 14px!important;padding:12px!important}
+.nativeSettingRow{margin:8px 0 14px!important}
+.alarmPreference{margin:10px 0 14px!important;padding:10px 0!important}
+.iosPrimary{padding:13px 16px!important}
+.iosTextBtn{padding:9px!important}
+.iosWelcome{padding-bottom:24px!important;gap:11px!important}
+.iosWelcome h2{font-size:35px!important;margin:8px 0!important}
+.iosWelcome p{margin-bottom:12px!important}
+.todayScreen{padding-top:18px!important}
+.appTop{margin-bottom:16px!important}
+.destinationLine{padding-bottom:10px!important}
+.bigMoment{margin:8px -7px 5px!important;padding:18px 12px 17px!important}
+.bigMoment strong{font-size:48px!important}
+.routeRecommendation{padding:11px 12px!important}
+.routeReason{margin:8px 0!important;font-size:11px!important;line-height:1.35!important}
+.liveStrip{margin-top:7px!important}
+.sleepAction{padding-top:8px!important}
+.iosTabBar{height:62px!important;padding-top:5px!important;padding-bottom:7px!important}
+.iosAppScreen{padding-bottom:68px!important}
+/* Sheets are native detail views; only these may scroll if content exceeds one screen. */
+.iosFullSheet{overscroll-behavior:contain!important;scrollbar-width:none!important}
+.iosFullSheet::-webkit-scrollbar{display:none}
+
+/* Tech stack: local fallbacks are visible, legible, consistent. */
+.casePage .toolLogoWrap.fallback{background:transparent!important;border:0!important}
+.casePage .toolLogoFallback{width:34px!important;height:28px!important;overflow:visible!important}
+
+/* Large monitors: use space without turning paragraphs into banners. */
+@media(min-width:1600px){
+  .siteHeader,.section,.heroInner,.siteFooter{max-width:1420px!important}
+  .balancedProjectGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:42px!important}
+  .projectCardMedia{min-height:430px!important}
+  .caseLead,.casePage .toolLogoSection,.casePage .caseSection,.casePage .sandboxSection{width:min(1320px,calc(100% - 96px))!important;max-width:1320px!important}
+  .caseLead{grid-template-columns:minmax(0,1fr) minmax(460px,.95fr)!important}
+  .caseSection>div,.caseSectionBody{max-width:900px}
+  .experienceSection,.educationSection,.projectsSection,.moreSection,.aboutSection{max-width:1420px!important}
+}
+
+@media(max-width:980px){
+  .caseLead{grid-template-columns:1fr!important;width:min(100% - 48px,880px)!important;gap:30px!important;align-items:start!important}
+  .caseLead .caseHeroMedia{max-width:760px!important}
+  .expColumns,.expColumns.two{grid-template-columns:1fr!important}
+  .commutePreviewClean{grid-template-columns:.8fr 1fr!important}
+}
+
+@media(max-width:760px){
+  html,body,#root{max-width:100%!important;overflow-x:hidden!important}
+  .siteHeader,.section,.hero,.siteFooter{width:100%!important;max-width:100%!important;box-sizing:border-box!important}
+  .heroInner,.section,.siteFooter{padding-left:20px!important;padding-right:20px!important}
+  .heroTagline{font-size:16px!important;line-height:1.5!important;margin-top:18px!important}
+  .balancedProjectGrid,.funLeadGrid,.smallBuildGrid{width:100%!important;grid-template-columns:minmax(0,1fr)!important;gap:28px!important}
+  .projectCardReveal,.projectCard,.projectCardAction,.projectCardMedia,.projectCardBody,.moreBuildCard{width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important}
+  .projectCardAction{display:block!important}
+  .projectCardMedia{height:auto!important;min-height:0!important;aspect-ratio:1.24/1!important}
+  .projectCardMedia .homepageMockup,.projectCardMedia .editorialCover,.projectCardMedia>.homepageAppPreview{height:100%!important;min-height:0!important}
+  .projectCardBody{padding:24px 4px 30px!important}
+  .projectCard h3{font-size:clamp(30px,9vw,42px)!important;line-height:1.02!important;letter-spacing:-.045em!important}
+  .projectCard p{font-size:16px!important;line-height:1.5!important}
+  .caseLead{width:calc(100% - 40px)!important;margin-bottom:42px!important}
+  .caseLead .caseHeroMedia{width:100%!important}
+  .caseLead .workflowCanvas{min-height:0!important}
+  .caseCompanyBar img{max-width:115px!important;max-height:34px!important}
+  .caseLead .metricStrip{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px 16px!important;padding:14px!important}
+  .caseLead .metric{min-width:0!important}
+  .caseLead .metric strong{font-size:26px!important}
+  .experienceSummary{grid-template-columns:46px minmax(0,1fr) 28px!important}
+  .experienceSummary time{display:block!important;grid-column:2!important;grid-row:auto!important;justify-self:start!important;margin-top:3px!important}
+  .experienceDetail>div{padding-left:0!important;padding-right:0!important}
+  .experienceSummary p{font-size:14px!important;line-height:1.45!important}
+  .commutePreviewClean{grid-template-columns:1fr!important;padding:24px 22px 0!important;min-height:0!important;gap:8px!important}
+  .commutePreviewMeta{padding-bottom:4px!important}
+  .commutePreviewMeta>p{display:none!important}
+  .commutePreviewMeta>strong{font-size:38px!important}
+  .commutePreviewDevice{height:330px!important}
+  .commutePreviewDeviceFrame{width:230px!important;margin-bottom:-54px!important}
+  .chatAppPreview{padding:20px 14px!important}
+  .chatAppPreview .phoneShell{min-height:260px!important;max-height:320px!important}
+  .commuteShowcase .immersiveSandbox{padding:18px 10px!important;border-radius:20px!important}
+  .commuteShowcase .iosPhoneDevice{width:min(100%,330px)!important}
+}
+
+@media(max-width:430px){
+  .heroInner,.section,.siteFooter{padding-left:16px!important;padding-right:16px!important}
+  .projectCardMedia{aspect-ratio:1.15/1!important}
+  .projectCardBody{padding:20px 2px 26px!important}
+  .projectCardTop span{font-size:13px!important}
+  .projectCard h3{font-size:34px!important}
+  .caseLead{width:calc(100% - 32px)!important}
+  .caseLead .caseHeader h1{font-size:clamp(38px,12vw,54px)!important;overflow-wrap:anywhere!important}
+  .caseLead .caseIntro{font-size:17px!important}
+  .commuteShowcase .iosPhoneDevice{width:min(100%,306px)!important}
+  .commutePreviewDevice{height:290px!important}
+  .commutePreviewDeviceFrame{width:205px!important}
+}
