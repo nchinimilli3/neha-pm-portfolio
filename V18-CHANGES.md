@@ -1,4 +1,4 @@
-# V18 — full picky/detail pass
+# V18 - full picky/detail pass
 
 This is the polish pass built on V17. It preserves the pointer-based scheduler drag behavior and all prior case-study/content work.
 

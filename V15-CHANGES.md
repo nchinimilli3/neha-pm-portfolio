@@ -1,4 +1,4 @@
-# V15 — curation + visual evidence
+# V15 - curation + visual evidence
 
 - Homepage Ford projects now use editorial automotive covers; actual product screens remain inside the case studies.
 - Case studies open with real project evidence immediately after title/ownership.

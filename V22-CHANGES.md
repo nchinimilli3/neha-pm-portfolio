@@ -1,4 +1,4 @@
-# V22 — Accessibility + final art direction
+# V22 - Accessibility + final art direction
 
 - Simplified hero to name, degree, View work, Resume; selected work now enters sooner.
 - Restored atmospheric aura while protecting text readability.

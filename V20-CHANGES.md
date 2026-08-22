@@ -1,4 +1,4 @@
-# V20 — Final substantive curation pass
+# V20 - Final substantive curation pass
 
 - Removed visible Signal / Decision / Why / Tradeoff rubric panels; case-study sequencing now carries the reasoning.
 - Simplified hero to factual education + work context.

@@ -1,4 +1,4 @@
-# V25 — Commute iPhone demo
+# V25 - Commute iPhone demo
 
 - Rebuilt Commute sandbox as a contained iPhone-app experience rather than a control panel around a static phone.
 - Added first-launch onboarding: morning routine, simulated Apple Health walking permission, simulated Calendar connection, and first commute setup.

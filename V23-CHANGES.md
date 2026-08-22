@@ -1,4 +1,4 @@
-# V23 — Editorial Product Tone
+# V23 - Editorial Product Tone
 
 - Removed Ray Tracer from the homepage gallery; all other projects remain.
 - Removed CSE course-number eyebrows from Scheduler, Group Chat, Spartan Touchdown, and Stable Fluids.

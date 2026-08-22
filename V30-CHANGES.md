@@ -1,4 +1,4 @@
-# V30 — Comprehensive audit implementation
+# V30 - Comprehensive audit implementation
 
 This pass implements the V29 comprehensive audit across product correctness, UX, accessibility, copy, visual hierarchy, project imagery, routing, metadata, deployment, and polish.
 

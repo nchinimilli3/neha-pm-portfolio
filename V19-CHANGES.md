@@ -1,4 +1,4 @@
-# V19 — Content architecture / PM reasoning pass
+# V19 - Content architecture / PM reasoning pass
 
 - Kept V18 visual system; no broad redesign.
 - Reframed the hero with a concise product thesis plus factual background/employer context.

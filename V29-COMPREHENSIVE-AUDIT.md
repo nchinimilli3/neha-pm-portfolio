@@ -17,7 +17,7 @@ A polished V30 could realistically move this into the 8.5–9 range.
 
 ---
 
-# P0 — Fix before calling this portfolio final
+# P0 - Fix before calling this portfolio final
 
 ## 1. Commute demo has time-state contradictions
 The iPhone status bar is hard-coded to **9:41**, while the main experience is for a **9:00 AM** destination and displays wake/leave times around 7–8 AM. A user immediately reads the product as fake because the phone says it is already after the meeting.
@@ -53,7 +53,7 @@ The case study lists Google Routes, 511, HealthKit, Calendar, Weather, and iOS a
 
 ---
 
-# P1 — High-impact product / recruiter issues
+# P1 - High-impact product / recruiter issues
 
 ## 7. The strongest project story is not instantly obvious on the homepage
 Projects are now equal-weight two-column cards, which solves the “giant project” issue, but the card copy still reads similarly across projects. The user’s professional credibility comes from Experience, so Projects should answer “what kind of product thinker is she?” faster.
@@ -112,7 +112,7 @@ The key product idea is “work backward from your commitment and morning,” bu
 
 ---
 
-# P1 — Commute app UX details
+# P1 - Commute app UX details
 
 ## 17. Onboarding progress count is wrong
 The flow shows “1 of 5” through “5 of 5,” but then has an additional `Commute setup` stage. That makes the setup feel longer than promised.
@@ -186,7 +186,7 @@ The stale-state sentence says schedules and observed patterns are carrying more 
 
 ---
 
-# P1 — Frontend / deployment / reliability
+# P1 - Frontend / deployment / reliability
 
 ## 31. Dependencies use `latest`
 All dependencies are pinned to `latest`, making builds non-reproducible and potentially breaking unexpectedly.
@@ -233,7 +233,7 @@ The environment could not complete `npm install`, so V29 has not actually passed
 
 ---
 
-# P1 — Accessibility / interaction
+# P1 - Accessibility / interaction
 
 ## 40. Clickable `<article role="link">` contains a nested `<button>`
 Both ProjectCard and MoreProjectCard use the whole article as a link while also placing a button inside. This creates duplicated interactive targets and can be awkward for keyboard/screen-reader users.
@@ -276,7 +276,7 @@ The project card moves upward on hover, and the laptop itself also moves. Two la
 
 ---
 
-# P2 — Writing / anti-vibe-code details
+# P2 - Writing / anti-vibe-code details
 
 ## 49. “Your morning, timed backwards.” is clean but still feels tagline-like
 It is better than generic AI copy, but if the product UI is meant to be minimal, `Commute` + one sentence may feel more native.
@@ -311,7 +311,7 @@ MetricStrip uses Georgia display numbers and top/bottom rules. This can make met
 
 ---
 
-# P2 — Visual system details
+# P2 - Visual system details
 
 ## 58. Background aurora is still very prominent behind Experience
 The colored blooms make rows harder to visually align and compete with company logos.
@@ -352,7 +352,7 @@ Ray Tracer / Stable Fluids / Spartan Touchdown could be a more editorial thumbna
 
 ---
 
-# P2 — Content / portfolio strategy
+# P2 - Content / portfolio strategy
 
 ## 67. Serious Projects ordering is correct for Ford pairing but Accenture + Scheduler need deliberate second-row pairing
 The current array is FCVF, FinSimple, Accenture, Scheduler, which naturally makes the requested Ford row first. Good. Make sure image heights and copy lengths are balanced so row 2 does not look accidental.
@@ -374,7 +374,7 @@ The case study only lists real-time behaviors. Add one short paragraph on what m
 
 ---
 
-# P2 — SEO / metadata / polish
+# P2 - SEO / metadata / polish
 
 ## 73. Meta description is generic
 “product, enterprise software, and technical projects” does not reflect the sharper site story.
@@ -400,7 +400,7 @@ Vite rewrites it during build, but this reinforces the need to run a real produc
 
 ---
 
-# P3 — Tiny details worth fixing
+# P3 - Tiny details worth fixing
 
 ## 79. `font-weight:590`, `560`, `540` are unusual values
 Variable fonts can support them, but Georgia/system font combinations may not. They can render inconsistently.
@@ -456,7 +456,7 @@ Either add a meaningful weather edge case or remove it from V1/data display.
 If “Michigan driving” is an important origin story, show it under Later or a tiny alternate saved commute. Do not imply V1 handles driving if it does not.
 
 ## 94. There is no actual History tab in Commute despite “learn over time” being part of the product story
-The app has Today, Plan, More. If learning is central, a subtle `History`/`Accuracy` surface may be worth one screen—or explicitly defer it.
+The app has Today, Plan, More. If learning is central, a subtle `History`/`Accuracy` surface may be worth one screen-or explicitly defer it.
 
 ## 95. Settings uses “More” tab with ellipsis symbol
 This feels generic. If there are only three destinations, `Settings` is clearer than `More`.
@@ -499,7 +499,7 @@ Not a major problem, but full wording is more distinctive. Consider `Fun builds`
 
 # Recommended V30 order of operations
 
-### Phase 1 — correctness
+### Phase 1 - correctness
 1. Make Commute’s entire timeline derive from one state model.
 2. Fix scenario clock / status bar.
 3. Fix sleep-later constraint logic.
@@ -508,7 +508,7 @@ Not a major problem, but full wording is more distinctive. Consider `Fun builds`
 6. Add proper routing/history for case studies.
 7. Pin dependencies + lockfile + successful production build.
 
-### Phase 2 — visual cleanup
+### Phase 2 - visual cleanup
 8. Replace CSS laptops with real device mockup photography/assets.
 9. Replace Accenture cover with real contextual image.
 10. Remove most Experience row dividers.
@@ -517,14 +517,14 @@ Not a major problem, but full wording is more distinctive. Consider `Fun builds`
 13. Remove 25–35% of card containers and tiny labels.
 14. Remove duplicate hover/lift animation.
 
-### Phase 3 — narrative
+### Phase 3 - narrative
 15. Deepen Experience expansions asymmetrically.
 16. Tighten project-card summaries around product decisions.
 17. Remove remaining “product school” case-study scaffolding.
 18. Strengthen Estée / Chat / Scheduler stories without adding length.
 19. Decide whether Ray Tracer earns its place visually.
 
-### Phase 4 — accessibility / polish
+### Phase 4 - accessibility / polish
 20. Fix nested interactive targets.
 21. Add labels for icon-only buttons.
 22. Add proper dialog semantics/focus for permission/full sheets.

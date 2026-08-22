@@ -1,4 +1,4 @@
-# V24 — Commute case study
+# V24 - Commute case study
 
 - Added **Commute** as the lead selected-work project.
 - Added a mobile-first interactive product sandbox with simulated live conditions, route switching, morning-routine personalization, Health toggle, stale-feed fallback, and “Can I sleep longer?” behavior.
