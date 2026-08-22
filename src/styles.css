@@ -3682,3 +3682,234 @@ input,select,button{accent-color:var(--color-focus)}
   .project-commute .moreBuildVisual{aspect-ratio:.70/1!important}
   .commutePreviewStatic{padding:12px!important}
 }
+
+/* V42 feedback pass — keep the logo interaction attached to the mark itself. */
+.casePage .toolLogoWrap:before,
+.toolLogoWrap:before{display:none!important}
+.casePage .toolLogoWrap,
+.toolLogoWrap{
+  background:transparent!important;
+  box-shadow:none!important;
+  padding:6px!important;
+}
+.casePage .toolLogoWrap:hover,
+.casePage .toolLogoWrap:focus-visible,
+.toolLogoWrap:hover,
+.toolLogoWrap:focus-visible{background:transparent!important;box-shadow:none!important}
+.casePage .toolLogoWrap img,
+.toolLogoWrap img{transition:filter .16s ease,opacity .16s ease!important}
+.casePage .toolLogoWrap:hover img,
+.casePage .toolLogoWrap:focus-visible img,
+.toolLogoWrap:hover img,
+.toolLogoWrap:focus-visible img{
+  filter:drop-shadow(0 0 5px rgba(126,93,192,.30)) drop-shadow(0 0 11px rgba(92,168,175,.20))!important;
+  opacity:1!important;
+}
+
+/* The expanded routine is intentionally longer; the phone content, not the page, owns the scroll. */
+.iosDemoShell .iosScreenContent>.iosOnboarding:has(.routineEditor){
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-y!important;
+  overscroll-behavior:contain!important;
+  padding-bottom:34px!important;
+  scrollbar-width:none!important;
+}
+.iosDemoShell .iosScreenContent>.iosOnboarding:has(.routineEditor)::-webkit-scrollbar{display:none!important}
+.iosDemoShell .iosScreenContent>.iosOnboarding:has(.routineEditor) .routineEditor{flex:0 0 auto!important}
+.iosDemoShell .iosScreenContent>.iosOnboarding:has(.routineEditor) .routineSummary,
+.iosDemoShell .iosScreenContent>.iosOnboarding:has(.routineEditor)>.iosPrimary{flex:0 0 auto!important}
+
+/* About: center the two-column composition within the page instead of letting it hug the left edge. */
+.aboutSection{
+  grid-template-columns:minmax(240px,310px) minmax(0,640px)!important;
+  justify-content:center!important;
+  align-items:center!important;
+  column-gap:clamp(48px,7vw,96px)!important;
+}
+.aboutPhoto{justify-self:center!important;width:100%!important}
+.aboutCopy{justify-self:center!important;width:100%!important;max-width:640px!important}
+.aboutCopy p{max-width:62ch!important}
+@media(max-width:800px){
+  .aboutSection{grid-template-columns:minmax(0,640px)!important;justify-items:center!important}
+  .aboutCopy{justify-self:center!important}
+}
+
+/* The static Commute capture contains the entire device; never crop or stretch the phone. */
+.commutePreviewStatic img{
+  width:auto!important;
+  height:auto!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+}
+.project-commute .commutePreviewStatic img{max-height:96%!important}
+.case-commute .casePreviewHero .commutePreviewStatic img{max-height:92%!important}
+
+/* V42 continued — Aug 22 gallery, experience, and chat feedback. */
+
+/* Gallery entry should paint at the top immediately; keep photo stages comfortably inside one viewport. */
+.photoCarouselStage{
+  overflow:hidden!important;
+}
+.photoCarouselStage img{
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:contain!important;
+}
+@media(min-width:801px){
+  .photoCarouselStage.landscape{
+    width:min(50vw,820px)!important;
+    max-width:min(50vw,820px)!important;
+    max-height:62vh!important;
+    aspect-ratio:3/2!important;
+  }
+  .photoCarouselStage.portrait{
+    width:min(38vw,560px)!important;
+    max-width:min(38vw,560px)!important;
+    height:min(68vh,720px)!important;
+    max-height:68vh!important;
+    aspect-ratio:auto!important;
+  }
+  .photoCarouselStage.square{
+    width:min(44vw,660px)!important;
+    max-width:min(44vw,660px)!important;
+    max-height:64vh!important;
+  }
+}
+@media(max-width:800px){
+  .photoCarouselStage.landscape,
+  .photoCarouselStage.square{
+    width:min(88vw,680px)!important;
+    max-width:88vw!important;
+    max-height:58vh!important;
+  }
+  .photoCarouselStage.portrait{
+    width:min(72vw,500px)!important;
+    max-width:72vw!important;
+    height:min(64vh,660px)!important;
+    max-height:64vh!important;
+    aspect-ratio:auto!important;
+  }
+}
+
+/* Small persistent utility for long pages. */
+.scrollTopButton{
+  position:fixed;
+  right:clamp(16px,2.2vw,28px);
+  bottom:clamp(16px,2.2vw,28px);
+  z-index:90;
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(31,38,34,.16);
+  border-radius:50%;
+  background:rgba(246,241,231,.88);
+  color:#202723;
+  box-shadow:0 8px 26px rgba(31,38,34,.12);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  cursor:pointer;
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(8px);
+  transition:opacity .18s ease,transform .18s ease,background .18s ease;
+}
+.scrollTopButton.visible{opacity:1;pointer-events:auto;transform:translateY(0)}
+.scrollTopButton:hover,.scrollTopButton:focus-visible{background:#fff;transform:translateY(-2px)}
+
+/* Case-study links belong to the expanded experience narrative, not the summary row. */
+.expCaseStudyLink{
+  margin-top:18px;
+  padding:0 0 3px;
+  border:0;
+  border-bottom:1px solid currentColor;
+  background:transparent;
+  color:#303934;
+  font:inherit;
+  font-size:14px;
+  font-weight:620;
+  cursor:pointer;
+}
+.expCaseStudyLink:hover,.expCaseStudyLink:focus-visible{color:#6a4d9f}
+.experience-fordcredit .expCaseStudyLink,.experience-ford .expCaseStudyLink{color:#285a8e}
+.experience-accenture .expCaseStudyLink{color:#6a4d9f}
+
+/* Real Tapback interaction: double-click opens a picker instead of silently applying a heart. */
+.chatBubbleWrap{position:relative;max-width:70%}
+.chatBubbleWrap .chatBubble{max-width:100%}
+.chatLine.mine .chatBubbleWrap{display:flex;justify-content:flex-end}
+.tapbackPicker{
+  position:absolute;
+  z-index:12;
+  left:50%;
+  top:-52px;
+  transform:translateX(-50%);
+  display:flex;
+  gap:2px;
+  padding:6px;
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:22px;
+  background:rgba(40,40,42,.96);
+  box-shadow:0 10px 28px rgba(0,0,0,.34);
+  white-space:nowrap;
+}
+.tapbackPicker button{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border:0;
+  border-radius:50%;
+  background:transparent;
+  font-size:17px;
+  cursor:pointer;
+  transition:transform .12s ease,background .12s ease;
+}
+.tapbackPicker button:hover,.tapbackPicker button:focus-visible{background:rgba(255,255,255,.12);transform:scale(1.12)}
+.chatLine.mine .tapbackPicker{left:auto;right:0;transform:none}
+.chatLine.theirs .tapbackPicker{left:0;transform:none}
+@media(max-width:600px){
+  .tapbackPicker{gap:0;padding:5px}
+  .tapbackPicker button{width:30px;height:30px;font-size:15px}
+}
+
+/* V42 — hero cursor aura + about copy refinement. */
+.v28Hero{
+  --hero-mouse-x:72%;
+  --hero-mouse-y:32%;
+  isolation:isolate;
+}
+.v28Hero .heroInner{position:relative!important;z-index:3!important}
+.heroMouseAura{
+  display:none;
+  position:absolute;
+  left:var(--hero-mouse-x);
+  top:var(--hero-mouse-y);
+  width:clamp(300px,34vw,520px);
+  aspect-ratio:1;
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+  z-index:1;
+  opacity:0;
+  background:
+    radial-gradient(circle at 44% 42%,rgba(245,130,180,.34) 0 15%,rgba(177,127,224,.23) 31%,rgba(91,193,177,.17) 50%,rgba(244,169,121,.09) 63%,transparent 76%);
+  filter:blur(30px) saturate(1.12);
+  transition:opacity .28s ease;
+  will-change:left,top,opacity;
+}
+@media(hover:hover) and (pointer:fine){
+  .heroMouseAura{display:block}
+  .v28Hero.heroPointerActive .heroMouseAura{opacity:.82}
+}
+@media(prefers-reduced-motion:reduce){
+  .heroMouseAura{display:none!important}
+}
+
+.aboutInlineLink{color:inherit;text-decoration:none;border-bottom:1px solid rgba(101,80,165,.34);padding-bottom:1px;transition:color .18s ease,border-color .18s ease}
+.aboutInlineLink:hover{color:#6550a5;border-color:#6550a5}
+.aboutInlineLink:focus-visible{outline:2px solid rgba(101,80,165,.48);outline-offset:3px;border-radius:2px}
