@@ -3766,13 +3766,23 @@ input,select,button{accent-color:var(--color-focus)}
     max-height:62vh!important;
     aspect-ratio:3/2!important;
   }
-  .photoCarouselStage.portrait{
-    width:min(38vw,560px)!important;
-    max-width:min(38vw,560px)!important;
-    height:min(68vh,720px)!important;
-    max-height:68vh!important;
-    aspect-ratio:auto!important;
-  }
+  .photoCarouselStage.portrait {
+  width: min(32vw, 440px) !important;
+  max-width: 440px !important;
+
+  aspect-ratio: 2 / 3 !important;
+
+  height: auto !important;
+  max-height: 70vh !important;
+}
+
+.photoCarouselStage.portrait img {
+  width: 100% !important;
+  height: 100% !important;
+
+  object-fit: contain !important;
+  object-position: center !important;
+}
   .photoCarouselStage.square{
     width:min(44vw,660px)!important;
     max-width:min(44vw,660px)!important;
