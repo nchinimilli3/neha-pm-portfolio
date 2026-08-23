@@ -3923,3 +3923,279 @@ input,select,button{accent-color:var(--color-focus)}
 .aboutInlineLink{color:inherit;text-decoration:none;border-bottom:1px solid rgba(101,80,165,.34);padding-bottom:1px;transition:color .18s ease,border-color .18s ease}
 .aboutInlineLink:hover{color:#6550a5;border-color:#6550a5}
 .aboutInlineLink:focus-visible{outline:2px solid rgba(101,80,165,.48);outline-offset:3px;border-radius:2px}
+
+/* V43 — final editorial pass: color break, larger type, quieter case-study chrome, and inline film viewer. */
+
+/* A full-bleed color break gives the hero a deliberate ending without adding another card. */
+.heroColorDivider{
+  width:100%;
+  height:clamp(72px,6.2vw,92px);
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 9% 42%,rgba(242,137,184,.88) 0 10%,rgba(242,137,184,.46) 24%,transparent 43%),
+    radial-gradient(circle at 38% 105%,rgba(246,169,122,.72) 0 13%,rgba(246,169,122,.32) 29%,transparent 49%),
+    radial-gradient(circle at 65% -20%,rgba(167,125,224,.82) 0 14%,rgba(167,125,224,.38) 31%,transparent 50%),
+    radial-gradient(circle at 91% 55%,rgba(86,190,175,.82) 0 13%,rgba(86,190,175,.36) 30%,transparent 49%),
+    #e9dce6;
+}
+.heroColorDivider:after{
+  content:"";
+  position:absolute;
+  inset:-30%;
+  background:linear-gradient(105deg,transparent 20%,rgba(255,255,255,.16) 42%,transparent 64%);
+  transform:translateX(-28%);
+  opacity:.55;
+}
+
+/* Typography should carry hierarchy so the layout needs fewer boxes to explain itself. */
+.sectionTitle h2{
+  font-size:clamp(56px,6.4vw,84px)!important;
+  line-height:.94!important;
+  letter-spacing:-.052em!important;
+}
+.projectCard h3{font-size:clamp(34px,3.2vw,44px)!important;line-height:1.01!important}
+.moreBuildCard h3{font-size:clamp(28px,2.7vw,36px)!important;line-height:1.04!important}
+.experienceSummary h3{font-size:clamp(21px,1.8vw,25px)!important;letter-spacing:-.025em!important}
+.casePage .caseSection h2{font-size:clamp(38px,4vw,50px)!important;line-height:1.03!important;letter-spacing:-.04em!important}
+.caseIntro{font-size:clamp(21px,2vw,26px)!important;line-height:1.54!important}
+.projectCardBody>p,
+.moreBuildCopy p,
+.aboutCopy p,
+.experienceSummary p,
+.expStory>p,
+.caseSectionBody>p,
+.caseSection>div>p{
+  font-size:clamp(17px,1.32vw,19px)!important;
+  line-height:1.66!important;
+}
+.aboutCopy h2{font-size:clamp(48px,4.8vw,62px)!important;line-height:.98!important;letter-spacing:-.05em!important}
+.aboutCopy p{font-size:clamp(18px,1.45vw,20px)!important;line-height:1.67!important;max-width:62ch!important}
+
+/* Let spacing and type do more of the grouping in case studies. */
+.casePage .factGrid>div,
+.casePage .decisionNoteGrid>div,
+.casePage .scopeColumns>div,
+.casePage .deliverableGrid>div{
+  background:transparent!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+}
+.casePage .factGrid>div,
+.casePage .decisionNoteGrid>div{
+  border-left:0!important;
+  border-right:0!important;
+  border-bottom:0!important;
+  border-top:1px solid color-mix(in srgb,var(--case-accent) 20%,rgba(34,40,37,.12))!important;
+  padding:18px 0 4px!important;
+}
+.casePage .edgeCaseCard{
+  background:transparent!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+  border-left:0!important;
+  border-right:0!important;
+  padding-left:0!important;
+  padding-right:0!important;
+}
+.case-accenture .journeyFlow{
+  gap:clamp(14px,2vw,28px)!important;
+  align-items:center!important;
+}
+.case-accenture .journeyFlow>div{
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  padding:8px 0 14px!important;
+  border-bottom:1px solid rgba(83,68,120,.18)!important;
+}
+.case-accenture .journeyFlow>b{opacity:.44!important}
+
+/* Fun builds get more personality than the restrained professional project grid. */
+.v28Fun .funLeadGrid{gap:clamp(28px,3vw,44px)!important}
+.v28Fun .moreBuildVisual{
+  border-radius:24px!important;
+  border:0!important;
+  box-shadow:0 18px 48px rgba(42,36,29,.075)!important;
+}
+.v28Fun .project-commute .moreBuildVisual{
+  background:
+    radial-gradient(circle at 20% 20%,rgba(187,151,231,.34),transparent 40%),
+    radial-gradient(circle at 82% 76%,rgba(105,200,184,.25),transparent 42%),
+    #ece7df!important;
+}
+.v28Fun .project-chat .moreBuildVisual{
+  background:
+    radial-gradient(circle at 72% 24%,rgba(94,160,236,.24),transparent 38%),
+    #e9edf3!important;
+}
+.v28Fun .project-estee .moreBuildVisual{
+  background:
+    radial-gradient(circle at 24% 20%,rgba(218,155,164,.24),transparent 42%),
+    #eee2dc!important;
+}
+.v28Fun .moreBuildCard{transition:transform .22s ease!important}
+@media(hover:hover) and (pointer:fine){
+  .v28Fun .moreBuildCard.clickable:hover{transform:translateY(-4px)!important;box-shadow:none!important;filter:none!important}
+}
+.v28Fun .smallBuild{padding:0!important}
+.v28Fun .smallBuild .techVisual{border:0!important;box-shadow:0 14px 38px rgba(42,36,29,.06)!important}
+@media(min-width:901px){
+  .v28Fun .smallBuildGrid .smallBuild:nth-child(2){margin-top:34px!important}
+}
+
+/* About becomes one composed two-column story. The media frame stretches to the copy height. */
+.aboutSection{
+  grid-template-columns:minmax(290px,390px) minmax(0,680px)!important;
+  justify-content:center!important;
+  align-items:stretch!important;
+  gap:clamp(54px,7vw,110px)!important;
+}
+.aboutPhoto{
+  width:100%!important;
+  max-width:none!important;
+  height:100%!important;
+  min-height:0!important;
+  align-self:stretch!important;
+  justify-self:stretch!important;
+}
+.aboutFilmFrame{
+  position:relative;
+  width:100%;
+  height:100%;
+  min-height:620px;
+  overflow:hidden;
+  border-radius:24px;
+  background:#e8e1d6;
+  box-shadow:0 18px 52px rgba(42,36,29,.085);
+}
+.aboutFilmFrame>img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+.aboutHeadshot{object-fit:contain!important;object-position:center top!important;background:#e8e1d6!important}
+.aboutFilmFrame.isGallery{background:#eee8de}
+.aboutFilmImage{
+  object-fit:contain!important;
+  object-position:center!important;
+  padding:16px!important;
+}
+.aboutFilmClose,
+.aboutFilmControls button{
+  border:1px solid rgba(34,40,37,.12);
+  background:rgba(248,244,236,.88);
+  color:#252b28;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  cursor:pointer;
+}
+.aboutFilmClose{
+  position:absolute;
+  top:14px;
+  right:14px;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-size:23px;
+  line-height:1;
+  z-index:3;
+}
+.aboutFilmControls{
+  position:absolute;
+  left:14px;
+  right:14px;
+  bottom:14px;
+  display:grid;
+  grid-template-columns:42px 1fr 42px;
+  align-items:center;
+  gap:10px;
+  z-index:3;
+}
+.aboutFilmControls button{
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  font-size:18px;
+}
+.aboutFilmControls span{
+  justify-self:center;
+  padding:7px 12px;
+  border-radius:999px;
+  background:rgba(248,244,236,.84);
+  color:#515853;
+  font-size:12px;
+  font-variant-numeric:tabular-nums;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+@media(hover:hover) and (pointer:fine){
+  .aboutFilmClose:hover,.aboutFilmControls button:hover{background:#fff;transform:translateY(-1px)}
+}
+
+/* The only photography entry point is the inline phrase in the About copy. */
+.filmPhotoTriggerWrap{position:relative;display:inline-block}
+.filmPhotoTrigger{
+  appearance:none;
+  border:0;
+  border-bottom:1px solid rgba(101,80,165,.48);
+  background:transparent;
+  color:inherit;
+  font:inherit;
+  line-height:inherit;
+  padding:0 0 1px;
+  cursor:pointer;
+}
+.filmPhotoTrigger:hover,.filmPhotoTrigger:focus-visible{color:#6550a5;border-color:#6550a5}
+.filmPhotoTrigger:focus-visible{outline:2px solid rgba(101,80,165,.36);outline-offset:3px;border-radius:2px}
+.filmPhotoHint{
+  position:absolute;
+  left:50%;
+  bottom:calc(100% + 9px);
+  transform:translate(-50%,5px);
+  width:max-content;
+  max-width:180px;
+  padding:7px 10px;
+  border:1px solid rgba(34,40,37,.09);
+  border-radius:999px;
+  background:rgba(248,244,236,.96);
+  color:#5d625f;
+  box-shadow:0 8px 24px rgba(42,36,29,.08);
+  font-size:11px;
+  line-height:1;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .16s ease,transform .16s ease;
+  z-index:8;
+}
+@media(hover:hover) and (pointer:fine){
+  .filmPhotoTriggerWrap:hover .filmPhotoHint,
+  .filmPhotoTrigger:focus-visible + .filmPhotoHint{opacity:1;transform:translate(-50%,0)}
+}
+.aboutActions{margin-top:28px!important;display:block!important}
+.photoCta{display:none!important}
+
+@media(max-width:800px){
+  .heroColorDivider{height:62px}
+  .sectionTitle h2{font-size:clamp(44px,12vw,58px)!important}
+  .aboutSection{grid-template-columns:minmax(0,680px)!important;gap:34px!important;align-items:start!important}
+  .aboutPhoto{max-width:430px!important;height:auto!important;justify-self:center!important}
+  .aboutFilmFrame{height:auto!important;min-height:0!important;aspect-ratio:4/5!important;border-radius:20px}
+  .aboutCopy h2{font-size:clamp(42px,12vw,54px)!important}
+  .aboutCopy p{font-size:17px!important}
+  .aboutFilmImage{padding:10px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .v28Fun .moreBuildCard,.filmPhotoHint,.aboutFilmClose,.aboutFilmControls button{transition:none!important}
+}

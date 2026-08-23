@@ -1,0 +1,24 @@
+# V33 QA checklist
+
+- [x] No em dashes in site copy.
+- [x] Hero aura motion increased.
+- [x] Case-study aura is full-page/seamless.
+- [x] Company heading + logo treatment added.
+- [x] Project previews use one aspect ratio and corner radius.
+- [x] Hover line animation removed.
+- [x] Soft aura edge glow added to clickable project cards.
+- [x] Skeleton loading shapes added.
+- [x] Third-party image credits are hover-only and tiny.
+- [x] Experience role/date type increased and dates do not wrap.
+- [x] Spectrum title/copy cleaned up.
+- [x] About portrait uses natural composition with no crop.
+- [x] About hobbies updated and photography CTA added.
+- [x] Film photography route/page added.
+- [x] FCVF iteration screenshots integrated from source presentation.
+- [x] FCVF score-bias decision explained.
+- [x] FCVF Tech Stack contains 12 verified items.
+- [x] Before/after/iteration images expand in a lightbox.
+- [x] Case-study alternating left/right layout removed.
+- [x] Metric blocks use consistent minimum heights.
+- [x] Ray Tracer removed from homepage.
+- [x] TypeScript parser check passed aside from unavailable React package typings in this offline runtime.
