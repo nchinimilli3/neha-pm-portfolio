@@ -4271,9 +4271,9 @@ input,select,button{accent-color:var(--color-focus)}
 .case-bookclub .toolLogoWrap{animation:bookclubLogoIn .5s both}.case-bookclub .toolLogoWrap:nth-child(2){animation-delay:.04s}.case-bookclub .toolLogoWrap:nth-child(3){animation-delay:.08s}.case-bookclub .toolLogoWrap:nth-child(4){animation-delay:.12s}.case-bookclub .toolLogoWrap:nth-child(5){animation-delay:.16s}.case-bookclub .toolLogoWrap:nth-child(6){animation-delay:.2s}.case-bookclub .toolLogoWrap:nth-child(7){animation-delay:.24s}.case-bookclub .toolLogoWrap:nth-child(8){animation-delay:.28s}
 @keyframes bookclubHeroFloat{0%,100%{transform:translateY(0) rotate(.05deg)}50%{transform:translateY(-7px) rotate(-.15deg)}}@keyframes bookclubSignalFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}@keyframes bookclubLivePulse{70%{box-shadow:0 0 0 7px rgba(155,226,187,0)}100%{box-shadow:0 0 0 0 rgba(155,226,187,0)}}@keyframes bookclubDataFlow{to{transform:translateY(280%)}}@keyframes bookclubLogoIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @supports(animation-timeline:view()){
-  .bookclubLoop>article,.bookclubDecisionGrid>article,.bookclubWalkthrough article,.bookclubSystemMap,.bookclubMeasures>div{animation:bookclubViewReveal linear both;animation-timeline:view();animation-range:entry 8% cover 26%}
+  .bookclubLoop>article,.bookclubDecisionGrid>article,.bookclubWalkthrough article{animation:bookclubViewReveal linear both;animation-timeline:view();animation-range:entry 8% cover 26%}
   .bookclubDecisionGrid>article:nth-child(3n+2){animation-range:entry 13% cover 29%}.bookclubDecisionGrid>article:nth-child(3n+3){animation-range:entry 18% cover 32%}
-  @keyframes bookclubViewReveal{from{opacity:.12;transform:translateY(28px);filter:blur(3px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+  @keyframes bookclubViewReveal{from{opacity:.35;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 }
 .bookclubMeasureIntro{margin-bottom:22px!important}
 .bookclubMeasures{gap:0 30px!important}
