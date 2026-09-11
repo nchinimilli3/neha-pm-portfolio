@@ -4231,19 +4231,27 @@ input,select,button{accent-color:var(--color-focus)}
 .case-bookclub .caseHeroMedia .bookclubLiveVisual{aspect-ratio:16/9;border-radius:20px;box-shadow:0 20px 58px rgba(61,44,53,.12)}
 .case-bookclub .caseHeroMedia .bookclubLiveVisual img{object-position:center bottom}
 .case-bookclub .toolLogoSection{margin-bottom:54px!important}
-.case-bookclub .toolLogoRow{gap:18px!important}
+.case-bookclub .toolLogoRow{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(118px,1fr))!important;gap:10px!important;overflow:visible!important}
+.case-bookclub .toolLogoWrap{display:flex!important;width:auto!important;min-width:0!important;height:82px!important;padding:12px 8px!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:8px!important;border:1px solid rgba(84,58,98,.11)!important;border-radius:14px!important;background:rgba(255,255,255,.42)!important}
+.case-bookclub .toolLogoWrap img,.case-bookclub .toolLogoFallback{width:31px!important;height:31px!important;max-width:31px!important;max-height:31px!important;object-fit:contain!important}
+.case-bookclub .toolLogoLabel{position:static!important;display:block!important;width:100%!important;padding:0!important;background:transparent!important;box-shadow:none!important;color:#514d50!important;opacity:1!important;visibility:visible!important;transform:none!important;text-align:center!important;font-size:11px!important;line-height:1.15!important;white-space:normal!important;pointer-events:none!important}
 .case-bookclub .caseSection,.case-bookclub .caseSection:nth-of-type(even){padding:54px 0!important}
 .case-bookclub .caseSection h2,.case-bookclub .caseSection:nth-of-type(even)>h2{margin-bottom:20px!important;font-size:clamp(29px,3vw,39px)!important}
-.bookclubLoop{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important}
-.bookclubLoop>div{min-height:142px;padding:18px 16px!important;border-top:2px solid #73507f!important;background:rgba(255,255,255,.44)!important}
-.bookclubLoop span{color:#73507f!important}
-.bookclubLoop strong{font-size:18px!important}
-.bookclubLoop p{font-size:14px!important;line-height:1.45!important;color:#5d625f!important}
-.bookclubDecisionGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px}
-.bookclubDecisionGrid>div{padding:17px 0;border-top:1px solid rgba(55,47,58,.15)}
-.bookclubDecisionGrid strong,.bookclubDecisionGrid span{display:block}
-.bookclubDecisionGrid strong{font-size:17px;line-height:1.35;color:#493454}
-.bookclubDecisionGrid span{margin-top:6px;max-width:46ch;font-size:15px;line-height:1.55;color:#59605c}
+.bookclubLoop{display:grid!important;grid-template-columns:1.08fr .92fr 1.08fr!important;gap:14px!important}
+.bookclubLoop>article{min-width:0;padding:22px!important;border:1px solid rgba(84,58,98,.13)!important;border-radius:18px;background:rgba(255,255,255,.45)!important;box-shadow:0 12px 34px rgba(73,52,84,.05)}
+.bookclubLoop>article:nth-child(2){background:rgba(226,240,235,.57)!important}
+.bookclubLoop header{display:flex;align-items:center;gap:12px;margin-bottom:19px}
+.bookclubLoop header>span{display:grid;width:34px;height:34px;flex:0 0 34px;place-items:center;border-radius:50%;background:#543a62;color:#fff!important;font-size:12px;font-weight:700}
+.bookclubLoop header strong,.bookclubLoop header small{display:block}.bookclubLoop header strong{font-size:19px!important;line-height:1.2}.bookclubLoop header small{margin-top:3px;color:#736d71;font-size:12px}
+.bookclubLoopSteps{display:flex;align-items:center;gap:8px;min-height:32px;flex-wrap:wrap}.bookclubLoopSteps span{padding:6px 9px;border-radius:999px;background:rgba(84,58,98,.08);color:#543a62!important;font-size:12px;font-weight:650}.bookclubLoopSteps b{color:#9a7a5e;font-weight:500}
+.bookclubLoop p{margin:17px 0 0!important;font-size:14px!important;line-height:1.5!important;color:#5d625f!important}
+.bookclubDecisionGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.bookclubDecisionGrid>article{min-width:0;padding:18px;border:1px solid rgba(84,58,98,.12);border-radius:15px;background:rgba(255,255,255,.4)}
+.bookclubDecisionGrid span,.bookclubDecisionGrid strong,.bookclubDecisionGrid small{display:block}
+.bookclubDecisionGrid span{margin-bottom:11px;color:#8d6645;font-size:11px;font-weight:700;letter-spacing:.045em;text-transform:uppercase}
+.bookclubDecisionGrid strong{font-size:17px;line-height:1.3;color:#493454}
+.bookclubDecisionGrid p{margin:7px 0 12px!important;font-size:14px!important;line-height:1.5!important;color:#59605c}
+.bookclubDecisionGrid small{padding-top:10px;border-top:1px solid rgba(84,58,98,.11);color:#77706f;font-size:12px;line-height:1.4}
 .bookclubWalkthrough{display:flex;flex-direction:column;gap:26px}
 .bookclubWalkthrough article{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(250px,.82fr);gap:clamp(26px,4vw,52px);align-items:center;padding:24px;border:1px solid rgba(58,47,54,.1);border-radius:20px;background:rgba(255,255,255,.38)}
 .bookclubWalkthrough article:nth-child(even) figure{order:2}
@@ -4259,21 +4267,19 @@ input,select,button{accent-color:var(--color-focus)}
 .bookclubBuildGrid{gap:20px!important}
 .bookclubBuildGrid>div{padding:18px 0!important;border:0!important;border-top:1px solid rgba(84,58,98,.2)!important;background:transparent!important}
 .bookclubBuildGrid strong{color:#493454!important}
-.bookclubArchitecture{display:grid!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);gap:10px!important;align-items:stretch!important;margin:22px 0 16px!important}
-.bookclubArchitecture>div{display:flex;flex-direction:column;justify-content:center;min-width:0;padding:15px 16px;border:1px solid rgba(84,58,98,.14);border-radius:14px;background:rgba(255,255,255,.48)}
-.bookclubArchitecture span,.bookclubArchitecture strong,.bookclubArchitecture small{display:block}
-.bookclubArchitecture span{margin-bottom:5px;color:#7b6f78;font-size:11px;font-weight:650;text-transform:uppercase;letter-spacing:.055em}
-.bookclubArchitecture strong{font-size:15px;line-height:1.35;color:#493454}
-.bookclubArchitecture small{margin-top:4px;color:#69706c;font-size:12px;line-height:1.35}
-.bookclubArchitecture>b{align-self:center;color:#8d6645;font-size:16px;font-weight:500}
-.case-bookclub .diagramNote{margin-top:12px!important;font-size:14px!important;color:#626a65!important;font-style:normal!important}
+.bookclubSystemIntro{max-width:720px!important}.bookclubArchitecture{display:grid!important;grid-template-columns:minmax(0,1fr) 34px minmax(0,1.08fr) 34px minmax(0,1fr);gap:8px!important;align-items:stretch!important;margin:24px 0 12px!important;padding:18px;border:1px solid rgba(84,58,98,.12);border-radius:20px;background:linear-gradient(135deg,rgba(230,241,237,.68),rgba(255,255,255,.48) 48%,rgba(241,224,221,.56))}
+.bookclubArchitecture>article{display:flex;flex-direction:column;justify-content:center;min-width:0;padding:19px;border:1px solid rgba(84,58,98,.13);border-radius:14px;background:rgba(255,255,255,.68);box-shadow:0 10px 24px rgba(73,52,84,.05)}
+.bookclubArchitectureCore{border-color:rgba(84,58,98,.28)!important;background:rgba(248,245,249,.85)!important}
+.bookclubArchitecture span,.bookclubArchitecture strong,.bookclubArchitecture small{display:block}.bookclubArchitecture span{margin-bottom:7px;color:#8d6645;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}.bookclubArchitecture strong{font-size:17px;line-height:1.3;color:#493454}.bookclubArchitecture article>small{margin-top:7px;color:#69706c;font-size:12px;line-height:1.4}.bookclubArchitecture>b{align-self:center;color:#8d6645;font-size:20px;font-weight:400;text-align:center}.bookclubArchitectureCore>div{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}.bookclubArchitectureCore>div small{padding:5px 7px;border-radius:999px;background:rgba(84,58,98,.08);color:#615867;font-size:10px;line-height:1.2}
+.bookclubServiceRail{display:grid;grid-template-columns:1.25fr 1fr .8fr;gap:8px}.bookclubServiceRail span{padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.38);color:#676d69;font-size:12px;line-height:1.4}.bookclubServiceRail b{display:block;margin-bottom:2px;color:#493454;font-size:11px;text-transform:uppercase;letter-spacing:.04em}
 .bookclubMeasureIntro{margin-bottom:22px!important}
 .bookclubMeasures{gap:0 30px!important}
 .bookclubMeasures>div{padding:16px 0!important;border:0!important;border-top:1px solid rgba(84,58,98,.17)!important;background:transparent!important}
 .bookclubMeasures strong{color:#493454!important}
 
 @media(max-width:900px){
-  .bookclubLoop{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .bookclubLoop{grid-template-columns:1fr!important}
+  .bookclubDecisionGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .bookclubWalkthrough article{grid-template-columns:1fr;padding:20px}
   .bookclubWalkthrough article:nth-child(even) figure{order:0}
 }
@@ -4292,12 +4298,14 @@ input,select,button{accent-color:var(--color-focus)}
   .bookclubWalkthrough h3{font-size:24px}
   .bookclubArchitecture{grid-template-columns:1fr!important;gap:8px!important}
   .bookclubArchitecture>b{transform:rotate(90deg)}
+  .bookclubServiceRail{grid-template-columns:1fr}
 }
 @media(max-width:430px){
-  .bookclubLoop{grid-template-columns:1fr!important}
-  .bookclubLoop>div{min-height:0;padding:15px 14px!important}
+  .bookclubLoop>article{padding:17px!important}
   .bookclubLiveLink{width:100%;margin-top:22px}
-  .case-bookclub .toolLogoRow{gap:15px!important}
+  .case-bookclub .toolLogoRow{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+  .case-bookclub .toolLogoWrap{height:74px!important;padding:9px 6px!important}
+  .case-bookclub .toolLogoWrap img,.case-bookclub .toolLogoFallback{width:27px!important;height:27px!important}
   .bookclubWalkthrough figure img,.bookclubWalkthroughCheckpoint img{aspect-ratio:4/3!important}
   .bookclubWalkthrough article:first-child figure img{aspect-ratio:16/9!important}
   .bookclubWalkthroughWide img{aspect-ratio:16/5!important}
