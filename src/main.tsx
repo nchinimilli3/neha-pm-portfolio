@@ -411,7 +411,7 @@ function CommuteSandbox(){
 function CommuteInUse(){return <div className="commuteInUse"><figure className="usagePhoto"><img src="project-media/salesforce-tower.jpg" alt="Salesforce Tower in San Francisco" width={1600} height={1067}/><figcaption>Photo: lamblukas · Wikimedia Commons</figcaption></figure><div className="usagePhone"><CommutePhone busDelay={2} bridge="clear"/></div><div className="lockMock"><span>7:54</span><strong>Leave in 12 min</strong><small>BART · 19th St</small><i>Everything is on track.</i></div></div>}
 
 function BookclubLiveVisual(){
- return <figure className="bookclubLiveVisual"><img loading="lazy" decoding="async" src={assetUrl('project-media/bookclub/selection-live.jpg')} alt="Live Bookclub selection screen showing a private club preparing its first ranked vote"/><figcaption>Live product · nomination and selection</figcaption></figure>
+ return <figure className="bookclubLiveVisual"><img loading="lazy" decoding="async" src={assetUrl('project-media/bookclub/selection-live.jpg')} alt="Live Bookclub selection screen showing a private club preparing its first ranked vote"/><div className="bookclubLiveSignals" aria-hidden="true"><span>Nominate</span><span>Rank</span><span>Read</span><span>Meet</span></div><figcaption><i aria-hidden="true"></i>Live product · nomination and selection</figcaption></figure>
 }
 
 function MarketScorecardVisual(){
