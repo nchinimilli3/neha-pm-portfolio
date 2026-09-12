@@ -4354,3 +4354,79 @@ input,select,button{accent-color:var(--color-focus)}
 .casePage .toolLogoHeading p,.case-commute .toolLogoHeading p{display:block!important}.casePage .toolLogoRow,.case-commute .toolLogoRow{display:grid!important;grid-template-columns:repeat(5,minmax(56px,1fr))!important;gap:24px 34px!important;width:100%!important}.casePage .toolLogoWrap,.case-commute .toolLogoWrap{justify-self:start!important}
 @media(max-width:900px){.casePage .toolLogoRow,.case-commute .toolLogoRow{grid-template-columns:repeat(4,minmax(52px,1fr))!important}}
 @media(max-width:600px){.casePage .toolLogoRow,.case-commute .toolLogoRow{grid-template-columns:repeat(3,minmax(48px,1fr))!important;gap:20px 24px!important}}
+
+/* V48: Accenture case study — an editorial operating-system story. */
+.case-accenture .accentureStory{counter-reset:accentureChapter;margin-top:20px}
+
+.case-accenture .accentureStory>.caseSection{counter-increment:accentureChapter;position:relative;display:grid!important;grid-template-columns:minmax(250px,.35fr) minmax(0,.65fr)!important;gap:clamp(44px,7vw,110px)!important;padding:76px 0!important;border-top:1px solid rgba(83,39,117,.14)!important}
+.case-accenture .accentureStory>.caseSection>h2{position:sticky;top:108px;align-self:start;margin:0!important;padding-top:29px!important;font-size:clamp(33px,3.4vw,46px)!important;line-height:1.02!important;color:#6827a2!important;text-wrap:balance}
+.case-accenture .accentureStory>.caseSection>h2:before{content:"0" counter(accentureChapter) "  /  07";position:absolute;left:0;top:0;font-size:10px;font-weight:750;letter-spacing:.13em;color:rgba(104,39,162,.52)}
+.case-accenture .accentureStory>.caseSection>.caseSectionBody{grid-column:2!important;width:100%!important}
+.case-accenture .accentureStory>.caseSection p{color:#4d5250!important}
+.case-accenture .accentureSplitCopy{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(250px,.85fr);gap:clamp(36px,5vw,72px);align-items:start}
+.case-accenture .accentureSplitCopy p{margin:0 0 18px;font-size:18px;line-height:1.7}
+.case-accenture .accentureSplitCopy blockquote{margin:4px 0 0;padding:4px 0 4px 26px;border-left:2px solid #9f65c8;color:#3b214f;font-size:clamp(25px,2.7vw,38px);line-height:1.13;letter-spacing:-.035em}
+.case-accenture .accentureSplitCopy blockquote em{color:#8c3faf;font-style:normal}
+.case-accenture .accentureTensions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:42px;border-top:1px solid rgba(104,39,162,.25)}
+.case-accenture .accentureTensions article{position:relative;min-height:215px;padding:22px 30px 24px 0;border:0;border-radius:0;background:transparent;transition:color .25s ease}
+.case-accenture .accentureTensions article+article{padding-left:30px;border-left:1px solid rgba(104,39,162,.16)}
+.case-accenture .accentureTensions article:before{content:"";position:absolute;top:-2px;left:0;width:38px;height:3px;background:#7b2cbf;transition:width .35s cubic-bezier(.22,1,.36,1)}
+.case-accenture .accentureTensions article+article:before{left:30px}
+.case-accenture .accentureTensions article:hover:before{width:calc(100% - 30px)}
+.case-accenture .accentureTensions article:after{display:none!important}
+.case-accenture .accentureTensions span{display:block;margin-bottom:50px;color:#9556bd;font-size:11px;font-weight:750;letter-spacing:.12em}
+.case-accenture .accentureTensions strong{display:block;font-size:19px;line-height:1.25}
+.case-accenture .accentureTensions p{margin:10px 0 0!important;font-size:14px!important;line-height:1.5!important}
+.case-accenture .accentureUserGrid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:0!important;border-top:1px solid rgba(104,39,162,.18)}
+.case-accenture .accentureUserGrid>div{min-height:210px;padding:24px 20px 24px 0!important;border:0!important;border-right:1px solid rgba(104,39,162,.15)!important}
+.case-accenture .accentureUserGrid>div:not(:first-child){padding-left:20px!important}
+.case-accenture .accentureUserGrid>div:last-child{border-right:0!important}
+.case-accenture .accentureUserGrid h3{color:#592180;font-size:16px!important;line-height:1.25}
+.case-accenture .accentureUserGrid p{font-size:14px!important;line-height:1.55!important}
+.case-accenture .journeyFlow.aiJourney{position:relative;display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:0!important;padding-top:24px}
+.case-accenture .journeyFlow.aiJourney:before{content:"";position:absolute;left:7%;right:7%;top:43px;height:1px;background:linear-gradient(90deg,#9b62c2,#dc90ad,#9b62c2);background-size:200% 100%;animation:accentureFlowLine 7s linear infinite}
+.case-accenture .journeyFlow.aiJourney>div{position:relative;z-index:1;padding:0 22px 0 0!important;border:0!important;background:transparent!important}
+.case-accenture .journeyFlow.aiJourney>div i{display:grid;width:40px;height:40px;margin-bottom:30px;place-items:center;border:1px solid #a875ca;border-radius:50%;background:#f6f1e7;color:#7133a0;font-size:11px;font-style:normal;font-weight:750}
+.case-accenture .journeyFlow.aiJourney>div strong{font-size:19px!important}.case-accenture .journeyFlow.aiJourney>div span{display:block;margin-top:7px;font-size:14px!important;line-height:1.45!important}
+.case-accenture .journeyFlow.aiJourney>b{display:none!important}
+.case-accenture .accentureRequirements>.caseSectionBody{padding:34px;border-radius:26px;background:linear-gradient(145deg,rgba(229,218,239,.64),rgba(255,255,255,.28))}
+.case-accenture .accentureRequirements>.caseSectionBody>p{margin:0 0 34px!important;font-size:18px!important;line-height:1.66!important}
+.case-accenture .workflowTitle{display:grid!important;grid-template-columns:150px 1fr;gap:24px;align-items:start!important;padding:0 0 26px!important;border-bottom:1px solid rgba(104,39,162,.14)!important}
+.case-accenture .workflowTitle span{color:#7b3aa5!important;font-size:11px!important;font-weight:750!important;letter-spacing:.1em!important;text-transform:uppercase}
+.case-accenture .workflowTitle strong{max-width:680px;font-size:clamp(24px,2.5vw,34px)!important;line-height:1.08!important;color:#33253d}
+.case-accenture .workflowColumns{gap:16px!important;margin-top:28px!important}
+.case-accenture .workflowStep{min-height:132px!important;padding:18px!important;border:1px solid rgba(104,39,162,.13)!important;border-radius:15px!important;background:rgba(255,255,255,.55)!important}
+.case-accenture .workflowStep span{color:#7a3da2!important}.case-accenture .workflowStep strong{margin-top:24px;font-size:15px!important}
+.case-accenture .workflowColumns>b{padding-top:54px!important;color:#8b6a9e!important}
+.case-accenture .workflowCanvas .aiEdgeCase{display:none!important}
+.case-accenture .accentureQa>.caseSectionBody{padding:clamp(30px,5vw,62px);border-radius:26px;background:linear-gradient(135deg,#251333,#512466);color:#fff;box-shadow:0 24px 70px rgba(61,26,79,.15)}
+.case-accenture .accentureQa .edgeCaseCard{padding:0!important;border:0!important;color:#fff}
+.case-accenture .accentureQa .edgeCaseCard>span{color:#dab9ed!important;font-size:10px!important;letter-spacing:.13em!important}
+.case-accenture .accentureQa .edgeCaseCard>strong{max-width:850px;margin:18px 0 24px;font-size:clamp(31px,4vw,52px)!important;line-height:1.08!important;letter-spacing:-.04em}
+.case-accenture .accentureQa mark{padding:0 .08em;color:#261333;background:linear-gradient(100deg,#f0b3cd,#e7cef2,#f0b3cd);background-size:200% 100%;animation:accentureHighlight 6s ease-in-out infinite}
+.case-accenture .accentureStory>.accentureQa .edgeCaseCard p{max-width:720px!important;margin:0!important;color:rgba(255,255,255,.86)!important;font-size:16px!important}
+.case-accenture .accentureEvidence .evidenceNumbers{display:grid!important;grid-template-columns:1fr 1fr 1.25fr!important;gap:0!important;border-top:1px solid rgba(104,39,162,.16);border-bottom:1px solid rgba(104,39,162,.16)}
+.case-accenture .accentureEvidence .evidenceNumbers>div{min-height:180px;padding:28px 25px 24px 0!important;border:0!important}
+.case-accenture .accentureEvidence .evidenceNumbers>div+div{padding-left:25px!important;border-left:1px solid rgba(104,39,162,.14)!important}
+.case-accenture .accentureEvidence .evidenceNumbers strong{white-space:nowrap;font-size:clamp(34px,3.5vw,50px)!important;letter-spacing:-.045em;color:#6d2b9e}.case-accenture .accentureEvidence .evidenceNumbers>div:nth-child(3) strong{font-size:clamp(30px,3vw,43px)!important}.case-accenture .accentureEvidence .evidenceNumbers strong i{color:#c37ea4;font-style:normal;font-weight:400}
+.case-accenture .accentureEvidence .evidenceNumbers span{display:block;max-width:20ch;margin-top:12px;font-size:13px!important;line-height:1.4!important}
+.case-accenture .accentureEvidence>.caseSectionBody>p{max-width:760px!important;margin-top:28px!important;font-size:18px!important}
+
+@media(max-width:900px){
+  .case-accenture .accentureStory>.caseSection{grid-template-columns:1fr!important;gap:22px!important}.case-accenture .accentureStory>.caseSection>h2{position:relative;top:auto}.case-accenture .accentureStory>.caseSection>.caseSectionBody{grid-column:1!important}
+  .case-accenture .accentureSplitCopy{grid-template-columns:1fr}.case-accenture .accentureTensions{grid-template-columns:1fr 1fr}.case-accenture .accentureUserGrid{grid-template-columns:1fr 1fr!important}.case-accenture .accentureUserGrid>div:nth-child(2){border-right:0!important}.case-accenture .accentureUserGrid>div{border-bottom:1px solid rgba(104,39,162,.15)!important}
+}
+@media(max-width:600px){
+  .case-accenture .accentureStory>.caseSection{width:calc(100% - 28px)!important;padding:46px 0!important}.case-accenture .accentureStory>.caseSection>h2{padding-top:25px!important;font-size:34px!important;line-height:1.04!important}
+  .case-accenture .accentureSplitCopy blockquote{font-size:27px}.case-accenture .accentureTensions{grid-template-columns:1fr}.case-accenture .accentureTensions article,.case-accenture .accentureTensions article+article{min-height:0;padding:22px 0 26px;border-left:0;border-bottom:1px solid rgba(104,39,162,.14)}.case-accenture .accentureTensions article+article:before{left:0}.case-accenture .accentureTensions span{margin-bottom:24px}
+  .case-accenture .accentureUserGrid{grid-template-columns:1fr!important}.case-accenture .accentureUserGrid>div,.case-accenture .accentureUserGrid>div:not(:first-child){min-height:0;padding:19px 0!important;border-right:0!important}
+  .case-accenture .journeyFlow.aiJourney{grid-template-columns:1fr!important;gap:0!important;padding-left:7px}.case-accenture .journeyFlow.aiJourney:before{left:26px;right:auto;top:30px;bottom:50px;width:1px;height:auto}.case-accenture .journeyFlow.aiJourney>div{display:grid;grid-template-columns:54px 1fr;padding:0 0 28px!important}.case-accenture .journeyFlow.aiJourney>div i{grid-column:1;grid-row:1 / span 2;margin:0}.case-accenture .journeyFlow.aiJourney>div strong,.case-accenture .journeyFlow.aiJourney>div span{grid-column:2}.case-accenture .journeyFlow.aiJourney>div span{margin-top:3px}
+  .case-accenture .accentureRequirements>.caseSectionBody{padding:24px 18px}.case-accenture .workflowTitle{grid-template-columns:1fr;gap:10px}.case-accenture .workflowColumns{grid-template-columns:1fr!important}.case-accenture .workflowColumns>b{display:none!important}.case-accenture .workflowStep{min-height:112px!important}
+  .case-accenture .accentureQa>.caseSectionBody{padding:30px 22px}.case-accenture .accentureQa .edgeCaseCard>strong{font-size:31px!important}
+  .case-accenture .accentureEvidence .evidenceNumbers{grid-template-columns:1fr!important}.case-accenture .accentureEvidence .evidenceNumbers>div,.case-accenture .accentureEvidence .evidenceNumbers>div+div{min-height:0;padding:23px 0!important;border-left:0!important;border-bottom:1px solid rgba(104,39,162,.14)!important}
+}
+.case-accenture .accentureStory>.caseSection>h2:after{content:"";display:block;width:56px;height:2px;margin-top:18px;background:linear-gradient(90deg,#7b2cbf,#cc799f)}
+.case-accenture .accentureUserGrid>div{transition:background .25s ease,padding .25s ease}.case-accenture .accentureUserGrid>div:hover{background:rgba(255,255,255,.28)!important}.case-accenture .accentureUserGrid>div:hover h3{color:#8f3db7!important}
+@keyframes accentureFlowLine{to{background-position:-200% 0}}
+@keyframes accentureHighlight{50%{background-position:100% 0}}
+@media(prefers-reduced-motion:reduce){.case-accenture .journeyFlow.aiJourney:before,.case-accenture .accentureQa mark{animation:none!important}.case-accenture .accentureTensions article,.case-accenture .accentureUserGrid>div{transition:none!important}}
