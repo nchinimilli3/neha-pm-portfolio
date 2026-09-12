@@ -2,7 +2,11 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
-const assetUrl=src=>/^https?:\/\//.test(src)?src:`${import.meta.env.BASE_URL}${src.replace(/^\/+/, '')}`;
+const assetUrl=src=>{
+  if(/^https?:\/\//.test(src))return src;
+  const clean=src.replace(/^\/+/, '');
+  return import.meta.env.DEV?`/${clean}`:`${import.meta.env.BASE_URL}${clean}`;
+};
 const BOOKCLUB_LIVE_URL='https://book-club-cog.pages.dev/';
 
 
@@ -468,7 +472,7 @@ function ProjectCard({project,index,onOpen,featured=true}){
 }
 
 function CaseHeroLogo({src,alt,className=''}){
-  return <div className={`caseHeroLogoWrap ${className}`}><img src={src} alt={alt}/></div>
+  return <div className={`caseHeroLogoWrap ${className}`}><img src={assetUrl(src)} alt={alt}/></div>
 }
 function ProjectVisual({type}){
   if(type==='commute') return <CommutePreview/>;
