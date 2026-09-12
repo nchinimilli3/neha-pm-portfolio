@@ -4231,8 +4231,8 @@ input,select,button{accent-color:var(--color-focus)}
 .bookclubLiveLink:hover{background:#493454;transform:translateY(-1px)}
 .bookclubLiveLink:focus-visible{outline:3px solid rgba(125,89,145,.35);outline-offset:3px}
 .case-bookclub .caseHeroMedia{margin-bottom:50px!important}
-.case-bookclub .caseHeroMedia .bookclubLiveVisual{aspect-ratio:16/9;border-radius:20px;box-shadow:0 20px 58px rgba(61,44,53,.12);transform-origin:center;animation:bookclubHeroFloat 9s ease-in-out infinite}
-.case-bookclub .caseHeroMedia .bookclubLiveVisual img{object-position:center bottom}
+.case-bookclub .caseHeroMedia .bookclubLiveVisual{aspect-ratio:3104/1974;border-radius:20px;box-shadow:0 20px 58px rgba(61,44,53,.12);transform-origin:center;animation:bookclubHeroFloat 9s ease-in-out infinite}
+.case-bookclub .caseHeroMedia .bookclubLiveVisual img{object-fit:contain;object-position:center;background:#050505}
 .case-bookclub .toolLogoSection{margin-bottom:54px!important}
 .case-bookclub .caseSection,.case-bookclub .caseSection:nth-of-type(even){padding:54px 0!important;counter-increment:bookclubChapter}
 .case-bookclub .caseSection h2,.case-bookclub .caseSection:nth-of-type(even)>h2{margin-bottom:20px!important;font-size:clamp(29px,3vw,39px)!important}.case-bookclub .caseSection h2:before{content:"0" counter(bookclubChapter);display:block;margin-bottom:8px;color:#9c7659;font-family:inherit;font-size:11px;font-weight:750;letter-spacing:.16em}
@@ -4256,7 +4256,6 @@ input,select,button{accent-color:var(--color-focus)}
 .bookclubWalkthrough article:nth-child(even) figure{order:2}
 .bookclubWalkthrough figure{margin:0;min-width:0}
 .bookclubWalkthrough figure img{display:block;width:100%;aspect-ratio:16/10;object-fit:contain;object-position:center;border:1px solid rgba(58,47,54,.11);border-radius:13px;background:#eee7e5;box-shadow:0 13px 32px rgba(55,42,49,.08)}
-.bookclubWalkthrough article:first-child figure img{aspect-ratio:16/9;object-fit:cover;object-position:center bottom}
 .bookclubWalkthroughWide img{aspect-ratio:16/5!important;object-fit:cover!important}
 .bookclubWalkthroughCheckpoint img{aspect-ratio:7/6!important}
 .bookclubWalkthrough figcaption{margin-top:8px;color:#717873;font-size:12px;line-height:1.4}
@@ -4293,7 +4292,7 @@ input,select,button{accent-color:var(--color-focus)}
   .case-bookclub .toolLogoSection{margin-bottom:34px!important}
   .case-bookclub .caseSection,.case-bookclub .caseSection:nth-of-type(even){padding:40px 0!important}
   .case-bookclub .caseSection h2,.case-bookclub .caseSection:nth-of-type(even)>h2{margin-bottom:16px!important;font-size:30px!important}
-  .case-bookclub .caseHeroMedia .bookclubLiveVisual{aspect-ratio:4/3;border-radius:15px}
+  .case-bookclub .caseHeroMedia .bookclubLiveVisual{aspect-ratio:3104/1974;border-radius:15px}
   .case-bookclub .caseHeroMedia .bookclubLiveVisual img{object-position:center}
   .bookclubLiveVisual figcaption{left:10px;bottom:10px}
   .bookclubDecisionGrid,.bookclubBuildGrid,.bookclubMeasures{grid-template-columns:1fr!important}
@@ -4308,7 +4307,6 @@ input,select,button{accent-color:var(--color-focus)}
   .case-bookclub .toolLogoRow{gap:9px!important}
   .bookclubSystemMap{padding:24px 16px 20px}.bookclubSystemFrontend strong,.bookclubSystemFrontend small{display:block}.bookclubSystemFrontend small{margin:6px 0 0;padding:0;border:0}.bookclubSystemCore{padding:20px 14px}.bookclubSystemCore strong{font-size:25px}.bookclubSystemBranch{width:68%}.bookclubSystemData{gap:18px}.bookclubSystemData article{padding-top:15px}.bookclubSystemData strong{font-size:26px}.bookclubServiceRail{gap:12px;margin-top:20px}
   .bookclubWalkthrough figure img,.bookclubWalkthroughCheckpoint img{aspect-ratio:4/3!important}
-  .bookclubWalkthrough article:first-child figure img{aspect-ratio:16/9!important}
   .bookclubWalkthroughWide img{aspect-ratio:16/5!important}
 }
 @media(prefers-reduced-motion:reduce){.case-bookclub .caseHeroMedia .bookclubLiveVisual,.bookclubLiveVisual figcaption i,.bookclubLiveSignals span,.bookclubSystemConnector i:after,.case-bookclub .toolLogoWrap,.bookclubLoop>article,.bookclubDecisionGrid>article,.bookclubWalkthrough article,.bookclubSystemMap,.bookclubMeasures>div{animation:none!important;transition:none!important}}
