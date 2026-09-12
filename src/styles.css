@@ -4377,12 +4377,17 @@ input,select,button{accent-color:var(--color-focus)}
 .case-accenture .accentureTensions span{display:block;margin-bottom:50px;color:#9556bd;font-size:11px;font-weight:750;letter-spacing:.12em}
 .case-accenture .accentureTensions strong{display:block;font-size:19px;line-height:1.25}
 .case-accenture .accentureTensions p{margin:10px 0 0!important;font-size:14px!important;line-height:1.5!important}
-.case-accenture .accentureUserGrid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:0!important;border-top:1px solid rgba(104,39,162,.18)}
-.case-accenture .accentureUserGrid>div{min-height:210px;padding:24px 20px 24px 0!important;border:0!important;border-right:1px solid rgba(104,39,162,.15)!important}
-.case-accenture .accentureUserGrid>div:not(:first-child){padding-left:20px!important}
-.case-accenture .accentureUserGrid>div:last-child{border-right:0!important}
-.case-accenture .accentureUserGrid h3{color:#592180;font-size:16px!important;line-height:1.25}
-.case-accenture .accentureUserGrid p{font-size:14px!important;line-height:1.55!important}
+.case-accenture .accenturePeopleFlow{display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr 34px 1.18fr;align-items:center;margin-top:8px}
+.case-accenture .accenturePeopleFlow>article{position:relative;min-height:260px;padding:22px 20px 20px;border:1px solid rgba(104,39,162,.16);background:rgba(255,255,255,.34);box-shadow:0 14px 34px rgba(79,38,102,.045);transition:transform .28s cubic-bezier(.22,1,.36,1),box-shadow .28s ease,background .28s ease}
+.case-accenture .accenturePeopleFlow>article:nth-of-type(2),.case-accenture .accenturePeopleFlow>article:nth-of-type(4){transform:translateY(22px)}
+.case-accenture .accenturePeopleFlow>article:hover{z-index:2;transform:translateY(-7px);background:rgba(255,255,255,.68);box-shadow:0 20px 45px rgba(79,38,102,.11)}
+.case-accenture .accenturePeopleFlow>article:nth-of-type(2):hover,.case-accenture .accenturePeopleFlow>article:nth-of-type(4):hover{transform:translateY(15px)}
+.case-accenture .accenturePeopleFlow header{display:flex;justify-content:space-between;align-items:center;padding-bottom:16px;border-bottom:1px solid rgba(104,39,162,.13)}
+.case-accenture .accenturePeopleFlow header span{font-size:12px;font-weight:750;color:#8b42b4}.case-accenture .accenturePeopleFlow header small{font-size:9px;font-weight:750;letter-spacing:.13em;color:#9d829f}
+.case-accenture .accenturePeopleFlow h3{min-height:52px;margin:28px 0 10px;color:#442356;font-size:18px;line-height:1.2;letter-spacing:-.02em}
+.case-accenture .accenturePeopleFlow p{margin:0!important;font-size:14px!important;line-height:1.55!important}
+.case-accenture .accenturePeopleFlow article>b{position:absolute;left:20px;bottom:18px;font-size:9px;letter-spacing:.14em;color:#9b61b8}
+.case-accenture .accenturePeopleFlow>i{display:grid;place-items:center;color:#b27abe;font-size:16px;font-style:normal}
 .case-accenture .journeyFlow.aiJourney{position:relative;display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:0!important;padding-top:24px}
 .case-accenture .journeyFlow.aiJourney:before{content:"";position:absolute;left:7%;right:7%;top:43px;height:1px;background:linear-gradient(90deg,#9b62c2,#dc90ad,#9b62c2);background-size:200% 100%;animation:accentureFlowLine 7s linear infinite}
 .case-accenture .journeyFlow.aiJourney>div{position:relative;z-index:1;padding:0 22px 0 0!important;border:0!important;background:transparent!important}
@@ -4414,19 +4419,18 @@ input,select,button{accent-color:var(--color-focus)}
 
 @media(max-width:900px){
   .case-accenture .accentureStory>.caseSection{grid-template-columns:1fr!important;gap:22px!important}.case-accenture .accentureStory>.caseSection>h2{position:relative;top:auto}.case-accenture .accentureStory>.caseSection>.caseSectionBody{grid-column:1!important}
-  .case-accenture .accentureSplitCopy{grid-template-columns:1fr}.case-accenture .accentureTensions{grid-template-columns:1fr 1fr}.case-accenture .accentureUserGrid{grid-template-columns:1fr 1fr!important}.case-accenture .accentureUserGrid>div:nth-child(2){border-right:0!important}.case-accenture .accentureUserGrid>div{border-bottom:1px solid rgba(104,39,162,.15)!important}
+  .case-accenture .accentureSplitCopy{grid-template-columns:1fr}.case-accenture .accentureTensions{grid-template-columns:1fr 1fr}.case-accenture .accenturePeopleFlow{grid-template-columns:1fr 26px 1fr;row-gap:36px}.case-accenture .accenturePeopleFlow>i:nth-of-type(2){display:none}.case-accenture .accenturePeopleFlow>article:nth-of-type(2),.case-accenture .accenturePeopleFlow>article:nth-of-type(4){transform:none}
 }
 @media(max-width:600px){
   .case-accenture .accentureStory>.caseSection{width:calc(100% - 28px)!important;padding:46px 0!important}.case-accenture .accentureStory>.caseSection>h2{padding-top:25px!important;font-size:34px!important;line-height:1.04!important}
   .case-accenture .accentureSplitCopy blockquote{font-size:27px}.case-accenture .accentureTensions{grid-template-columns:1fr}.case-accenture .accentureTensions article,.case-accenture .accentureTensions article+article{min-height:0;padding:22px 0 26px;border-left:0;border-bottom:1px solid rgba(104,39,162,.14)}.case-accenture .accentureTensions article+article:before{left:0}.case-accenture .accentureTensions span{margin-bottom:24px}
-  .case-accenture .accentureUserGrid{grid-template-columns:1fr!important}.case-accenture .accentureUserGrid>div,.case-accenture .accentureUserGrid>div:not(:first-child){min-height:0;padding:19px 0!important;border-right:0!important}
+  .case-accenture .accenturePeopleFlow{position:relative;display:grid;grid-template-columns:1fr;gap:0;padding-left:26px}.case-accenture .accenturePeopleFlow:before{content:"";position:absolute;left:7px;top:24px;bottom:24px;width:1px;background:linear-gradient(#8e43b3,#cc799f)}.case-accenture .accenturePeopleFlow>article,.case-accenture .accenturePeopleFlow>article:nth-of-type(2),.case-accenture .accenturePeopleFlow>article:nth-of-type(4){min-height:0;margin:0 0 16px;padding:18px 18px 46px;transform:none;border-width:1px 0 0;background:rgba(255,255,255,.22);box-shadow:none}.case-accenture .accenturePeopleFlow>article:before{content:"";position:absolute;left:-24px;top:20px;width:9px;height:9px;border:2px solid #f6f1e7;border-radius:50%;background:#8d42b2;box-shadow:0 0 0 1px #8d42b2}.case-accenture .accenturePeopleFlow h3{min-height:0;margin:20px 0 8px;font-size:20px}.case-accenture .accenturePeopleFlow>i{display:none!important}
   .case-accenture .journeyFlow.aiJourney{grid-template-columns:1fr!important;gap:0!important;padding-left:7px}.case-accenture .journeyFlow.aiJourney:before{left:26px;right:auto;top:30px;bottom:50px;width:1px;height:auto}.case-accenture .journeyFlow.aiJourney>div{display:grid;grid-template-columns:54px 1fr;padding:0 0 28px!important}.case-accenture .journeyFlow.aiJourney>div i{grid-column:1;grid-row:1 / span 2;margin:0}.case-accenture .journeyFlow.aiJourney>div strong,.case-accenture .journeyFlow.aiJourney>div span{grid-column:2}.case-accenture .journeyFlow.aiJourney>div span{margin-top:3px}
   .case-accenture .accentureRequirements>.caseSectionBody{padding:24px 18px}.case-accenture .workflowTitle{grid-template-columns:1fr;gap:10px}.case-accenture .workflowColumns{grid-template-columns:1fr!important}.case-accenture .workflowColumns>b{display:none!important}.case-accenture .workflowStep{min-height:112px!important}
   .case-accenture .accentureQa>.caseSectionBody{padding:30px 22px}.case-accenture .accentureQa .edgeCaseCard>strong{font-size:31px!important}
   .case-accenture .accentureEvidence .evidenceNumbers{grid-template-columns:1fr!important}.case-accenture .accentureEvidence .evidenceNumbers>div,.case-accenture .accentureEvidence .evidenceNumbers>div+div{min-height:0;padding:23px 0!important;border-left:0!important;border-bottom:1px solid rgba(104,39,162,.14)!important}
 }
 .case-accenture .accentureStory>.caseSection>h2:after{content:"";display:block;width:56px;height:2px;margin-top:18px;background:linear-gradient(90deg,#7b2cbf,#cc799f)}
-.case-accenture .accentureUserGrid>div{transition:background .25s ease,padding .25s ease}.case-accenture .accentureUserGrid>div:hover{background:rgba(255,255,255,.28)!important}.case-accenture .accentureUserGrid>div:hover h3{color:#8f3db7!important}
 @keyframes accentureFlowLine{to{background-position:-200% 0}}
 @keyframes accentureHighlight{50%{background-position:100% 0}}
-@media(prefers-reduced-motion:reduce){.case-accenture .journeyFlow.aiJourney:before,.case-accenture .accentureQa mark{animation:none!important}.case-accenture .accentureTensions article,.case-accenture .accentureUserGrid>div{transition:none!important}}
+@media(prefers-reduced-motion:reduce){.case-accenture .journeyFlow.aiJourney:before,.case-accenture .accentureQa mark{animation:none!important}.case-accenture .accentureTensions article,.case-accenture .accenturePeopleFlow>article{transition:none!important}}
