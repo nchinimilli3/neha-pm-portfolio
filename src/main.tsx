@@ -680,12 +680,12 @@ const toolLogoMap={
 const toolSets={
   fcvf:['excel','figma','html','css','javascript','typescript','react','mui','kotlin','spring','github'],
   accenture:['openai','salesforce','gmail','googlecalendar','powerbi','excel','powerpoint'],
-  finsimple:['adobe','ucl','salesforce','graphapi','graphql','googlecloud','rally'],
-  scheduler:['python','flask','mysql','socketio','docker','googlecloud'],
-  chat:['javascript','html','css','socketio'],
-  estee:['html','css','javascript','figma'],
-  commute:['swift','swiftui','healthkit','corelocation','mapkit','googlemaps','eventkit','notifications','weatherkit','gtfs','figma','react'],
-  bookclub:['react','typescript','vite','cloudflarepages','cloudflare','d1','r2','googlecalendar','nyt','googlebooks','openlibrary','openai','googlevision'],
+  finsimple:['adobe','ucl','salesforce','graphapi','graphql','postman','googlecloud','rally','github'],
+  scheduler:['python','flask','mysql','socketio','html','css','javascript','docker','googlecloud','github'],
+  chat:['javascript','html','css','socketio','github'],
+  estee:['html','css','javascript','figma','github'],
+  commute:['swift','swiftui','healthkit','corelocation','mapkit','googlemaps','eventkit','notifications','weatherkit','gtfs','figma','react','typescript','vite','github'],
+  bookclub:['react','typescript','vite','figma','cloudflarepages','cloudflare','d1','r2','googlecalendar','nyt','googlebooks','openlibrary','openai','googlevision','github'],
   marketExpansion:['excel','powerpoint']
 };
 
