@@ -783,10 +783,10 @@ function AccentureCase(){return <div className="accentureStory">
 
 function KohlerCase(){
  const stages=[
-  ['01','Find the gap','Read the order, SKU, and destination.'],
-  ['02','Ground the work','Pull approved product and market data.'],
-  ['03','Build and check','Assemble the regional packet and flag missing evidence.'],
-  ['04','Review and release','A person approves the packet before the order continues.']
+  {number:'01',kind:'order',title:'Find the gap',copy:'Read the order, SKU, and destination.'},
+  {number:'02',kind:'sources',title:'Ground the work',copy:'Pull only approved product and market data.'},
+  {number:'03',kind:'packet',title:'Build and check',copy:'Assemble the regional packet and flag missing evidence.'},
+  {number:'04',kind:'release',title:'Review and release',copy:'A person approves the packet before the order continues.'}
  ];
  return <div className="kohlerStory">
   <CaseSection title="The product in use" className="kohlerProductSection"><div><p className="kohlerSectionLead">The workspace shows what is ready, what still needs review, and why. Change the destination to see the packet adapt while the product record stays fixed.</p><section className="kohlerProductStage"><KohlerProductSurface/><p className="kohlerPreviewCaption">Portfolio reconstruction using sample data.</p></section></div></CaseSection>
@@ -801,7 +801,7 @@ function KohlerCase(){
    ['Warehouse associate','Starts the export request','STARTS'],['Product data owner','Supplies approved product facts','SOURCES'],['Regional compliance','Verifies destination requirements','VERIFIES'],['Order operations','Approves the packet and releases the order','CLOSES']
   ].map(([role,job,verb],index)=><article className={`person-${index+1}`} key={role}><b>{index+1}</b><span>{verb}</span><strong>{role}</strong><p>{job}</p></article>)}</div><div className="kohlerPeopleCore"><strong>Four roles. One packet.</strong><small>No handoff creates a second version of the truth.</small></div></div></CaseSection>
 
-  <CaseSection title="From request to release" className="kohlerFlowSection"><div><p className="kohlerSectionLead">The workflow was designed around four decisions, not a chat conversation.</p><div className="kohlerPmFlow">{stages.map(([number,title,copy])=><article key={number}><span>{number}</span><strong>{title}</strong><p>{copy}</p></article>)}</div></div></CaseSection>
+  <CaseSection title="From request to release" className="kohlerFlowSection"><div><p className="kohlerSectionLead">One order moves forward only after four questions are answered.</p><div className="kohlerDecisionJourney"><header><strong>Order SO-28471</strong><span>K-14402 · United States → India</span></header><div className="kohlerJourneyRail">{stages.map(({number,kind,title,copy})=><article className={`journey-${kind}`} key={number}><div className="kohlerJourneyStep"><span>{number}</span><i></i></div><div className="kohlerJourneyVisual" aria-hidden="true">{kind==='order'&&<div className="journeyOrderTicket"><small>ORDER</small><strong>SO-28471</strong><span>SKU K-14402</span><b>US → IN</b></div>}{kind==='sources'&&<div className="journeySources"><span>ORDER</span><span>PRODUCT</span><span>MARKET</span><i></i></div>}{kind==='packet'&&<div className="journeyPacket"><i></i><i></i><i></i><strong>INDIA<br/>PACKET</strong><span>3 ✓ &nbsp; 1 !</span></div>}{kind==='release'&&<div className="journeyRelease"><span>HUMAN REVIEW</span><strong>✓</strong><b>RELEASED</b></div>}</div><h3>{title}</h3><p>{copy}</p></article>)}</div><footer><span>request</span><i></i><strong>source-linked packet</strong><i></i><span>released order</span></footer></div></div></CaseSection>
 
   <CaseSection title="Where automation stops" className="kohlerBoundarySection"><div className="kohlerBoundary"><article><span>FIXED RULES</span><strong>The system checks.</strong><p>Required fields, approved sources, page format, and completion status follow explicit rules.</p><small>NO GUESSING</small></article><article><span>AI-ASSISTED</span><strong>The model assembles.</strong><p>It retrieves context, drafts localized content, and explains what is missing.</p><small>PROPOSES</small></article><article><span>HUMAN DECISION</span><strong>A person releases.</strong><p>Conflicts, uncertain translations, and incomplete evidence stop for review.</p><small>APPROVES</small></article></div></CaseSection>
 
