@@ -1,0 +1,43 @@
+/* Estée editorial: scoped to this case study, using original project imagery. */
+.case-estee{--el-ink:#07132f;--el-gold:#9c7844;background:#f8f5f0!important;color:var(--el-ink)}
+.case-estee .auraField{display:none!important}
+.case-estee .caseLead{display:grid!important;grid-template-columns:.8fr 1.2fr!important;gap:48px!important;align-items:center!important;padding-bottom:64px!important}
+.case-estee .caseHeader h1{font-size:clamp(48px,5.7vw,86px)!important;letter-spacing:-.045em!important}
+.case-estee .esteeHeroMockup{border-radius:2px;box-shadow:0 24px 50px #33261920;border:0}
+.case-estee .toolLogoSection{padding-top:20px!important;padding-bottom:30px!important}
+.elEditorial{font-size:17px;line-height:1.65;color:var(--el-ink)}
+.elEditorial section{width:min(1180px,calc(100% - 64px));margin:0 auto;padding:94px 0}
+.elEditorial h2{font:400 clamp(38px,4.4vw,65px)/1.05 'Iowan Old Style',Georgia,serif;letter-spacing:-.035em;margin:20px 0 28px}
+.elEditorial h2 em{font-weight:400;color:#c9b18b}
+.elEditorial p{margin:0 0 22px;max-width:550px}
+.elEditorial figure{margin:0;min-width:0}
+.elEditorial figure img{display:block;width:100%;height:auto;cursor:zoom-in}
+.elEditorial figcaption{font-size:13px;line-height:1.6;margin-top:18px;color:#62646c}
+.elIndex{font-size:14px;color:#80643c}
+.elVanity{display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center;border-top:1px solid #bca98c66}
+.elMirrorScene{position:relative;padding:0 25px 32px;isolation:isolate}
+.elMirrorGlass{position:relative;aspect-ratio:1/1.14;border-radius:48% 48% 44% 44%;padding:14px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:linear-gradient(115deg,#6d5839,#e4d3b4 12%,#a38a61 20%,#f8edd8 26%,#a38a61 65%,#f6e9d2 80%,#796342);box-shadow:14px 22px 30px #30271322,inset 0 0 0 1px #82704d}
+.elMirrorGlass:before{content:'';position:absolute;inset:8px;border-radius:inherit;background:linear-gradient(130deg,#fff8 10%,transparent 45%,#f6ece17a 65%,#fff9);z-index:1;box-shadow:inset 0 0 18px #272b3c44;border:1px solid #fff9}
+.elReflection{position:absolute;inset:12px;border-radius:inherit;background:linear-gradient(#f5eee9ba,#f5eee9e8),url('/project-media/el-home.webp') center 65%/auto 150%;}
+.elMirrorGlass p{position:relative;z-index:2;font:400 clamp(27px,3vw,43px)/1.2 Georgia,serif;margin:0 10px 22px;text-shadow:0 1px 12px #fff}
+.elMirrorGlass p em{font-weight:400}
+.elMirrorGlass>span{z-index:2;font-size:13px;color:#5c5146}
+.elMirrorStem{height:55px;width:16px;margin:auto;background:linear-gradient(90deg,#7d6441,#f5e4c4 40%,#8e744c);box-shadow:8px 4px 12px #33261922}
+.elMirrorBase{height:25px;width:58%;border-radius:50%;margin:auto;background:linear-gradient(175deg,#e9d8b8,#9b825b 60%,#705b3e);box-shadow:0 17px 18px #33261930,inset 0 2px 1px #fff9}
+.elNote{border-left:2px solid #b29466;padding-left:22px;margin-top:32px;font-size:15px}.elNote b{font-weight:600}.elNote p{margin:8px 0 0}
+.elInvitation{display:grid;grid-template-columns:.65fr 1.35fr;gap:55px;align-items:center}.elInvitation figure{transform:rotate(-1deg);filter:drop-shadow(0 20px 15px #2c201c18)}
+.elEditorial .elProof{width:100%;padding:80px max(32px,calc((100% - 1180px)/2));background:#08132d;color:#f6f0e7}
+.elProof header{display:grid;grid-template-columns:1fr 1fr;gap:0 65px;align-items:end}.elProof .elIndex{grid-column:1/-1;color:#c9b18b}.elProof h2{margin-bottom:36px}.elProof header p{margin-bottom:38px;color:#ced1d9}.elProof figure{max-width:1080px;margin:0 auto}.elProof figcaption{color:#b4bac9}
+.elPurchase{display:grid;grid-template-columns:1.1fr .8fr;gap:110px;align-items:center}.elRetail figure{max-width:540px;margin-top:35px;filter:drop-shadow(0 16px 16px #32231718)}
+.elReceipt{position:relative;background:#fffdf7;padding:42px 34px;transform:rotate(2deg);box-shadow:2px 3px 5px #4d382414,10px 25px 32px #4d382420;background-image:repeating-linear-gradient(0deg,transparent 0 3px,#a48c6610 3px 4px);font:14px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace}
+.elReceipt:before,.elReceipt:after{content:'';position:absolute;height:10px;left:0;right:0;background:linear-gradient(135deg,transparent 6px,#fffdf7 0) 0 0/12px 12px,linear-gradient(225deg,transparent 6px,#fffdf7 0) 0 0/12px 12px;top:-9px}.elReceipt:after{top:auto;bottom:-9px;transform:rotate(180deg)}
+.elReceiptBrand{text-align:center;font:26px/1.1 Georgia,serif}.elReceiptBrand small{font:13px/2.8 ui-monospace,monospace}.elReceipt h3{text-align:center;font:400 25px/1.2 Georgia,serif;margin:25px 0 10px}.elReceipt .elReceiptSub{text-align:center;font-size:12px}.elReceipt dl{margin:22px 0;border-top:1px dashed #9e9789}.elReceipt dl>div{display:grid;grid-template-columns:75px 1fr;gap:15px;padding:22px 0;border-bottom:1px dashed #9e9789}.elReceipt dt{font-weight:700}.elReceipt dd{margin:0}.elReceiptTotal{display:flex;justify-content:space-between;gap:12px;margin:28px 0}.elReceipt>p{font-size:13px}.elReceipt>small{display:block;text-align:center;font-size:11px}.elBarcode{height:28px;width:65%;margin:26px auto 16px;background:repeating-linear-gradient(90deg,#192033 0 1px,transparent 1px 3px,#192033 3px 6px,transparent 6px 8px,#192033 8px 10px,transparent 10px 13px)}
+.elResponsive{border-top:1px solid #bca98c66}.elResponsive header{display:grid;grid-template-columns:1fr 1fr;gap:65px;align-items:center}.elSmall{font-size:14px;color:#62646c}.elSizeToggle{display:flex;justify-content:center;gap:6px;margin:25px 0}.elSizeToggle button{padding:10px 19px;border:1px solid #a8a39a;background:transparent;border-radius:30px;color:var(--el-ink);font-size:14px;cursor:pointer}.elSizeToggle button[aria-pressed=true]{background:var(--el-ink);color:white;border-color:var(--el-ink)}.elSizeToggle button:focus-visible{outline:3px solid #a8884f;outline-offset:3px}.elViewport{width:100%;max-width:980px;margin:0 auto;transition:max-width .65s cubic-bezier(.22,1,.36,1);filter:drop-shadow(0 20px 20px #33261920)}.elViewportCompact{max-width:390px}.elViewport img{display:block;width:100%;height:auto;cursor:zoom-in}.elEditorial .elViewportCaption{text-align:center;font-size:13px;max-width:none;margin:24px 0 0}
+.elEditorial .elFinal{display:grid;grid-template-columns:.7fr 1.3fr;gap:95px;align-items:center;border-top:1px solid #bca98c66;padding-bottom:110px}.elCompactSeal{aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(ellipse at 38% 25%,#ead3af,#b58b54 70%,#775832);border:7px double #f1e0bc;box-shadow:inset 0 0 0 5px #9b774a,inset 0 0 40px #71513155,8px 20px 30px #4a361d26;color:#332715}.elCompactSeal strong{font:45px/1.15 Georgia,serif;margin:12px 0}.elCompactSeal strong i{font-size:100px;font-style:normal}.elCompactSeal span{font-size:13px}.elFinalRole{font-size:14px;color:#63636a}
+@media(max-width:800px){.case-estee .caseLead{grid-template-columns:1fr!important;gap:28px!important}.elEditorial section{width:calc(100% - 40px);padding:58px 0}.elVanity,.elInvitation,.elPurchase,.elEditorial .elFinal{grid-template-columns:1fr;gap:42px}.elMirrorScene{width:min(420px,100%);margin:auto}.elMirrorGlass p{font-size:34px}.elProof header,.elResponsive header{grid-template-columns:1fr;gap:0}.elInvitation figure{transform:none}.elEditorial .elProof{padding:58px 20px}.elReceipt{width:min(420px,calc(100% - 14px));margin:0 auto;padding:34px 25px}.elRetail figure{margin:30px auto 0}.elCompactSeal{width:270px;margin:auto}.elEditorial .elFinal{gap:42px}.elFinal h2{font-size:42px}.elEditorial h2{font-size:42px}.elInvitation header p{margin-bottom:0}}
+@media(prefers-reduced-motion:reduce){.elViewport{transition:none}}
+/* An open powder compact grounds the recognition in the beauty-counter theme. */
+.elCompactSeal{position:relative;isolation:isolate;margin-top:65px;background:radial-gradient(ellipse at 35% 30%,#e6c49f,#c29c76 72%,#ae865d);outline:8px solid #ac8752;outline-offset:0}
+.elCompactSeal:before{content:'';position:absolute;z-index:-1;left:4%;right:4%;top:-76px;height:125px;border-radius:50% 50% 22% 22%;border:8px double #b89a67;background:linear-gradient(145deg,#9eabb1,#eef0ed 32%,#c5ced0 48%,#f9f7ef 70%,#8c999f);box-shadow:0 -5px 15px #30261912,inset 0 0 0 2px #fff9;transform:perspective(500px) rotateX(-22deg)}
+.elCompactSeal:after{content:'';position:absolute;top:-12px;width:65px;height:13px;border-radius:3px;background:linear-gradient(#e7d5ae,#7b603a,#d2b783);box-shadow:0 2px 3px #4c331a55}
+@media(max-width:500px){.elEditorial h2{font-size:38px}.elEditorial h2 br{display:none}.elFinal h2{font-size:38px}}
