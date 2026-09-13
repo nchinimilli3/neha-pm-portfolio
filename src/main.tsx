@@ -803,13 +803,32 @@ function AccentureCase(){return <div className="accentureStory">
 
   <CaseSection title="Where the process broke" className="accentureProblem"><div>
     <p className="accentureLeadCopy">The work got done, but the system depended on coordinator judgment living in people’s heads. Every inconsistent request created more interpretation, more matching risk, and a more fragile handoff.</p>
-    <div className="accentureFrictionField" aria-label="Messy request signals converging on undocumented coordinator judgment and creating downstream risk">
-      <header><span>MESSY SIGNALS</span><span>HIDDEN LOGIC</span><span>DOWNSTREAM RISK</span></header>
-      <svg viewBox="0 0 900 410" preserveAspectRatio="none" aria-hidden="true"><path d="M120 95 C250 95 280 170 438 205"/><path d="M85 205 C245 205 300 205 438 205"/><path d="M135 315 C265 315 310 245 438 205"/><path d="M470 205 C620 205 670 100 805 100"/><path d="M470 205 C635 205 660 205 825 205"/><path d="M470 205 C620 205 675 310 805 310"/></svg>
-      <div className="accentureSignalCloud"><span><b>TOPIC</b>varies</span><span><b>REGION</b>missing</span><span><b>TIMING</b>ambiguous</span></div>
-      <div className="accentureMemoryKnot"><small>THE UNWRITTEN SYSTEM</small><strong>Coordinator<br/>judgment</strong><em>rules remembered,<br/>not encoded</em><i></i></div>
-      <div className="accentureRiskSignals"><span><b>01</b>Intake changes shape</span><span><b>02</b>Matches miss constraints</span><span><b>03</b>Assumptions travel</span></div>
-      <footer><strong>Repeated interpretation became the product problem.</strong><span>Every handoff carried the missing rule forward.</span></footer>
+    <div className="accentureBreakdownFlow" aria-label="An incomplete request forces a coordinator to fill gaps manually, creating downstream failures">
+      <section className="accentureRequestSlip">
+        <header><span>INCOMING REQUEST</span><b>#021</b></header>
+        <strong>AI enablement session</strong>
+        <dl>
+          <div className="isComplete"><dt>Topic</dt><dd>Enterprise AI basics <i>✓</i></dd></div>
+          <div><dt>Region</dt><dd>Not provided <i>?</i></dd></div>
+          <div><dt>Timing</dt><dd>“Next week” <i>?</i></dd></div>
+        </dl>
+        <footer><i></i><span>2 details need clarification</span></footer>
+      </section>
+
+      <div className="accentureManualBridge" aria-label="Coordinator fills in missing details manually">
+        <div><i>?</i><i>?</i><i>?</i></div>
+        <strong>Coordinator<br/>fills the gaps</strong>
+        <span>Using memory, messages,<br/>and personal judgment</span>
+      </div>
+
+      <section className="accentureConsequenceStack">
+        <header>WHEN THE RULE ISN’T WRITTEN DOWN</header>
+        <article><b>01</b><div><strong>The intake changes shape</strong><span>Every request arrives differently.</span></div></article>
+        <article><b>02</b><div><strong>A constraint gets missed</strong><span>The match can look valid but fail in practice.</span></div></article>
+        <article><b>03</b><div><strong>The assumption travels</strong><span>The next person inherits an invisible decision.</span></div></article>
+      </section>
+
+      <footer className="accentureProblemTakeaway"><span>PRODUCT OPPORTUNITY</span><strong>Make request fields and matching rules explicit before the handoff.</strong></footer>
     </div>
   </div></CaseSection>
 
