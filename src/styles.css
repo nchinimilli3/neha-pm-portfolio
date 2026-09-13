@@ -4580,3 +4580,82 @@ input,select,button{accent-color:var(--color-focus)}
 @media(max-width:1000px){.case-kohler .kohlerStory>.caseSection{grid-template-columns:1fr!important;gap:28px!important}.case-kohler .kohlerStory>.caseSection>h2{position:relative;top:auto}.kohlerOrderIllustration{grid-template-columns:1fr 1fr}.kohlerHeldOrder{grid-column:1/-1}.kohlerArchitecture{grid-template-columns:1fr 32px 1.15fr}.kohlerOutputBranch{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.kohlerOutputBranch>span,.kohlerOutputBranch>p{grid-column:1/-1}.kohlerOutputBranch article{padding:16px 0}.kohlerArchitectureLogic{grid-template-columns:1fr 1fr}.kohlerArchitectureLogic article:nth-child(3){border-left:0;border-top:1px solid rgba(36,91,72,.14)}.kohlerArchitectureLogic article:nth-child(4){border-top:1px solid rgba(36,91,72,.14)}.kohlerSurfaceBody{grid-template-columns:120px minmax(0,1fr)}.kohlerStatusRail{display:none}.kohlerReleaseMoment{grid-template-columns:1fr 1fr}.kohlerReleaseMoment>p{grid-column:1/-1;padding:20px 0 0;border-left:0;border-top:1px solid rgba(255,255,255,.18)}}
 @media(max-width:700px){.kohlerHeroMark{min-height:190px!important}.kohlerHeroMark:before{left:20px;top:18px}.kohlerHeroMark img{width:230px!important;max-width:72%!important}.kohlerProductStage{width:calc(100% - 28px);margin-bottom:72px}.kohlerProductStage>.kohlerSurface{box-shadow:0 18px 48px rgba(29,37,32,.13)}.kohlerPreviewCaption{display:block}.kohlerPreviewCaption span{display:block;margin-bottom:7px}.kohlerSurfaceBar{grid-template-columns:72px 1fr;padding:10px}.kohlerSurfaceBar img{width:66px}.kohlerSurfaceBar>small{display:none}.kohlerSurfaceBody,.kohlerSurface.compact .kohlerSurfaceBody{grid-template-columns:1fr;min-height:0}.kohlerSurfaceBody>aside{display:none}.kohlerSurfaceMain{padding:14px}.kohlerWorkspaceHead{display:block}.kohlerWorkspaceHead i{display:inline-block;margin-top:9px}.kohlerMarketTabs{overflow:auto;padding-bottom:3px}.kohlerMarketTabs button{white-space:nowrap}.kohlerFieldRail{grid-template-columns:1fr}.kohlerWorkspaceGrid,.kohlerSurface.compact .kohlerWorkspaceGrid{grid-template-columns:1fr}.kohlerDocument{display:none}.kohlerRoute{min-height:250px}.case-kohler .kohlerStory>.caseSection{width:calc(100% - 28px)!important;padding:50px 0!important}.kohlerOrderIllustration{grid-template-columns:1fr;gap:24px;min-height:0;padding:52px 20px 38px}.kohlerFaucet{margin-top:18px}.kohlerMissingPacket{transform:none}.kohlerHeldOrder{grid-column:1}.kohlerOrderRail{display:none}.kohlerPeopleMap{min-height:0;padding:0 0 0 18px;border:0;border-left:1px solid rgba(36,91,72,.2);background:none}.kohlerPeopleCore{position:relative;left:auto;top:auto;width:auto;height:auto;align-items:flex-start;text-align:left;border-radius:0;transform:none;padding:22px;background:#203d33;box-shadow:none}.kohlerPeopleMap>article,.kohlerPeopleMap .person-1,.kohlerPeopleMap .person-2,.kohlerPeopleMap .person-3,.kohlerPeopleMap .person-4{position:relative;left:auto;right:auto;top:auto;bottom:auto;width:auto;padding:24px 0;text-align:left;border-top:0;border-bottom:1px solid rgba(36,91,72,.13)}.kohlerPeopleMap>article:after{display:none}.kohlerFlow{grid-template-columns:24px 1fr;gap:15px}.kohlerFlowLine{left:11px}.kohlerFlow article,.kohlerFlow article:nth-of-type(odd),.kohlerFlow article:nth-of-type(even){grid-column:2;transform:none;min-height:0;padding:20px 0}.kohlerArchitecture{grid-template-columns:1fr}.kohlerDataCurrent{min-height:55px;flex-direction:row}.kohlerDataCurrent>span{writing-mode:initial}.kohlerDataCurrent i{width:22%}.kohlerOutputBranch{grid-column:1;grid-template-columns:1fr;padding:22px}.kohlerCoreOrbit{height:350px}.kohlerArchitectureLogic{grid-template-columns:1fr}.kohlerArchitectureLogic article,.kohlerArchitectureLogic article:nth-child(n){min-height:0;border-left:0;border-top:1px solid rgba(36,91,72,.14)}.kohlerDocumentAssembly{grid-template-columns:1fr;gap:18px}.kohlerSpecDiff{padding:20px 14px;box-shadow:8px 8px 0 rgba(36,91,72,.055)}.kohlerSpecDiff>div{grid-template-columns:76px 1fr 1fr;gap:8px}.kohlerBoundary{grid-template-columns:1fr}.kohlerBoundary article,.kohlerBoundary article+article{min-height:0;padding:24px 0 58px;border-left:0;border-bottom:1px solid rgba(36,91,72,.15)}.kohlerBoundary strong{margin-top:34px}.kohlerBoundary article+article small{left:0}.kohlerExceptionLedger article{grid-template-columns:32px 1fr;gap:8px 14px;padding:18px 0}.kohlerExceptionLedger article>p,.kohlerExceptionLedger article>small{grid-column:2}.kohlerAudit{padding:22px 16px}.kohlerAudit header{display:block}.kohlerAudit header strong{display:block;margin-top:8px}.kohlerShippedList{grid-template-columns:1fr}.kohlerDelivery article,.kohlerDelivery article+article{min-height:0;padding:20px 0 24px;border-left:0;border-bottom:1px solid rgba(36,91,72,.14)}.kohlerDelivery article strong{margin-top:25px}.kohlerReleaseMoment{grid-template-columns:1fr;padding:24px 20px}.kohlerReleaseMoment>p{grid-column:1}}
 @media(prefers-reduced-motion:reduce){.kohlerRouteLine em,.kohlerFlowLine i,.kohlerOrderRail i,.kohlerDataCurrent i:before,.kohlerCoreOrbit:after,.kohlerFinalRoute em{animation:none!important}.kohlerMarketTabs button,.kohlerStatusRail>i b,.kohlerBoundary article,.kohlerArchitectureLogic article,.kohlerExceptionLedger article{transition:none!important}}
+
+/* Kohler clarity pass: explicit stories replace decorative radial diagrams. */
+.kohlerHeroMark:before{content:none}
+.kohlerPreviewCaption{display:block;max-width:72ch}
+.kohlerOrderIllustration{grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch;min-height:0;padding:18px;background:rgba(255,255,255,.28)}
+.kohlerOrderIllustration:before{content:none}
+.kohlerOrderIllustration>div:not(.kohlerOrderRail){min-width:0;padding:28px;border:1px solid rgba(36,91,72,.16);background:#f8f5ed}
+.kohlerOrderIllustration>div:not(.kohlerOrderRail):not(:last-child):after{content:"→";position:absolute;z-index:4;right:-29px;top:50%;width:38px;height:38px;display:grid;place-items:center;border:1px solid rgba(36,91,72,.2);border-radius:50%;transform:translateY(-50%);background:#f1eee6;color:#285f4b;font-size:19px}
+.kohlerOrderIllustration span{font-size:12px;letter-spacing:0;color:#254f40}
+.kohlerOrderIllustration strong{margin-top:16px;font-size:20px}
+.kohlerOrderIllustration small{font-size:12px;line-height:1.45}
+.kohlerRiskNumber{width:28px;height:28px;display:grid!important;place-items:center;margin-bottom:18px;border-radius:50%;background:#285f4b!important;color:#fff!important;font-size:12px!important}
+.kohlerFaucet{height:118px;margin:20px auto 8px;transform:scale(.78);transform-origin:center}
+.kohlerMissingPacket{transform:none;box-shadow:none}
+.kohlerMissingPacket:after{content:none}
+.kohlerMissingPacket>div{margin-top:22px}
+.kohlerHeldOrder{border-top:0!important;background:#203d33!important;color:#fff}
+.kohlerHeldOrder span,.kohlerHeldOrder strong{color:#fff}
+.kohlerHeldOrder small{color:#bdcbc4}
+.kohlerRouteStamp{margin:36px 0 31px}
+.kohlerHeldOrder .kohlerRouteStamp b{background:transparent!important;color:#fff!important}
+
+.kohlerPeopleMap{min-height:0;padding:18px;border:1px solid rgba(35,80,64,.18);background:rgba(255,255,255,.24)}
+.kohlerPeopleRoute{display:grid;grid-template-columns:repeat(4,1fr)}
+.kohlerPeopleRoute article{position:relative;min-width:0;padding:26px 30px 30px;border-top:3px solid #8d7654}
+.kohlerPeopleRoute article+article{border-left:1px solid rgba(36,91,72,.15)}
+.kohlerPeopleRoute article:not(:last-child):after{content:"→";position:absolute;z-index:2;right:-14px;top:24px;width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:#f2eee4;color:#285f4b}
+.kohlerPeopleRoute article>b{width:28px;height:28px;display:grid;place-items:center;margin-bottom:28px;border-radius:50%;background:#244f40;color:#fff;font-size:11px}
+.kohlerPeopleRoute article span{display:block;margin-bottom:7px;color:#8a6d45;font-size:10px;font-weight:750;letter-spacing:.08em}
+.kohlerPeopleRoute article strong{display:block;min-height:42px;color:#203d33;font-size:17px;line-height:1.2}
+.kohlerPeopleRoute article p{margin:8px 0 0!important;color:#69716c!important;font-size:12px!important;line-height:1.45!important}
+.kohlerPeopleCore{position:relative;left:auto;top:auto;width:auto;height:auto;display:grid;grid-template-columns:.9fr 1.1fr;gap:28px;align-items:center;padding:26px 30px;border-radius:0;transform:none;background:#203d33;text-align:left;box-shadow:none}
+.kohlerPeopleCore strong{margin:0;font-size:22px;line-height:1.15}
+.kohlerPeopleCore small{max-width:none;padding-left:28px;border-left:1px solid rgba(255,255,255,.2);font-size:12px;line-height:1.5}
+
+.kohlerArchitecture{grid-template-columns:.95fr 54px 1.35fr .95fr;min-height:0}
+.kohlerSourceStack,.kohlerOutputBranch,.kohlerAzureCore{padding:28px}
+.kohlerSourceStack h3,.kohlerOutputBranch h3,.kohlerAzureCore h3{margin:0 0 18px;font-size:19px;line-height:1.2}
+.kohlerSourceStack h3,.kohlerOutputBranch h3{color:#214f3e}
+.kohlerDataCurrent{gap:54px}
+.kohlerDataCurrent i{overflow:visible}
+.kohlerAzureCore{display:flex;flex-direction:column;background:#1e2925}
+.kohlerAzureCore>p{margin:0 0 22px!important;color:#b9c8c1!important;font-size:12px!important;line-height:1.5!important}
+.kohlerAzureSteps{display:grid;gap:10px;margin-top:auto}
+.kohlerAzureSteps article{display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:center;padding:16px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.04)}
+.kohlerAzureSteps article img{width:32px;height:32px;object-fit:contain;filter:grayscale(1) brightness(4)}
+.kohlerAzureSteps article strong,.kohlerAzureSteps article small{display:block}
+.kohlerAzureSteps article strong{color:#fff;font-size:14px}
+.kohlerAzureSteps article small{margin-top:5px;color:#aebdb6;font-size:10px;line-height:1.4}
+.kohlerOutputBranch article{padding:22px 0}
+.kohlerArchitectureLogic strong{margin-top:28px}
+.kohlerDelivery article{min-height:110px}
+.kohlerDelivery article strong{margin-top:26px}
+
+@media(max-width:1000px){
+ .kohlerOrderIllustration{grid-template-columns:repeat(3,1fr)}
+ .kohlerPeopleRoute{grid-template-columns:1fr 1fr}
+ .kohlerPeopleRoute article:nth-child(3){border-left:0}
+ .kohlerPeopleRoute article:nth-child(n+3){border-top:1px solid rgba(36,91,72,.15)}
+ .kohlerPeopleRoute article:after{display:none!important}
+ .kohlerArchitecture{grid-template-columns:1fr 42px 1.25fr}
+ .kohlerOutputBranch{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+ .kohlerOutputBranch h3,.kohlerOutputBranch>p{grid-column:1/-1}
+}
+@media(max-width:700px){
+ .kohlerOrderIllustration{grid-template-columns:1fr;padding:12px}
+ .kohlerOrderIllustration>div:not(.kohlerOrderRail):not(:last-child):after{content:"↓";right:50%;top:auto;bottom:-28px;transform:translateX(50%)}
+ .kohlerFaucet{margin-left:auto;margin-right:auto}
+ .kohlerPeopleMap{padding:12px;border:0;background:none}
+ .kohlerPeopleRoute{grid-template-columns:1fr}
+ .kohlerPeopleRoute article,.kohlerPeopleRoute article:nth-child(n){padding:22px;border-left:0;border-top:1px solid rgba(36,91,72,.15)}
+ .kohlerPeopleRoute article strong{min-height:0}
+ .kohlerPeopleCore{grid-template-columns:1fr;padding:24px}
+ .kohlerPeopleCore small{padding:0;border-left:0}
+ .kohlerArchitecture{grid-template-columns:1fr}
+ .kohlerDataCurrent{min-height:48px;flex-direction:row;gap:22px}
+ .kohlerDataCurrent i{width:22%}
+ .kohlerOutputBranch{grid-column:1;grid-template-columns:1fr;padding:24px}
+}
