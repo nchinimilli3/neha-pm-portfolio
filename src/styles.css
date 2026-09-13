@@ -4719,3 +4719,76 @@ input,select,button{accent-color:var(--color-focus)}
  .kohlerProductSection .kohlerProductStage{width:100%;margin:22px 0 0}
  .kohlerStory>.toolLogoSection{width:calc(100% - 28px)!important}
 }
+
+/* Kohler visual-story polish: clearer product object, connectors, and packet assembly. */
+.kohlerOrderIllustration{gap:48px;padding:16px}
+.kohlerOrderIllustration>div:not(.kohlerOrderRail):not(:last-child):after{right:-41px;width:32px;height:32px;font-size:17px}
+.kohlerFaucet{display:block;width:142px;height:126px;margin:18px auto 10px;object-fit:contain;transform:none;filter:drop-shadow(0 12px 10px rgba(31,41,36,.12));cursor:default!important}
+
+.kohlerPacketStory{position:relative;display:grid;grid-template-columns:minmax(176px,.9fr) 42px minmax(210px,1.08fr) 42px minmax(190px,.95fr);align-items:stretch;padding:18px;border:1px solid rgba(36,91,72,.18);background:linear-gradient(135deg,rgba(255,255,255,.58),rgba(221,231,224,.38));overflow:hidden}
+.kohlerPacketStory:before{content:"";position:absolute;right:-120px;top:-150px;width:340px;height:340px;border:1px solid rgba(36,91,72,.1);border-radius:50%;box-shadow:0 0 0 44px rgba(36,91,72,.025),0 0 0 88px rgba(36,91,72,.018)}
+.kohlerPacketStory section{position:relative;z-index:1;min-width:0;padding:24px}
+.kohlerPacketStory h3{display:flex;align-items:center;gap:10px;margin:0 0 22px;color:#214f3e;font-size:18px;line-height:1.15}
+.kohlerPacketStory h3>b{flex:0 0 auto;width:27px;height:27px;display:grid;place-items:center;border:1px solid rgba(36,91,72,.45);border-radius:50%;font-size:11px}
+.kohlerEvidenceShelf{background:rgba(248,246,239,.82)}
+.kohlerEvidenceShelf article{position:relative;padding:16px 12px 16px 17px;border-top:1px solid rgba(36,91,72,.13)}
+.kohlerEvidenceShelf article:before{content:"";position:absolute;left:0;top:17px;width:5px;height:40px;border-radius:5px;background:#a88456}
+.kohlerEvidenceShelf article:nth-of-type(2):before{background:#2d69e0}
+.kohlerEvidenceShelf article:nth-of-type(3):before{background:#222724}
+.kohlerEvidenceShelf span,.kohlerEvidenceShelf strong,.kohlerEvidenceShelf small{display:block}
+.kohlerEvidenceShelf span{color:#8b6a43;font-size:10px;font-weight:750}
+.kohlerEvidenceShelf strong{margin-top:5px;color:#25332d;font-size:13px;line-height:1.3}
+.kohlerEvidenceShelf small{margin-top:5px;color:#6b756f;font-size:10px;line-height:1.4}
+.kohlerPacketBridge{position:relative;z-index:2;display:grid;place-items:center}
+.kohlerPacketBridge i{position:relative;width:100%;height:1px;background:#66887a}
+.kohlerPacketBridge i:before{content:"";position:absolute;left:5px;top:-3px;width:7px;height:7px;border-radius:50%;background:#ab8759}
+.kohlerPacketBridge i:after{content:"";position:absolute;right:0;top:-4px;border-left:8px solid #66887a;border-top:4px solid transparent;border-bottom:4px solid transparent}
+.kohlerPacketBridge span{display:none}
+.kohlerPacketBuilder{background:#1e2d28;color:white;box-shadow:0 18px 40px rgba(30,45,40,.16)}
+.kohlerPacketBuilder h3{color:white}
+.kohlerPacketBuilder h3>b{border-color:rgba(255,255,255,.45)}
+.kohlerPaperStack{position:relative;height:274px;margin:4px 0 18px}
+.kohlerPaperStack article{position:absolute;left:0;width:calc(100% - 8px);min-height:112px;padding:18px 18px 16px;background:#f7f3e9;color:#20342b;border:1px solid rgba(255,255,255,.34);box-shadow:0 15px 24px rgba(7,16,12,.2);transform-origin:center}
+.kohlerPaperStack article:nth-child(1){top:0;left:4px;transform:rotate(-2.5deg);opacity:.88}
+.kohlerPaperStack article:nth-child(2){top:72px;left:10px;transform:rotate(2deg)}
+.kohlerPaperStack article:nth-child(3){top:145px;transform:rotate(-.7deg);border-left:5px solid #b28751}
+.kohlerPaperStack span,.kohlerPaperStack strong,.kohlerPaperStack small{display:block}
+.kohlerPaperStack span{color:#8a6d48;font-size:8px;font-weight:800;letter-spacing:.12em}
+.kohlerPaperStack strong{margin-top:10px;font-size:15px}
+.kohlerPaperStack small{margin-top:5px;color:#68736d;font-size:10px}
+.kohlerServiceTrail{display:flex;flex-wrap:wrap;gap:6px}
+.kohlerServiceTrail span{padding:6px 8px;border:1px solid rgba(255,255,255,.16);border-radius:999px;color:#c6d3cd;font-size:8px;line-height:1.2}
+.kohlerReviewDesk{background:rgba(248,246,239,.75)}
+.kohlerReviewCard{position:relative;padding:18px;background:#fffdf6;border:1px solid rgba(36,91,72,.2);box-shadow:10px 12px 0 rgba(47,89,72,.08)}
+.kohlerReviewCard:before{content:"";position:absolute;right:18px;top:-10px;width:56px;height:20px;background:rgba(187,154,100,.42);transform:rotate(3deg)}
+.kohlerReviewCard header{display:flex;justify-content:space-between;gap:12px;padding-bottom:15px;border-bottom:1px solid rgba(36,91,72,.14)}
+.kohlerReviewCard header span{color:#6f7a74;font-size:8px;font-weight:800;letter-spacing:.1em}
+.kohlerReviewCard header strong{color:#214f3e;font-size:11px}
+.kohlerReviewCard>p{display:grid;grid-template-columns:24px 1fr;gap:9px;align-items:center;margin:0!important;padding:13px 0;border-bottom:1px solid rgba(36,91,72,.11)}
+.kohlerReviewCard>p>i{width:22px;height:22px;display:grid;place-items:center;border-radius:50%;background:#dbece5;color:#246047;font-size:11px;font-style:normal;font-weight:800}
+.kohlerReviewCard>p.needsReview>i{background:#f3e5d1;color:#8b5b2d}
+.kohlerReviewCard>p strong,.kohlerReviewCard>p small{display:block}
+.kohlerReviewCard>p strong{color:#2b3933;font-size:11px}
+.kohlerReviewCard>p small{margin-top:2px;color:#778079;font-size:9px}
+.kohlerReviewCard footer{margin-top:18px;padding:13px;background:#203d33;color:white}
+.kohlerReviewCard footer strong,.kohlerReviewCard footer span{display:block}
+.kohlerReviewCard footer strong{font-size:13px}
+.kohlerReviewCard footer span{margin-top:4px;color:#bdcac4;font-size:9px}
+
+@media(max-width:1120px){
+ .case-kohler .kohlerStory>.caseSection{grid-template-columns:1fr!important;gap:28px!important;padding:62px 0!important}
+ .case-kohler .kohlerStory>.caseSection>h2{position:relative!important;top:auto!important;max-width:700px!important}
+}
+@media(max-width:820px){
+ .kohlerPacketStory{grid-template-columns:1fr;padding:12px}
+ .kohlerPacketBridge{min-height:54px}
+ .kohlerPacketBridge i{width:1px;height:34px}
+ .kohlerPacketBridge i:before{left:-3px;top:0}
+ .kohlerPacketBridge i:after{right:auto;left:-4px;top:auto;bottom:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:8px solid #66887a;border-bottom:0}
+ .kohlerPaperStack{max-width:420px;margin-left:auto;margin-right:auto}
+}
+@media(max-width:700px){
+ .kohlerOrderIllustration{gap:46px}
+ .kohlerOrderIllustration>div:not(.kohlerOrderRail):not(:last-child):after{right:50%;bottom:-40px}
+ .kohlerPacketStory section{padding:22px 18px}
+}
