@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 import './estee.css';
+import EsteeCompact from './EsteeCompact';
 
 const assetUrl=src=>{
   if(/^https?:\/\//.test(src))return src;
@@ -832,7 +833,7 @@ function EsteeCase(){
   {/* Constraint / authentic desktop capture / presentation narrows on request, never invents mobile UI. */}
   <section className="elResponsive"><header><div><span className="elIndex">05 / Design across screen sizes</span><h2>The imagery had to<br/> hold together.</h2></div><div><p>The image-heavy site made responsive behavior part of the build. I reused responsive patterns and adjusted layouts so the product story remained coherent on smaller screens.</p><p className="elSmall">The original capture below scales intact. This comparison illustrates the space constraint; it is not a separate mobile UI capture.</p></div></header><div className="elSizeToggle" role="group" aria-label="Compare image presentation widths"><button aria-pressed={!compact} onClick={()=>setCompact(false)}>Wide canvas</button><button aria-pressed={compact} onClick={()=>setCompact(true)}>Narrow canvas</button></div><div className={`elViewport ${compact?'elViewportCompact':''}`}><img src={assetUrl('project-media/el-home.webp')} alt="Original Double Wear homepage, scaled without cropping" loading="lazy"/></div><p className="elViewportCaption">Brand imagery stays intact as the available width changes.</p></section>
   {/* Outcome / editorial compact / actual recognition, no unverified impact metrics. */}
-  <section className="elFinal"><div className="elCompactSeal"><span>Challenge finalist</span><strong>Top <i>5</i></strong><span>Estée Lauder ×<br/> Kode With Klossy</span></div><div><span className="elIndex">The outcome</span><h2>From product concept<br/> to the C-suite.</h2><p>The project finished as a Top 5 challenge finalist, and I presented the concept to Estée Lauder C-suite leadership.</p><p className="elFinalRole">My contribution: product concept, UX/UI, and frontend development.</p></div></section>
+  <section className="elFinal"><div className="elCompactScene"><EsteeCompact/></div><div className="elOutcomeText"><span className="elIndex">The outcome</span><p className="elFinalRecognition"><strong>Top 5</strong><span>Challenge finalist</span></p><h2>From product concept<br/> to the <span style={{whiteSpace:'nowrap'}}>C-suite.</span></h2><p>The project finished as a Top 5 challenge finalist, and I presented the concept to Estée Lauder C-suite leadership.</p><p className="elFinalRole">My contribution: product concept, UX/UI, and frontend development.</p></div></section>
  </div>
 }
 
