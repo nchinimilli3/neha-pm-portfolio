@@ -6,6 +6,8 @@ import EsteeCompact from './EsteeCompact';
 import FCVFCase from './FCVFCase';
 import FCVFMustang from './FCVFMustang';
 import AboutFilmCamera from './AboutFilmCamera';
+import FinSimpleCase from './FinSimpleCase';
+import FinSimpleMachE from './FinSimpleMachE';
 import './fcvf.css';
 
 const assetUrl=src=>{
@@ -530,7 +532,7 @@ function ProjectVisual({type}){
   if(type==='fcvf') return <FCVFMustang/>;
   if(type==='accenture') return <CaseHeroLogo src="company-logos/accenture-v31.png" alt="Accenture" className="accentureHeroMark"/>;
   if(type==='kohler') return <CaseHeroLogo src="company-logos/kohler.svg" alt="Kohler" className="kohlerHeroMark"/>;
-  if(type==='finsimple') return <CaseHeroLogo src="company-logos/ford-credit-v31.png" alt="Ford Credit" className="fordCreditHeroMark"/>;
+  if(type==='finsimple') return <FinSimpleMachE/>;
   if(type==='scheduler') return <figure className="schedulerPhotoHero"><img loading="eager" decoding="async" src={assetUrl('project-media/supplied-covers/scheduler.jpg')} alt="Collaborative Scheduler running on a desktop computer in a study workspace"/></figure>;
   if(type==='chat') return <MiniChat/>;
   if(type==='bookclub') return <BookclubPhoneHero/>;
@@ -786,21 +788,6 @@ function CaseStudy({id,onBack}){
 
 function CaseSection({title,children,className=''}){return <section className={`caseSection ${className}`}><h2>{title}</h2><div className="caseSectionBody">{children}</div></section>}
 
-function FinSimpleCase({setLightbox}){return <div className="finsimpleStory">
-  <section className="fsFeatureOpening">
-    <div className="fsOpeningCopy"><h2>Past estimates should move the customer forward.</h2><p>Returning customers needed to find an earlier vehicle estimate and continue—not rebuild work they had already done.</p><div className="fsEstimateTicket"><span>Previous estimate</span><strong>Explorer · Estimate #1842</strong><div><b>$487/mo</b><small>Saved and ready to continue</small></div><button type="button">Resume estimate →</button></div></div>
-    <figure><img loading="lazy" decoding="async" src={assetUrl('project-media/finsimple-live.png')} alt="Finished FinSimple Previous Estimates feature"/><figcaption>Customer-facing release</figcaption></figure>
-  </section>
-  <CaseSection title="The delivery constraint" className="fsConstraintSection"><div className="fsLayeredPlatform"><div className="fsLayerCopy"><h3>A small customer moment crossed a large enterprise system.</h3><p>FinSimple already had customers, shared components, production environments, and downstream records. I had to make the new experience feel native while coordinating the AEM, API, Salesforce, QA, and release work behind it.</p></div><div className="fsPlatformLayers" aria-label="The feature crossing platform layers"><span>Customer experience</span><span>AEM component</span><span>API contract</span><span>Salesforce record</span><i aria-hidden="true"></i></div></div></CaseSection>
-  <CaseSection title="How the feature became real" className="fsBuildSection"><div className="fsBuildArtifacts">
-    <figure><img loading="lazy" decoding="async" src={assetUrl('project-media/finsimple-dummy.png')} alt="FinSimple feature using synthetic data"/><figcaption><b>Prototype the behavior</b><span>Synthetic data made the interaction testable before integration.</span></figcaption></figure>
-    <figure><img loading="lazy" decoding="async" src={assetUrl('project-media/finsimple-aem.png')} alt="FinSimple AEM component implementation"/><figcaption><b>Fit the platform</b><span>The experience became a reusable AEM component.</span></figcaption></figure>
-    <figure><img loading="lazy" decoding="async" src={assetUrl('project-media/finsimple-live.png')} alt="FinSimple feature in the customer-facing flow"/><figcaption><b>Validate the release</b><span>Integration and QA carried it into the live journey.</span></figcaption></figure>
-    <aside><strong>My ownership ran through the stack.</strong><span>Requirements · component work · API integration · testing · cross-team release coordination</span></aside>
-  </div></CaseSection>
-  <CaseSection title="Customer intent becomes a durable record" className="fsRecordSection"><div className="fsRecordRail" aria-label="Customer context moving from the web experience into Salesforce"><header><strong>One customer action</strong><span>Resume estimate #1842</span></header><div><span>Web experience</span><i></i><b>customer + estimate context</b><i></i><span>API layer</span><i></i><b>validated payload</b><i></i><span>Salesforce</span></div><footer><strong>The interface can feel simple because the handoff is explicit.</strong><span>Customer-facing → system of record</span></footer></div></CaseSection>
-  <section className="fsReleaseMoment"><span>Released inside the existing product</span><strong>Previous Estimates became a continuation point—not a dead end.</strong><p>The feature preserved the platform workflow while making earlier customer work easy to revisit and act on.</p></section>
-</div>}
 
 function SchedulerCase(){return <div className="schedulerStory">
   <section className="sandboxSection schedulerShowcase"><SchedulerSandbox/></section>
