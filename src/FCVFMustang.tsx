@@ -40,7 +40,7 @@ export default function FCVFMustang() {
   <radialGradient id="shelbySmoke"><stop stopColor="#7e929d" stopOpacity=".38"/><stop offset="1" stopColor="#a4b1b5" stopOpacity="0"/></radialGradient>
  </defs>
  <g stroke="#163d5925" fill="none"><path d="M35 113H747M35 347H747M75 82V359M709 82V359" strokeDasharray="3 7"/><path d="M88 94H696M88 88V100M696 88V100"/></g>
- <text x="390" y="77" fill="#526e81" fontFamily="monospace" fontSize="9" textAnchor="middle" letterSpacing="3">1967 / FASTBACK / FORWARD THINKING</text>
+ <text x="390" y="77" fill="#526e81" fontFamily="monospace" fontSize="9" textAnchor="middle" letterSpacing="3">1967 / FASTBACK</text>
  <path className="shelbyRoad" d="M40 358H740" fill="none" stroke="#8f9e9f" strokeWidth="2" strokeDasharray="55 28"/>
  <g className="shelbySpeed" fill="none" stroke="#456b83" strokeLinecap="round"><path d="M25 207H167"/><path d="M-20 242H126" strokeWidth="2"/><path d="M12 275H181"/><path d="M46 313H127" strokeWidth="2"/></g>
  <g className="shelbyExhaust" aria-hidden="true">{[0,1,2,3].map(i => <ellipse key={i} className={`shelbyPuff shelbyPuff${i}`} cx={83-i*8} cy={314-i*2} rx="26" ry="19" fill="url(#shelbySmoke)"/>)}</g>
@@ -76,8 +76,7 @@ export default function FCVFMustang() {
  <path d="M133 270Q145 242 174 243M540 270Q552 242 581 243" stroke="#bdd2da" strokeOpacity=".7" strokeWidth="2" fill="none"/>
  </g>
  </svg>
- <span>FORD / CUSTOMER VALUE FRAMEWORK / 2023</span>
  <button className="fvReplay" type="button" onClick={() => {triggered.current = true; setDrive(d => d + 1);}}>Take it for a spin ↗</button>
- <small className="shelbyHint">Scroll to set it in motion</small>
+
  </div>;
 }

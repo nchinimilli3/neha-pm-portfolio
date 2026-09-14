@@ -1,0 +1,38 @@
+.accentureSFHero{
+  --sf-fog-front:0px;
+  position:relative;
+  width:100%;
+  margin:0;
+  overflow:hidden;
+  border:0;
+  background:transparent;
+  isolation:isolate;
+  aspect-ratio:1672/735;
+  mask-image:linear-gradient(to bottom,#000 88%,transparent 100%);
+}
+/* Open artwork beside the case-study title; no card or background panel. */
+.case-accenture .caseLead{
+  grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr)!important;
+  align-items:center!important;
+  gap:clamp(24px,3vw,56px)!important;
+}
+.case-accenture .caseLead .caseHeader{max-width:none!important}
+.case-accenture .caseLead .caseHeroMedia{
+  grid-column:2;
+  grid-row:1;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  background:transparent!important;
+}
+@media(max-width:900px){
+  .case-accenture .caseLead{grid-template-columns:1fr!important;gap:20px!important}
+  .case-accenture .caseLead .caseHeroMedia{grid-column:1;grid-row:2}
+}
+.accentureSFScene{display:block;width:100%;height:auto}
+.sfFog{pointer-events:none;will-change:transform}
+.sfFogFront{transform:translate3d(var(--sf-fog-front),0,0)}
+@media(prefers-reduced-motion:reduce){.sfFog{transform:none!important;will-change:auto}}

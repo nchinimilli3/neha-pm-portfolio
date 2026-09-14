@@ -5155,3 +5155,66 @@ input,select,button{accent-color:var(--color-focus)}
 @media(max-width:920px){.esteeConfidenceReceipt{margin:150px 0 0}.esteeScopeReceipt{width:calc(100% - 48px)}}
 @media(max-width:650px){.esteeHeroMockup{border-radius:14px}.esteeConfidenceReceipt{margin-top:150px;padding:26px 20px}.esteeScopeReceipt{width:calc(100% - 28px);margin-bottom:82px;padding:30px 24px}.esteeScopeReceipt>header{display:block}.esteeScopeReceipt>header strong{display:block;margin-top:12px}.esteeScopeReceipt>div{grid-template-columns:76px 1fr;gap:16px}.esteeScopeReceipt>footer{font-size:18px!important}}
 @media(prefers-reduced-motion:reduce){.esteeSwatchFan i{transition:none!important}}
+
+/* V44 — annotation cleanup: clearer stories, readable demos, branded aura. */
+.casePage .caseHeader h1,
+.casePage .caseSection h2,
+.casePage .caseIntro,
+.casePage .caseSectionBody{font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important}
+.casePage .caseHeader h1{font-weight:450!important;letter-spacing:-.045em!important}
+
+/* Captions and editorial eyebrows were explicitly removed from Bookclub. */
+.case-bookclub .bcKicker,
+.case-bookclub .bcScreenCaption,
+.case-bookclub .bcCardCaption,
+.case-bookclub .bcHeroCaption,
+.case-bookclub .bcDemoCaption,
+.case-bookclub .bcInterviewNotebook header small{display:none!important}
+.bookclubMobileFirst{width:min(1080px,calc(100% - 48px));margin:28px auto 10px;padding:24px 28px;border-left:4px solid #9a5548;background:rgba(255,252,242,.82);box-shadow:0 18px 50px rgba(52,79,65,.08)}
+.bookclubMobileFirst strong{display:block;color:#294f43;font-size:20px}.bookclubMobileFirst p{max-width:76ch;margin:7px 0 0;color:#56655d;font-size:16px;line-height:1.55}
+
+/* Remove source-note/caveat captions while keeping the decision evidence. */
+.case-marketExpansion .grazeSourceNote,
+.case-marketExpansion .grazeLocationReceipt>small{display:none!important}
+
+/* Homepage Graze preview: contain the complete composition inside its card. */
+.project-marketExpansion .grazeProjectPreview{aspect-ratio:1.38!important;overflow:hidden!important}
+.project-marketExpansion .grazeProjectPreview>*{transform:scale(.88)!important;transform-origin:center!important}
+.project-marketExpansion .projectCardMedia{overflow:hidden!important}
+
+/* Scheduler: give the working demo room and remove repeated closing explanations. */
+.schedulerShowcase{overflow:visible!important}
+.schedulerShowcase .schedulerSandbox{min-height:720px!important;padding:26px!important;overflow:visible!important}
+.schedulerShowcase .schedulerBody{grid-template-columns:minmax(620px,1fr) 260px!important;align-items:start!important}
+.schedulerShowcase .calendarGrid .slot{min-height:42px!important}
+.schedulerStory .schedulerSystemSection,
+.schedulerStory .schedulerOutcome{display:none!important}
+
+/* Kohler: turn the participant list into a people-first visual and trim repeated close. */
+.kohlerPeopleRoute article:before{content:"";display:block;width:64px;height:64px;margin:0 0 18px;border-radius:50%;background:radial-gradient(circle at 50% 32%,#f0d8bd 0 18%,transparent 19%),radial-gradient(ellipse at 50% 92%,#315b4c 0 37%,transparent 38%),#dfe7de;box-shadow:0 0 0 1px rgba(36,91,72,.16)}
+.kohlerPeopleRoute article:nth-child(2):before{background:radial-gradient(circle at 50% 32%,#8a5d43 0 18%,transparent 19%),radial-gradient(ellipse at 50% 92%,#7d9876 0 37%,transparent 38%),#e7e4d8}
+.kohlerPeopleRoute article:nth-child(3):before{background:radial-gradient(circle at 50% 32%,#c8926b 0 18%,transparent 19%),radial-gradient(ellipse at 50% 92%,#8e654a 0 37%,transparent 38%),#e2e9e2}
+.kohlerPeopleRoute article:nth-child(4):before{background:radial-gradient(circle at 50% 32%,#e0b08b 0 18%,transparent 19%),radial-gradient(ellipse at 50% 92%,#254d40 0 37%,transparent 38%),#e8e1d5}
+.kohlerStory .kohlerBetSection,
+.kohlerStory .kohlerDeliverySection{display:none!important}
+
+/* Accenture: retain the day-to-day story, remove the duplicate diagram, and enlarge useful labels. */
+.accentureContext .accentureFieldLoop{display:none!important}
+.accentureCanvasWork>div:first-child:not(.accentureGtmRail){display:none!important}
+.accentureCanvasWork{display:block!important}
+.accentureGtmRail{padding:24px!important}
+.accentureGtmRail article div span,.accentureGtmRail article div small{font-size:12px!important;line-height:1.35!important}
+.accentureGtmRail article div strong{font-size:15px!important}
+.accentureStory .accentureKitStage{display:none!important}
+
+/* Stronger, case-specific ambient color without sacrificing legibility. */
+.case-bookclub{background:linear-gradient(135deg,rgba(222,234,221,.66),rgba(249,241,222,.72) 48%,rgba(219,228,215,.62))!important}
+.case-marketExpansion{background:linear-gradient(135deg,rgba(227,239,229,.72),rgba(255,247,226,.76) 52%,rgba(232,218,206,.65))!important}
+.case-kohler{background:linear-gradient(135deg,rgba(220,232,224,.74),rgba(248,242,224,.74) 52%,rgba(210,226,219,.7))!important}
+.case-bookclub>.auraField,.case-marketExpansion>.auraField,.case-kohler>.auraField{opacity:.74!important;saturate:1.25}
+.case-bookclub>.auraField{filter:hue-rotate(70deg) saturate(1.35)!important}
+.case-marketExpansion>.auraField{filter:hue-rotate(88deg) saturate(1.45)!important}
+.case-kohler>.auraField{filter:hue-rotate(76deg) saturate(1.28)!important}
+
+@media(max-width:900px){.schedulerShowcase .schedulerSandbox{min-height:0!important;padding:18px!important;overflow:auto!important}.schedulerShowcase .schedulerBody{grid-template-columns:minmax(560px,1fr)!important}.schedulerShowcase .schedulerAside{display:none}.kohlerPeopleRoute article:before{width:52px;height:52px}}
+@media(max-width:650px){.bookclubMobileFirst{width:calc(100% - 28px);padding:20px}.project-marketExpansion .grazeProjectPreview>*{transform:scale(.82)!important}.schedulerShowcase .schedulerSandbox{padding:14px!important}}
