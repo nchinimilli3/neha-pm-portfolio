@@ -521,7 +521,7 @@ function CaseHeroLogo({src,alt,className=''}){
 }
 function ProjectVisual({type}){
   if(type==='commute') return <CommutePreview/>;
-  if(type==='fcvf') return <CaseHeroLogo src="company-logos/ford.png" alt="Ford Motor Company" className="fcvfHeroMark"/>;
+  if(type==='fcvf') return <CaseHeroLogo src="company-logos/ford-white-source.png" alt="Ford Motor Company" className="fcvfHeroMark"/>;
   if(type==='accenture') return <AccentureSFHero/>;
   if(type==='kohler') return <CaseHeroLogo src="company-logos/kohler.svg" alt="Kohler" className="kohlerHeroMark"/>;
   if(type==='finsimple') return <FinSimpleMachE/>;
