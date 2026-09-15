@@ -22,52 +22,55 @@ export default function CommuteBARTStory(){
  return <section ref={host} className="commuteBARTStory" aria-label="A BART train travels from Oakland to Embarcadero as the page scrolls">
   <header><span>THE MORNING, AS A SYSTEM</span><h2>One arrival time.<br/>Every decision before it.</h2><p>Commute works backward from the commitment, watches live conditions, and returns the latest safe wake-up and leave times.</p></header>
   <div className="bartSceneSimple">
-   <svg ref={trainRef} className="bartTrain" viewBox="0 0 1040 310" role="img" aria-label="Code-drawn BART Fleet of the Future train with a blue body, three doors, and an amber destination display">
+   <svg ref={trainRef} className="bartTrain" viewBox="0 0 1200 280" role="img" aria-label="BART Fleet of the Future train with blue ends, white body, multiple doors, and destination display">
     <defs>
-     <linearGradient id="bartSteel" x2="0" y2="1"><stop stopColor="#f8fbfc"/><stop offset=".55" stopColor="#d9e0e4"/><stop offset="1" stopColor="#aebbc2"/></linearGradient>
-     <linearGradient id="bartBlue" x2="1"><stop stopColor="#0a4fa3"/><stop offset=".5" stopColor="#1366b8"/><stop offset="1" stopColor="#002d6b"/></linearGradient>
-     <linearGradient id="bartGlass" x2="0" y2="1"><stop stopColor="#a0d4e0"/><stop offset=".35" stopColor="#4a7d8f"/><stop offset="1" stopColor="#1a3a47"/></linearGradient>
-     <linearGradient id="bartHeadlight" x2="0" y2="1"><stop stopColor="#fffacd"/><stop offset="1" stopColor="#ffeb99"/></linearGradient>
-     <filter id="bartShadow"><feGaussianBlur stdDeviation="8"/></filter>
-     <filter id="bartGlow"><feGaussianBlur stdDeviation="4"/></filter>
+     <linearGradient id="bartWhiteBody" x2="0" y2="1"><stop stopColor="#f9fafb"/><stop offset=".3" stopColor="#eff2f5"/><stop offset="1" stopColor="#e8ecf0"/></linearGradient>
+     <linearGradient id="bartBlueFront" x2="1"><stop stopColor="#003d9f"/><stop offset=".5" stopColor="#0052cc"/><stop offset="1" stopColor="#0f66d9"/></linearGradient>
+     <linearGradient id="bartWindowGlass" x2="0" y2="1"><stop stopColor="#7fb3c8"/><stop offset=".35" stopColor="#4a7d8f"/><stop offset="1" stopColor="#1f3a47"/></linearGradient>
+     <filter id="bartShadowDepth"><feGaussianBlur stdDeviation="5"/></filter>
     </defs>
-    <ellipse cx="520" cy="268" rx="465" ry="15" fill="#173142" opacity=".18" filter="url(#bartShadow)"/>
+    <ellipse cx="600" cy="265" rx="540" ry="12" fill="#000" opacity=".12" filter="url(#bartShadowDepth)"/>
     <g className="bartCar">
-     <path d="M48 221V87Q48 58 82 54H865Q910 55 947 91L1000 144Q1015 159 1015 184V221Z" fill="url(#bartSteel)" stroke="#6b7f8a" strokeWidth="2.5"/>
-     <path d="M48 202H1015V230H48Z" fill="url(#bartBlue)"/>
-     <path d="M867 57Q911 60 947 95L999 146H877Z" fill="url(#bartGlass)" opacity=".9"/>
-     <path d="M888 73Q914 79 937 102L969 132H888Z" fill="#0a2333" opacity=".7"/>
-     <rect x="850" y="76" width="24" height="69" rx="4" fill="#1a3a4a" stroke="#2a5a6a" strokeWidth="1.5"/>
-     <rect x="74" y="81" width="134" height="55" rx="4" fill="#0f2838" stroke="#2a5a6a" strokeWidth="1.5"/>
-     <text x="91" y="105" fill="#ffb33b" fontFamily="monospace" fontSize="13" fontWeight="600">YELLOW</text>
-     <text x="91" y="125" fill="#ffd78a" fontFamily="monospace" fontSize="12">SF / DALY CITY</text>
-     {[236,455,674].map((x,index)=><g key={x} className={`bartDoor bartDoor${index+1}`}>
-      <rect x={x} y="69" width="128" height="137" rx="6" fill="#e6ebf0" stroke="#5a7a8a" strokeWidth="2.5"/>
-      <rect x={x+10} y="79" width="50" height="67" rx="3" fill="url(#bartGlass)" opacity=".85"/>
-      <rect x={x+68} y="79" width="50" height="67" rx="3" fill="url(#bartGlass)" opacity=".85"/>
-      <path d={`M${x+64} 70V205`} stroke="#5a7a8a" strokeWidth="2.5"/>
-      <rect x={x+18} y="156" width="92" height="6" rx="3" fill="#0a4fa3"/>
-      <circle cx={x+20} cy="210" r="4" fill="#8a9aaa"/>
-      <circle cx={x+108} cy="210" r="4" fill="#8a9aaa"/>
+     <path d="M80 235V110Q80 75 115 70H1050Q1080 72 1105 105L1145 155Q1155 170 1155 190V235Z" fill="url(#bartWhiteBody)" stroke="#a0a8b0" strokeWidth="2"/>
+     <path d="M80 220H1155V245H80Z" fill="#d5dce2"/>
+     <path d="M50 70H80V235H50Q30 200 30 155Q30 100 50 70Z" fill="url(#bartBlueFront)"/>
+     <path d="M1155 70H1185V235H1155Q1175 200 1175 155Q1175 100 1155 70Z" fill="url(#bartBlueFront)"/>
+     <circle cx="55" cy="95" r="9" fill="#fff" opacity=".4"/>
+     <circle cx="1160" cy="95" r="9" fill="#fff" opacity=".4"/>
+     <text x="55" y="170" textAnchor="middle" fill="#fff" fontFamily="Arial" fontWeight="900" fontSize="16" letterSpacing="1">BART</text>
+     <text x="1160" y="170" textAnchor="middle" fill="#fff" fontFamily="Arial" fontWeight="900" fontSize="16" letterSpacing="1">BART</text>
+     <rect x="55" y="70" width="18" height="18" fill="#fff" stroke="#d0d8de" strokeWidth="1" rx="2"/>
+     <text x="64" y="83" textAnchor="middle" fontFamily="Arial" fontSize="11" fill="#000">🇺🇸</text>
+     {[110,200,310,420,540,660,780,890,1000].map((x,i)=><rect key={`w${i}`} x={x} y="78" width="72" height="60" rx="3" fill="url(#bartWindowGlass)" stroke="#5a7080" strokeWidth="1.5" opacity=".9"/>)}
+     {[160,270,390,510,630,750,860,970].map((x,i)=><g key={`d${i}`}>
+      <rect x={x} y="98" width="85" height="110" rx="4" fill="#e5ecf2" stroke="#6a7a88" strokeWidth="2"/>
+      <rect x={x+8} y="110" width="32" height="48" rx="2" fill="url(#bartWindowGlass)" opacity=".8"/>
+      <rect x={x+45} y="110" width="32" height="48" rx="2" fill="url(#bartWindowGlass)" opacity=".8"/>
+      <path d={`M${x+42} 98V208`} stroke="#6a7a88" strokeWidth="1.5"/>
+      <circle cx={x+21} cy="170" r="2" fill="#7a8a98"/>
+      <circle cx={x+64} cy="170" r="2" fill="#7a8a98"/>
+      <circle cx={x+42} cy="215" r="4" fill="#6a7a8a"/>
      </g>)}
-     <rect x="80" y="151" width="105" height="43" rx="5" fill="url(#bartGlass)" opacity=".8"/>
-     <circle cx="141" cy="218" r="21" fill="#f5f7fa" stroke="#0a4fa3" strokeWidth="5"/>
-     <circle cx="141" cy="218" r="18" fill="#e8f0f5"/>
-     <text x="141" y="226" textAnchor="middle" fill="#0a4fa3" fontFamily="Arial" fontWeight="900" fontSize="22">ba</text>
-     <rect x="925" y="154" width="55" height="14" rx="3" fill="#ffd21f" filter="url(#bartGlow)"/>
-     <rect x="925" y="154" width="55" height="14" rx="3" fill="#ffeb99" opacity=".6"/>
-     <rect x="58" y="230" width="944" height="11" rx="3" fill="#3a4f5a"/>
-     <rect x="58" y="235" width="944" height="2" fill="#5a7a8a" opacity=".6"/>
-     {[174,830].map(x=><g key={x}>
-      <circle cx={x} cy="241" r="34" fill="#0a1620"/>
-      <circle cx={x} cy="241" r="26" fill="#5a7a8a"/>
-      <circle cx={x} cy="241" r="18" fill="#7a8a9a"/>
-      <circle cx={x} cy="241" r="8" fill="#d3dade"/>
-      <circle cx={x} cy="241" r="4" fill="#f5f7fa"/>
-      <ellipse cx={x-6} cy={241-6} rx="6" ry="5" fill="#fff" opacity=".4"/>
+     <g>
+      <rect x="330" y="135" width="85" height="55" rx="4" fill="#ffd700" stroke="#b8860b" strokeWidth="1.5"/>
+      <text x="372" y="155" textAnchor="middle" fill="#000" fontFamily="Arial" fontWeight="800" fontSize="13" letterSpacing=".5">SFO Airport</text>
+      <text x="372" y="180" textAnchor="middle" fill="#b8860b" fontFamily="Arial" fontWeight="600" fontSize="9">✈️</text>
+     </g>
+     <rect x="80" y="225" width="1075" height="6" fill="#3a4a54"/>
+     <rect x="80" y="231" width="1075" height="3" fill="#2a3a44"/>
+     {[130,1130].map((x,i)=><g key={`wh${i}`}>
+      <circle cx={x} cy="248" r="28" fill="#0a0f14"/>
+      <circle cx={x} cy="248" r="22" fill="#404a52"/>
+      <circle cx={x} cy="248" r="16" fill="#5a6a72"/>
+      <circle cx={x} cy="248" r="6" fill="#e8ecf0"/>
+      <ellipse cx={x-8} cy={248-8} rx="7" ry="5" fill="#fff" opacity=".4"/>
      </g>)}
-     <line x1="40" y1="180" x2="120" y2="175" stroke="#0a4fa3" strokeWidth="3" opacity=".6"/>
-     <line x1="930" y1="140" x2="1010" y2="130" stroke="#ffb33b" strokeWidth="3" opacity=".7"/>
+     <rect x="90" y="250" width="75" height="22" fill="#2a3a44"/>
+     <rect x="1035" y="250" width="75" height="22" fill="#2a3a44"/>
+     <text x="128" y="265" fontFamily="Arial" fontWeight="900" fontSize="14" fill="#7a8a98">3102</text>
+     <text x="1072" y="265" fontFamily="Arial" fontWeight="900" fontSize="14" fill="#7a8a98">3102</text>
+     <line x1="55" y1="55" x2="140" y2="55" stroke="#2a3a44" strokeWidth="2" opacity=".6"/>
+     <line x1="1125" y1="55" x2="1160" y2="55" stroke="#2a3a44" strokeWidth="2" opacity=".6"/>
     </g>
    </svg>
   </div>
