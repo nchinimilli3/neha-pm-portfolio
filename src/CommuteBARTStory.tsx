@@ -3,16 +3,17 @@ import './commute-bart.css';
 
 export default function CommuteBARTStory(){
  const host=useRef<HTMLElement>(null);
+ const trainRef=useRef<SVGSVGElement>(null);
  useEffect(()=>{
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
   let frame=0;
   const update=()=>{
    frame=0;
-   if(!host.current||reduced.matches)return;
-   const box=host.current.getBoundingClientRect();
-   const travel=window.innerHeight+box.height;
+   if(!trainRef.current||reduced.matches)return;
+   const box=trainRef.current.getBoundingClientRect();
+   const travel=window.innerHeight+800;
    const progress=Math.max(0,Math.min(1,(window.innerHeight-box.top)/travel));
-   host.current.style.setProperty('--bart-x',`${-34+progress*68}%`);
+   trainRef.current.style.transform=`translateX(${-34+progress*68}%)`;
   };
   const onScroll=()=>{if(!frame)frame=requestAnimationFrame(update)};
   update();window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',onScroll);
@@ -20,10 +21,8 @@ export default function CommuteBARTStory(){
  },[]);
  return <section ref={host} className="commuteBARTStory" aria-label="A BART train travels from Oakland to Embarcadero as the page scrolls">
   <header><span>THE MORNING, AS A SYSTEM</span><h2>One arrival time.<br/>Every decision before it.</h2><p>Commute works backward from the commitment, watches live conditions, and returns the latest safe wake-up and leave times.</p></header>
-  <div className="bartStickyScene">
-   <div className="bartSkyline" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><b></b></div>
-   <div className="bartRouteLabel"><span>OAKLAND</span><i></i><strong>19th St</strong><i></i><span>TRANSBAY</span><i></i><strong>Embarcadero</strong></div>
-   <svg className="bartTrain" viewBox="0 0 1040 310" role="img" aria-label="Code-drawn BART Fleet of the Future train with a blue body, three doors, and an amber destination display">
+  <div className="bartSceneSimple">
+   <svg ref={trainRef} className="bartTrain" viewBox="0 0 1040 310" role="img" aria-label="Code-drawn BART Fleet of the Future train with a blue body, three doors, and an amber destination display">
     <defs>
      <linearGradient id="bartSteel" x2="0" y2="1"><stop stopColor="#f8fbfc"/><stop offset=".55" stopColor="#d9e0e4"/><stop offset="1" stopColor="#aebbc2"/></linearGradient>
      <linearGradient id="bartBlue" x2="1"><stop stopColor="#0a4fa3"/><stop offset=".5" stopColor="#1366b8"/><stop offset="1" stopColor="#002d6b"/></linearGradient>
@@ -71,9 +70,6 @@ export default function CommuteBARTStory(){
      <line x1="930" y1="140" x2="1010" y2="130" stroke="#ffb33b" strokeWidth="3" opacity=".7"/>
     </g>
    </svg>
-   <div className="bartPlatform" aria-hidden="true"><span></span><span></span><span></span></div>
-   <div className="bartDecisionCard"><span>COMMUTE RECOMMENDS</span><strong>BART · 8:19 AM</strong><small>More recovery time if a train is missed</small></div>
   </div>
-  <footer><span>SCROLL TO MOVE THE MORNING →</span><strong>Arrive at Salesforce Tower by 9:00 AM</strong></footer>
  </section>
 }
