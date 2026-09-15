@@ -1047,8 +1047,8 @@ function Home({openCase}){
  const [heroPointerActive,setHeroPointerActive]=useState(false);
  const [filmOpen,setFilmOpen]=useState(false);
  const [filmIndex,setFilmIndex]=useState(0);
- const serious=['fcvf','finsimple','accenture','kohler','marketExpansion','scheduler'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
- const fun=['commute','bookclub','estee','chat'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
+ const serious=['fcvf','finsimple','accenture','kohler','marketExpansion','estee'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
+ const fun=['commute','bookclub','scheduler','chat'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
  const moveHeroAura=e=>{
    if(e.pointerType==='touch')return;
    const rect=e.currentTarget.getBoundingClientRect();
