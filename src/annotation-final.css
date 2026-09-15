@@ -23,8 +23,8 @@
 body{font-size:18px!important}
 
 /* Home experience selections now have a real, softly changing aura behind them. */
-.homePage{position:relative;isolation:isolate;overflow:clip;background:#f7f3ed;transition:background .55s ease}
-.homePage>.auraField{position:fixed!important;inset:-14vh -10vw!important;z-index:0!important;opacity:.42!important;pointer-events:none!important;filter:saturate(.9)!important}
+.homePage{position:relative;isolation:isolate;overflow:clip;background:radial-gradient(ellipse at 4% 14%,rgba(129,181,255,.58),transparent 39%),radial-gradient(ellipse at 94% 30%,rgba(247,145,195,.43),transparent 36%),radial-gradient(ellipse at 58% 78%,rgba(129,223,190,.35),transparent 42%),linear-gradient(135deg,#eaf2ff 0%,#f4eaff 36%,#fff0ec 67%,#e9f8ef 100%);transition:background .55s ease}
+.homePage>.auraField{position:fixed!important;inset:-14vh -10vw!important;z-index:0!important;opacity:.7!important;pointer-events:none!important;filter:saturate(1.32) contrast(1.02)!important}.homePage>.auraField .auraBloom{filter:blur(44px)!important;opacity:.66!important}
 .homePage>*:not(.auraField){position:relative;z-index:1}
 .homeAura-accenture{background:linear-gradient(135deg,#f8f3fa,#f3eef9 50%,#f7f2f6)}.homeAura-accenture>.auraField .bloom1,.homeAura-accenture>.auraField .bloom4{background:radial-gradient(circle,rgba(129,63,185,.52),transparent 68%)!important}.homeAura-accenture>.auraField .bloom2{background:radial-gradient(circle,rgba(211,111,154,.38),transparent 68%)!important}
 .homeAura-fordcredit{background:linear-gradient(135deg,#f1f5fa,#f2f7f7 54%,#f7f1eb)}.homeAura-fordcredit>.auraField .bloom1,.homeAura-fordcredit>.auraField .bloom5{background:radial-gradient(circle,rgba(45,89,143,.44),transparent 68%)!important}
