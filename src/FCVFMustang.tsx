@@ -6,16 +6,15 @@ import './fcvf-mustang.css';
 // Original SVG interpretation: fastback roof, extended nose, hood and quarter scoops.
 export default function FCVFMustang() {
  const host = useRef<HTMLDivElement>(null);
- const [drive, setDrive] = useState(.12);
+ const [drive, setDrive] = useState(0);
  useEffect(() => {
    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
    let frame = 0;
    const onScroll = () => {
    if (reduced.matches || !host.current) return;
    const box = host.current.getBoundingClientRect();
-   const travel = Math.max(1, window.innerHeight * .82 + box.height);
-   const progress = Math.max(0, Math.min(1, (window.innerHeight * .84 - box.top) / travel));
-   const next = .12 + progress * .88;
+   const startLine = window.innerHeight * .78;
+   const next = Math.max(0, Math.min(1, (startLine - box.top) / startLine));
    cancelAnimationFrame(frame);
    frame = requestAnimationFrame(() => setDrive(current => Math.abs(current-next) > .002 ? next : current));
    };
@@ -33,8 +32,8 @@ export default function FCVFMustang() {
   <circle cx={cx} cy="291" r="4" fill="#284b64"/>
   <path d={`M${cx-35} 273Q${cx} 242 ${cx+35} 273`} fill="none" stroke="#fff" strokeOpacity=".17"/>
  </g>;
- const carTravel=(host.current?.clientWidth||780)*1.16;
- return <div ref={host} className="fvHeroCar shelbyScene" style={{'--drive-progress':drive,'--car-x':`${(drive-.12)*carTravel}px`,'--wheel-turn':`${drive*1680}deg`,'--road-offset':`${drive*-440}px`,'--speed-x':`${drive*-170}px`,'--smoke-x':`${drive*-76}px`,'--smoke-y':`${drive*-20}px`,'--smoke-scale':.62+drive*2.2} as React.CSSProperties}>
+ const carTravel=(host.current?.clientWidth||780)*.62;
+ return <div ref={host} className="fvHeroCar shelbyScene" style={{'--drive-progress':drive,'--car-x':`${drive*carTravel}px`,'--wheel-turn':`${drive*1680}deg`,'--road-offset':`${drive*-440}px`,'--speed-x':`${drive*-170}px`,'--smoke-x':`${drive*-76}px`,'--smoke-y':`${drive*-20}px`,'--smoke-scale':.62+drive*2.2} as React.CSSProperties}>
  <svg className="fvMustang shelbyIllustration" viewBox="0 0 780 400" role="img" aria-label="Original blue 1967 Shelby Mustang GT500-inspired illustration. Scroll to drive it across the road with spinning wheels and a trail of exhaust.">
  <defs>
   <linearGradient id="shelbyPaint" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#93b8ce"/><stop offset=".21" stopColor="#4d89b0"/><stop offset=".46" stopColor="#28668f"/><stop offset=".55" stopColor="#194767"/><stop offset=".85" stopColor="#205579"/><stop offset="1" stopColor="#0c2d46"/></linearGradient>
