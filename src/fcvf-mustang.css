@@ -1,21 +1,14 @@
-/* Scoped separately from the case-study layout. One scroll launch, then park. */
+/* Scoped separately from the case-study layout. The car's position is linked to scroll. */
 .fvHeroCar.shelbyScene{overflow:hidden;padding-bottom:4px}
 .shelbyScene .shelbyIllustration{overflow:visible}
 .shelbyScene .shelbyHint{display:block;text-align:center;margin-top:10px;font:10px ui-monospace,monospace;color:#617583}
-.shelbyScene .shelbySpeed,.shelbyScene .shelbyPuff{opacity:0}
+.shelbyScene .shelbySpeed,.shelbyScene .shelbyPuff{opacity:calc(var(--drive-progress,0) * .72)}
 .shelbyScene .shelbyRear{transform-origin:180px 291px}
 .shelbyScene .shelbyFront{transform-origin:587px 291px}
-.shelbyScene .shelbyDriving .shelbyCar{animation:shelbyLaunch 3.4s both}
-.shelbyScene .shelbyDriving .shelbyWheel{animation:shelbySpin 3.4s both}
-.shelbyScene .shelbyDriving .shelbyRoad{animation:shelbyRoadRun 1.65s .25s cubic-bezier(.7,0,1,1) both}
-.shelbyScene .shelbyDriving .shelbySpeed{animation:shelbyWhoosh 1.35s .3s both}
-.shelbyScene .shelbyDriving .shelbyPuff{animation:shelbySmokeAway 1.8s .2s both;transform-box:fill-box;transform-origin:center}
-.shelbyScene .shelbyDriving .shelbyPuff1{animation-delay:.35s}
-.shelbyScene .shelbyDriving .shelbyPuff2{animation-delay:.5s}
-.shelbyScene .shelbyDriving .shelbyPuff3{animation-delay:.65s}
-@keyframes shelbyLaunch{0%,8%{transform:translateX(0);opacity:1}14%{transform:translateX(-6px) translateY(1px);opacity:1;animation-timing-function:cubic-bezier(.65,0,1,1)}49%{transform:translateX(810px) translateY(-2px);opacity:1}50%{transform:translateX(810px);opacity:0}64%{transform:translateX(-110px);opacity:0;animation-timing-function:cubic-bezier(.16,1,.3,1)}100%{transform:translateX(0);opacity:1}}
-@keyframes shelbySpin{0%,12%{transform:rotate(0);animation-timing-function:cubic-bezier(.65,0,1,1)}49%{transform:rotate(1080deg)}64%{transform:rotate(1080deg);animation-timing-function:cubic-bezier(.16,1,.3,1)}100%{transform:rotate(1350deg)}}
-@keyframes shelbyRoadRun{from{stroke-dashoffset:0}to{stroke-dashoffset:-332}}
-@keyframes shelbyWhoosh{0%{opacity:0;transform:translateX(45px) scaleX(.5)}25%{opacity:.5}80%{opacity:.35}100%{opacity:0;transform:translateX(-130px) scaleX(1.3)}}
-@keyframes shelbySmokeAway{0%{opacity:0;transform:translate(0,0) scale(.35)}22%{opacity:.8}100%{opacity:0;transform:translate(-100px,-28px) scale(3)}}
-@media(prefers-reduced-motion:reduce){.shelbyScene .shelbyDriving .shelbyCar,.shelbyScene .shelbyDriving .shelbyWheel,.shelbyScene .shelbyDriving .shelbyRoad,.shelbyScene .shelbyDriving .shelbySpeed,.shelbyScene .shelbyDriving .shelbyPuff{animation:none}.shelbyScene .fvReplay,.shelbyScene .shelbyHint{display:none}}
+.shelbyScene .shelbyCar{transform:translateX(var(--car-x,0px));will-change:transform}
+.shelbyScene .shelbyWheel{transform:rotate(var(--wheel-turn,0deg));will-change:transform}
+.shelbyScene .shelbyRoad{stroke-dashoffset:var(--road-offset,0px)}
+.shelbyScene .shelbySpeed{transform:translateX(var(--speed-x,0px)) scaleX(calc(.5 + var(--drive-progress,0)))}
+.shelbyScene .shelbyPuff{transform-box:fill-box;transform-origin:center;transform:translate(var(--smoke-x,0px),var(--smoke-y,0px)) scale(var(--smoke-scale,.35))}
+.shelbyScene .shelbyPuff1{opacity:calc(var(--drive-progress,0) * .55)}.shelbyScene .shelbyPuff2{opacity:calc(var(--drive-progress,0) * .38)}.shelbyScene .shelbyPuff3{opacity:calc(var(--drive-progress,0) * .22)}
+@media(prefers-reduced-motion:reduce){.shelbyScene .shelbyCar{transform:none}.shelbyScene .shelbyWheel{transform:none}.shelbyScene .shelbySpeed,.shelbyScene .shelbyPuff{opacity:0}.shelbyScene .fvReplay,.shelbyScene .shelbyHint{display:none}}

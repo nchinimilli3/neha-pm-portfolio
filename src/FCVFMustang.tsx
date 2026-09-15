@@ -6,20 +6,22 @@ import './fcvf-mustang.css';
 // Original SVG interpretation: fastback roof, extended nose, hood and quarter scoops.
 export default function FCVFMustang() {
  const host = useRef<HTMLDivElement>(null);
- const triggered = useRef(false);
- const [drive, setDrive] = useState(0);
+ const [drive, setDrive] = useState(.18);
  useEffect(() => {
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const onScroll = () => {
-   if (triggered.current || reduced.matches || !host.current) return;
+   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+   let frame = 0;
+   const onScroll = () => {
+   if (reduced.matches || !host.current) return;
    const box = host.current.getBoundingClientRect();
-   if (window.scrollY > 35 && box.bottom > 100 && box.top < window.innerHeight) {
-    triggered.current = true;
-    setDrive(1);
-   }
-  };
+   const travel = Math.max(1, window.innerHeight * .82 + box.height);
+   const next = Math.max(0, Math.min(1, (window.innerHeight * .84 - box.top) / travel));
+   cancelAnimationFrame(frame);
+   frame = requestAnimationFrame(() => setDrive(current => Math.abs(current-next) > .002 ? next : current));
+   };
+  onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
-  return () => window.removeEventListener('scroll', onScroll);
+  window.addEventListener('resize', onScroll);
+  return () => {window.removeEventListener('scroll', onScroll);window.removeEventListener('resize', onScroll);cancelAnimationFrame(frame)};
  }, []);
  const wheel = (cx: number, name: string) => <g>
   <circle cx={cx} cy="291" r="46" fill="#101b22" stroke="#071019" strokeWidth="3"/>
@@ -30,8 +32,8 @@ export default function FCVFMustang() {
   <circle cx={cx} cy="291" r="4" fill="#284b64"/>
   <path d={`M${cx-35} 273Q${cx} 242 ${cx+35} 273`} fill="none" stroke="#fff" strokeOpacity=".17"/>
  </g>;
- return <div ref={host} className="fvHeroCar shelbyScene">
- <svg key={drive} className={`fvMustang shelbyIllustration${drive ? ' shelbyDriving' : ''}`} viewBox="0 0 780 400" role="img" aria-label="Original blue 1967 Shelby Mustang GT500-inspired illustration. Scroll to see it accelerate with spinning wheels and a trail of exhaust.">
+ return <div ref={host} className="fvHeroCar shelbyScene" style={{'--drive-progress':drive,'--car-x':`${(drive-.18)*1220}px`,'--wheel-turn':`${drive*1440}deg`,'--road-offset':`${drive*-332}px`,'--speed-x':`${drive*-130}px`,'--smoke-x':`${drive*-100}px`,'--smoke-y':`${drive*-28}px`,'--smoke-scale':.35+drive*2.65} as React.CSSProperties}>
+ <svg className="fvMustang shelbyIllustration" viewBox="0 0 780 400" role="img" aria-label="Original blue 1967 Shelby Mustang GT500-inspired illustration. Scroll to drive it across the road with spinning wheels and a trail of exhaust.">
  <defs>
   <linearGradient id="shelbyPaint" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#93b8ce"/><stop offset=".21" stopColor="#4d89b0"/><stop offset=".46" stopColor="#28668f"/><stop offset=".55" stopColor="#194767"/><stop offset=".85" stopColor="#205579"/><stop offset="1" stopColor="#0c2d46"/></linearGradient>
   <linearGradient id="shelbyMetal" x2=".65" y2="1"><stop stopColor="#fffdf1"/><stop offset=".27" stopColor="#8294a0"/><stop offset=".48" stopColor="#f1f4eb"/><stop offset="1" stopColor="#607785"/></linearGradient>
@@ -76,7 +78,7 @@ export default function FCVFMustang() {
  <path d="M133 270Q145 242 174 243M540 270Q552 242 581 243" stroke="#bdd2da" strokeOpacity=".7" strokeWidth="2" fill="none"/>
  </g>
  </svg>
- <button className="fvReplay" type="button" onClick={() => {triggered.current = true; setDrive(d => d + 1);}}>Take it for a spin ↗</button>
+ <button className="fvReplay" type="button" onClick={() => host.current?.scrollIntoView({behavior:'smooth',block:'center'})}>Drive with scroll ↕</button>
 
  </div>;
 }
