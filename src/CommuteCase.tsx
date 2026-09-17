@@ -1,0 +1,262 @@
+import React, {useState, useEffect, useRef} from 'react';
+import './commute-case.css';
+import CommuteBARTStory from './CommuteBARTStory';
+import LifecycleRoad from './LifecycleRoad';
+
+
+const measures=[
+ {label:'Arrival error',desc:'Predicted vs. actual walk-in time'},
+ {label:'Unused buffer',desc:'Minutes spent waiting instead of sleeping'},
+ {label:'Prediction error',desc:'Routine, walk, and ride, per route'},
+ {label:'Interruptions',desc:'Normal mornings that needed me. Target: 0'}
+];
+
+/* Reveal-on-scroll used by the diagrams below. Honors reduced motion by
+   resolving straight to the finished state instead of never animating. */
+function useInView<T extends HTMLElement>(){
+ const ref=useRef<T>(null);
+ const [seen,setSeen]=useState(false);
+ useEffect(()=>{
+  const node=ref.current;
+  if(!node) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){setSeen(true);return}
+  const io=new IntersectionObserver(([e])=>{if(e.isIntersecting){setSeen(true);io.disconnect()}},{threshold:.25,rootMargin:'0px 0px -60px 0px'});
+  io.observe(node);
+  return ()=>io.disconnect();
+ },[]);
+ return [ref,seen] as const;
+}
+
+const clock=(m:number)=>{const h=Math.floor(m/60),mm=m%60;return `${((h+11)%12)+1}:${String(mm).padStart(2,'0')}`};
+
+/* Why the faster route is not automatically the better one. Real windows from
+   the app: BART lands 8:48-8:53, the NL lands 8:42-9:04. */
+function RouteRisk(){
+ const [ref,seen]=useInView<HTMLDivElement>();
+ // A one-hour dial from 8:00 to 9:00, with 9:00 at twelve o'clock.
+ const pt=(m:number,r:number)=>{const a=(m/60*360-90)*Math.PI/180;return [60+r*Math.cos(a),60+r*Math.sin(a)]};
+ const arc=(from:number,to:number,r:number)=>{const [x1,y1]=pt(from,r),[x2,y2]=pt(to,r);return `M${x1} ${y1}A${r} ${r} 0 ${to-from>30?1:0} 1 ${x2} ${y2}`};
+ const R=38;
+ const routes=[
+  {name:'BART',from:48,to:53,tone:'ok',range:'arrives 8:48–8:53',note:'Always on time'},
+  {name:'NL bus',from:42,to:64,tone:'risk',range:'arrives 8:42–9:04',note:'Late 1 in 3 mornings'}
+ ];
+ return <div className={`cmClocks${seen?' isIn':''}`} ref={ref}>
+  {routes.map(r=><div key={r.name} className={`cmClock is-${r.tone}`} role="img" aria-label={`${r.name} ${r.range}. ${r.note}.`}>
+   <svg viewBox="0 0 120 120" aria-hidden="true">
+    <circle cx="60" cy="60" r="55" className="cmClockRim"/>
+    <circle cx="60" cy="60" r="50" className="cmClockFace"/>
+    {Array.from({length:60},(_,i)=>{const long=i%5===0;const [x1,y1]=pt(i,47),[x2,y2]=pt(i,long?42:45);return <path key={i} d={`M${x1} ${y1}L${x2} ${y2}`} className={long?'cmTickHour':'cmTickMin'}/>})}
+    <circle cx="60" cy="60" r={R} className="cmClockTrack"/>
+    <path d={arc(r.from,Math.min(r.to,60),R)} className="cmClockWin" style={{'--len':R*(Math.min(r.to,60)-r.from)/60*2*Math.PI} as React.CSSProperties}/>
+    {r.to>60&&<path d={arc(60,r.to,R)} className="cmClockLate" style={{'--len':R*(r.to-60)/60*2*Math.PI} as React.CSSProperties}/>}
+    <circle cx="60" cy="10" r="3.2" className="cmClockPin"/>
+    <text x="60" y="58" className="cmClockName">{r.name}</text>
+    <text x="60" y="72" className="cmClockRange">{r.range.replace('arrives ','')}</text>
+   </svg>
+   <span className="cmClockNote">{r.note}</span>
+  </div>)}
+  <p className="cmClockKey"><i/>9:00 deadline</p>
+ </div>;
+}
+
+function FreshnessDiagram(){
+ const [ref,seen]=useInView<HTMLDivElement>();
+ // Live tracking: the bus keeps driving while its older GPS pings trail behind and count for less.
+ const pings=[{t:'8 min ago',w:.2,x:34},{t:'5 min ago',w:.46,x:110},{t:'2 min ago',w:.78,x:186}];
+ return <div ref={ref} className={`cmTrail${seen?' isIn':''}`} role="img" aria-label="A bus's newest location counts 100 percent. A ping 2 minutes old counts 78 percent, 5 minutes old 46 percent, and 8 minutes old 20 percent.">
+  <svg viewBox="0 0 340 150" aria-hidden="true">
+   <path d="M0 104H340" className="cmTrailRoad"/>
+   <path d="M0 104H340" className="cmTrailLane"/>
+   {pings.map((p,i)=><g key={p.t} className="cmTrailPing" style={{'--i':i} as React.CSSProperties}>
+    <circle cx={p.x} cy="104" r={5+p.w*9} className="cmPingHalo" style={{opacity:.15+p.w*.35}}/>
+    <circle cx={p.x} cy="104" r={3+p.w*3} className="cmPingCore" style={{opacity:.3+p.w*.7}}/>
+    <text x={p.x} y="74" className="cmPingPct">{Math.round(p.w*100)}%</text>
+    <text x={p.x} y="136" className="cmPingAge">{p.t}</text>
+   </g>)}
+   <g className="cmBus" transform="translate(272 104)">
+    <g className="cmBusBody">
+     <path d="M-36 -8V-34a12 12 0 0 1 12-12h46a14 14 0 0 1 13 9l6 16v13z" className="cmBusShell"/>
+     <path d="M-36 -8h77v4a6 6 0 0 1-6 6h-65a6 6 0 0 1-6-6z" className="cmBusSkirt"/>
+     <rect x="-30" y="-39" width="14" height="14" rx="4" className="cmBusWin"/>
+     <rect x="-12" y="-39" width="14" height="14" rx="4" className="cmBusWin"/>
+     <path d="M6 -39h13a5 5 0 0 1 4.6 3l3.8 9a3 3 0 0 1-2.8 4H6z" className="cmBusWin"/>
+     <circle cx="37" cy="-12" r="2.6" className="cmBusLamp"/>
+     <path d="M-36 -20h72" className="cmBusStripe"/>
+    </g>
+    <circle cx="-20" cy="2" r="7" className="cmBusWheel"/><circle cx="-20" cy="2" r="2.4" className="cmBusHub"/>
+    <circle cx="24" cy="2" r="7" className="cmBusWheel"/><circle cx="24" cy="2" r="2.4" className="cmBusHub"/>
+    <path d="M-50 -30h-10M-48 -20h-16M-50 -10h-8" className="cmBusSpeed"/>
+    <text x="0" y="-60" className="cmPingPct">100%</text>
+    <text x="0" y="32" className="cmPingAge">now</text>
+   </g>
+  </svg>
+  <p className="cmTrailKey">How much each location update counts in the plan</p>
+ </div>;
+}
+
+/* The problem as a BART platform sign: four readings scroll in, the question blinks, then the answer. */
+const boardRows=[
+ {src:'MAPS',msg:'BAY BRIDGE HEAVY',val:'+6 MIN'},
+ {src:'BART',msg:'SFO / MILLBRAE',val:'4 MIN'},
+ {src:'AC NL',msg:'GRAND AVE',val:'6 LATE'},
+ {src:'CLOCK',msg:'NO ALARM SET',val:'7:22'}
+];
+function PlatformBoard(){
+ const [ref,inView]=useLive<HTMLDivElement>();
+ const [step,setStep]=useState(6);
+ useEffect(()=>{
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||!inView){setStep(6);return}
+  setStep(0);
+  const id=window.setInterval(()=>setStep(n=>(n+1)%9),1000);
+  return ()=>window.clearInterval(id);
+ },[inView]);
+ return <div ref={ref} className="cmBoard" aria-label="Four app readings at 7:22 each answer part of the question. Commute combines them: wake 7:18, leave 8:06, take BART.">
+  <div className="cmBoardFace">
+   <p className="cmBoardHead"><span>4 apps · 4 partial answers</span></p>
+   {boardRows.map((r,i)=><p key={r.src} className={`cmBoardRow${step>i?' isOn':''}`}><b>{r.src}</b><span>{r.msg}</span><em>{r.val}</em></p>)}
+   <p className={`cmBoardAsk${step===5?' isFlash':''}${step>=5?' isOn':''}`}>? WHEN DO I GET UP</p>
+   <div className={`cmBoardAnswer${step>=6?' isOn':''}`}><span>COMMUTE</span><p><b>WAKE</b><em>7:18</em></p><p><b>LEAVE</b><em>8:06</em></p><p><b>TAKE</b><em>BART</em></p></div>
+  </div>
+  <div className="cmBoardPosts" aria-hidden="true"><i/><i/></div>
+ </div>;
+}
+
+function useLive<T extends HTMLElement>(){
+ const ref=useRef<T>(null);
+ const [inView,setInView]=useState(false);
+ useEffect(()=>{const n=ref.current;if(!n)return;const io=new IntersectionObserver(([e])=>setInView(e.isIntersecting),{threshold:.35});io.observe(n);return ()=>io.disconnect()},[]);
+ return [ref,inView] as const;
+}
+
+/* Plan backward from 9:00 as the app's own itinerary. Each step lists the live inputs that move it,
+   and a simulated BART delay shows every time before 9:00 shifting earlier. */
+const I={
+ calendar:<><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></>,
+ transit:<><rect x="5" y="3" width="14" height="14" rx="4"/><path d="M5 10h14M9 21l-2-3M15 21l2-3"/></>,
+ traffic:<><rect x="8" y="2" width="8" height="18" rx="4"/><circle cx="12" cy="7" r="1.2"/><circle cx="12" cy="11" r="1.2"/><circle cx="12" cy="15" r="1.2"/></>,
+ routes:<><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h6a3 3 0 0 0 0-6h-4a3 3 0 0 1 0-6h6"/></>,
+ health:<path d="M12 20s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 9c0 6-8 11-8 11z"/>,
+ location:<><path d="M12 21s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></>,
+ weather:<path d="M7 18a4.5 4.5 0 0 1-.7-8.9A5.5 5.5 0 0 1 17 9.5a4 4 0 0 1 .5 8.5z"/>,
+ history:<><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></>,
+ alarm:<><circle cx="12" cy="13" r="7.5"/><path d="M12 9.5V13l2.5 1.5M4 5l3-2.5M20 5l-3-2.5"/></>
+};
+const Ico=({k}:{k:keyof typeof I})=><svg viewBox="0 0 24 24" aria-hidden="true">{I[k]}</svg>;
+function MorningItinerary(){
+ const [ref,inView]=useLive<HTMLDivElement>();
+ const [delayed,setDelayed]=useState(false);
+ const [touched,setTouched]=useState(false);
+ useEffect(()=>{
+  if(touched||!inView||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const id=window.setInterval(()=>setDelayed(d=>!d),3200);
+  return ()=>window.clearInterval(id);
+ },[inView,touched]);
+ const d=delayed?10:0;
+ const steps=[
+  {k:'wake',t:7*60+18-d,title:'Wake up',sub:'48 min morning routine',inputs:[['history','Commute history'],['alarm','AlarmKit']]},
+  {k:'leave',t:8*60+6-d,title:'Leave home',sub:'13 min walk to 19th St',inputs:[['health','HealthKit'],['routes','Google Routes'],['weather','WeatherKit'],['location','Location']]},
+  {k:'ride',t:8*60+19-d,title:'Board BART',sub:delayed?'42 min to Embarcadero · 10 min delay':'32 min to Embarcadero',inputs:[['transit','511 live BART + bus'],['traffic','511 traffic']]},
+  {k:'arrive',t:9*60,title:'Salesforce Tower',sub:'9 min walk · arrival is fixed',inputs:[['calendar','Calendar']]}
+ ];
+ return <div ref={ref} className={`cmItin${delayed?' isDelayed':''}`}>
+  <ol>{steps.map((st,i)=><li key={st.k} className={`is-${st.k}`} style={{'--i':i} as React.CSSProperties}>
+   <span className="cmItinTime"><b>{clock(st.t)}</b>{delayed&&st.k!=='arrive'&&<s>{clock(st.t+d)}</s>}</span>
+   <span className="cmItinDot" aria-hidden="true"/>
+   <div className="cmItinBody">
+    <strong>{st.title}</strong><span>{st.sub}</span>
+    <ul>{st.inputs.map(([icon,name])=><li key={name}><Ico k={icon as keyof typeof I}/>{name}</li>)}</ul>
+   </div>
+  </li>)}</ol>
+  <button type="button" className="cmItinToggle" aria-pressed={delayed} onClick={()=>{setTouched(true);setDelayed(v=>!v)}}><i aria-hidden="true"/>{delayed?'10 min BART delay on':'Simulate a 10 min BART delay'}</button>
+ </div>;
+}
+
+/* Notify only when the plan changes: small shifts are absorbed silently, one real change gets through. */
+const pings=[
+ {text:'BART +2 min',note:'Plan unchanged',muted:true},
+ {text:'Light rain · walk +1 min',note:'Plan unchanged',muted:true},
+ {text:'NL bus 11 min late',note:'Leave 6 min earlier · take BART',muted:false}
+];
+function LockScreen(){
+ const [ref,inView]=useLive<HTMLDivElement>();
+ const [n,setN]=useState(3);
+ useEffect(()=>{
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||!inView){setN(3);return}
+  const id=window.setInterval(()=>setN(x=>(x+1)%7),1300);
+  return ()=>window.clearInterval(id);
+ },[inView]);
+ return <div ref={ref} className="cmLock">
+  <p className="cmLockTime">7:31</p><p className="cmLockDate">Tuesday</p>
+  <div className="cmLockStack">{pings.map((p,i)=><div key={p.text} className={`cmPing${p.muted?' isMuted':' isLive'}${n>i?' isIn':''}`}>
+   <span className="cmPingIcon" aria-hidden="true">C</span>
+   <div><strong>{p.muted?p.text:p.note}</strong><small>{p.muted?`${p.note} · not sent`:p.text}</small></div>
+  </div>)}</div>
+ </div>;
+}
+
+const commuteStages=[
+ {id:'cm-discover',name:'Discover',did:'Four apps, one question'},
+ {id:'cm-design',name:'Design',did:'Plan backward from 9:00'},
+ {id:'cm-decide',name:'Decide',did:'Rules for 7 a.m.'},
+ {id:'cm-ship',name:'Ship',did:'Daily alarm, next, metrics'}
+];
+export default function CommuteCase({demo}:{demo:React.ReactNode}){
+ return <div className="cmEditorial">
+  <LifecycleRoad stages={commuteStages} vehicle="train"/>
+
+  <section className="cmShowcase" id="cm-demo">
+   <CommuteBARTStory/>
+  </section>
+
+  <section className="cmProblem cmStage" id="cm-discover">
+   <div className="cmProblemCopy">
+    <h2>Four apps. <em>One question.</em></h2>
+    <p>Every weekday I checked four apps and did the math in my head. Maps plans the trip, not the morning, and none of them answered the real question.</p>
+    <PlatformBoard/>
+   </div>
+   <div className="cmDemoStage">
+    <div className="iphoneDemoStage">{demo}</div>
+    <p className="cmDemoHint">Tap through the real app.</p>
+   </div>
+  </section>
+
+  <section className="cmPlanBack cmStage" id="cm-design">
+   <div className="cmPlanCopy">
+    <h2>Plan backward <em>from 9:00.</em></h2>
+    <p>Arrival is fixed. Eight live inputs each adjust one step of the morning, and a delay moves the alarm earlier instead of making me late.</p>
+   </div>
+   <MorningItinerary/>
+  </section>
+
+  <section className="cmRules cmStage" id="cm-decide">
+   <header><h2>Rules for <em>seven in the morning.</em></h2></header>
+   <div className="cmRuleGrid">
+    <div className="cmRule"><h3>A faster route can be the riskier one.</h3><p>Missing a train that runs every 6 minutes costs little. Missing a bus that runs every 30 costs the morning.</p><RouteRisk/></div>
+    <div className="cmRule"><h3>Old data counts for less.</h3><FreshnessDiagram/></div>
+    <div className="cmRule"><h3>Only interrupt when the plan changes.</h3><p>If a delay doesn’t move the wake time, leave time, or route, it stays silent.</p><LockScreen/></div>
+   </div>
+  </section>
+
+  <section className="cmClose cmStage" id="cm-ship">
+   <div className="cmCloseCopy">
+    <h2>Four apps. <em>One alarm.</em></h2>
+    
+    <ol className="cmScopeStops" aria-label="Scope">
+     <li className="is-shipped"><i/><div><b>Shipped</b><span>Calendar, routine, walking speed, live transit and traffic, native alarms</span></div></li>
+     <li className="is-next"><i/><div><b>Next stop</b><span>Recurring commutes, more cities, reliability learning</span></div></li>
+     <li className="is-cut"><i/><div><b>Not in service</b><span>Social features, generic trip planning, dashboards</span></div></li>
+    </ol>
+   </div>
+   <div className="cmTicket">
+    <div className="cmTicketStub" aria-hidden="true"><span>Commute</span><i className="cmBarcode"/></div>
+    <div className="cmTicketMain">
+     <header><strong>How I’d know it’s wrong</strong><span>Valid every weekday</span></header>
+     <dl>{measures.map(m=><div key={m.label}><dt>{m.label}</dt><dd>{m.desc}</dd></div>)}</dl>
+     <footer><span>Wake 7:18</span><i aria-hidden="true">→</i><span>Arrive 9:00</span></footer>
+    </div>
+   </div>
+  </section>
+
+ </div>;
+}

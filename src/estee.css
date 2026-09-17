@@ -1,19 +1,19 @@
 /* Estée editorial: scoped to this case study, using original project imagery. */
-.case-estee{--el-ink:#07132f;--el-gold:#9c7844;background:#f8f5f0!important;color:var(--el-ink)}
-.case-estee .auraField{display:none!important}
+.case-estee{--el-ink:#07132f;--el-gold:#9c7844;color:var(--el-ink)}
+
 .case-estee .caseLead{display:grid!important;grid-template-columns:.8fr 1.2fr!important;gap:48px!important;align-items:center!important;padding-bottom:64px!important}
 .case-estee .caseHeader h1{font-size:clamp(48px,5.7vw,86px)!important;letter-spacing:-.045em!important}
 .case-estee .esteeHeroMockup{border-radius:2px;box-shadow:0 24px 50px #33261920;border:0}
 .case-estee .toolLogoSection{padding-top:20px!important;padding-bottom:30px!important}
 .elEditorial{font-size:17px;line-height:1.65;color:var(--el-ink)}
 .elEditorial section{width:min(1180px,calc(100% - 64px));margin:0 auto;padding:94px 0}
-.elEditorial h2{font:400 clamp(38px,4.4vw,65px)/1.05 'Iowan Old Style',Georgia,serif;letter-spacing:-.035em;margin:20px 0 28px}
+.elEditorial h2{font:400 clamp(38px,4.4vw,65px)/1.05 var(--case-font);letter-spacing:-.035em;margin:20px 0 28px}
 .elEditorial h2 em{font-weight:400;color:#c9b18b}
 .elEditorial p{margin:0 0 22px;max-width:550px}
 .elEditorial figure{margin:0;min-width:0}
 .elEditorial figure img{display:block;width:100%;height:auto;cursor:zoom-in}
 .elEditorial figcaption{font-size:13px;line-height:1.6;margin-top:18px;color:#62646c}
-.elIndex{font-size:14px;color:#80643c}
+
 .elVanity{display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center;border-top:1px solid #bca98c66}
 .elMirrorScene{position:relative;padding:0 25px 32px;isolation:isolate}
 .elMirrorGlass{position:relative;aspect-ratio:1/1.14;border-radius:48% 48% 44% 44%;padding:14px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:linear-gradient(115deg,#6d5839,#e4d3b4 12%,#a38a61 20%,#f8edd8 26%,#a38a61 65%,#f6e9d2 80%,#796342);box-shadow:14px 22px 30px #30271322,inset 0 0 0 1px #82704d}
@@ -24,17 +24,17 @@
 .elMirrorGlass>span{z-index:2;font-size:13px;color:#5c5146}
 .elMirrorStem{height:55px;width:16px;margin:auto;background:linear-gradient(90deg,#7d6441,#f5e4c4 40%,#8e744c);box-shadow:8px 4px 12px #33261922}
 .elMirrorBase{height:25px;width:58%;border-radius:50%;margin:auto;background:linear-gradient(175deg,#e9d8b8,#9b825b 60%,#705b3e);box-shadow:0 17px 18px #33261930,inset 0 2px 1px #fff9}
-.elNote{border-left:2px solid #b29466;padding-left:22px;margin-top:32px;font-size:15px}.elNote b{font-weight:600}.elNote p{margin:8px 0 0}
+
 .elInvitation{display:grid;grid-template-columns:.65fr 1.35fr;gap:55px;align-items:center}.elInvitation figure{transform:rotate(-1deg);filter:drop-shadow(0 20px 15px #2c201c18)}
-.elEditorial .elProof{width:100%;padding:80px max(32px,calc((100% - 1180px)/2));background:#08132d;color:#f6f0e7}
-.elProof header{display:grid;grid-template-columns:1fr 1fr;gap:0 65px;align-items:end}.elProof .elIndex{grid-column:1/-1;color:#c9b18b}.elProof h2{margin-bottom:36px}.elProof header p{margin-bottom:38px;color:#ced1d9}.elProof figure{max-width:1080px;margin:0 auto}.elProof figcaption{color:#b4bac9}
+.elEditorial .elProof{width:100%;padding:80px max(32px,calc((100% - 1180px)/2))}
+.elProof header{display:grid;grid-template-columns:1fr 1fr;gap:0 65px;align-items:end}.elProof h2{margin-bottom:36px}.elProof header p{margin-bottom:38px}.elProof figure{max-width:1080px;margin:0 auto}.elProof figure{filter:drop-shadow(0 30px 30px #1b1a2a2e)}
 .elPurchase{display:grid;grid-template-columns:1.1fr .8fr;gap:110px;align-items:center}.elRetail figure{max-width:540px;margin-top:35px;filter:drop-shadow(0 16px 16px #32231718)}
-.elReceipt{position:relative;background:#fffdf7;padding:42px 34px;transform:rotate(2deg);box-shadow:2px 3px 5px #4d382414,10px 25px 32px #4d382420;background-image:repeating-linear-gradient(0deg,transparent 0 3px,#a48c6610 3px 4px);font:14px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace}
-.elReceipt:before,.elReceipt:after{content:'';position:absolute;height:10px;left:0;right:0;background:linear-gradient(135deg,transparent 6px,#fffdf7 0) 0 0/12px 12px,linear-gradient(225deg,transparent 6px,#fffdf7 0) 0 0/12px 12px;top:-9px}.elReceipt:after{top:auto;bottom:-9px;transform:rotate(180deg)}
-.elReceiptBrand{text-align:center;font:26px/1.1 Georgia,serif}.elReceiptBrand small{font:13px/2.8 ui-monospace,monospace}.elReceipt h3{text-align:center;font:400 25px/1.2 Georgia,serif;margin:25px 0 10px}.elReceipt .elReceiptSub{text-align:center;font-size:12px}.elReceipt dl{margin:22px 0;border-top:1px dashed #9e9789}.elReceipt dl>div{display:grid;grid-template-columns:75px 1fr;gap:15px;padding:22px 0;border-bottom:1px dashed #9e9789}.elReceipt dt{font-weight:700}.elReceipt dd{margin:0}.elReceiptTotal{display:flex;justify-content:space-between;gap:12px;margin:28px 0}.elReceipt>p{font-size:13px}.elReceipt>small{display:block;text-align:center;font-size:11px}.elBarcode{height:28px;width:65%;margin:26px auto 16px;background:repeating-linear-gradient(90deg,#192033 0 1px,transparent 1px 3px,#192033 3px 6px,transparent 6px 8px,#192033 8px 10px,transparent 10px 13px)}
+
+
+
 .elResponsive{border-top:1px solid #bca98c66}.elResponsive header{display:grid;grid-template-columns:1fr 1fr;gap:65px;align-items:center}.elSmall{font-size:14px;color:#62646c}.elSizeToggle{display:flex;justify-content:center;gap:6px;margin:25px 0}.elSizeToggle button{padding:10px 19px;border:1px solid #a8a39a;background:transparent;border-radius:30px;color:var(--el-ink);font-size:14px;cursor:pointer}.elSizeToggle button[aria-pressed=true]{background:var(--el-ink);color:white;border-color:var(--el-ink)}.elSizeToggle button:focus-visible{outline:3px solid #a8884f;outline-offset:3px}.elViewport{width:100%;max-width:980px;margin:0 auto;transition:max-width .65s cubic-bezier(.22,1,.36,1);filter:drop-shadow(0 20px 20px #33261920)}.elViewportCompact{max-width:390px}.elViewport img{display:block;width:100%;height:auto;cursor:zoom-in}.elEditorial .elViewportCaption{text-align:center;font-size:13px;max-width:none;margin:24px 0 0}
-.elEditorial .elFinal{display:grid;grid-template-columns:.7fr 1.3fr;gap:95px;align-items:center;border-top:1px solid #bca98c66;padding-bottom:110px}.elFinalRole{font-size:14px;color:#63636a}
-@media(max-width:800px){.case-estee .caseLead{grid-template-columns:1fr!important;gap:28px!important}.elEditorial section{width:calc(100% - 40px);padding:58px 0}.elVanity,.elInvitation,.elPurchase,.elEditorial .elFinal{grid-template-columns:1fr;gap:42px}.elMirrorScene{width:min(420px,100%);margin:auto}.elMirrorGlass p{font-size:34px}.elProof header,.elResponsive header{grid-template-columns:1fr;gap:0}.elInvitation figure{transform:none}.elEditorial .elProof{padding:58px 20px}.elReceipt{width:min(420px,calc(100% - 14px));margin:0 auto;padding:34px 25px}.elRetail figure{margin:30px auto 0}.elEditorial .elFinal{gap:42px}.elFinal h2{font-size:42px}.elEditorial h2{font-size:42px}.elInvitation header p{margin-bottom:0}}
+.elEditorial .elFinal{display:grid;grid-template-columns:.7fr 1.3fr;gap:95px;align-items:center;border-top:1px solid #bca98c66;padding-bottom:110px}
+@media(max-width:800px){.case-estee .caseLead{grid-template-columns:1fr!important;gap:28px!important}.elEditorial section{width:calc(100% - 40px);padding:58px 0}.elVanity,.elInvitation,.elPurchase,.elEditorial .elFinal{grid-template-columns:1fr;gap:42px}.elMirrorScene{width:min(420px,100%);margin:auto}.elMirrorGlass p{font-size:34px}.elProof header,.elResponsive header{grid-template-columns:1fr;gap:0}.elInvitation figure{transform:none}.elEditorial .elProof{padding:58px 20px}.elRetail figure{margin:30px auto 0}.elEditorial .elFinal{gap:42px}.elFinal h2{font-size:42px}.elEditorial h2{font-size:42px}.elInvitation header p{margin-bottom:0}}
 @media(prefers-reduced-motion:reduce){.elViewport{transition:none}}
 
 
@@ -48,7 +48,47 @@
 .elCompactArtwork{display:block;width:100%;height:auto;overflow:visible}
 .elOutcomeText{min-width:0;color:#07132f}
 .elEditorial .elFinalRecognition{display:flex;align-items:center;gap:18px;margin:20px 0 30px;color:#07132f}
-.elFinalRecognition strong{font:400 clamp(40px,4vw,56px)/1 Georgia,serif;white-space:nowrap}
+.elFinalRecognition strong{font:400 clamp(40px,4vw,56px)/1 var(--case-font);white-space:nowrap}
 .elFinalRecognition span{font-size:14px;line-height:1.4;max-width:90px;border-left:1px solid #b79a70;padding-left:18px}
 .elOutcomeText h2{font-size:clamp(36px,4.2vw,58px)}
 @media(max-width:800px){.elEditorial .elFinal{grid-template-columns:1fr;gap:24px}.elCompactScene{max-width:420px;margin:0 auto}.elOutcomeText h2{font-size:38px}.elEditorial .elFinalRecognition{margin:18px 0 24px}}
+
+/* Scope decisions as a Double Wear bottle: what stayed inside, and what was handed off through the cap. */
+.elScope{container-type:inline-size}
+.elScope h3{font:400 30px/1.1 var(--case-font);margin:0 0 40px;color:var(--el-ink)}
+.elBottleScene{position:relative;display:grid;grid-template-columns:170px 1fr;gap:0 28px}
+.elBottle{width:170px;height:auto;overflow:visible;filter:drop-shadow(0 18px 22px #3b2a1a26)}
+.elBottleBrand{font:600 7px Georgia,serif;letter-spacing:.24em;fill:#07132f}
+.elBottleName{font:italic 400 12px Georgia,serif;fill:#07132f}
+.elFill{transform:scaleY(0);transform-origin:50% 296px;transition:transform 1.4s cubic-bezier(.2,.7,.2,1)}
+.elScope.isIn .elFill{transform:none}
+.elScopeNotes{position:relative;margin:0;padding:0;list-style:none}
+.elScopeNotes li{position:absolute;left:0;right:0;translate:0 -50%;opacity:0;transform:translateX(12px);transition:opacity .6s,transform .6s}
+.elScope.isIn .elScopeNotes li{opacity:1;transform:none}
+.elScopeNotes li:before{content:'';position:absolute;left:-60px;top:.7em;width:50px;border-top:1px solid #b79a70}
+.elScopeNotes li:after{content:'';position:absolute;left:-64px;top:calc(.7em - 3px);width:7px;height:7px;border-radius:50%;background:#9c7844}
+.elScopeNotes .is-handoff{top:16%;transition-delay:1.6s}
+.elScopeNotes .is-handoff:before{border-top-style:dashed}
+.elScopeNotes .is-simplify{top:55%;transition-delay:.9s}
+.elScopeNotes .is-keep{top:80%;transition-delay:.5s}
+.elScopeNotes b{display:block;font:italic 400 24px/1.1 var(--case-font);color:var(--el-ink)}
+.elScopeNotes span{display:block;margin-top:3px;font-size:14.5px;line-height:1.45;color:#5a5249}
+.elBags{display:flex!important;gap:5px;margin-top:10px!important}
+.elBags svg{width:24px;height:28px;overflow:visible;filter:drop-shadow(0 3px 3px #07132f2e)}
+.elBags svg:nth-child(even){transform:translateY(3px) rotate(4deg)}.elBags svg:nth-child(3n){transform:rotate(-5deg)}
+.elBagBody{fill:#0b1a3d}.elBagFold{fill:#1c2d57}.elBagHandle{fill:none;stroke:#c9a25d;stroke-width:1.6;stroke-linecap:round}.elBagEyelet{fill:#c9a25d}
+@container (max-width:470px){.elBottleScene{grid-template-columns:1fr;justify-items:center;gap:30px}.elBottle{width:180px}.elScopeNotes{display:grid;gap:18px;width:100%}.elScopeNotes li{position:static;translate:none;padding-left:18px;border-left:2px solid #b79a70}.elScopeNotes li:before,.elScopeNotes li:after{display:none}.elScopeNotes .is-keep{order:1;border-left:4px solid #5a331d}.elScopeNotes .is-simplify{order:2;border-left:4px solid #9a6441}.elScopeNotes .is-handoff{order:3;border-left:2px dashed #07132f}}
+@media(prefers-reduced-motion:reduce){.elFill,.elScopeNotes li{transition:none;transform:none;opacity:1}}
+
+/* Lifecycle road palette */
+.elEditorial{--lc-ink:#07132f;--lc-road:#0b1d4d;--lc-accent:#b08a4a;--lc-accent-2:#e3c68c;--lc-muted:#85796a;--lc-tint:#f5e9eef2;--lc-glass:#f2e9da}
+.elStage{scroll-margin-top:110px}
+
+/* Composition (desktop): Proof and Responsive were both split headers over a centered image. Responsive now
+   centers a stacked header like a gallery wall label; the final section mirrors the opening vanity (text first). */
+@media(min-width:1001px){
+ .elEditorial .elResponsive header{grid-template-columns:1fr;justify-items:center;gap:14px;max-width:760px;margin:0 auto;text-align:center}
+ .elEditorial .elFinal{grid-template-columns:repeat(12,minmax(0,1fr));column-gap:32px}
+ .elEditorial .elFinal>.elOutcomeText{grid-column:1/6;grid-row:1}
+ .elEditorial .elFinal>.elCompactScene{grid-column:7/13;grid-row:1}
+}

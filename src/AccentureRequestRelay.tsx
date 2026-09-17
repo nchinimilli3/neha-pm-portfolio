@@ -3,9 +3,6 @@ import React from 'react';
 export default function AccentureRequestRelay() {
   return (
     <div className="requestWalkthrough">
-      <p className="deliverablesCaption">
-        Example request based on the workflow I supported.
-      </p>
 
       <div className="requestScreens">
         <article className="requestStep">
@@ -13,11 +10,7 @@ export default function AccentureRequestRelay() {
             <b>1</b>
 
             <div>
-              <h3>Requests started in Salesforce with the basic details needed to plan a session.</h3>
-              <p>
-              Not every request arrived with the information needed for trainer matching,
-            so coordinators had to resolve missing details before routing could start.
-              </p>
+              <h3>Requests started in Salesforce with the basic session details.</h3>
             </div>
           </header>
 
@@ -66,11 +59,7 @@ export default function AccentureRequestRelay() {
             <b>2</b>
 
             <div>
-              <h3>The coordinator completed and routed the request by filling in missing details and reviewing which trainers were a good match.</h3>
-              <p>
-                I used these checks to define the matching rules and decide which cases
-          still needed coordinator review.
-              </p>
+              <h3>A coordinator filled the gaps and reviewed which trainers fit.</h3>
             </div>
           </header>
 
@@ -125,13 +114,7 @@ export default function AccentureRequestRelay() {
             <b>3</b>
 
             <div>
-              <h3> A proposed trainer match still needed to work in the trainer's local time and have their schedule validated.
-</h3>
-              <p>
-                 During testing, one proposed match landed at 10:30 PM for the trainer.
-            That edge case led me to add working-hours and time-zone checks to the
-            automated workflow.
-              </p>
+              <h3>The match still had to work in the trainer’s local time.</h3>
             </div>
           </header>
 
@@ -179,12 +162,6 @@ export default function AccentureRequestRelay() {
           </div>
         </article>
       </div>
-
-      <footer>
-        Working through real requests helped me see which decisions could be handled
-        by rules and which still needed a person to review them. That became the
-        basis for the automated workflow.
-      </footer>
     </div>
   );
 }

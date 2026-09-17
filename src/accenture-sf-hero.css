@@ -1,5 +1,4 @@
 .accentureSFHero{
-  --sf-fog-front:0px;
   position:relative;
   width:100%;
   margin:0;
@@ -34,5 +33,7 @@
 }
 .accentureSFScene{display:block;width:100%;height:auto}
 .sfFog{pointer-events:none;will-change:transform}
-.sfFogFront{transform:translate3d(var(--sf-fog-front),0,0)}
-@media(prefers-reduced-motion:reduce){.sfFog{transform:none!important;will-change:auto}}
+.sfFogFront{transform:translate3d(-560px,0,0);animation:sfFogDrift 22s linear infinite;animation-play-state:paused}
+.accentureSFHero.isInView .sfFogFront{animation-play-state:running}
+@keyframes sfFogDrift{from{transform:translate3d(-560px,0,0)}to{transform:translate3d(1690px,0,0)}}
+@media(prefers-reduced-motion:reduce){.sfFog{animation:none!important;transform:translate3d(560px,0,0)!important;will-change:auto}}

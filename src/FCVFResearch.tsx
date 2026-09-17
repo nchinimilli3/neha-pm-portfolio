@@ -53,13 +53,6 @@ function InterviewPortrait({ index }: { index: number }) {
 export function InterviewRoom() {
   return (
     <div className="fvInterviewRoom">
-      <header>
-        <span>
-          <i /> USER INTERVIEWS
-        </span>
-        <b>04 sessions</b>
-      </header>
-
       <div className="fvPeople">
         {[0, 1, 2, 3].map((i) => (
           <div key={i}>
@@ -76,7 +69,6 @@ export function InterviewRoom() {
       </div>
 
       <div className="fvInterviewPrompt">
-        <span>What I compared</span>
         <strong>
           One long assessment or a guided, multi-page version?
         </strong>
@@ -115,8 +107,6 @@ export function SurveyDemo() {
     <section className="fvSurveySection">
       <header>
         <div>
-          <span className="fvEyebrow">One change from the interviews</span>
-
           <h2>
             Why I moved the score
             <br />
@@ -125,11 +115,26 @@ export function SurveyDemo() {
         </div>
 
         <p>
-          During the interviews, I noticed a problem with showing the score
-          while someone was still answering. Seeing the score change could
-          influence the answers that came next. I kept the scoring logic, but
-          changed when users could see the result.
+          I kept the scoring logic but moved the result to after submission. Try both versions below.
         </p>
+
+        <div className="fvLap" aria-hidden="true">
+          <div className="fvLapTrack">
+            {[1, 2, 3, 4, 5, 6].map((q) => (
+              <i key={q} />
+            ))}
+            <b className="fvLapScore">72</b>
+            <svg className="fvLapFlag" viewBox="0 0 20 20">
+              <path d="M5 18V2" stroke="currentColor" strokeWidth="1.6" />
+              <path d="M5 3h12v8H5z" fill="#f3f1e9" />
+              <path d="M5 3h3v2.67H5zM11 3h3v2.67h-3zM8 5.67h3v2.66H8zM14 5.67h3v2.66h-3zM5 8.33h3V11H5zM11 8.33h3V11h-3z" fill="currentColor" />
+            </svg>
+          </div>
+          <div className="fvLapLabels">
+            <span>Question 1</span>
+            <span>Submit</span>
+          </div>
+        </div>
       </header>
 
       <div
@@ -216,13 +221,6 @@ export function SurveyDemo() {
           className={`fvScorePanel ${visible ? '' : 'isProtected'}`}
           aria-live="polite"
         >
-          <span className="fvEyebrow">
-            {mode === 'before'
-              ? 'Score shown while answering'
-              : submitted
-                ? 'Score shown after submission'
-                : 'Score hidden while answering'}
-          </span>
 
           {visible ? (
             <>

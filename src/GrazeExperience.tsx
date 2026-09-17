@@ -41,7 +41,7 @@ export function GrazeHero(){
   return <figure className="grazeHero">
     <div className="grazeHeroRing" aria-hidden="true"/>
     <GrazeBoard/>
-    <figcaption className="grazeHeroMenu"><span>ON THE MENU</span><strong>The next<br/>great location.</strong><div><span>Northville</span><b>123</b></div><div><span>Ann Arbor</span><b>122</b></div><div><span>Traverse City</span><b>101</b></div><small>Michigan shortlist · April 2024</small></figcaption>
+    <figcaption className="grazeHeroMenu"><strong>The next<br/>great location.</strong><div><span>Northville</span><b>123</b></div><div><span>Ann Arbor</span><b>122</b></div><div><span>Traverse City</span><b>101</b></div><small>Michigan shortlist · April 2024</small></figcaption>
     <span className="grazeHeroSeal" aria-hidden="true">GRAZE<br/><i>&</i> GROW</span>
   </figure>;
 }
@@ -54,23 +54,47 @@ const criteria=[
 export function GrazeRecipe(){
   const [selected,setSelected]=useState(0),item=criteria[selected];
   return <div className="grazeRecipe">
-    <div className="grazeRecipeMenu"><span className="grazeEyebrow">THE LOCATION RECIPE</span><h3>Four ingredients.<br/>One consistent rubric.</h3><div className="grazeIngredientChoices" role="group" aria-label="Explore a scoring criterion">{criteria.map((c,i)=><button type="button" key={c.name} aria-pressed={selected===i} className={selected===i?'selected':''} onClick={()=>setSelected(i)}><span>0{i+1}</span><strong>{c.short}</strong><span aria-hidden="true">↗</span></button>)}</div></div>
-    <div className="grazeRecipeDetail" aria-live="polite"><span className="grazeEyebrow">{item.name}</span><h4>{item.detail}</h4><p>{item.why}</p><div className="grazeMath"><div><b>{item.criticality}</b><span>Criticality</span></div><i>×</i><div><b>{item.score}</b><span>Score</span></div><i>=</i><div className="grazeMathResult"><b>{item.criticality*item.score}</b><span>Contribution</span></div></div><footer><strong>{item.example}</strong></footer></div>
+    <div className="grazeRecipeMenu"><div className="grazeIngredientChoices" role="group" aria-label="Explore a scoring criterion">{criteria.map((c,i)=><button type="button" key={c.name} aria-pressed={selected===i} className={selected===i?'selected':''} onClick={()=>setSelected(i)}><span>0{i+1}</span><strong>{c.short}</strong><span aria-hidden="true">↗</span></button>)}</div></div>
+    <div className="grazeRecipeDetail" aria-live="polite">
+      <h4>{item.name}</h4><p className="grazeCriterionDetail">{item.detail}</p><p>{item.why}</p>
+      <div className="grazeMath"><div><b>{item.criticality}</b><span>Criticality</span></div><i>×</i><div><b>{item.score}</b><span>Score</span></div><i>=</i><div className="grazeMathResult"><b>{item.criticality*item.score}</b><span>Contribution</span></div></div>
+      {/* The contribution served as a board of cheese cubes: criticality rows × score columns. */}
+      <div key={selected} className="grazeCubes" style={{gridTemplateColumns:`repeat(${item.score},40px)`}} aria-hidden="true">{Array.from({length:item.criticality*item.score},(_,i)=><svg key={i} viewBox="0 0 32 32" style={{'--d':`${i*28}ms`} as React.CSSProperties}><path className="cubeTop" d="M16 3 29 10 16 17 3 10Z"/><path className="cubeLeft" d="M3 10 16 17V30L3 23Z"/><path className="cubeRight" d="M29 10 16 17V30L29 23Z"/><ellipse cx="9" cy="19" rx="1.8" ry="2.2" className="cubeHole"/><ellipse cx="22" cy="22" rx="1.5" ry="1.9" className="cubeHole"/><ellipse cx="17" cy="9" rx="2" ry="1.1" className="cubeHole"/></svg>)}</div>
+      <p className="grazeExample">For example: <strong>{item.example}</strong></p>
+    </div>
   </div>;
 }
 const cities=[{name:'Northville',score:123,note:'Highest score in the team’s Michigan comparison.',next:'Investigate properties and potential owners alongside Ann Arbor.'},{name:'Ann Arbor',score:122,note:'Only one point behind Northville.',next:'Keep the two leading markets in consideration while testing property-level assumptions.'},{name:'Traverse City',score:101,note:'Lower score among the three markets evaluated.',next:'Research Traverse City as lower-priority in the property and owner investigation shortlist.'}];
 export function GrazeLocations(){
   const [selected,setSelected]=useState(0),city=cities[selected];
-  return <div className="grazeLocations"><div className="grazeLocationMenu"><header><span className="grazeEyebrow">MICHIGAN / LOCATION TASTING</span><h3>The shortlist</h3></header><div role="group" aria-label="Explore a candidate location">{cities.map((c,i)=><button key={c.name} type="button" className={selected===i?'selected':''} aria-pressed={selected===i} onClick={()=>setSelected(i)}><span>0{i+1}</span><strong>{c.name}</strong><i/><b>{c.score}</b></button>)}</div></div><aside className="grazeLocationReceipt" aria-live="polite"><span>LOCATION REVIEW</span><h4>{city.name}</h4><div className="grazeReceiptScore"><b>{city.score}</b><span>weighted score</span></div><div className="grazeScoreScale" aria-label={`${city.score} on the deck's 150-point scale`}><i style={{width:`${city.score/150*100}%`}}/></div><p>{city.note}</p><hr/><strong>Next step</strong><p>{city.next}</p><small>Shortlist evidence, not a confirmed franchise opening.</small></aside></div>;
+  return <div className="grazeLocations"><div className="grazeLocationMenu"><h3>The shortlist</h3><div role="group" aria-label="Explore a candidate location">{cities.map((c,i)=><button key={c.name} type="button" className={selected===i?'selected':''} aria-pressed={selected===i} onClick={()=>setSelected(i)}><span>0{i+1}</span><strong>{c.name}</strong><i/><b>{c.score}</b></button>)}</div></div>
+    <div className="grazePlate" aria-live="polite">
+      <svg viewBox="0 0 220 220" role="img" aria-label={`${city.name} scored ${city.score} on the deck's 150-point scale`}>
+        <circle cx="110" cy="116" r="100" className="grazePlateShadow"/><circle cx="110" cy="110" r="100" className="grazePlateRim"/><circle cx="110" cy="110" r="72" className="grazePlateWell"/>
+        <circle cx="110" cy="110" r="86" className="grazePlateTrack"/>
+        <circle cx="110" cy="110" r="86" className="grazePlateScore" pathLength={150} style={{strokeDasharray:`${city.score} 150`}} transform="rotate(-90 110 110)"/>
+        <text x="110" y="116" className="grazePlateValue">{city.score}</text><text x="110" y="140" className="grazePlateOf">of 150</text>
+      </svg>
+      <div><h4>{city.name}</h4><p>{city.note}</p><p className="grazeNext"><strong>Next step</strong>{city.next}</p><small>Shortlist evidence, not a confirmed franchise opening.</small></div>
+    </div>
+  </div>;
 }
+const courses=[
+  {title:'Show up locally.',copy:'Community outreach through local events and relationships.',action:'Attend relevant community events.',icon:<path d="M24 44s14-13 14-25a14 14 0 0 0-28 0c0 12 14 25 14 25zM24 24a5 5 0 1 0 0-10 5 5 0 0 0 0 10z"/>},
+  {title:'Bring partners to the table.',copy:null,action:'Reach out to nearby organizations about catering partnerships.',icon:<><circle cx="24" cy="26" r="13"/><circle cx="24" cy="26" r="7"/><path d="M5 8v12a4 4 0 0 0 4 4v16M9 8v10M13 8v12a4 4 0 0 1-4 4M40 8c-4 3-5 8-5 14h5v18"/></>},
+  {title:'Make the feed appetizing.',copy:'Targeted digital advertising aligned to each branch’s audience and geography.',action:'Create targeted social graphics and track paid-ad performance.',icon:<><rect x="13" y="4" width="22" height="40" rx="4"/><path d="M21 39h6M24 29s-7-4.5-7-9a3.8 3.8 0 0 1 7-2 3.8 3.8 0 0 1 7 2c0 4.5-7 9-7 9z"/></>}
+];
 export function GrazeGrowth(){
   const [branch,setBranch]=useState('Okemos');
   const partnerships=branch==='Okemos'?'Educational institutions, Capitol-area organizations, and event centers.':'Fitness centers, banquet halls, and religious centers.';
-  return <div className="grazeGrowth"><div className="grazeBranchSwitch"><div role="group" aria-label="Choose an existing branch">{['Okemos','Shelby'].map(name=><button key={name} type="button" aria-pressed={branch===name} className={branch===name?'selected':''} onClick={()=>setBranch(name)}>{name}{name==='Shelby'?' Township':''}</button>)}</div></div><div className="grazeOrderTickets">
-    <article><header><span>ORDER 01</span><b>BUILD AWARENESS</b></header><h3>Show up<br/>locally.</h3><p>Community outreach through local events and relationships.</p><footer><span>ON THE ACTION LIST</span><strong>Attend relevant community events.</strong></footer></article>
-    <article><header><span>ORDER 02</span><b>CREATE REPEAT DEMAND</b></header><h3>Bring partners<br/>to the table.</h3><p aria-live="polite">{partnerships}</p><footer><span>ON THE ACTION LIST</span><strong>Reach out to nearby organizations about catering partnerships.</strong></footer></article>
-    <article><header><span>ORDER 03</span><b>REACH LOCAL CUSTOMERS</b></header><h3>Make the<br/>feed appetizing.</h3><p>Targeted digital advertising aligned to each branch’s audience and geography.</p><footer><span>ON THE ACTION LIST</span><strong>Create targeted social graphics and track paid-ad performance.</strong></footer></article>
-  </div></div>;
+  return <div className="grazeGrowth"><div className="grazeBranchSwitch"><div role="group" aria-label="Choose an existing branch">{['Okemos','Shelby'].map(name=><button key={name} type="button" aria-pressed={branch===name} className={branch===name?'selected':''} onClick={()=>setBranch(name)}>{name}{name==='Shelby'?' Township':''}</button>)}</div></div>
+    <ol className="grazeCourses">{courses.map((course,i)=><li key={course.title}>
+      <svg viewBox="0 0 48 48" aria-hidden="true">{course.icon}</svg>
+      <h3><b>{i+1}</b>{course.title}</h3>
+      <p aria-live={course.copy?undefined:'polite'}>{course.copy??partnerships}</p>
+      <p className="grazeAction"><i aria-hidden="true">✓</i>{course.action}</p>
+    </li>)}</ol>
+  </div>;
 }
 
 export function GrazeProjectPreview(){
@@ -82,3 +106,42 @@ export function GrazeProjectPreview(){
     <div className="grazePreviewWorkbook"><header><span>▦</span><strong>Location scorecard</strong><small>Excel</small></header><img src={asset('project-media/graze-scorecard.png')} alt="Original Excel scorecard with weighted location criteria"/><footer><b>Evaluation</b><span>Criticality</span><span>Rubric</span></footer></div>
   </figure>;
 }
+
+const glyphs={
+  area:<path d="M4 18 20 6l2 12z M9 15h.01M15 12h.01M17 16h.01"/>,
+  pin:<path d="M12 22s7-6.5 7-12.5a7 7 0 0 0-14 0C5 15.5 12 22 12 22zM12 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>,
+  store:<path d="M3 9l2-5h14l2 5M3 9h18v2a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0zM5 13v7h14v-7M10 20v-4h4v4"/>
+};
+// Each count is drawn as that many objects so the scope reads at a glance.
+export function GrazeBriefFacts(){
+  const facts=[{n:4,label:'decision areas',g:'area'},{n:3,label:'Michigan markets compared',g:'pin'},{n:2,label:'existing branches',g:'store'}] as const;
+  return <div className="grazeBriefFacts">{facts.map(f=><div key={f.label}>
+    <div className="grazeGlyphs" aria-hidden="true">{Array.from({length:f.n},(_,i)=><svg key={i} viewBox="0 0 24 24" style={{'--i':i} as React.CSSProperties}>{glyphs[f.g]}</svg>)}</div>
+    <b>{f.n}</b><span>{f.label}</span>
+  </div>)}</div>;
+}
+
+export function GrazePrepSteps(){
+  const steps=[
+    {title:'Research the market',icon:<path d="M10.5 18a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15zM21 21l-5.2-5.2"/>},
+    {title:'Define benchmarks',icon:<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>},
+    {title:'Set criticality',icon:<path d="M4 7h10M18 7h2M4 17h2M10 17h10M16 4v6M8 14v6"/>},
+    {title:'Compare locations',icon:<path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2zM9 4v14M15 6v14"/>}
+  ];
+  return <ol className="grazePrepSteps">{steps.map((s,i)=><li key={s.title}><span className="grazeStepIcon" aria-hidden="true"><svg viewBox="0 0 24 24">{s.icon}</svg></span><b>Step {i+1}</b><strong>{s.title}</strong></li>)}</ol>;
+}
+
+// Original deck artifacts, laid out like printouts taped to the table.
+export function GrazeArtifacts(){
+  const asset=(path:string)=>`${import.meta.env.BASE_URL}${path}`;
+  const items=[
+    {src:'project-media/graze-scorecard.png',alt:'Original interactive Excel scorecard from the Graze Craze presentation',title:'Interactive scorecard',note:'The weighted criteria roll into one location score.',cls:'isScore'},
+    {src:'project-media/graze-rubric.png',alt:'Original scoring rubric from the Graze Craze presentation',title:'Supplemental rubric',note:'Each score has a concrete benchmark, making the model repeatable.',cls:'isRubric'},
+    {src:'project-media/graze-map.png',alt:'Original Michigan location map from the Graze Craze presentation',title:'Location shortlist',note:'Northville, Ann Arbor, and Traverse City.',cls:'isMap'}
+  ];
+  return <div className="grazeArtifacts">{items.map((item,i)=><div key={item.src} className={`grazePrintout ${item.cls}`}>
+    <div className="grazePaper"><i className="grazeTape" aria-hidden="true"/><img src={asset(item.src)} alt={item.alt} loading="lazy"/></div>
+    <div className="grazePrintNote"><b>{i+1}</b><div><strong>{item.title}</strong><span>{item.note}</span></div></div>
+  </div>)}</div>;
+}
+

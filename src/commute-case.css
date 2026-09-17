@@ -1,0 +1,228 @@
+/* Commute: palette taken from the product itself (dusky plum type, sage green, blush and mist cards on warm stone).
+   Story: train, the problem on a platform sign beside the live demo, the plan as the app's itinerary, three rules, close. */
+.cmEditorial{--cm-ink:#2b2744;--cm-text:#4e4b5e;--cm-muted:#7a7788;--plum:#4a4170;--plum-soft:#8a82ad;--sage:#4f7a6c;--sage-soft:#8fb2a4;--blush:#e8d4dd;--mist:#dbe7e3;--stone:#ece9e3;--cream:#faf8f4;--rose:#b4607a;color:var(--cm-text)}
+/* Layout system: one 12-column grid (1180px, 32px gutters). Each section composes it differently so the
+   story moves dense (lead) → quiet (train) → visual (demo) → analytical (plan) → immersive (rules) → result (close). */
+.cmEditorial{--cm-gap:32px}
+.cmEditorial>section{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--cm-gap);width:min(1180px,calc(100% - 64px));margin:0 auto;padding:0}
+.cmEditorial>section:last-child{padding-bottom:140px}
+.cmEditorial h2{margin:0;color:var(--cm-ink);font-family:inherit;font-weight:450;font-size:clamp(34px,4vw,56px);line-height:1.04;letter-spacing:-.042em}
+.cmEditorial h2 em{font-style:normal;font-weight:400;color:var(--sage)}
+.cmEditorial h3{margin:0 0 6px;color:var(--cm-ink);font-size:19px;font-weight:600;line-height:1.3}
+.cmEditorial p{margin:16px 0 0;font-size:17px;line-height:1.6;max-width:60ch}
+.cmEditorial header{margin-bottom:34px}
+.cmEditorial button:focus-visible{outline:3px solid var(--sage);outline-offset:4px}
+/* Quiet: the train crosses the full width with nothing else in the frame */
+.cmEditorial>.cmShowcase{display:block;width:100%;padding:36px 0 12px}
+.cmShowcase .bartSceneSimple{padding:0 max(32px,calc((100% - 1180px)/2))}
+
+/* Hero: the cover photograph */
+.commuteHeroCover{margin:0;width:100%;aspect-ratio:1.35;border-radius:22px;overflow:hidden;box-shadow:0 30px 60px #2b274422}
+.commuteHeroCover img{display:block;width:100%;height:100%;object-fit:cover;object-position:52% 40%}
+
+/* Problem beside the live demo */
+/* Visual: the live app is the primary artifact on the left; the problem and its platform sign answer it on the right */
+.cmEditorial>.cmProblem{align-items:center;padding-top:72px}
+.cmDemoStage{grid-column:1/6;grid-row:1;margin:0}
+.cmProblemCopy{grid-column:7/13;grid-row:1}
+.cmProblemCopy>p{max-width:46ch}
+.cmEditorial .cmDemoHint{margin:14px auto 0;text-align:center;font-size:14px;color:var(--cm-muted)}
+
+/* Platform sign (a physical LED board keeps its real colors) */
+.cmBoard{position:relative;margin-top:48px;max-width:none}
+.cmBoardFace{position:relative;display:grid;gap:2px;padding:16px 22px 18px;border-radius:12px;background:#15141b;box-shadow:inset 0 0 0 3px #2c2b34,0 24px 40px #2b274430;font-family:"SFMono-Regular",ui-monospace,Menlo,monospace;overflow:hidden}
+.cmBoardFace:after{content:'';position:absolute;inset:0;background:radial-gradient(circle,transparent 0 1px,#15141b 1.4px) 0 0/4px 4px;opacity:.5;pointer-events:none}
+.cmEditorial .cmBoardHead{margin:0 0 6px;font-size:11px;letter-spacing:.12em;color:#8d8a98}
+.cmEditorial .cmBoardRow,.cmEditorial .cmBoardAsk{display:grid;grid-template-columns:70px 1fr auto;gap:12px;margin:0;max-width:none;font-size:16px;line-height:1.5;letter-spacing:.06em;color:#ff7a45;text-shadow:0 0 6px #ff7a4599;opacity:.22;transition:opacity .25s}
+.cmBoardRow b{font-weight:700}.cmBoardRow em{font-style:normal}
+.cmBoardRow.isOn{opacity:1}
+.cmEditorial .cmBoardAsk{display:block;margin-top:4px;color:#ffc14d;text-shadow:0 0 7px #ffc14d99}
+.cmBoardAsk.isOn{opacity:1}.cmBoardAsk.isFlash{animation:cmBlink .5s steps(2) 2}
+@keyframes cmBlink{50%{opacity:.15}}
+.cmBoardAnswer{position:relative;display:grid;grid-template-columns:auto repeat(3,auto);justify-content:start;align-items:baseline;gap:6px 22px;margin-top:10px;padding-top:10px;border-top:2px dashed #34323c;opacity:.25;transition:opacity .4s}
+.cmBoardAnswer.isOn{opacity:1}
+.cmBoardAnswer>span{font-size:11px;letter-spacing:.12em;color:#7dffa0aa}
+.cmEditorial .cmBoardAnswer p{display:flex;gap:8px;align-items:baseline;margin:0;max-width:none;font-size:24px;line-height:1.2;letter-spacing:.06em;color:#7dffa0;text-shadow:0 0 8px #7dffa099}
+.cmBoardAnswer b{font-size:12px;color:#7dffa0aa}
+.cmBoardAnswer em{font-style:normal;font-weight:700}
+.cmBoardPosts{display:flex;justify-content:space-between;padding:0 18%}
+.cmBoardPosts i{width:8px;height:26px;background:linear-gradient(90deg,#5d5a66,#8b8896,#5d5a66)}
+
+/* Plan backward: the app's itinerary */
+/* Analytical: a split header over a full-width timeline read left to right, like a schedule */
+.cmEditorial>.cmPlanBack{padding-top:150px}
+.cmPlanCopy{grid-column:1/-1;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--cm-gap);align-items:end;margin-bottom:56px;padding-bottom:40px;border-bottom:1px solid #2b274419}
+.cmPlanCopy h2{grid-column:1/7}
+.cmEditorial .cmPlanCopy p{grid-column:8/13;margin:0}
+.cmItin{grid-column:1/-1}
+.cmItin ol{margin:0;padding:0;list-style:none}
+.cmItin>ol>li{position:relative;display:grid;grid-template-columns:92px 26px 1fr;column-gap:14px;padding-bottom:26px}
+.cmItin>ol>li:last-child{padding-bottom:0}
+.cmItin>ol>li:not(:last-child):after{content:'';position:absolute;left:118px;top:22px;bottom:-2px;width:3px;margin-left:-1.5px;border-radius:3px;background:linear-gradient(var(--sage-soft),var(--mist))}
+.cmItinTime{display:grid;justify-items:end;align-content:start}
+.cmItinTime b{font-size:22px;font-weight:600;line-height:1.1;letter-spacing:-.02em;color:var(--cm-ink);font-variant-numeric:tabular-nums;transition:color .3s}
+.cmItinTime s{font-size:12.5px;color:var(--cm-muted);text-decoration-color:var(--rose)}
+.cmItinDot{position:relative;z-index:1;width:18px;height:18px;margin:4px auto 0;border-radius:50%;background:var(--cream);box-shadow:inset 0 0 0 3.5px var(--sage)}
+.is-wake .cmItinDot{background:var(--plum);box-shadow:0 0 0 6px #4a417024}
+.is-wake .cmItinTime b{color:var(--plum)}
+.is-arrive .cmItinDot{background:var(--sage);box-shadow:none}
+.cmItinBody strong{display:block;font-size:17px;line-height:1.3;color:var(--cm-ink)}
+.cmItinBody>span{display:block;margin-top:2px;font-size:14px;color:var(--cm-muted);transition:color .3s}
+.cmItin.isDelayed .is-ride .cmItinBody>span{color:var(--rose);font-weight:600}
+.cmItin.isDelayed .cmItinTime b{color:var(--rose)}
+.cmItin.isDelayed .is-arrive .cmItinTime b{color:var(--cm-ink)}
+.cmItinBody ul{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0;padding:0;list-style:none}
+.cmItinBody ul li{display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 7px;border-radius:20px;background:#ffffffa6;box-shadow:inset 0 0 0 1px #2b27441a;font-size:12.5px;font-weight:550;color:#4e4b5e}
+.cmItinBody ul svg{width:14px;height:14px;fill:none;stroke:var(--sage);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media(min-width:1001px){
+ .cmItin>ol{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:var(--cm-gap)}
+ .cmItin>ol>li{grid-template-columns:1fr;grid-template-rows:46px auto 1fr;padding-bottom:0}
+ .cmItinTime{justify-items:start}
+ .cmItinDot{margin:10px 0 18px}
+ .cmItin>ol>li:not(:last-child):after{left:9px;right:auto;top:65px;bottom:auto;width:calc(100% + var(--cm-gap));height:3px;margin:0;background:linear-gradient(90deg,var(--sage-soft),var(--mist))}
+ .cmItinBody ul{flex-direction:column;align-items:flex-start}
+ .cmEditorial .cmItinToggle{margin:40px 0 0}
+}
+.cmItinToggle{display:inline-flex;align-items:center;gap:10px;margin:26px 0 0 106px;padding:9px 16px;border:0;border-radius:24px;background:var(--cm-ink);color:#fff;font:600 14px var(--case-font,inherit);cursor:pointer}
+.cmItinToggle i{position:relative;width:30px;height:18px;border-radius:10px;background:#ffffff40;transition:background .3s}
+.cmItinToggle i:after{content:'';position:absolute;left:2px;top:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .3s}
+.cmItinToggle[aria-pressed=true] i{background:var(--rose)}
+.cmItinToggle[aria-pressed=true] i:after{transform:translateX(12px)}
+
+/* Rules */
+/* Immersive: the title holds its place in a left rail while three rules unfold, each composed differently */
+.cmEditorial>.cmRules{align-items:start;padding-top:150px}
+.cmEditorial .cmRules>header{grid-column:1/5;grid-row:1;position:sticky;top:132px;margin:0}
+.cmRuleGrid{grid-column:6/13;grid-row:1;display:grid;gap:0}
+.cmRule{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));column-gap:var(--cm-gap);align-items:center}
+.cmRule+.cmRule{margin-top:72px;padding-top:72px;border-top:1px solid #2b274419}
+.cmEditorial .cmRule h3{align-self:end;font-size:24px;line-height:1.25;letter-spacing:-.015em}
+.cmEditorial .cmRule>p{align-self:start;margin:0;font-size:15px;line-height:1.55;color:var(--cm-muted)}
+.cmRule:nth-child(1)>h3,.cmRule:nth-child(1)>p{grid-column:1/4}
+.cmRule:nth-child(1)>h3{grid-row:1}.cmRule:nth-child(1)>p{grid-row:2}
+.cmRule:nth-child(1)>.cmClocks{grid-column:4/8;grid-row:1/3}
+.cmRule:nth-child(2)>h3{grid-column:1/6;margin-bottom:28px}
+.cmRule:nth-child(2)>.cmTrail{grid-column:1/7}
+.cmRule:nth-child(3)>.cmLock{grid-column:1/4;grid-row:1/3}
+.cmRule:nth-child(3)>h3,.cmRule:nth-child(3)>p{grid-column:4/8}
+.cmRule:nth-child(3)>h3{grid-row:1}.cmRule:nth-child(3)>p{grid-row:2}
+
+/* Clock dials */
+.cmClocks{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.cmClock{display:grid;justify-items:center}
+.cmClock svg{width:100%;max-width:168px;height:auto;overflow:visible}
+.cmClockRim{fill:#fff;filter:drop-shadow(0 10px 18px #2b274422)}
+.cmClockFace{fill:var(--cream);stroke:#2b27440f;stroke-width:1}
+.cmTickHour{stroke:#2b2744aa;stroke-width:1.8;stroke-linecap:round}
+.cmTickMin{stroke:#2b274433;stroke-width:.8}
+.cmClockTrack{fill:none;stroke:var(--stone);stroke-width:9}
+.cmClockWin,.cmClockLate{fill:none;stroke-width:9;stroke-linecap:round;stroke-dasharray:calc(var(--len) * 1px) 400px;stroke-dashoffset:calc(var(--len) * 1px);transition:stroke-dashoffset .9s ease}
+.cmClockWin{stroke:var(--sage)}
+.is-risk .cmClockWin{stroke:var(--plum-soft)}
+.cmClockLate{stroke:var(--rose);transition-delay:.8s}
+.cmClocks.isIn .cmClockWin,.cmClocks.isIn .cmClockLate{stroke-dashoffset:0}
+.cmClockPin{fill:var(--cm-ink)}
+.cmClockName{font:650 13px var(--case-font,inherit);fill:var(--cm-ink);text-anchor:middle}
+.cmClockRange{font:10.5px var(--case-font,inherit);fill:var(--cm-muted);text-anchor:middle}
+.cmClockNote{margin-top:10px;font-size:13px;font-weight:600;color:var(--sage)}
+.is-risk .cmClockNote{color:var(--rose)}
+.cmEditorial .cmClockKey{grid-column:1/-1;display:flex;justify-content:center;align-items:center;gap:8px;margin:4px 0 0;font-size:12.5px;color:var(--cm-muted)}
+.cmClockKey i{width:7px;height:7px;border-radius:50%;background:var(--cm-ink)}
+
+/* Location trail with the bus */
+.cmTrail svg{display:block;width:100%;height:auto;overflow:visible}
+.cmTrailRoad{stroke:#dcd8d1;stroke-width:20;stroke-linecap:round}
+.cmTrailLane{stroke:#fff;stroke-width:2;stroke-dasharray:8 9}
+.cmTrailPing{opacity:0;transform:translateY(6px);transition:opacity .5s,transform .5s;transition-delay:calc(.3s + var(--i) * .2s)}
+.cmTrail.isIn .cmTrailPing{opacity:1;transform:none}
+.cmPingHalo{fill:var(--plum-soft)}.cmPingCore{fill:var(--plum)}
+.cmPingPct{font:650 13px var(--case-font,inherit);fill:var(--cm-ink);text-anchor:middle}
+.cmPingAge{font:11.5px var(--case-font,inherit);fill:var(--cm-muted);text-anchor:middle}
+.cmBusBody{animation:cmBob 1.1s ease-in-out infinite}
+@keyframes cmBob{50%{transform:translateY(-1.5px)}}
+.cmBusShell{fill:var(--sage)}
+.cmBusSkirt{fill:#3d6155}
+.cmBusWin{fill:#eef5f2}
+.cmBusStripe{stroke:#ffffff8c;stroke-width:2}
+.cmBusLamp{fill:#fff3c4}
+.cmBusWheel{fill:#2b2744}.cmBusHub{fill:#d8d4e6}
+.cmBusSpeed{stroke:var(--sage-soft);stroke-width:2.4;stroke-linecap:round;animation:cmSpeed .9s linear infinite}
+@keyframes cmSpeed{0%{opacity:0;transform:translateX(6px)}40%{opacity:1}100%{opacity:0;transform:translateX(-8px)}}
+.cmEditorial .cmTrailKey{margin:6px 0 0;font-size:12.5px;text-align:center;color:var(--cm-muted)}
+
+/* Lock screen in the app's blush and mist */
+.cmLock{position:relative;display:grid;justify-items:center;width:min(100%,300px);margin:0 auto;padding:28px 14px 22px;border:8px solid #1c1a24;border-radius:38px;background:radial-gradient(90% 60% at 20% 10%,#f1dde6 0,transparent 60%),radial-gradient(90% 70% at 90% 90%,#cfe2dc 0,transparent 60%),#e7e3ea;color:var(--cm-ink);box-shadow:0 24px 44px #2b274433}
+.cmLock:before{content:'';position:absolute;top:8px;left:50%;width:72px;height:20px;margin-left:-36px;border-radius:12px;background:#1c1a24}
+.cmEditorial .cmLockTime{margin:0;font-size:46px;font-weight:600;line-height:1;letter-spacing:-.03em;color:var(--plum)}
+.cmEditorial .cmLockDate{margin:2px 0 14px;font-size:13px;color:var(--cm-muted)}
+.cmLockStack{display:grid;gap:8px;width:100%}
+.cmLock .cmPing{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:center;padding:9px 11px;border-radius:16px;background:#ffffffb3;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:var(--cm-ink);opacity:0;transform:translateY(-8px) scale(.97);transition:opacity .35s,transform .4s}
+.cmLock .cmPing.isIn{opacity:1;transform:none}
+.cmLock .cmPing.isMuted.isIn{opacity:.5;transform:scale(.95)}
+.cmPingIcon{display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:var(--plum);color:#fff;font-size:13px;font-weight:700}
+.cmLock .cmPing strong{display:block;font-size:13px;line-height:1.25}.cmLock .cmPing small{display:block;font-size:11.5px;color:var(--cm-muted)}
+.cmLock .cmPing.isMuted strong{text-decoration:line-through;text-decoration-color:var(--rose)}
+.cmLock .cmPing.isLive{box-shadow:0 8px 20px #2b274420}
+
+/* Close: scope stops and the ticket */
+/* Result: one large closing line, then the ticket as the outcome with the scope route beside it */
+.cmEditorial>.cmClose{align-items:center;padding-top:170px}
+.cmCloseCopy{display:contents}
+.cmEditorial .cmClose h2{grid-column:1/-1;grid-row:1;margin-bottom:64px}
+.cmClose .cmTicket{grid-column:1/8;grid-row:2}
+.cmClose .cmScopeStops{grid-column:9/13;grid-row:2}
+.cmScopeStops{position:relative;display:grid;gap:22px;margin:0;padding:0 0 0 38px;list-style:none}
+.cmScopeStops:before{content:'';position:absolute;left:12px;top:12px;bottom:12px;width:4px;border-radius:4px;background:linear-gradient(var(--sage) 0 52%,#d7d3cc 52%)}
+.cmScopeStops li{position:relative}
+.cmScopeStops i{position:absolute;left:-38px;top:1px;width:28px;height:28px;border-radius:50%;background:var(--cream);box-shadow:inset 0 0 0 4px #d7d3cc}
+.cmScopeStops .is-shipped i{background:var(--sage);box-shadow:inset 0 0 0 4px var(--sage)}
+.cmScopeStops .is-shipped i:after{content:'';position:absolute;left:9px;top:7px;width:7px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+.cmScopeStops .is-next i{box-shadow:inset 0 0 0 4px var(--sage);animation:cmNextStop 2s ease-out infinite}
+@keyframes cmNextStop{0%{box-shadow:inset 0 0 0 4px var(--sage),0 0 0 0 #4f7a6c44}100%{box-shadow:inset 0 0 0 4px var(--sage),0 0 0 12px #4f7a6c00}}
+.cmScopeStops .is-cut i:after{content:'';position:absolute;inset:7px;background:linear-gradient(45deg,transparent 43%,var(--rose) 43% 57%,transparent 57%),linear-gradient(-45deg,transparent 43%,var(--rose) 43% 57%,transparent 57%)}
+.cmScopeStops b{display:block;font-size:16px;color:var(--cm-ink)}
+.cmScopeStops .is-cut b{color:var(--cm-muted)}
+.cmScopeStops span{display:block;font-size:14px;line-height:1.45;color:var(--cm-muted)}
+
+.cmTicket{position:relative;display:grid;grid-template-columns:74px 1fr;filter:drop-shadow(0 22px 30px #2b274429);transform:rotate(-2.5deg)}
+.cmTicketStub{position:relative;display:grid;justify-items:center;align-content:space-between;padding:18px 0;border-radius:14px 0 0 14px;background:var(--plum);color:#fff;-webkit-mask:radial-gradient(circle at 100% 0,transparent 10px,#000 10.5px) top/100% 51% no-repeat,radial-gradient(circle at 100% 100%,transparent 10px,#000 10.5px) bottom/100% 51% no-repeat;mask:radial-gradient(circle at 100% 0,transparent 10px,#000 10.5px) top/100% 51% no-repeat,radial-gradient(circle at 100% 100%,transparent 10px,#000 10.5px) bottom/100% 51% no-repeat}
+.cmTicketStub span{writing-mode:vertical-rl;rotate:180deg;font-size:15px;font-weight:650;letter-spacing:.02em}
+.cmBarcode{width:30px;height:84px;background:repeating-linear-gradient(0deg,#fff 0 2px,transparent 2px 4px,#fff 4px 5px,transparent 5px 8px,#fff 8px 11px,transparent 11px 13px);opacity:.85}
+.cmTicketMain{position:relative;padding:22px 26px 18px;border-radius:0 14px 14px 0;background:radial-gradient(120% 90% at 100% 0,#f1e1e8 0,transparent 55%),radial-gradient(90% 80% at 0 100%,#e1ece8 0,transparent 60%),var(--cream);border-left:2px dashed #2b274433;-webkit-mask:radial-gradient(circle at 0 0,transparent 10px,#000 10.5px) top/100% 51% no-repeat,radial-gradient(circle at 0 100%,transparent 10px,#000 10.5px) bottom/100% 51% no-repeat;mask:radial-gradient(circle at 0 0,transparent 10px,#000 10.5px) top/100% 51% no-repeat,radial-gradient(circle at 0 100%,transparent 10px,#000 10.5px) bottom/100% 51% no-repeat}
+.cmTicketMain header{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:0}
+.cmTicketMain header strong{font-size:20px;letter-spacing:-.01em;color:var(--plum)}
+.cmTicketMain header span{padding:3px 9px;border-radius:12px;background:var(--sage);color:#fff;font-size:11.5px;font-weight:600;white-space:nowrap}
+.cmTicketMain dl{display:grid;grid-template-columns:1fr 1fr;gap:16px 22px;margin:18px 0}
+.cmTicketMain dt{font-size:14.5px;font-weight:650;color:var(--cm-ink)}
+.cmTicketMain dd{margin:3px 0 0;font-size:13px;line-height:1.4;color:var(--cm-muted)}
+.cmTicketMain footer{display:flex;align-items:center;gap:10px;padding-top:12px;border-top:1px solid #2b27441a;font-size:13px;font-weight:600;color:var(--plum)}
+.cmTicketMain footer i{flex:1;height:2px;background:repeating-linear-gradient(90deg,var(--sage-soft) 0 6px,transparent 6px 10px);font-size:0}
+
+@media(max-width:1000px){
+ .cmEditorial>section{grid-template-columns:minmax(0,1fr);row-gap:34px}
+ .cmEditorial>section>*,.cmPlanCopy>*,.cmEditorial .cmClose h2,.cmClose .cmTicket,.cmClose .cmScopeStops{grid-column:1/-1!important;grid-row:auto!important}
+ .cmEditorial>.cmProblem,.cmEditorial>.cmPlanBack,.cmEditorial>.cmRules,.cmEditorial>.cmClose{padding-top:96px}
+ .cmProblemCopy{order:-1}
+ .cmPlanCopy{grid-template-columns:1fr;row-gap:16px;margin-bottom:34px;padding-bottom:28px}
+ .cmEditorial .cmRules>header{position:static}
+ .cmRule{grid-template-columns:1fr;row-gap:14px}
+ .cmRule>*{grid-column:1/-1!important;grid-row:auto!important}
+ .cmRule+.cmRule{margin-top:48px;padding-top:48px}
+ .cmEditorial .cmClose h2{margin-bottom:0}
+ .cmTrail,.cmClocks{max-width:460px}
+}
+@media(max-width:700px){
+ .cmEditorial>section{width:calc(100% - 36px)}
+ .cmItin>ol>li{grid-template-columns:64px 22px 1fr;column-gap:10px}
+ .cmItin>ol>li:not(:last-child):after{left:85px}
+ .cmItinTime b{font-size:17px}
+ .cmItinToggle{margin-left:0}
+ .cmTicketMain dl{grid-template-columns:1fr}
+ .cmTicket{transform:none}
+ .cmEditorial .cmBoardRow{grid-template-columns:54px 1fr auto;font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){.cmBoardRow,.cmClockWin,.cmClockLate,.cmTrailPing,.cmLock .cmPing,.cmItinToggle i:after{transition:none}.cmBoardAsk.isFlash,.cmBusBody,.cmBusSpeed,.cmScopeStops .is-next i{animation:none}.cmClockWin,.cmClockLate{stroke-dashoffset:0}.cmTrailPing{opacity:1;transform:none}}
+
+/* Lifecycle road palette */
+.cmEditorial{--lc-ink:#2b2744;--lc-road:#4a4170;--lc-accent:#4f7a6c;--lc-accent-2:#8fb2a4;--lc-muted:#7a7788;--lc-tint:#ebe7f2f2;--lc-glass:#e8d4dd}
+.cmStage{scroll-margin-top:110px}

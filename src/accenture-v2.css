@@ -87,7 +87,7 @@
 .calendarHold{position:absolute;left:34%;right:2%;top:46px;padding:9px;background:#e5ecfc;border-left:3px solid #527dd3;border-radius:4px;color:#315da4;font-size:13px;line-height:1.5}.calendarHold small{font-size:11px}
 .calendarReview{margin:16px;padding:12px;background:#fff6e4;border-left:2px solid #dcb65f}
 .calendarReview b,.calendarReview span{display:block;font-size:13px;line-height:1.5;color:#795d26}.calendarReview span{margin-top:5px}
-.requestTakeaway{margin:16px 0 0;padding-top:12px;border-top:1px solid #dcd3e1;font-size:14px;line-height:1.55;color:#66586e}
+
 .requestWalkthrough>footer{margin-top:28px;padding:18px 0;border-top:1px solid #d7cadd;font-size:16px;line-height:1.6;color:#5f4d68}.requestWalkthrough>footer b{margin-right:16px;color:#43284f}
 @media(max-width:1000px){.deliverablesGrid,.requestScreens{grid-template-columns:1fr}.requestStep>header{min-height:0;margin-bottom:16px}.requestApp{min-height:0}.requestScreens,.deliverablesGrid{gap:32px}.deliverablePaper,.deliverableSheet,.deliverableSlide{min-height:0}.deliverable>header{min-height:0}.accentureRelayStage>header,.accentureKitStage>header{grid-template-columns:1fr;gap:16px}.requestWalkthrough>footer b{display:block}}
 @media(max-width:680px){.accentureRelayStage,.accentureKitStage{width:calc(100% - 28px);margin-bottom:56px}}

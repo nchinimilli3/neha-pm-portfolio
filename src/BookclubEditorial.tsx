@@ -1,7 +1,7 @@
-import React, {useId, useState} from 'react';
+import React, {useEffect, useId, useRef, useState} from 'react';
 import {bookclubDevicePath,bookclubDeviceViewBox} from './bookclub-device-mask';
 import './bookclub-editorial.css';
-const live='https://book-club-cog.pages.dev/';
+import LifecycleRoad from './LifecycleRoad';
 export function BookclubDevice({screen,label}:{screen:string;label:string}){
   const id=useId().replace(/:/g,'');
   return <svg className="bcDevice" viewBox={bookclubDeviceViewBox} role="img" aria-label={label}>
@@ -23,80 +23,133 @@ export function BookclubEditorialHero(){
     <span className="bcHeroCaption">A shared shelf. A conversation worth coming back to.</span>
   </div>;
 }
-function SpoilerBookmark(){
-  const [chapter,setChapter]=useState(12);const ready=chapter>=17;
-  return <div className="bcSpoilerDemo bcOpenBook"><div className="bcDemoControl"><span className="bcKicker">A SMALL INTERACTION, A REAL BOUNDARY</span><label htmlFor="bc-reader-chapter">Your bookmark <b>Chapter {chapter}</b></label><input id="bc-reader-chapter" type="range" min="1" max="30" value={chapter} onChange={e=>setChapter(Number(e.target.value))} aria-valuetext={`Chapter ${chapter}`}/><div><span>Chapter 1</span><span>Chapter 30</span></div><div className="bcBookmarkTrack" aria-hidden="true"><span style={{left:`${(chapter-1)/29*100}%`}}>YOU<br/><b>{chapter}</b></span><i style={{left:`${16/29*100}%`}}>NOTE<br/><b>17</b></i></div><p className="bcBookPageNote">Move your bookmark.<br/>The note stays sealed until chapter 17.</p><span className="bcPageNumber">12 / YOUR PLACE</span></div><div className="bcEnvelopePage"><div className={`bcEnvelope ${ready?'isOpen':''}`}><span className="bcEnvelopeFlap" aria-hidden="true"/><article className={`bcSpoilerCard ${ready?'isOpen':''}`} aria-live="polite"><header><span>DISCUSSION NOTE</span><b>CH. 17</b></header>{ready?<><h4>A change in perspective</h4><p>Which moment changed how you understood this character?</p><small>You’ve reached this note’s checkpoint.</small></>:<><h4>Waiting at chapter 17</h4><p>This discussion stays sealed until your bookmark catches up.</p><small>{17-chapter} chapters ahead of your progress</small></>}</article><span className="bcWaxSeal" aria-hidden="true">{ready?'17':'✦'}</span><span className="bcEnvelopeAddress" aria-hidden="true">FOR THE READER<br/><b>Open at chapter 17</b></span></div><span className="bcPageNumber">13 / THE CONVERSATION</span></div><p className="bcDemoCaption">Interactive illustration of the checkpoint rule · sample discussion note</p></div>;
-}
-function MeetingKeepsakes(){
-  const [selected,setSelected]=useState(1);
-  const notes=[
-    {type:'A passage',title:'A line worth returning to.',copy:'Save a passage while it is still fresh. Keep the page or chapter attached so you can find its context again.',mark:'“',footer:'CAPTURE → REVIEW → SAVE'},
-    {type:'A question',title:'What changed your mind?',copy:'Which moment changed how you understood this character? Bring the question back when the group reaches this part of the book.',mark:'?',footer:'THOUGHT → CHECKPOINT → DISCUSSION'},
-    {type:'A prediction',title:'Keep the guess. Revisit it later.',copy:'A prediction records what you thought before you knew the ending. Keep that reading context attached when you return to it.',mark:'…',footer:'PREDICT → KEEP CONTEXT → REVISIT'}
-  ];
-  return <section className="bcKeepsakes"><header><span className="bcKicker">COLLECTED BETWEEN MEETINGS</span><h2>A little collection<br/>of things to talk about.</h2><p>Different thoughts need different forms. A passage preserves the words; a question opens a conversation; a prediction remembers an earlier point of view.</p><div className="bcKeepsakeTabs" role="group" aria-label="Explore types of saved reading thoughts">{notes.map((note,i)=><button key={note.type} type="button" aria-pressed={selected===i} className={selected===i?'selected':''} onClick={()=>setSelected(i)}>{note.type}</button>)}</div></header><div className="bcCardCollection"><div className="bcArchiveCard archiveCardBack" aria-hidden="true"><span>THE PASSAGES</span></div><div className="bcArchiveCard archiveCardMiddle" aria-hidden="true"><span>THE PREDICTIONS</span></div><article className="bcArchiveCard archiveCardFront" aria-live="polite"><header><span>BOOKCLUB / {notes[selected].type.toUpperCase()}</span><b>17</b></header><i className="bcCardGlyph" aria-hidden="true">{notes[selected].mark}</i><h3>{notes[selected].title}</h3><p>{notes[selected].copy}</p><footer>{notes[selected].footer}</footer></article><span className="bcCardCaption">Illustrative notes · the app keeps the actual reading context.</span></div></section>;
+function useInView<T extends Element>(threshold=.35){
+  const ref=useRef<T>(null);const [inView,setInView]=useState(false);
+  useEffect(()=>{const el=ref.current;if(!el)return;const io=new IntersectionObserver(([e])=>setInView(e.isIntersecting),{threshold});io.observe(el);return()=>io.disconnect()},[threshold]);
+  return [ref,inView] as const;
 }
 
-function BookclubResearchScenes(){
-  return <div className="bcResearchScenes">
-    <figure><svg viewBox="0 0 580 290" role="img" aria-label="Illustration of a reader and an interviewer talking across a table with an open book and interview notes">
-      <ellipse cx="282" cy="269" rx="207" ry="12" fill="#839d7915"/>
-      <path d="M71 260v-91q0-21 23-21h45v112m293 0V154h47q24 0 24 24v82" fill="none" stroke="#84917a" strokeWidth="9" strokeLinecap="round"/>
-      <path d="m117 223-5 44m45-43 18 43M418 224l-12 43m42-43 13 43" stroke="#504d44" strokeWidth="12" strokeLinecap="round"/>
-      <path d="M90 224v-58q0-45 47-45t44 43l-7 60Z" fill="#54715b"/>
-      <path d="M388 225v-63q0-39 47-39t46 43v59Z" fill="#b28c69"/>
-      <path d="M124 126v-26h24v28" fill="#b78161"/><path d="M427 126v-25h24v28" fill="#dbb08a"/>
-      <ellipse cx="139" cy="80" rx="28" ry="36" fill="#c58f6e"/><path d="M111 89q-19-38 4-55 28-23 51 3l1 32-12-12-10-12q-22 6-23 26v21Z" fill="#423f37"/>
-      <path d="m165 76 7 10-8 3" fill="#c58f6e"/><path d="m145 91 11 2" stroke="#8e5d49" strokeWidth="2" fill="none"/><circle cx="154" cy="74" r="2" fill="#463d36"/>
-      <ellipse cx="436" cy="79" rx="28" ry="35" fill="#dfb68f"/><path d="M412 62q-11-36 25-39 32-2 39 29l6 47-21 5-4-51q-18 20-45 9Z" fill="#665344"/>
-      <path d="m410 75-7 11 8 4" fill="#dfb68f"/><circle cx="419" cy="73" r="2" fill="#665344"/><path d="m420 92 11-2" stroke="#a67a5e" strokeWidth="2" fill="none"/>
-      <path d="m161 146 25 38 55-7" fill="none" stroke="#c58f6e" strokeWidth="15" strokeLinecap="round"/><path d="m402 145-29 38-37-8" fill="none" stroke="#dfb68f" strokeWidth="15" strokeLinecap="round"/>
-      <path d="m104 153 16 44 62-1" fill="none" stroke="#c58f6e" strokeWidth="14" strokeLinecap="round"/><path d="m464 151-12 44-43 5" fill="none" stroke="#dfb68f" strokeWidth="14" strokeLinecap="round"/>
-      <ellipse cx="284" cy="206" rx="132" ry="22" fill="#a88b62"/><ellipse cx="284" cy="201" rx="132" ry="20" fill="#d8c19a"/>
-      <path d="m201 212-7 57m172-57 7 57" stroke="#a38b67" strokeWidth="8" strokeLinecap="round"/>
-      <path d="m264 178 36-7 35 7-4 26-31-4-34 4Z" fill="#f6edcf" stroke="#879575" strokeWidth="2"/><path d="M300 173v26m-27-17 20-4m-21 12 21-4m15-7 19 4m-19 4 18 4" fill="none" stroke="#b4b49a" strokeWidth="1.5"/>
-      <path d="m198 187 41-7 6 23-43 5Z" fill="#f3ead3"/><path d="m206 191 26-4m-23 10 26-4" stroke="#a7ad8e" strokeWidth="1.5"/><path d="m233 188 11-25" stroke="#846650" strokeWidth="3" strokeLinecap="round"/>
-      <path d="M210 26h146q13 0 13 13v30q0 13-13 13h-83l-20 17 3-17h-46q-13 0-13-13V39q0-13 13-13Z" fill="#e3e8d7" stroke="#bdcbb0"/>
-      <path d="M220 43h116m-116 12h95m-95 12h105" stroke="#8fa284" strokeWidth="3" strokeLinecap="round"/>
-    </svg><figcaption><span>PLANNED / CONVERSATION</span><h3>Listen to the reader.</h3><p>Ask about their last club experience, the workarounds, and the moments that mattered.</p></figcaption></figure>
-    <figure><svg viewBox="0 0 580 290" role="img" aria-label="Illustration of a reader trying the Bookclub app on a phone while an observer records notes without interrupting">
-      <ellipse cx="286" cy="268" rx="218" ry="12" fill="#839d7915"/>
-      <path d="M80 263v-84q0-22 23-22h55m271 106V157h39q29 0 29 29v77" stroke="#8b9c7e" strokeWidth="9" fill="none" strokeLinecap="round"/>
-      <path d="m121 225-9 43m46-43 13 43m251-43-14 43m43-43 16 43" stroke="#524d43" strokeWidth="12" strokeLinecap="round"/>
-      <path d="M95 224v-63q0-43 46-43t44 46v60Z" fill="#a47669"/><path d="M391 224v-63q0-43 49-43t42 46v60Z" fill="#66816c"/>
-      <path d="M131 124v-26h23v28" fill="#d8a982"/><path d="M427 126v-24h24v25" fill="#b77f5b"/>
-      <ellipse cx="144" cy="79" rx="27" ry="35" fill="#dfb18a"/><path d="M117 83q-18-38 10-53 32-17 45 18l-12 9-34 4-3 32Z" fill="#73624b"/><path d="m168 78 6 9-6 3" fill="#dfb18a"/><circle cx="158" cy="75" r="2" fill="#64513f"/>
-      <ellipse cx="437" cy="78" rx="28" ry="35" fill="#bc8963"/><path d="M410 75q-12-40 16-49 40-10 42 28l-20 4-25-8-6 27Z" fill="#3e4539"/><path d="m411 77-7 10 9 3" fill="#bc8963"/><circle cx="419" cy="74" r="2" fill="#454738"/>
-      <path d="m113 148 23 47 58-17m-25-31 17 21 10-8" stroke="#dfb18a" strokeWidth="14" strokeLinecap="round" fill="none"/>
-      <g transform="translate(200 129) rotate(13)"><rect x="-20" y="0" width="43" height="78" rx="8" fill="#35493f"/><rect x="-16" y="6" width="35" height="65" rx="5" fill="#f0edda"/><rect x="-9" y="16" width="21" height="21" fill="#809276"/><path d="M-10 45h23m-23 8h18m-18 8h21" stroke="#a1ab8f" strokeWidth="2"/><path d="M-3 3h9" stroke="#919f89" strokeWidth="2"/></g>
-      <path d="m406 148-33 36 19 25m75-58-33 42-30-14" stroke="#bc8963" strokeWidth="14" strokeLinecap="round" fill="none"/>
-      <g transform="translate(365 169) rotate(-9)"><path d="M0 0h63v72H0Z" fill="#e9dfc5" stroke="#b6b697" strokeWidth="2"/><rect x="20" y="-5" width="25" height="10" rx="3" fill="#8a9980"/><path d="M10 17h43M10 29h43M10 41h43M10 53h43" stroke="#bac3a6"/><path d="m12 18 5 4 7-10m-12 18 5 4 7-10" stroke="#748d68" fill="none" strokeWidth="2"/></g>
-      <path d="m407 179 15-27" stroke="#73664f" strokeWidth="3" strokeLinecap="round"/>
-      <path d="M253 98q52-41 115-16" fill="none" stroke="#a7b396" strokeWidth="2" strokeDasharray="5 7"/><path d="m357 72 14 11-16 7" fill="none" stroke="#a7b396" strokeWidth="2"/>
-      <g transform="translate(276 130)"><path d="M0 0h52v42H0Z" fill="#e5e9d8"/><path d="M9 11h32m-32 10h25m-25 10h28" stroke="#9aab8c" strokeWidth="2"/></g>
-    </svg><figcaption><span>PLANNED / OBSERVATION</span><h3>Watch the real task.</h3><p>Let them try the flow. Note where they hesitate, ask for help, or leave the app.</p></figcaption></figure>
+// The problem, as it actually shows up: a group thread where each message is a different job.
+const thread=[
+  {who:'Maya',text:'what are we reading next??',job:'Choose'},
+  {who:'Jordan',poll:['Piranesi','Circe','The Overstory'],job:'Choose'},
+  {who:'Sam',text:'did anyone finish ch 12? pls no spoilers',job:'Keep pace'},
+  {who:'Priya',text:'can we move it to thursday?',job:'Meet'},
+  {who:'Maya',text:'what was that quote you loved last time?',job:'Meet'},
+];
+function GroupThread(){
+  const [ref,inView]=useInView<HTMLDivElement>(.4);
+  const [shown,setShown]=useState(0);
+  useEffect(()=>{
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){setShown(thread.length);return}
+    if(!inView){setShown(0);return}
+    const id=window.setInterval(()=>setShown(n=>n>=thread.length+3?0:n+1),900);
+    return()=>window.clearInterval(id);
+  },[inView]);
+  return <div ref={ref} className="bcThreadPhone" aria-label="A group chat mixing book choices, a poll, a spoiler worry, a schedule change, and a lost quote">
+    <div className="bcThreadTop"><span className="bcThreadAvatars" aria-hidden="true"><i/><i/><i/></span><strong>Book club 📚</strong><small>6 people</small></div>
+    <div className="bcThreadBody">
+      {thread.map((m,i)=><div key={i} className={`bcMsg ${shown>i?'isShown':''}`}>
+        <small>{m.who}</small>
+        {m.poll?<div className="bcBubble bcPoll"><b>Poll: next book</b>{m.poll.map((o,k)=><span key={o}><i style={{width:`${[62,48,22][k]}%`}}/>{o}</span>)}</div>:<div className="bcBubble">{m.text}</div>}
+        <em className={`bcJob job-${m.job.replace(' ','')}`}>{m.job}</em>
+      </div>)}
+      <div className={`bcTyping ${shown>=thread.length?'isShown':''}`} aria-hidden="true"><i/><i/><i/></div>
+    </div>
   </div>;
 }
 
-function BookclubNextChapter(){
-  const [topic,setTopic]=useState(0);
-  const guides=[
-    {name:'Joining',question:'Walk me through the last time you joined a book club.',follow:'What did you need to know before you could take part?',watch:'Ask a new member to join a club and find its current read.'},
-    {name:'Choosing',question:'How did your group decide on its last book?',follow:'Where did the decision get stuck, and how did you resolve it?',watch:'Follow nominations and ranking through to a group decision.'},
-    {name:'Between meetings',question:'Think of something you wanted to discuss while reading.',follow:'How did you save it? What happened to it at the meeting?',watch:'Trace a saved thought from the reading moment into a meeting.'}
-  ];
-  return <section className="bcNextChapter"><header className="bcResearchHeading"><span className="bcKicker">THE NEXT CHAPTER / PLANNED RESEARCH</span><h2>Before the next feature,<br/>listen to the readers.</h2><p>The app is built and deployed. Next, I want to pair conversations with readers and organizers with a walkthrough of a full club cycle—then use the recurring friction to choose what to improve.</p></header><BookclubResearchScenes/><div className="bcResearchKit"><div className="bcInterviewNotebook"><div className="bcNotebookBinding" aria-hidden="true"/><header><span>INTERVIEW NOTEBOOK</span><b>Prompts to start with</b><small>Planned guide · no interview findings claimed</small></header><div className="bcInterviewTabs" role="group" aria-label="Explore planned interview topics">{guides.map((guide,i)=><button key={guide.name} type="button" className={topic===i?'selected':''} aria-pressed={topic===i} onClick={()=>setTopic(i)}>{guide.name}</button>)}</div><div className="bcInterviewPrompt" aria-live="polite"><span>ASK ABOUT A REAL MOMENT</span><h3>{guides[topic].question}</h3><p>{guides[topic].follow}</p><div><b>Then observe</b><p>{guides[topic].watch}</p></div></div><footer><span>READERS</span><i>+</i><span>CLUB ORGANIZERS</span><small>Listen for the workarounds, not just feature requests.</small></footer></div><aside className="bcResearchBorrowCard"><header><span>RESEARCH CHECKOUT CARD</span><h3>What the next cycle<br/>should teach me</h3></header><ol><li><b>01</b><div><strong>Understand the experience</strong><p>Interview readers and organizers separately about how their club works today.</p><small>Keep examples and workarounds in their own words.</small></div></li><li><b>02</b><div><strong>Watch the handoffs</strong><p>Observe joining, book selection, progress updates, and meeting preparation.</p><small>Note hesitation, confusion, and any work that moves outside the app.</small></div></li><li><b>03</b><div><strong>Choose a focused change</strong><p>Group recurring friction by frequency and impact, then test a small improvement.</p><small>Compare the next attempt with the original task.</small></div></li></ol><footer>Research plan → evidence → priority → another test</footer></aside></div><div className="bcResearchQuestions"><span>QUESTIONS TO TRACK</span><p>Can a new member get started?</p><p>Can the group choose a book?</p><p>Do saved thoughts reach the meeting?</p></div><div className="bcResearchClose"><p>I designed and built Bookclub across the frontend and backend. The next phase is about learning which parts of the experience hold together in real group use.</p><a href={live} target="_blank" rel="noreferrer">Open the live product ↗</a></div></section>;
+const bets=[
+  {job:'Choose',title:'Rank the nominees instead of running a poll.',instead:'One-tap polls where the loudest favorite wins',tradeoff:'A few more taps for a pick the whole group accepts.',screen:'book-detail',label:'Book details for a nominated title'},
+  {job:'Keep pace',title:'Tie every discussion to a reading checkpoint.',instead:'One thread everyone scrolls at their own risk',tradeoff:'Posters add a chapter tag. Readers get a clear spoiler boundary.',screen:'reading-plan',label:'Reading plan with chapter checkpoints'},
+  {job:'Meet',title:'Bring saved thoughts into the meeting.',instead:'Starting the meeting from a blank page',tradeoff:'Notes stay private until the reader chooses to share.',screen:'meeting-room',label:'Meeting room with the active book'},
+];
+
+const people=[
+  {skin:'#8d5a42',hair:'#1c1715',shirt:'#3f6a55',role:'Reader'},
+  {skin:'#e2b995',hair:'#6d4630',shirt:'#9d4f45',role:'Organizer'},
+  {skin:'#c68b67',hair:'#2b211c',shirt:'#b39a73',role:'Reader'},
+  {skin:'#6b4535',hair:'#151313',shirt:'#5b7fa6',role:'Reader'},
+  {skin:'#f0c9a8',hair:'#b8863f',shirt:'#6f5b8e',role:'Organizer'},
+];
+const Avatar=({p}:{p:typeof people[number]})=><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="31" className="bcHalo"/><path d="M12 60c2-14 10-21 20-21s18 7 20 21" fill={p.shirt}/><circle cx="32" cy="26" r="11" fill={p.skin}/><path d="M20 25c0-9 5-14 12-14s13 5 12 14c-3-5-7-7-12-7s-9 2-12 7" fill={p.hair}/></svg>;
+const tasks=[
+  {task:'Join a club and find the current read',time:'target < 1 min'},
+  {task:'Nominate a book and rank the shortlist',time:'target < 2 min'},
+  {task:'Save a thought, then find it in the meeting',time:'target < 90 sec'},
+];
+const matrix=[
+  {x:78,y:22,label:'Fix first'},{x:64,y:34},{x:30,y:28},{x:72,y:70},{x:22,y:74},{x:46,y:52},
+];
+
+function ValidationPlan(){
+  const [ref,inView]=useInView<HTMLDivElement>(.25);
+  return <div ref={ref} className={`bcPlan ${inView?'isIn':''}`}>
+    <article className="bcPhase" style={{'--pi':0} as React.CSSProperties}>
+      <span className="bcPhaseNum">1</span>
+      <h3>5 user interviews</h3>
+      <p>Readers and organizers, 30 minutes each: how their club chooses books, keeps pace, and prepares for meetings today.</p>
+      <div className="bcPeople">{people.map((p,i)=><figure key={i} style={{'--k':i} as React.CSSProperties}><Avatar p={p}/><figcaption>{p.role}</figcaption></figure>)}</div>
+    </article>
+    <article className="bcPhase" style={{'--pi':1} as React.CSSProperties}>
+      <span className="bcPhaseNum">2</span>
+      <h3>Moderated usability tests</h3>
+      <p>The same five people think aloud through the three core tasks. Success means 4 of 5 finish each task without help.</p>
+      <ol className="bcTasks">{tasks.map((t,i)=><li key={t.task} style={{'--k':i} as React.CSSProperties}><span><b>{t.task}</b><small>{t.time}</small></span><i className="bcTaskBar"><em/></i><span className="bcTaskDots" aria-hidden="true">{[0,1,2,3,4].map(d=><i key={d} className={d<4?'ok':''}/>)}</span></li>)}</ol>
+    </article>
+    <article className="bcPhase" style={{'--pi':2} as React.CSSProperties}>
+      <span className="bcPhaseNum">3</span>
+      <h3>Live demo with the club</h3>
+      <p>Walk the group through a full cycle, then rank every issue by how often it happens and how much it hurts.</p>
+      <div className="bcMatrix" aria-label="Priority matrix: frequency by impact">
+        <span className="bcAxisY">Impact</span><span className="bcAxisX">Frequency</span>
+        <i className="bcQuad"/>
+        {matrix.map((d,i)=><b key={i} className={d.label?'isTop':''} style={{left:`${d.x}%`,top:`${d.y}%`,'--k':i} as React.CSSProperties}>{d.label&&<small>{d.label}</small>}</b>)}
+      </div>
+    </article>
+  </div>;
 }
 
+const bookclubStages=[
+  {id:'bc-discover',name:'Discover',did:'The group chat problem'},
+  {id:'bc-build',name:'Build',did:'Three product bets'},
+  {id:'bc-validate',name:'Validate',did:'5 interviews, then tests'}
+];
 export function BookclubEditorial(){
   return <div className="bcStory">
-    <section className="bcPrologue"><header><span className="bcKicker">PROLOGUE / BUILT FOR MY READING GROUP</span><h2>The conversation starts<br/>before the meeting.</h2></header><div><p>Our next read, everyone’s progress, and the thoughts worth discussing belonged to the same experience. Keeping them across messages, polls, and calendars meant piecing that experience back together each time.</p><p>I built Bookclub around the group’s whole reading cycle: choosing a title, moving through it at different speeds, and arriving at a meeting with something to say.</p><div className="bcScopeNote"><span>THE STARTING POINT</span><strong>A private group that already wants to read together.</strong><p>That kept the focus on shared decisions and useful context, with invitations setting the boundary around the club.</p></div></div></section>
-    <nav className="bcContents bcBookshelf" aria-label="Bookclub case study chapters"><span className="bcShelfLabel">THE BOOKCLUB SHELF<small>Pick a chapter to explore the product.</small></span><a href="#bc-choose" onClick={e=>{e.preventDefault();document.getElementById('bc-choose')?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}}><b>VOLUME 01</b><strong>Choose<br/>a book</strong><span>THE SHARED CHOICE</span></a><a href="#bc-read" onClick={e=>{e.preventDefault();document.getElementById('bc-read')?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}}><b>VOLUME 02</b><strong>Keep<br/>your place</strong><span>THE READING RHYTHM</span></a><a href="#bc-meet" onClick={e=>{e.preventDefault();document.getElementById('bc-meet')?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}}><b>VOLUME 03</b><strong>Bring<br/>a thought</strong><span>THE CONVERSATION</span></a></nav>
-    <section className="bcChapter" id="bc-choose"><div className="bcChapterCopy"><span className="bcKicker">CHAPTER 01 / A SHARED CHOICE</span><h2>Find a book the group<br/>wants to open.</h2><p>A list of suggestions is only the start. Members need enough context to nominate a book, then a way to express more than a single favorite.</p><p>I brought book discovery, reading commitment, and club fit into the choice, with ranked preferences to help the group reach a decision.</p><aside className="bcMarginNote"><span>WHY RANKING?</span><strong>A second choice can still be a good group choice.</strong><p>Ranking adds a little effort up front, but gives the selection more information than a one-tap popularity vote.</p></aside></div><div className="bcDevicePair bcChoosePair"><figure><BookclubDevice screen="club-home" label="The club home keeps the active book and shared progress together"/></figure><figure><BookclubDevice screen="book-detail" label="Book details provide reading context before the group chooses"/></figure><span className="bcScreenCaption">The active read and the context behind the next pick.</span></div></section>
-    <section className="bcChapter bcChapterReverse" id="bc-read"><div className="bcDevicePair"><figure><BookclubDevice screen="reading-plan" label="Chapter checkpoints in the Bookclub reading plan"/></figure><figure><BookclubDevice screen="update-progress" label="Updating personal reading progress"/></figure><span className="bcScreenCaption">A shared plan, with room for an individual pace.</span></div><div className="bcChapterCopy"><span className="bcKicker">CHAPTER 02 / DIFFERENT PACES</span><h2>Keep the group close.<br/>Keep the ending sealed.</h2><p>Readers use different editions and rarely move at the same speed. A shared finish date should help them plan without making the slowest reader disappear from the conversation.</p><p>I supported page and chapter progress, then gave discussions a checkpoint. Progress became a way to understand what was safe to open.</p><aside className="bcMarginNote"><span>THE TRADEOFF</span><p>Adding checkpoint context takes a little work when posting. It gives the next reader a much clearer boundary.</p></aside></div></section>
-    <section className="bcMeeting" id="bc-meet"><div className="bcChapterCopy"><span className="bcKicker">CHAPTER 03 / THE CONVERSATION</span><h2>Don’t start the meeting<br/>from a blank page.</h2><p>A question that mattered halfway through the book can be hard to recall weeks later. I gave readers a place to keep quotes, questions, and predictions as they read.</p><p>The meeting room brings those thoughts back with the book and their spoiler context. Private notes stay private until the reader chooses to share.</p><ol className="bcNoteTrail"><li><span>01</span><strong>Capture it in seconds</strong><small>Type a thought or use OCR Quick Add to scan a passage from the page.</small></li><li><span>02</span><strong>Keep its place in the book</strong><small>The checkpoint travels with the note.</small></li><li><span>03</span><strong>Carry it into the meeting</strong><small>Prompts give the group somewhere to begin.</small></li></ol></div><div className="bcDevicePair bcMeetingPair"><figure><BookclubDevice screen="meeting-room" label="Bookclub meeting room with the active book and attending readers"/></figure><figure><BookclubDevice screen="conversation-deck" label="A checkpoint-aware conversation prompt"/></figure><span className="bcScreenCaption">Saved context becomes a starting point for discussion.</span></div></section>
-    <MeetingKeepsakes/>
-    <section className="bcEditorialDecisions"><header><span className="bcKicker">NOTES IN THE MARGIN</span><h2>Keep the club<br/>in control.</h2><p>The product works best when it supports the group’s decisions and gets out of the way.</p></header><div className="bcDecisionPages"><article><span>01 / MEMBERSHIP</span><h3>Private by default</h3><p>Invitations preserve the intimacy of an existing group. Joining the club is a deliberate handoff between people.</p></article><article><span>02 / ASSISTANCE</span><h3>Help with the search</h3><p>AI can support discovery and reading context. Members still choose the nominees, rank the books, and decide what to share.</p></article><article><span>03 / COORDINATION</span><h3>Finish in the calendar</h3><p>Polls, reminders, and calendar actions help settle the plan. The final event lives where people already manage their time.</p></article></div></section>
-    <BookclubNextChapter/>
+    <LifecycleRoad stages={bookclubStages} vehicle="book"/>
+    <section className="bcProblem bcStage" id="bc-discover">
+      <div className="bcProblemCopy">
+        <h2>The hard part of a book club<br/><em>happens between meetings.</em></h2>
+        <p>My reading group is busy adults coordinating from their phones. Choosing the next book, reading at different speeds, and showing up with something to say all happened in one noisy group chat.</p>
+        <ul className="bcJobs">
+          <li className="job-Choose"><b>Choose</b>a book the whole group wants</li>
+          <li className="job-Keeppace"><b>Keep pace</b>without spoiling anyone</li>
+          <li className="job-Meet"><b>Meet</b>with thoughts ready to share</li>
+        </ul>
+      </div>
+      <GroupThread/>
+    </section>
+
+    <section className="bcBets bcStage" id="bc-build">
+      <header><h2>Three product bets</h2><p>Each bet asks for a little more effort in exchange for a better group outcome. AI helps with search and passage scanning; members make every choice.</p></header>
+      <ol>{bets.map((b,i)=><li key={b.title} style={{'--k':i} as React.CSSProperties}>
+        <figure className="bcBetPhone"><BookclubDevice screen={b.screen} label={b.label}/></figure>
+        <em className={`bcJob job-${b.job.replace(' ','')}`}>{b.job}</em>
+        <h3>{b.title}</h3>
+        <p className="bcInstead"><s>{b.instead}</s></p>
+        <p className="bcTradeoff"><b>Tradeoff</b>{b.tradeoff}</p>
+      </li>)}</ol>
+    </section>
+
+    <section className="bcValidate bcStage" id="bc-validate">
+      <header><h2>How I’ll know <em>it works</em></h2><p>The app is live for my reading group. Before building more, I’m validating the core loop in three steps.</p></header>
+      <ValidationPlan/>
+      <div className="bcRules">
+        <p><span>If</span> fewer than 4 of 5 people finish ranking <i aria-hidden="true">→</i> simplify the ballot before adding features.</p>
+        <p><span>If</span> readers skip checkpoint tags <i aria-hidden="true">→</i> suggest the tag from their saved progress.</p>
+        <p><span>If</span> saved thoughts never reach the meeting <i aria-hidden="true">→</i> turn them into the meeting’s opening prompts.</p>
+      </div>
+    </section>
   </div>;
 }

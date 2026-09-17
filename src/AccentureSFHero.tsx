@@ -70,33 +70,16 @@ function Scene(){
 export default function AccentureSFHero(){
   const heroRef=useRef<HTMLElement|null>(null);
   const id=React.useId().replace(/:/g,'');
+  // Fog drifts across the artwork on its own loop, and only while the artwork is in the viewport.
   useEffect(()=>{
     const hero=heroRef.current;
     if(!hero)return;
-    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
-    const initialTop=hero.getBoundingClientRect().top;
-    let frame=0, current=0, target=0, lastTime=0;
-    const paint=()=>{
-      hero.style.setProperty('--sf-fog-front',`${current*1132}px`);
-    };
-    const tick=(time:number)=>{
-      const elapsed=Math.min(50,lastTime?time-lastTime:16.7);lastTime=time;
-      current+=(target-current)*(1-Math.exp(-elapsed/110));
-      if(Math.abs(target-current)<.0002){current=target;frame=0;lastTime=0;paint();return}
-      paint();frame=requestAnimationFrame(tick);
-    };
-    const update=()=>{
-      const rect=hero.getBoundingClientRect();
-      target=reduced.matches?0:Math.max(0,Math.min(1,(initialTop-rect.top)/(window.innerHeight*.65)));
-      if(reduced.matches){cancelAnimationFrame(frame);frame=0;current=target;paint()}
-      else if(!frame)frame=requestAnimationFrame(tick);
-    };
-    paint();
-    window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update);reduced.addEventListener('change',update);
-    return()=>{cancelAnimationFrame(frame);window.removeEventListener('scroll',update);window.removeEventListener('resize',update);reduced.removeEventListener('change',update)};
+    const io=new IntersectionObserver(([entry])=>hero.classList.toggle('isInView',entry.isIntersecting),{threshold:.15});
+    io.observe(hero);
+    return()=>io.disconnect();
   },[]);
   // Keep each instance’s city and fog references independent.
-  return <figure ref={heroRef} className="accentureSFHero" role="img" aria-label="San Francisco landmarks: Golden Gate Bridge, Painted Ladies, Salesforce Tower, and Palace of Fine Arts, beneath a purple Accenture mark. Fog moves right as you scroll down.">
+  return <figure ref={heroRef} className="accentureSFHero" role="img" aria-label="San Francisco landmarks: Golden Gate Bridge, Painted Ladies, Salesforce Tower, and Palace of Fine Arts, beneath a purple Accenture mark. Fog drifts across the city.">
     <svg className="accentureSFScene" viewBox="0 0 1672 735" aria-hidden="true">
       <defs>
         <linearGradient id="sfGlass"><stop stopColor="#606ca5"/><stop offset=".36" stopColor="#8e9dca"/><stop offset=".62" stopColor="#b1b0d0"/><stop offset=".84" stopColor="#ffdfb5"/><stop offset="1" stopColor="#d7afab"/></linearGradient>

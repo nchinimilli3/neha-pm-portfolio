@@ -1,0 +1,82 @@
+/* Case study auras: one light base tinted in each case's theme color, with five large,
+   saturated blooms that drift continuously behind the content. This file is the only source. */
+.casePage>.auraField{display:block!important;position:fixed!important;inset:0!important;z-index:0!important;opacity:1!important;filter:none!important;overflow:hidden!important;pointer-events:none!important;transform:none!important}
+.casePage>.auraField .auraBloom{display:block!important;position:absolute!important;border-radius:50%!important;filter:blur(60px)!important;opacity:1!important;mix-blend-mode:normal!important;will-change:transform!important;animation:caseAuraA 26s ease-in-out infinite alternate!important}
+.casePage>.auraField .bloom6,.casePage>.auraField .bloom7{display:none!important}
+.casePage>.auraField .bloom2{animation-name:caseAuraB!important;animation-duration:31s!important;animation-delay:-6s!important}
+.casePage>.auraField .bloom3{animation-name:caseAuraC!important;animation-duration:29s!important;animation-delay:-12s!important}
+.casePage>.auraField .bloom4{animation-name:caseAuraB!important;animation-duration:35s!important;animation-delay:-18s!important;animation-direction:alternate-reverse!important}
+.casePage>.auraField .bloom5{animation-name:caseAuraC!important;animation-duration:23s!important;animation-delay:-4s!important;animation-direction:alternate-reverse!important}
+@keyframes caseAuraA{0%{transform:translate3d(0,0,0) scale(1)}33%{transform:translate3d(14vw,8vh,0) scale(1.12)}66%{transform:translate3d(4vw,20vh,0) scale(.92)}100%{transform:translate3d(-10vw,6vh,0) scale(1.06)}}
+@keyframes caseAuraB{0%{transform:translate3d(0,0,0) scale(1.05)}40%{transform:translate3d(-16vw,12vh,0) scale(.9)}100%{transform:translate3d(-4vw,-10vh,0) scale(1.15)}}
+@keyframes caseAuraC{0%{transform:translate3d(0,0,0) scale(.95)}50%{transform:translate3d(12vw,-14vh,0) scale(1.14)}100%{transform:translate3d(-12vw,-4vh,0) scale(1)}}
+
+.casePage>.auraField .bloom1{left:-18vw!important;top:-14vh!important;right:auto!important;bottom:auto!important;width:68vmax!important;height:68vmax!important}
+.casePage>.auraField .bloom2{left:58vw!important;top:-6vh!important;right:auto!important;bottom:auto!important;width:60vmax!important;height:60vmax!important}
+.casePage>.auraField .bloom3{left:-10vw!important;top:46vh!important;right:auto!important;bottom:auto!important;width:64vmax!important;height:64vmax!important}
+.casePage>.auraField .bloom4{left:52vw!important;top:58vh!important;right:auto!important;bottom:auto!important;width:58vmax!important;height:58vmax!important}
+.casePage>.auraField .bloom5{left:20vw!important;top:18vh!important;right:auto!important;bottom:auto!important;width:46vmax!important;height:46vmax!important}
+
+.casePage.case-fcvf,.casePage.case-fcvf>.auraField{background:#e6eef8!important}
+.casePage.case-fcvf>.auraField .bloom1{background:radial-gradient(circle,rgba(47,111,176,.62) 0,rgba(47,111,176,0) 70%)!important}
+.casePage.case-fcvf>.auraField .bloom2{background:radial-gradient(circle,rgba(106,130,182,.55) 0,rgba(106,130,182,0) 70%)!important}
+.casePage.case-fcvf>.auraField .bloom3{background:radial-gradient(circle,rgba(196,160,128,.5) 0,rgba(196,160,128,0) 70%)!important}
+.casePage.case-fcvf>.auraField .bloom4{background:radial-gradient(circle,rgba(95,170,205,.55) 0,rgba(95,170,205,0) 70%)!important}
+.casePage.case-fcvf>.auraField .bloom5{background:radial-gradient(circle,rgba(23,63,112,.35) 0,rgba(23,63,112,0) 70%)!important}
+.casePage.case-kohler,.casePage.case-kohler>.auraField{background:#e3efe8!important}
+.casePage.case-kohler>.auraField .bloom1{background:radial-gradient(circle,rgba(47,107,85,.55) 0,rgba(47,107,85,0) 70%)!important}
+.casePage.case-kohler>.auraField .bloom2{background:radial-gradient(circle,rgba(184,147,90,.55) 0,rgba(184,147,90,0) 70%)!important}
+.casePage.case-kohler>.auraField .bloom3{background:radial-gradient(circle,rgba(110,165,138,.55) 0,rgba(110,165,138,0) 70%)!important}
+.casePage.case-kohler>.auraField .bloom4{background:radial-gradient(circle,rgba(217,190,130,.5) 0,rgba(217,190,130,0) 70%)!important}
+.casePage.case-kohler>.auraField .bloom5{background:radial-gradient(circle,rgba(36,91,72,.38) 0,rgba(36,91,72,0) 70%)!important}
+.casePage.case-accenture,.casePage.case-accenture>.auraField{background:#f0e6fb!important}
+.casePage.case-accenture>.auraField .bloom1{background:radial-gradient(circle,rgba(161,0,255,.5) 0,rgba(161,0,255,0) 70%)!important}
+.casePage.case-accenture>.auraField .bloom2{background:radial-gradient(circle,rgba(106,42,208,.5) 0,rgba(106,42,208,0) 70%)!important}
+.casePage.case-accenture>.auraField .bloom3{background:radial-gradient(circle,rgba(211,138,230,.58) 0,rgba(211,138,230,0) 70%)!important}
+.casePage.case-accenture>.auraField .bloom4{background:radial-gradient(circle,rgba(122,92,255,.48) 0,rgba(122,92,255,0) 70%)!important}
+.casePage.case-accenture>.auraField .bloom5{background:radial-gradient(circle,rgba(240,160,255,.55) 0,rgba(240,160,255,0) 70%)!important}
+.casePage.case-marketExpansion,.casePage.case-marketExpansion>.auraField{background:#f4e6ec!important}
+.casePage.case-marketExpansion>.auraField .bloom1{background:radial-gradient(circle,rgba(122,61,82,.5) 0,rgba(122,61,82,0) 70%)!important}
+.casePage.case-marketExpansion>.auraField .bloom2{background:radial-gradient(circle,rgba(224,169,63,.58) 0,rgba(224,169,63,0) 70%)!important}
+.casePage.case-marketExpansion>.auraField .bloom3{background:radial-gradient(circle,rgba(125,163,127,.5) 0,rgba(125,163,127,0) 70%)!important}
+.casePage.case-marketExpansion>.auraField .bloom4{background:radial-gradient(circle,rgba(231,150,140,.52) 0,rgba(231,150,140,0) 70%)!important}
+.casePage.case-marketExpansion>.auraField .bloom5{background:radial-gradient(circle,rgba(108,57,76,.38) 0,rgba(108,57,76,0) 70%)!important}
+.casePage.case-commute,.casePage.case-commute>.auraField{background:#ebe7f2!important}
+.casePage.case-commute>.auraField .bloom1{background:radial-gradient(circle,rgba(79,122,108,.55) 0,rgba(79,122,108,0) 70%)!important}
+.casePage.case-commute>.auraField .bloom2{background:radial-gradient(circle,rgba(231,190,210,.7) 0,rgba(231,190,210,0) 70%)!important}
+.casePage.case-commute>.auraField .bloom3{background:radial-gradient(circle,rgba(143,178,164,.6) 0,rgba(143,178,164,0) 70%)!important}
+.casePage.case-commute>.auraField .bloom4{background:radial-gradient(circle,rgba(122,112,160,.45) 0,rgba(122,112,160,0) 70%)!important}
+.casePage.case-commute>.auraField .bloom5{background:radial-gradient(circle,rgba(200,170,215,.55) 0,rgba(200,170,215,0) 70%)!important}
+.casePage.case-scheduler,.casePage.case-scheduler>.auraField{background:#e2f0e8!important}
+.casePage.case-scheduler>.auraField .bloom1{background:radial-gradient(circle,rgba(40,91,76,.5) 0,rgba(40,91,76,0) 70%)!important}
+.casePage.case-scheduler>.auraField .bloom2{background:radial-gradient(circle,rgba(217,164,65,.52) 0,rgba(217,164,65,0) 70%)!important}
+.casePage.case-scheduler>.auraField .bloom3{background:radial-gradient(circle,rgba(120,190,160,.58) 0,rgba(120,190,160,0) 70%)!important}
+.casePage.case-scheduler>.auraField .bloom4{background:radial-gradient(circle,rgba(227,140,110,.48) 0,rgba(227,140,110,0) 70%)!important}
+.casePage.case-scheduler>.auraField .bloom5{background:radial-gradient(circle,rgba(60,140,110,.4) 0,rgba(60,140,110,0) 70%)!important}
+.casePage.case-finsimple,.casePage.case-finsimple>.auraField{background:#e2edf9!important}
+.casePage.case-finsimple>.auraField .bloom1{background:radial-gradient(circle,rgba(56,124,206,.62) 0,rgba(56,124,206,0) 70%)!important}
+.casePage.case-finsimple>.auraField .bloom2{background:radial-gradient(circle,rgba(43,93,167,.52) 0,rgba(43,93,167,0) 70%)!important}
+.casePage.case-finsimple>.auraField .bloom3{background:radial-gradient(circle,rgba(120,174,222,.62) 0,rgba(120,174,222,0) 70%)!important}
+.casePage.case-finsimple>.auraField .bloom4{background:radial-gradient(circle,rgba(80,160,230,.5) 0,rgba(80,160,230,0) 70%)!important}
+.casePage.case-finsimple>.auraField .bloom5{background:radial-gradient(circle,rgba(20,60,120,.35) 0,rgba(20,60,120,0) 70%)!important}
+.casePage.case-bookclub,.casePage.case-bookclub>.auraField{background:#e6efe4!important}
+.casePage.case-bookclub>.auraField .bloom1{background:radial-gradient(circle,rgba(78,133,103,.55) 0,rgba(78,133,103,0) 70%)!important}
+.casePage.case-bookclub>.auraField .bloom2{background:radial-gradient(circle,rgba(157,79,69,.45) 0,rgba(157,79,69,0) 70%)!important}
+.casePage.case-bookclub>.auraField .bloom3{background:radial-gradient(circle,rgba(206,174,114,.55) 0,rgba(206,174,114,0) 70%)!important}
+.casePage.case-bookclub>.auraField .bloom4{background:radial-gradient(circle,rgba(140,185,140,.55) 0,rgba(140,185,140,0) 70%)!important}
+.casePage.case-bookclub>.auraField .bloom5{background:radial-gradient(circle,rgba(47,82,68,.38) 0,rgba(47,82,68,0) 70%)!important}
+.casePage.case-estee,.casePage.case-estee>.auraField{background:#f5e9ee!important}
+.casePage.case-estee>.auraField .bloom1{background:radial-gradient(circle,rgba(216,181,122,.6) 0,rgba(216,181,122,0) 70%)!important}
+.casePage.case-estee>.auraField .bloom2{background:radial-gradient(circle,rgba(217,150,140,.55) 0,rgba(217,150,140,0) 70%)!important}
+.casePage.case-estee>.auraField .bloom3{background:radial-gradient(circle,rgba(31,47,92,.35) 0,rgba(31,47,92,0) 70%)!important}
+.casePage.case-estee>.auraField .bloom4{background:radial-gradient(circle,rgba(232,180,195,.62) 0,rgba(232,180,195,0) 70%)!important}
+.casePage.case-estee>.auraField .bloom5{background:radial-gradient(circle,rgba(176,138,74,.45) 0,rgba(176,138,74,0) 70%)!important}
+.casePage.case-chat,.casePage.case-chat>.auraField{background:#e5effc!important}
+.casePage.case-chat>.auraField .bloom1{background:radial-gradient(circle,rgba(10,132,255,.5) 0,rgba(10,132,255,0) 70%)!important}
+.casePage.case-chat>.auraField .bloom2{background:radial-gradient(circle,rgba(52,199,89,.45) 0,rgba(52,199,89,0) 70%)!important}
+.casePage.case-chat>.auraField .bloom3{background:radial-gradient(circle,rgba(90,200,250,.55) 0,rgba(90,200,250,0) 70%)!important}
+.casePage.case-chat>.auraField .bloom4{background:radial-gradient(circle,rgba(120,170,255,.5) 0,rgba(120,170,255,0) 70%)!important}
+.casePage.case-chat>.auraField .bloom5{background:radial-gradient(circle,rgba(60,210,160,.4) 0,rgba(60,210,160,0) 70%)!important}
+@media(max-width:700px){.casePage>.auraField .auraBloom{filter:blur(46px)!important}}
+@media(prefers-reduced-motion:reduce){.casePage>.auraField .auraBloom{animation:none!important}}
+@media(forced-colors:active){.casePage>.auraField{display:none!important}}

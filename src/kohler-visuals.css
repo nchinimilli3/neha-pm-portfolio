@@ -1,0 +1,167 @@
+/* Kohler Ship Anywhere: content sits on the case aura as drawn objects, stamps, and routes instead of panels. */
+.kohlerStory{--kx-green:#245b48;--kx-green-soft:#6c9383;--kx-brass:#927047;--kx-rust:#a0482f;--kx-paper:#fbf8ef;--kx-ink:#1f2b26;--kx-muted:#56665e}
+
+
+.kxStamp{display:inline-block;padding:6px 14px;border:2.5px solid var(--kx-rust);border-radius:6px;color:var(--kx-rust);font:800 13px/1 -apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:.08em;text-transform:uppercase;transform:rotate(-8deg);white-space:nowrap;mix-blend-mode:multiply;box-shadow:inset 0 0 0 1.5px #a0482f33}
+
+/* Order problem */
+.kxHold{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin-top:44px}
+.kxHold:before{content:'';position:absolute;left:8%;right:8%;top:96px;border-top:2px dashed #245b4840}
+.kxHoldBeat{position:relative;margin:0}
+.kxHoldArt{position:relative;display:grid;place-items:center;height:192px}
+.kxFaucet{width:150px;height:auto;filter:drop-shadow(0 18px 18px #1f2b2622)}
+.kxCheck{position:absolute;top:26px;right:24%;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--kx-green);color:#fff;font-style:normal;font-size:16px;box-shadow:0 0 0 6px #245b4822}
+.kxGhostPages{grid-template-areas:'s'}
+.kxGhostPages span{grid-area:s;display:flex;align-items:flex-start;justify-content:center;width:92px;height:122px;padding-top:12px;border:2px dashed #92704799;border-radius:4px;background:#fbf8ef66;color:var(--kx-brass);font-size:12px;font-weight:650;transform:translateX(calc((var(--i) - 1) * 62px)) rotate(calc((var(--i) - 1) * 10deg)) translateY(calc(var(--i) * 10px - 10px))}
+.kxHoldRoute{grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:0 6px}
+.kxHoldRoute b{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--kx-green);color:#fff;font-size:13px}
+.kxHoldRoute b:last-of-type{background:transparent;color:var(--kx-green);box-shadow:inset 0 0 0 2px var(--kx-green)}
+.kxHoldRoute i{height:2px;background:repeating-linear-gradient(90deg,var(--kx-green) 0 8px,transparent 8px 14px)}
+.kxHoldRoute .kxStamp{position:absolute;left:50%;top:50%;padding:10px 18px;font-size:19px;translate:-50% -50%;transform:rotate(-12deg);background:#f6efe2cc}
+.kxHoldText{margin-top:18px;text-align:center}
+.kxHoldText strong{display:block;font-size:21px;line-height:1.25;color:var(--kx-ink)}
+.kxHoldText span{display:block;margin-top:8px;font-size:15px;line-height:1.5;color:var(--kx-muted)}
+.kxHoldBeat.isHeld .kxHoldText strong{color:var(--kx-rust)}
+
+/* Exceptions */
+.kxExceptions{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin-top:60px}
+.kxExceptions article{display:flex;gap:16px;align-items:flex-start}
+.kxExceptions svg{flex:0 0 46px;width:46px;height:46px;fill:none;stroke:var(--kx-rust);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.kxExceptions .kxTrack{stroke:#a0482f40}
+.kxExceptions strong{display:block;font-size:17px;line-height:1.3;color:var(--kx-ink)}
+.kxExceptions p{margin:6px 0 0!important;font-size:14px!important;line-height:1.5!important;color:var(--kx-muted)!important}
+
+/* Delivery */
+.kxDelivery{display:grid;grid-template-columns:1.35fr .65fr;gap:56px;align-items:end}
+.kxShipped{display:grid;gap:22px;margin:0;padding:0;list-style:none}
+.kxShipped li{display:grid;grid-template-columns:26px 1fr;gap:12px;align-items:start}.kxShipped strong{display:block;font-size:16px;line-height:1.3;color:var(--kx-ink)}.kxShipped div span{display:block;margin-top:3px;font-size:14px;line-height:1.45;color:var(--kx-muted)}
+.kxShipped i{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;box-shadow:inset 0 0 0 2px var(--kx-green);color:var(--kx-green);font-style:normal;font-size:13px}
+.kxVoyage{margin:0}
+.kxVoyageRoute{display:flex;align-items:center;gap:14px;max-width:760px;margin-bottom:34px}
+.kxVoyageRoute b{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:var(--kx-green);color:#fff;font-size:14px}
+.kxVoyageRoute i{position:relative;flex:1;height:2px;background:repeating-linear-gradient(90deg,var(--kx-green-soft) 0 9px,transparent 9px 15px)}
+.kxVoyageRoute em{position:absolute;top:50%;left:0;width:16px;height:16px;margin-top:-8px;border-radius:3px;background:var(--kx-brass);box-shadow:0 0 0 5px #92704733;animation:kxShip 4s cubic-bezier(.6,0,.3,1) infinite}
+@keyframes kxShip{0%,10%{left:0}70%,100%{left:calc(100% - 16px)}}
+.kohlerStory .kxBefore{margin:0 0 10px!important;font-size:18px!important;color:#7d8983!important}
+.kxBefore s{text-decoration-color:var(--kx-rust);text-decoration-thickness:2px}
+.kohlerStory .kxAfter{max-width:820px;margin:0!important;font:400 clamp(30px,3.2vw,44px)/1.15 var(--case-font)!important;letter-spacing:-.02em;color:var(--kx-green)!important}
+
+@media(max-width:900px){
+ .kxDelivery{grid-template-columns:1fr;gap:34px}
+ .kxHold,.kxExceptions{grid-template-columns:1fr;gap:34px}
+ .kxHold:before{display:none}
+}
+@media(prefers-reduced-motion:reduce){.kxVoyageRoute em{animation:none;left:calc(100% - 16px)}}
+
+/* Packing line */
+.kxLine{margin-top:44px}
+.kxLineStage{position:relative;display:grid;grid-template-columns:1.05fr 1fr .8fr;gap:28px;align-items:end;padding-bottom:40px}
+.kxBelt{position:absolute;left:0;right:0;bottom:8px;height:18px;border-radius:18px;background:#3c4a43;box-shadow:inset 0 2px 0 #ffffff22,0 10px 18px #1f2b2626;overflow:hidden}
+.kxBelt i{position:absolute;inset:4px 10px;background:repeating-linear-gradient(90deg,#6d7d74 0 14px,transparent 14px 28px);animation:kxBeltRun 1.2s linear infinite}
+@keyframes kxBeltRun{to{background-position:28px 0}}
+.kxCargo{position:absolute;bottom:26px;left:0;width:22px;height:18px;border-radius:3px;background:linear-gradient(135deg,#d6b27a,#a9804a);box-shadow:inset 0 -3px 0 #8a6a3b;animation:kxCargoRide 7s linear infinite}
+@keyframes kxCargoRide{0%{left:2%;opacity:0}6%{opacity:1}92%{opacity:1}100%{left:96%;opacity:0}}
+.kxStation{position:relative}
+.kxInputs{display:grid;gap:16px;padding-bottom:40px}
+.kxSource{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:center}
+.kxSourceIcon{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#fbf8ef;box-shadow:inset 0 0 0 2px #245b48}
+.kxSourceIcon svg{width:22px;height:22px;fill:none;stroke:#245b48;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.kxSource strong{display:block;font-size:15px;line-height:1.3;color:var(--kx-ink)}.kxSource div span{display:block;font-size:13px;color:var(--kx-muted)}
+.kxAgent{display:grid;justify-items:center;padding-bottom:10px}
+.kxArm{width:110px;height:auto;margin-bottom:-6px}
+.kxArm path,.kxArm circle{fill:none;stroke:#3c4a43;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}.kxArm circle{fill:#b8935a;stroke:none}
+.kxFolder{width:190px;height:auto;filter:drop-shadow(0 12px 16px #1f2b2626)}
+.kxFolderBack{fill:#c9a86e}.kxFolderFront{fill:#e3c78f}.kxFolderLines{stroke:#b28f55;stroke-width:3;stroke-linecap:round}
+.kxTab1{fill:#245b48}.kxTab2{fill:#b8935a}.kxTab3{fill:#a0482f}
+.kxPacketTabs{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 14px;margin:14px 0 0;padding:0;list-style:none;font-size:13px;font-weight:600;color:var(--kx-ink)}
+.kxPacketTabs li:before{content:'';display:inline-block;width:9px;height:9px;margin-right:6px;border-radius:2px;vertical-align:1px}
+.kxPacketTabs .t1:before{background:#245b48}.kxPacketTabs .t2:before{background:#b8935a}.kxPacketTabs .t3:before{background:#a0482f}
+.kohlerStory .kxChain{display:flex;align-items:center;gap:6px;margin:10px 0 0!important;font-size:13px!important;font-style:italic;color:var(--kx-muted)!important}
+.kxChain svg{width:16px;height:16px;fill:none;stroke:#245b48;stroke-width:2;stroke-linecap:round}
+.kxGate{display:grid;justify-items:center;padding-bottom:10px}
+.kxClipboard{width:130px;height:auto;filter:drop-shadow(0 12px 16px #1f2b2626)}
+.kxBoard{fill:#fbf8ef;stroke:#d9cfb8;stroke-width:2}.kxClip{fill:#3c4a43}.kxOk{fill:none;stroke:#245b48;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.kxRow{stroke:#d9cfb8;stroke-width:6;stroke-linecap:round}
+.kxWarn{fill:#a0482f}.kxWarnMark{stroke:#fff;stroke-width:2.4;stroke-linecap:round}
+.kxGateList{margin:12px 0 0;padding:0;list-style:none;font-size:13px;text-align:center;color:var(--kx-muted)}.kxGateList .isOpen{color:var(--kx-rust);font-weight:600}
+.kxGateStamp{position:absolute;right:-8px;top:38px;font-size:12px;background:#f6efe2d9}
+.kxLineSteps{position:relative;display:grid;grid-template-columns:1.05fr 1fr .8fr;gap:28px;margin:26px 0 0;padding:18px 0 0;list-style:none}
+.kxLineSteps:before{content:'';position:absolute;left:0;right:0;top:0;height:6px;border-radius:6px;background:linear-gradient(90deg,#9fbfae,#e0c98f 55%,#d9967a)}
+.kxZone{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:650;color:var(--kx-green)}
+.kxZone b{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--kx-green);color:#fff;font-size:13px}
+.kxZone svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.kxLineSteps .is-ai .kxZone{color:#8a6a3b}.kxLineSteps .is-ai .kxZone b{background:#b8935a}
+.kxLineSteps .is-human .kxZone{color:var(--kx-rust)}.kxLineSteps .is-human .kxZone b{background:var(--kx-rust)}
+.kxLineSteps strong{display:block;margin-top:12px;font-size:19px;line-height:1.25;color:var(--kx-ink)}
+.kohlerStory .kxLineSteps p{margin:6px 0 0!important;font-size:15px!important;line-height:1.55!important;color:var(--kx-muted)!important}
+.kohlerStory .kxExceptionsTitle{margin:64px 0 0!important;color:var(--kx-rust)!important}
+.kohlerStory .kxExceptionsTitle+.kxExceptions{margin-top:22px}
+
+/* Hero: the order as a shipping tag */
+.case-kohler .caseHeroMedia{display:grid;place-items:center;background:none!important;border:0!important;box-shadow:none!important;min-height:0!important}
+.kxTagScene{display:grid;place-items:center;padding:30px 20px 30px 110px}
+.kxTag{position:relative;padding:34px 34px 30px 70px;background:linear-gradient(160deg,#f7efd9,#e9dcba);clip-path:polygon(40px 0,100% 0,100% 100%,40px 100%,0 50%);color:var(--kx-ink)}
+.kxTagScene{filter:drop-shadow(0 24px 26px #1f2b2630)}
+@keyframes kxSway{0%,100%{rotate:0deg}50%{rotate:2deg}}
+.kxTagHole{position:absolute;left:24px;top:50%;width:16px;height:16px;margin-top:-8px;border-radius:50%;background:#e8e2d3;box-shadow:inset 0 0 0 3px #b8935a}
+.kxTagString{position:absolute;left:-96px;top:40%;width:120px;height:60px;overflow:visible}.kxTagString path{fill:none;stroke:#8a6a3b;stroke-width:2}
+.kxTagLogo{display:block;width:108px;height:auto;margin-bottom:18px}
+.kxTag small{display:block;font-size:13px;color:var(--kx-muted)}
+.kxTag>strong{display:block;margin:2px 0 14px;font-size:44px;font-weight:600;letter-spacing:-.03em;color:#1f4e3d}
+.kxTagRoute{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600}.kxTagRoute i{flex:1;height:2px;background:repeating-linear-gradient(90deg,#245b48 0 6px,transparent 6px 11px)}
+.kxTagDocs{display:flex;gap:6px;margin:18px 0 14px}.kxTagDocs i{width:26px;height:32px;border-radius:3px;background:#fbf8ef;box-shadow:0 2px 0 #d9cfb8}.kxTagDocs i:last-child{box-shadow:inset 0 0 0 2px #a0482f}
+.kxTagTrail{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--kx-muted)}.kxTagTrail svg{width:16px;height:16px;fill:none;stroke:#245b48;stroke-width:2;stroke-linecap:round}
+.kxTagWrap{position:relative;width:min(100%,380px);transform:rotate(-5deg);transform-origin:0 50%;animation:kxSway 6s ease-in-out infinite}
+.kxTagStamp{position:absolute;right:-26px;top:-16px;font-size:12px;background:#f6efe2e6}
+
+/* Decision and principles, directly under the problem they answer */
+.kxDecision{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center;margin-top:72px}
+.kohlerStory .kxDecision blockquote{margin:0;padding:0;border:0;font:400 clamp(26px,2.5vw,34px)/1.2 var(--case-font);letter-spacing:-.025em;color:#1f4e3d}
+.kxTagNotes{position:relative;display:grid;gap:22px;margin:0;padding:0 0 0 30px;list-style:none}
+.kxTagNotes:before{content:'';position:absolute;left:0;top:10px;bottom:10px;border-left:2px dashed #b8935a}
+.kxTagNotes li{position:relative;display:grid;grid-template-columns:34px 1fr;column-gap:14px}
+.kxTagNotes li:before{content:'';position:absolute;left:-30px;top:16px;width:26px;border-top:2px dashed #b8935a}
+.kxTagNotes b{grid-row:1/3;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#b8935a;color:#fff;font-size:15px}
+.kxTagNotes strong{font-size:18px;color:var(--kx-ink)}.kxTagNotes span{font-size:15px;line-height:1.5;color:var(--kx-muted)}
+
+/* Roles along one line through the shared packet */
+.kohlerStory .kxRoles h3{margin:56px 0 26px!important;color:var(--kx-green)!important}
+.kxRoles ol{position:relative;display:grid;grid-template-columns:1fr 1fr 90px 1fr 1fr;gap:24px;margin:0;padding:0;list-style:none}
+.kxRoles ol:before{content:'';position:absolute;left:12%;right:12%;top:32px;border-top:2px dashed #6c938380}
+.kxRoles li{position:relative;display:grid;justify-items:center;align-content:start;text-align:center}
+.kxRoles li>svg{width:64px;height:64px}
+.kxHalo{fill:#fbf8ef;stroke:#245b4833}
+.kxRoles strong{display:block;margin-top:12px;font-size:17px;line-height:1.25;color:var(--kx-ink)}
+.kxRoles li>span{display:block;margin-top:6px;font-size:14px;line-height:1.45;color:var(--kx-muted)}
+.kxRolesCore svg{width:74px;height:auto;margin-top:-10px;filter:drop-shadow(0 12px 14px #1f2b2622)}
+.kxSheetBack{fill:#e8e0cc}.kxSheet{fill:var(--kx-paper);stroke:#245b4855}.kxFold{fill:#e8e0cc;stroke:#245b4855}.kxLines{stroke:#245b4855;stroke-width:3;stroke-linecap:round}.kxSeal{fill:var(--kx-green)}.kxSealTick{fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+@media(max-width:900px){
+ .kxLineStage,.kxLineSteps,.kxDecision{grid-template-columns:1fr}
+ .kxDecision{gap:34px}
+ .kxRoles ol{grid-template-columns:1fr 1fr;row-gap:30px}.kxRoles ol:before,.kxRolesCore{display:none}
+ .kxTagScene{padding:20px 0 20px 70px}
+ .kxBelt,.kxCargo{display:none}.kxInputs{padding-bottom:0}.kxGateStamp{position:static;margin-top:12px}
+ .kxTagWrap{transform:rotate(-3deg)}
+}
+@media(prefers-reduced-motion:reduce){.kxBelt i,.kxCargo,.kxTagWrap{animation:none}}
+
+/* Lifecycle road in Kohler green and brass */
+.kohlerStory{--lc-ink:#1f2b26;--lc-road:#245b48;--lc-accent:#b8935a;--lc-accent-2:#dcc08e;--lc-muted:#72827a;--lc-tint:#e3efe8f2;--lc-glass:#eef5f1}
+.kxStage{scroll-margin-top:110px}
+
+/* Composition (desktop): all four chapters were the same title rail + body. Discover keeps the rail (dense);
+   Design opens up with a split header over the full-width product surface (visual); Build centers its header over
+   the assembly line (analytical); Deliver sets the title above a wide voyage with the shipped list beside it (result). */
+@media(min-width:1001px){
+ .case-kohler .kohlerStory>.caseSection.kohlerProductSection,.case-kohler .kohlerStory>.caseSection.kohlerArchitectureSection{grid-template-columns:repeat(12,minmax(0,1fr))!important;column-gap:32px!important;row-gap:0!important}
+ .kohlerProductSection>.caseSectionBody,.kohlerProductSection>.caseSectionBody>div,.kohlerArchitectureSection>.caseSectionBody,.kohlerArchitectureSection>.caseSectionBody>div{display:contents}
+ .case-kohler .kohlerStory>.kohlerProductSection>h2{grid-column:1/7!important;align-self:end;max-width:none!important;position:static!important}
+ .kohlerProductSection .kohlerSectionLead{grid-column:8/13;align-self:end;margin:0!important}
+ .kohlerProductSection .kohlerProductStage,.kohlerProductSection .kxRoles{grid-column:1/-1}
+ .kohlerProductSection .kohlerProductStage{margin-top:48px}
+ .case-kohler .kohlerStory>.kohlerArchitectureSection>h2{grid-column:3/11!important;max-width:none!important;position:static!important;text-align:center;margin:0 0 14px!important}
+ .kohlerArchitectureSection .kohlerSectionLead{grid-column:4/10;text-align:center;margin:0 auto 48px!important}
+ .kohlerArchitectureSection .kxLine,.kohlerArchitectureSection .kxExceptionsTitle,.kohlerArchitectureSection .kxExceptions{grid-column:1/-1}
+ .case-kohler .kohlerStory>.caseSection.kohlerDeliverySection{grid-template-columns:1fr!important;gap:36px!important}
+ .case-kohler .kohlerStory>.kohlerDeliverySection>h2{max-width:none!important;position:static!important}
+}

@@ -1,0 +1,178 @@
+/* Accenture: relay, funnel, and gate visuals that sit directly on the purple aura. */
+.case-accenture{--ax-ink:#1f1628;--ax-body:#3a3043;--ax-plum:#4e1b78;--ax-violet:#7b2fd0;--ax-accent:#a100ff;--ax-rose:#8c2f58}
+
+/* Header copy needs darker ink to read over the purple blooms. */
+.case-accenture .caseHeader .ownershipLine span{color:#3a2352!important}
+.case-accenture .caseHeader .toolLogoHeading p{color:var(--ax-body)!important}
+
+/* Tool relay: a vertical hand-off line beside the rules it carried. */
+.case-accenture .axRelay{position:relative;min-width:0;padding:6px 0}
+.case-accenture .axRelay:before{content:'';position:absolute;left:33px;top:40px;bottom:40px;border-left:2px dashed #7b2fd066}
+.case-accenture .axRelayToken{position:absolute;z-index:2;left:34px;top:40px;padding:4px 9px;border-radius:20px;background:var(--ax-violet);color:#fff;font:700 11px/1 var(--case-font);letter-spacing:.02em;translate:-50% -50%;box-shadow:0 0 0 4px #7b2fd022;animation:axToken 6s cubic-bezier(.6,0,.3,1) infinite}
+@keyframes axToken{0%,8%{top:40px}25%,33%{top:calc(33.3% + 13px)}50%,58%{top:calc(66.6% - 13px)}75%,100%{top:calc(100% - 40px)}}
+.case-accenture .axRelay ol{position:relative;display:grid;grid-template-columns:1fr;gap:30px;margin:0;padding:0;list-style:none}
+.case-accenture .axRelay li{display:grid;grid-template-columns:68px 1fr;column-gap:20px;align-items:center;text-align:left}
+.case-accenture .axLogo{grid-row:1/3;display:block;width:68px;height:68px;border-radius:50%;background:radial-gradient(circle,#fff 0 58%,#ffffff00 72%)}
+.case-accenture .axLogo:after{content:'';display:block;width:36px;height:36px;margin:16px;background:var(--brand);-webkit-mask:var(--logo) center/contain no-repeat;mask:var(--logo) center/contain no-repeat}
+.case-accenture .axRelay strong{align-self:end;display:block;font-size:18px;line-height:1.25;color:var(--ax-ink)}
+.case-accenture .axRelay p{align-self:start;margin:4px 0 0!important;font-size:15px!important;line-height:1.45!important;color:var(--ax-body)!important}
+@media(prefers-reduced-motion:reduce){.case-accenture .axRelayToken{animation:none}}
+
+/* Automation boundary */
+.case-accenture .axBoundary{min-width:0}
+.case-accenture .axTrack{position:relative;display:grid;grid-template-columns:1fr 1fr 1.15fr 1fr;gap:26px;margin:0;padding:0;list-style:none}
+.case-accenture .axTrack:before,.case-accenture .axTrack:after{content:'';position:absolute;top:27px;height:4px;border-radius:4px}
+.case-accenture .axTrack:before{left:0;width:58%;background:repeating-linear-gradient(90deg,#7b2fd0 0 10px,#7b2fd055 10px 16px)}
+.case-accenture .axTrack:after{left:58%;right:0;background:var(--ax-rose)}
+.case-accenture .axTrack li{position:relative}
+.case-accenture .axStop{position:relative;z-index:1;display:grid;place-items:center;width:58px;height:58px;border-radius:50%;background:#f6f0fb;box-shadow:0 0 0 4px #f6f0fb99}
+.case-accenture .axStop svg{width:28px;height:28px;fill:none;stroke:var(--ax-violet);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.case-accenture .is-gate .axStop{width:76px;border-radius:30px;background:#fbeef2}
+.case-accenture .is-gate .axStop svg{width:52px;height:38px;stroke:var(--ax-ink)}
+.case-accenture .is-gate .axArm{stroke:var(--ax-rose);stroke-width:4}
+.case-accenture .is-gate .axStripes{stroke:#fff;stroke-width:4;stroke-linecap:butt}
+.case-accenture .is-gate .axStop svg circle{fill:var(--ax-ink);stroke:none}
+.case-accenture .is-human .axStop{background:var(--ax-rose)}
+.case-accenture .is-human .axStop svg{stroke:#fff}
+.case-accenture .axTrack strong{display:block;margin-top:18px;font-size:18px;line-height:1.3;color:var(--ax-ink)}
+.case-accenture .is-gate strong,.case-accenture .is-human strong{color:var(--ax-rose)}
+.case-accenture .axTrack p{margin:6px 0 0!important;font-size:14px!important;line-height:1.45!important;color:var(--ax-body)!important}
+
+@media(max-width:800px){
+ .case-accenture .axTrack{grid-template-columns:1fr;gap:26px;padding-left:78px}
+ .case-accenture .axTrack:before,.case-accenture .axTrack:after{top:0;left:27px;width:4px;height:58%;right:auto}
+ .case-accenture .axTrack:after{top:58%;height:42%;bottom:0}
+ .case-accenture .axStop{position:absolute;left:-78px;top:-6px}
+ .case-accenture .is-gate .axStop{left:-87px}
+ .case-accenture .axTrack strong{margin-top:0}
+}
+
+/* Chapters share one layout: heading beside its summary, then the visual. No divider lines. */
+.case-accenture .accentureStory>.axChapter{width:min(1180px,calc(100% - 64px));margin:0 auto;padding:clamp(56px,6.5vw,92px) 0 0;border:0!important;background:none!important}
+.case-accenture .accentureStory>.axChapter:last-child{padding-bottom:80px}
+.case-accenture .axChapter>header{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,72px);align-items:end;margin:0 0 40px;padding:0;border:0!important}
+.case-accenture .axChapter>header h2{margin:0;color:var(--ax-ink)}
+.case-accenture .axChapter>header h2 em{font-style:normal;color:var(--ax-violet)}
+.case-accenture .axChapter>header p{margin:0;color:var(--ax-body)}
+.case-accenture .accentureSchemaWindow{margin:0!important}
+
+/* The 10:30 PM edge case lives beside the gate it justified. */
+.case-accenture .axProof{display:grid;grid-template-columns:150px 1fr;gap:40px;align-items:center;margin-top:48px}
+.case-accenture .axClockFace{fill:#241536}
+.case-accenture .axClock{width:150px;height:150px;overflow:visible;filter:drop-shadow(0 16px 24px #24153640)}
+.case-accenture .axClockTick{stroke:#b69ad8;stroke-width:2.5;stroke-linecap:round}
+.case-accenture .axClockHour{stroke:#fff;stroke-width:5;stroke-linecap:round}
+.case-accenture .axClockMin{stroke:#d38ae6;stroke-width:3;stroke-linecap:round}
+.case-accenture .axClockPin{fill:#fff}.case-accenture .axClockMoon{fill:#f3d98b}
+.case-accenture .axEdge p{margin:0!important}
+.case-accenture .axEdgeWhen{font-size:18px!important;color:var(--ax-body)!important}
+.case-accenture .axEdgeWhen strong{margin-right:8px;font-size:clamp(34px,3.4vw,46px);font-weight:700;letter-spacing:-.04em;color:var(--ax-plum)}
+.case-accenture .axEdgeBefore{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-top:14px!important;font-size:15px!important;color:var(--ax-body)!important}
+.case-accenture .axEdgeBefore s{font-size:17px;font-weight:650;color:var(--ax-rose);text-decoration-thickness:2px}
+.case-accenture .axEdgeAfter{display:flex;gap:12px;align-items:baseline;margin-top:12px!important;font-size:19px!important;font-weight:650;line-height:1.35!important;color:var(--ax-ink)!important}
+.case-accenture .axEdgeAfter i{font-style:normal;color:var(--ax-violet)}
+@media(max-width:800px){.case-accenture .axChapter>header{grid-template-columns:1fr;gap:24px}.case-accenture .axProof{grid-template-columns:1fr;gap:20px}.case-accenture .axClock{width:110px;height:110px}}
+
+
+
+/* The three request screens share one numbered hand-off line. */
+@media(min-width:1001px){
+ .case-accenture .requestScreens{position:relative}
+ .case-accenture .requestScreens:before{content:'';position:absolute;top:14px;left:14px;right:calc((100% - 68px)/3 - 14px);border-top:2px dashed #7b2fd05c}
+ .case-accenture .requestStep>header>b{position:relative;z-index:1;background:var(--ax-violet)!important;color:#fff!important;box-shadow:0 0 0 5px #7b2fd022}
+}
+
+/* Evidence ride: a Powell-line cable car climbs out of the fog past row houses and SF street signs. */
+.case-accenture .axRide{--sf-sign:#1d6b4a}
+.case-accenture .axRide svg{display:block;width:100%;height:auto;overflow:visible}
+.case-accenture .axHouses g{opacity:.78}
+.case-accenture .axBay{fill:#fbf6ee;stroke:#ffffffaa;stroke-width:2}
+.case-accenture .axHouseWin{fill:#fbf6ee}
+.case-accenture .axHill{fill:url(#axHill)}
+.case-accenture .axSidewalk{fill:#ebe3ef}
+.case-accenture .axRoad{fill:#4d4656}
+.case-accenture .axRailLine{fill:none;stroke:#a9a0b2;stroke-width:2}
+.case-accenture .axCable{fill:none;stroke:#221d28;stroke-width:2;stroke-dasharray:6 10;animation:axCableRun .9s linear infinite}
+@keyframes axCableRun{to{stroke-dashoffset:-16}}
+.case-accenture .axPole{stroke:#77727c;stroke-width:4;stroke-linecap:round}
+.case-accenture .axBladeFace{fill:var(--sf-sign);transition:fill .5s}
+.case-accenture .axBladeInset{fill:none;stroke:#fff;stroke-width:1.6;opacity:.9}
+.case-accenture .axSignNum{font:700 21px var(--case-font);fill:#fff;text-anchor:middle;letter-spacing:-.02em}
+.case-accenture .axSignStreet{font:500 12.5px var(--case-font);fill:#fff;text-anchor:middle}
+.case-accenture .axSign{opacity:.45;transition:opacity .6s}
+.case-accenture .axSign.isPassed{opacity:1}
+.case-accenture .axSign.isHere .axBladeFace{fill:#7b2fd0}
+.case-accenture .axSign.isHere .axBlade{filter:drop-shadow(0 8px 12px #7b2fd055)}
+.case-accenture .axCar{transition:transform 1.5s cubic-bezier(.55,0,.25,1)}
+.case-accenture .axRide.isBoarding .axCar{transition:none}
+.case-accenture .axGrip{stroke:#221d28;stroke-width:3}
+.case-accenture .axWheel{fill:#231f26}.case-accenture .axHub{fill:#8d8594}
+.case-accenture .axCarFrame{fill:#3a2c26}.case-accenture .axCarStep{fill:#6b4a33}
+.case-accenture .axCarCream{fill:#efe4c6}
+.case-accenture .axCarMaroon{fill:#8b2525}
+.case-accenture .axCarGold{fill:none;stroke:#d7b15b;stroke-width:1.4}
+.case-accenture .axCarTrim{fill:#2f4d7c}
+.case-accenture .axCarWindow{fill:url(#axGlass)}
+.case-accenture .axCarGlare{fill:#ffffff33}
+.case-accenture .axCarLamp{fill:#f6dc8c}
+.case-accenture .axCarPole{stroke:#c9a24a;stroke-width:2.5}
+.case-accenture .axGripLever{stroke:#2a2327;stroke-width:3;stroke-linecap:round}
+.case-accenture .axCarRoof{fill:#5b3a2a}
+.case-accenture .axCarBadge{fill:#efe4c6;stroke:#d7b15b;stroke-width:1.2}
+.case-accenture .axCarNum{font:700 8px var(--case-font);fill:#8b2525;text-anchor:middle}
+.case-accenture .axRiderHead{fill:#8d5a42}.case-accenture .axRiderHead2{fill:#e2b995}
+.case-accenture .axRiderA{fill:#5b3f96}.case-accenture .axRiderB{fill:#3f7f6c}
+.case-accenture .axFogBank{fill:#fff;opacity:.85;animation:axFogRoll 9s ease-in-out infinite alternate}
+.case-accenture .axFogBank.f2{animation-duration:12s;animation-delay:-3s}
+.case-accenture .axFogBank.f3{animation-duration:10s;animation-delay:-6s}
+.case-accenture .axFogBank.f4{animation-duration:14s}
+@keyframes axFogRoll{from{transform:translateX(-30px)}to{transform:translateX(40px)}}
+.case-accenture .axFog{transition:opacity 1.8s ease}
+.case-accenture .axRide.stop-1 .axFog{opacity:.65}
+.case-accenture .axRide.stop-2 .axFog{opacity:.4}
+.case-accenture .axRide.stop-3 .axFog{opacity:.2}
+.case-accenture .axRide.stop-4 .axFog{opacity:.06}
+.case-accenture .axRideNow{display:flex;align-items:center;gap:12px;min-height:34px;margin:10px 0 0!important;font-size:18px!important;font-weight:600;color:var(--ax-ink)!important}
+.case-accenture .axRideNow b{display:grid;place-items:center;flex:0 0 30px;height:30px;border-radius:50%;background:var(--sf-sign);color:#fff;font-size:14px}
+.case-accenture .axRideStops{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media(max-width:700px){
+ .case-accenture .axSign text{display:none}
+ .case-accenture .axRideNow{font-size:16px!important}
+ .case-accenture .axRideStops{position:static;width:auto;height:auto;clip:auto;display:grid;gap:10px;margin:20px 0 0;padding:0 0 0 18px;list-style:none;border-left:4px solid #6b6474}
+ .case-accenture .axRideStops li{display:grid;justify-items:start;width:max-content;padding:6px 14px;border-radius:6px;background:var(--sf-sign);box-shadow:inset 0 0 0 1.5px #1d6b4a,inset 0 0 0 3px #fff;color:#fff;opacity:.45;transition:opacity .5s}
+ .case-accenture .axRideStops li.isPassed{opacity:1}
+ .case-accenture .axRideStops strong{font-size:18px;line-height:1.1}
+ .case-accenture .axRideStops span{font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){.case-accenture .axRide *{animation:none!important;transition:none!important}}
+
+/* One-by-one reveals for grouped items (added by AccentureStagger, so content stays visible without JS). */
+.case-accenture .axStagger>*{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--si,0) * .22s)}
+.case-accenture .axStagger.isIn>*{opacity:1;transform:none}
+.case-accenture .axStagger.axTrack>*{transform:translateX(-18px)}
+.case-accenture .axStagger.axTrack.isIn>*{transform:none}
+.case-accenture .axTrack.axStagger:before,.case-accenture .axTrack.axStagger:after{transform:scaleX(0);transform-origin:left;transition:transform 1.2s ease}
+.case-accenture .axTrack.axStagger:after{transition-delay:.6s}
+.case-accenture .axTrack.axStagger.isIn:before,.case-accenture .axTrack.axStagger.isIn:after{transform:none}
+
+/* Lifecycle road in Accenture purple */
+.case-accenture .accentureStory{--lc-ink:#1f1628;--lc-road:#3a2352;--lc-accent:#7b2fd0;--lc-accent-2:#c98aee;--lc-muted:#8a7d99;--lc-tint:#f0e6fbf2;--lc-glass:#efe3fb}
+.case-accenture .axStage{scroll-margin-top:110px}
+.case-accenture .axRules .accentureSchemaWindow{max-width:760px}
+.case-accenture .axBuild .axRelay ol{grid-template-columns:repeat(4,1fr);gap:28px}
+.case-accenture .axBuild .axRelay li{grid-template-columns:1fr;justify-items:start;row-gap:8px}
+.case-accenture .axBuild .axLogo{grid-row:auto}.case-accenture .axBuild .axRelay strong{align-self:auto;margin-top:6px}
+.case-accenture .axBuild .axRelay:before{left:34px;right:34px;top:40px;bottom:auto;height:0;border-left:0;border-top:2px dashed #7b2fd066}
+.case-accenture .axBuild .axRelayToken{display:none}
+@media(max-width:800px){.case-accenture .axBuild .axRelay ol{grid-template-columns:1fr 1fr}.case-accenture .axBuild .axRelay:before{display:none}}
+
+/* Composition (desktop): every chapter used the same split header over a full-width visual.
+   Discover and Recommend keep it as bookends; Define sets a text rail beside the schema; Build centers a quiet
+   header over the relay; Test stacks the header left, reading straight into the boundary track. */
+@media(min-width:1001px){
+ .case-accenture .axRules{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:32px;align-items:center}
+ .case-accenture .axRules>header{grid-column:1/5;grid-template-columns:1fr;gap:22px;margin:0}
+ .case-accenture .axRules>.accentureSchemaWindow{grid-column:6/13;max-width:none}
+ .case-accenture .axBuild>header{grid-template-columns:1fr;justify-items:center;gap:14px;max-width:720px;margin:0 auto 48px;text-align:center}
+ .case-accenture .axHuman>header{grid-template-columns:1fr;gap:18px;max-width:640px}
+}

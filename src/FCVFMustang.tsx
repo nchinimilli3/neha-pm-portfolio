@@ -52,7 +52,7 @@ export default function FCVFMustang() {
   <path d={`M${cx-35} 273Q${cx} 242 ${cx+35} 273`} fill="none" stroke="#fff" strokeOpacity=".17"/>
  </g>;
  return <div ref={host} className="fvHeroCar shelbyScene" style={{'--drive-progress':drive,'--car-x':`${drive*carTravel}px`,'--wheel-turn':`${drive*1680}deg`,'--road-offset':`${drive*-440}px`,'--speed-x':`${drive*-170}px`,'--smoke-x':`${drive*-76}px`,'--smoke-y':`${drive*-20}px`,'--smoke-scale':.62+drive*2.2} as React.CSSProperties}>
- <svg className="fvMustang shelbyIllustration" viewBox="0 60 780 325" role="img" aria-label="Original blue 1967 Shelby Mustang GT500-inspired illustration. Scroll to drive it across the road with spinning wheels and a trail of exhaust.">
+ <svg className="fvMustang shelbyIllustration" viewBox="0 135 780 235" role="img" aria-label="Original blue 1967 Shelby Mustang GT500-inspired illustration. Scroll to drive it across the road with spinning wheels and a trail of exhaust.">
  <defs>
   <linearGradient id="shelbyPaint" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#93b8ce"/><stop offset=".21" stopColor="#4d89b0"/><stop offset=".46" stopColor="#28668f"/><stop offset=".55" stopColor="#194767"/><stop offset=".85" stopColor="#205579"/><stop offset="1" stopColor="#0c2d46"/></linearGradient>
   <linearGradient id="shelbyMetal" x2=".65" y2="1"><stop stopColor="#fffdf1"/><stop offset=".27" stopColor="#8294a0"/><stop offset=".48" stopColor="#f1f4eb"/><stop offset="1" stopColor="#607785"/></linearGradient>
@@ -60,8 +60,6 @@ export default function FCVFMustang() {
   <filter id="shelbyShadow" x="-.2" y="-1" width="1.4" height="3"><feGaussianBlur stdDeviation="6"/></filter>
   <radialGradient id="shelbySmoke"><stop stopColor="#d4e2e3" stopOpacity=".78"/><stop offset=".48" stopColor="#91a8ad" stopOpacity=".48"/><stop offset="1" stopColor="#a4b1b5" stopOpacity="0"/></radialGradient>
  </defs>
- <g stroke="#163d5925" fill="none"><path d="M35 113H747M35 347H747M75 82V359M709 82V359" strokeDasharray="3 7"/><path d="M88 94H696M88 88V100M696 88V100"/></g>
- <text x="390" y="77" fill="#526e81" fontFamily="monospace" fontSize="9" textAnchor="middle" letterSpacing="3">1967 / FASTBACK</text>
  <path className="shelbyRoad" d="M40 358H740" fill="none" stroke="#8f9e9f" strokeWidth="2" strokeDasharray="55 28"/>
  <g className="shelbySpeed" fill="none" stroke="#456b83" strokeLinecap="round"><path d="M25 207H167"/><path d="M-20 242H126" strokeWidth="2"/><path d="M12 275H181"/><path d="M46 313H127" strokeWidth="2"/></g>
  <g className="shelbyExhaust" aria-hidden="true"><path className="shelbyStream streamOne" d="M80 294C37 276 7 281-48 258"/><path className="shelbyStream streamTwo" d="M79 303C26 306-7 327-72 308"/><path className="shelbyStream streamThree" d="M78 310C31 329-8 345-106 337"/>{[0,1,2,3,4,5,6].map(i => <ellipse key={i} className={`shelbyPuff shelbyPuff${i}`} cx={76-i*31} cy={302-(i%3)*8} rx={25-i*.8} ry={18-i*.45} fill="url(#shelbySmoke)"/>)}</g>
@@ -97,7 +95,6 @@ export default function FCVFMustang() {
  <path d="M133 270Q145 242 174 243M540 270Q552 242 581 243" stroke="#bdd2da" strokeOpacity=".7" strokeWidth="2" fill="none"/>
  </g>
  </svg>
- <button className="fvReplay" type="button" onClick={() => host.current?.scrollIntoView({behavior:'smooth',block:'center'})}>Drive with scroll ↕</button>
 
  </div>;
 }
