@@ -6,7 +6,7 @@
 @media(prefers-reduced-motion:reduce){.schEventTicket,.schedulerStory:before{animation:none!important}}
 
 /* Lifecycle road in Scheduler green and gold */
-.schedulerStory{--lc-ink:#1f2b27;--lc-road:#285b4c;--lc-accent:#c9a24a;--lc-accent-2:#e6cf8f;--lc-muted:#74827b;--lc-tint:#e2f0e8f2;--lc-glass:#e8f2ec}
+.schedulerStory{--lc-ink:#1f2b27;--lc-road:#285b4c;--lc-accent:#c9a24a;--lc-accent-2:#e6cf8f;--lc-muted:#56605b;--lc-tint:#e2f0e8f2;--lc-glass:#e8f2ec}
 .scStage{scroll-margin-top:110px}
 
 /* Build: synced event record */

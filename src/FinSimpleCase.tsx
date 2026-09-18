@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './finsimple.css';
 import LifecycleRoad from './LifecycleRoad';
+import { DecisionMoment, Supporting, Tradeoff } from './CaseDecision';
 const asset=(src:string)=>`${import.meta.env.BASE_URL}${src}`;
 const builds=[
  {title:'Make the behavior tangible',stage:'Prototype',src:'project-media/finsimple-dummy.png',alt:'FinSimple prototype with synthetic data',copy:'Synthetic data made the Previous Estimates interaction testable before integration.'},
@@ -19,12 +20,21 @@ const drive=[
  {title:'Continue the journey',copy:'Pick up the workflow from that estimate.'}
 ];
 const lanes=['Requirements','AEM component','API integration','QA & validation','Production release'];
+// What each workstream had to hand over before the release could move. The
+// point of this section is the dependency, not the headcount.
+const handoffs=[
+ {lane:'Requirements',gate:'What the feature had to do',blocked:'Nothing could be built until customer and business requirements agreed on what a previous estimate meant.'},
+ {lane:'AEM component',gate:'Where it lived',blocked:'The experience had to become a reusable component before it could enter the existing product.'},
+ {lane:'API integration',gate:'What data it could see',blocked:'Estimate and customer context had to cross the integration boundary before the interface meant anything.'},
+ {lane:'QA & validation',gate:'Whether it was allowed through',blocked:'Security-scan findings and PR compliance had to clear before the release train would take it.'},
+ {lane:'Production release',gate:'When customers got it',blocked:'The release window belonged to the platform, not to the feature.',mine:'This is the one I chased. The component was ready before the release was. Which environments had to be tagged, and in what order, lived with the release and DevOps side rather than with the feature \u2014 so I traced the sequence myself to get Previous Estimates onto the train, and wrote the release and environment-tagging workflow down.'}
+];
 const stages=[
  {id:'fs-discover',name:'Discover',did:'Customers lose their saved work'},
  {id:'fs-define',name:'Define',did:'Fit a live platform'},
  {id:'fs-build',name:'Build',did:'Prototype, component, release'},
  {id:'fs-test',name:'Test',did:'Dev, QA, and production'},
- {id:'fs-launch',name:'Launch',did:'5 teams, 10% early'},
+ {id:'fs-launch',name:'Launch',did:'5 teams, release time cut 40%'},
  {id:'fs-operate',name:'Operate',did:'Incidents, playbooks, learnings'}
 ];
 const envs=[
@@ -57,6 +67,66 @@ function TopCar({className=''}:{className?:string}){
  return <g className={`fseCar ${className}`}><rect x="-11" y="-6" width="22" height="12" rx="4.5" className="fseCarBody"/><rect x="1" y="-4.6" width="6" height="9.2" rx="2" className="fseCarGlass"/><rect x="-8" y="-4.2" width="4" height="8.4" rx="1.6" className="fseCarGlass"/><path d="M10 -4.4v2M10 2.4v2" className="fseCarLamp"/></g>;
 }
 
+
+/* Fifteen scattered pages across three teams collapse into one hub with a
+   table of contents. Drawn generically on purpose: the resources lived in a
+   wiki, not in a product worth putting a logo on. */
+function OnboardingHub(){
+ const groups=[
+  {team:'Platform',y:18,tint:'#cfe2f2'},
+  {team:'QA',y:96,tint:'#d8e6d5'},
+  {team:'DevOps',y:174,tint:'#e8ddd0'}
+ ];
+ const toc=['Environments','Access + credentials','Release steps','Who owns what','Common failures'];
+ return <div className="fseHub">
+  <svg viewBox="0 0 640 250" role="img" aria-label="Fifteen scattered documents across the Platform, QA and DevOps teams funnel into a single onboarding hub page with a table of contents covering environments, access, release steps, ownership and common failures">
+   <defs>
+    <linearGradient id="fseHubPage" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#ffffff"/><stop offset="1" stopColor="#eef4fa"/></linearGradient>
+   </defs>
+
+   {/* scattered pages, three teams */}
+   {groups.map((g,gi)=><g key={g.team} className="fseHubGroup">
+    <text x="0" y={g.y - 6} className="fseHubTeamLabel">{g.team}</text>
+    {Array.from({length:5},(_,i)=>{
+     const x=2+i*32, rot=(((gi*5+i)%5)-2)*4.5;
+     return <g key={i} className="fseHubPage" style={{'--d':gi*5+i} as React.CSSProperties} transform={`translate(${x} ${g.y}) rotate(${rot} 13 17)`}>
+      <rect width="26" height="34" rx="3" fill={g.tint} stroke="rgba(11,48,82,.22)"/>
+      <path d="M6 9h14M6 15h14M6 21h9" stroke="rgba(11,48,82,.3)" strokeWidth="1.6" strokeLinecap="round"/>
+     </g>;
+    })}
+   </g>)}
+
+   {/* funnel */}
+   <g className="fseHubArrow">
+    {groups.map((g,i)=><path key={i} d={`M176 ${g.y+17}C232 ${g.y+17} 236 125 292 125`} style={{'--l':i} as React.CSSProperties}/>)}
+    <path d="M286 118l8 7-8 7" className="fseHubTip"/>
+   </g>
+
+   {/* the hub */}
+   <g className="fseHubDoc" transform="translate(300 26)">
+    <rect width="328" height="198" rx="10" fill="url(#fseHubPage)" stroke="rgba(11,48,82,.22)"/>
+    <path d="M0 34h328" stroke="rgba(11,48,82,.16)"/>
+    <circle cx="16" cy="17" r="3.4" fill="#c3d4e3"/><circle cx="27" cy="17" r="3.4" fill="#c3d4e3"/><circle cx="38" cy="17" r="3.4" fill="#c3d4e3"/>
+    <text x="56" y="21" className="fseHubDocTitle">Start here</text>
+    <path d="M134 34v164" stroke="rgba(11,48,82,.16)"/>
+    {toc.map((item,i)=><g key={item}>
+     <rect x="12" y={50+i*28} width="4" height="14" rx="2" fill={i===0?'#15609f':'#c3d4e3'}/>
+     <text x="24" y={61+i*28} className={`fseHubTocItem${i===0?' isOn':''}`}>{item}</text>
+    </g>)}
+    <path d="M152 58h152M152 72h152M152 86h112" className="fseHubDocLine"/>
+    <path d="M152 112h152M152 126h126M152 140h152M152 154h88" className="fseHubDocLine"/>
+    <rect x="152" y="170" width="92" height="20" rx="10" fill="#15609f" opacity=".12"/>
+    <text x="198" y="184" className="fseHubDocTag">3 days in</text>
+   </g>
+  </svg>
+  <div className="fseHubFacts">
+   <span><b>15</b> resources gathered</span>
+   <span><b>3</b> teams they lived in</span>
+   <span><b><s>~2 weeks</s> 3 days</b> to ramp up</span>
+  </div>
+ </div>;
+}
+
 export default function FinSimpleCase({setLightbox}){
  const root=useRef<HTMLDivElement>(null);
  const [build,setBuild]=useState(2);
@@ -68,7 +138,7 @@ export default function FinSimpleCase({setLightbox}){
  const plate=(i:number)=>66+i*126;
  const iso=(cy:number)=>`matrix(.866 .28 -.866 .28 260 ${cy})`;
  return <div className="fseEditorial" ref={root}>
- <LifecycleRoad stages={stages} vehicle="ev"/>
+ <LifecycleRoad stages={stages} vehicle="mache"/>
  <section className="fseReturn fseStage" id="fs-discover"><div><h2>Find an earlier estimate.<br/><em>Continue from there.</em></h2><p>Customers had already spent time building vehicle estimates. Previous Estimates gave them a way back to that work inside the FinSimple experience they already used.</p>
   {/* In-car navigation: a car follows the route through three stops. */}
   <div className="fseNav">
@@ -83,7 +153,19 @@ export default function FinSimpleCase({setLightbox}){
   <figure className="fseBrowser"><div className="fseBrowserBar" aria-hidden="true"><i/><i/><i/><span>fordcredit.com/finsimple</span></div><button type="button" onClick={expand('project-media/finsimple-live.png','Released FinSimple Previous Estimates interface')} aria-label="Expand the released FinSimple Previous Estimates interface"><img src={asset('project-media/finsimple-live.png')} alt="Released FinSimple Previous Estimates interface" loading="lazy"/><span>View full size ↗</span></button></figure>
  </section>
 
- <section className="fsePlatform fseStage" id="fs-define"><header><h2>One simple action.<br/><em>Four connected layers.</em></h2><p>I turned customer and business requirements into a feature that fit the platform’s shared AEM components, Salesforce data contracts, and release environments.</p></header>
+ <section className="fsePlatform fseStage" id="fs-define">
+  <DecisionMoment
+   statement={<>I built it inside<br/>the platform.</>}
+   sub="I turned customer and business requirements into a feature that fit the platform’s shared AEM components, Salesforce data contracts, and release environments."
+   because={<p>FinSimple was already deployed, with existing customers and a workflow they knew. A cleaner standalone Previous Estimates screen would have been faster to design and impossible to put in front of anyone, because the estimate history only means anything inside the financing journey it belongs to.</p>}
+   tradeoff={<Tradeoff pairs={[
+    ['A clean screen I could design from scratch','Shared AEM components I had to work inside'],
+    ['My own data shape','Salesforce contracts the record already had to match'],
+    ['Shipping on my own schedule','A release train that made five teams a dependency']
+   ]}/>}
+   result={<p>One customer action travels through the web experience, the AEM component, the API layer, and into Salesforce as a durable record — inside the product customers already used, shipped on a release process I helped cut 40%.</p>}
+  >
+   <p className="cdEvidenceLabel">One simple action, four connected layers</p>
   {/* Exploded view of the platform: a saved estimate drops through each layer to the system of record. */}
   <div className="fseExploded">
    <svg viewBox="0 0 520 520" data-loop role="img" aria-label="A saved estimate travels from the web experience through the AEM component and API layer to Salesforce">
@@ -108,6 +190,7 @@ export default function FinSimpleCase({setLightbox}){
    </svg>
    <ol className="fseCallouts" data-stagger>{layers.map((l,i)=><li key={l.name} style={{'--top':`${(plate(i)/520)*100}%`} as React.CSSProperties}><strong>{l.name}</strong><span>{l.detail}</span></li>)}</ol>
   </div>
+  </DecisionMoment>
  </section>
 
  <section className="fseBuild fseStage" id="fs-build"><header><h2>Built into<br/><em>the real thing.</em></h2><p>As the sole intern embedded on FinSimple, I took the feature from synthetic data to a customer release.</p></header>
@@ -129,10 +212,11 @@ export default function FinSimpleCase({setLightbox}){
   </li>)}</ol>
  </section>
 
- <section className="fseDelivery fseStage" id="fs-launch"><div><h2>The handoffs were<br/><em>part of the product.</em></h2><p>I coordinated the teams behind the release.</p></div>
+ <section className="fseDelivery fseStage" id="fs-launch"><div><h2>The handoffs were<br/><em>part of the product.</em></h2><p>Five workstreams each held something the feature could not ship without. Coordinating them was the work, not overhead around it.</p>
+ </div>
   {/* Five workstreams merge like on-ramps into one release freeway. */}
   <figure className="fseFreeway">
-   <svg viewBox="0 0 600 330" data-loop role="img" aria-label="Five workstreams with 50 people merge into one production release, shipped 10 percent ahead of schedule">
+   <svg viewBox="0 0 600 330" data-loop role="img" aria-label="Five workstreams with 50 people merge into one production release, on a release cycle made 40 percent faster">
     {lanes.map((lane,i)=>{const y=40+i*52;const d=`M150 ${y}H270C350 ${y} 360 200 440 200H600`;return <g key={lane}>
      <path d={d} className="fseLaneEdge"/><path d={d} className="fseLane"/>
      <text x="138" y={y+5} textAnchor="end" className="fseLaneLabel">{lane}</text>
@@ -142,26 +226,26 @@ export default function FinSimpleCase({setLightbox}){
     <g className="fseSign"><path d="M478 200V120M578 200V120" className="fseSignPost"/>
      <rect x="452" y="52" width="148" height="74" rx="8" className="fseSignFace"/><rect x="457" y="57" width="138" height="64" rx="5" className="fseSignInset"/>
      <text x="526" y="80" className="fseSignTitle">Production release</text>
-     <text x="526" y="102" className="fseSignBig">10% early</text>
+     <text x="526" y="102" className="fseSignBig">40% cut</text>
      <path d="M512 112h28" className="fseSignArrow"/><path d="M534 108l6 4-6 4" className="fseSignArrow"/>
     </g>
    </svg>
-   <p className="fseFreewayNote"><b>5</b> workstreams<b>50</b> people<b>10%</b> ahead of schedule</p>
+   <p className="fseFreewayNote"><b>5</b> workstreams<b>50</b> people<b>40%</b> release time cut</p>
   </figure>
+  <ol className="fseHandoffs" data-stagger>{handoffs.map(h=><li key={h.lane} className={h.mine?'isMine':''}><b>{h.lane}</b><strong>{h.gate}</strong><span>{h.blocked}</span>{h.mine&&<em><i aria-hidden="true">\u2192</i>{h.mine}</em>}</li>)}</ol>
  </section>
  <section className="fseOperate fseStage" id="fs-operate">
   <header><h2>Shipping was the start.<br/><em>Running it was the job.</em></h2><p>After launch I monitored live incidents with the Payment, DevOps, and QA teams, looked for patterns in what broke, and turned repeat problems into reusable fixes.</p></header>
-  <div className="fseOps" data-stagger>
-   <div className="fseOpsStat"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M4 30l8-9 7 5 9-13 8 6"/><circle cx="28" cy="13" r="2.5"/></svg><strong>20+</strong><span>customer-impacting incidents analyzed for failure patterns</span></div>
-   <div className="fseOpsStat"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M9 5h17l6 6v24H9z"/><path d="M26 5v6h6M14 18h13M14 24h13M14 30h8"/></svg><strong>4</strong><span>recovery playbooks written from those patterns</span></div>
-   <div className="fseOpsStat"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="21" r="14"/><path d="M20 12v9l6 4M16 3h8"/></svg><strong>40%</strong><span>faster release cycle</span></div>
-  </div>
-  <div className="fseRamp" aria-label="Intern onboarding ramp-up went from about two weeks to three days">
-   <p>I also built an onboarding hub from 15 technical resources across 3 teams.</p>
-   <div className="fseRampRow"><span>Before</span><i style={{'--w':'100%'} as React.CSSProperties}><b>~2 weeks to ramp up</b></i></div>
-   <div className="fseRampRow isAfter"><span>After</span><i style={{'--w':'21%'} as React.CSSProperties}><b>3 days</b></i></div>
-  </div>
-  
+  {/* Three numbers, stated as the chain they actually were: what broke, what I
+      wrote because of it, what changed as a result. */}
+  <ol className="fseOps" data-stagger>
+   <li className="fseOpsStat"><b>What broke</b><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M4 30l8-9 7 5 9-13 8 6"/><circle cx="28" cy="13" r="2.5"/></svg><strong>20+</strong><span>customer-impacting incidents analyzed for failure patterns</span></li>
+   <li className="fseOpsStat"><b>What I wrote</b><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M9 5h17l6 6v24H9z"/><path d="M26 5v6h6M14 18h13M14 24h13M14 30h8"/></svg><strong>4</strong><span>recovery playbooks written from those patterns</span></li>
+   <li className="fseOpsStat"><b>What changed</b><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="21" r="14"/><path d="M20 12v9l6 4M16 3h8"/></svg><strong>40%</strong><span>release time I helped cut</span></li>
+  </ol>
+  <Supporting title="Also while I was there" note="Onboarding was nobody’s deliverable, so the same two weeks got spent again with every new engineer.">
+   <OnboardingHub/>
+  </Supporting>
  </section>
  </div>
 }

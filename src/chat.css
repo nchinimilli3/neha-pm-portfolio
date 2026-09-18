@@ -1,5 +1,5 @@
 /* Chat case: iMessage anatomy, stored vs. disappearing state, and a message path. */
-.case-chat{--chat-blue:#0a84ff;--chat-gray:#e5e5ea;--chat-ink:#18243a;--chat-muted:#5b6674}
+.case-chat{--chat-blue:#0a84ff;--chat-gray:#e5e5ea;--chat-ink:#18243a;--chat-muted:#434b56}
 
 
 /* Stored ink vs. disappearing ink */
@@ -32,5 +32,5 @@
 @media(prefers-reduced-motion:reduce){.chatFade,.chatPath:after{animation:none}}
 
 /* Lifecycle road palette */
-.chatStory{--lc-ink:#1c1c1e;--lc-road:#1769aa;--lc-accent:#0a84ff;--lc-accent-2:#34c759;--lc-muted:#7c8594;--lc-tint:#e5effcf2;--lc-glass:#dbeafe}
+.chatStory{--lc-ink:#1c1c1e;--lc-road:#1769aa;--lc-accent:#0a84ff;--lc-accent-2:#34c759;--lc-muted:#5c626e;--lc-tint:#e5effcf2;--lc-glass:#dbeafe}
 .chStage{scroll-margin-top:110px}

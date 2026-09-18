@@ -2,6 +2,7 @@ import React, {useEffect, useId, useRef, useState} from 'react';
 import {bookclubDevicePath,bookclubDeviceViewBox} from './bookclub-device-mask';
 import './bookclub-editorial.css';
 import LifecycleRoad from './LifecycleRoad';
+import { DecisionMoment, Supporting, Tradeoff } from './CaseDecision';
 export function BookclubDevice({screen,label}:{screen:string;label:string}){
   const id=useId().replace(/:/g,'');
   return <svg className="bcDevice" viewBox={bookclubDeviceViewBox} role="img" aria-label={label}>
@@ -132,14 +133,27 @@ export function BookclubEditorial(){
     </section>
 
     <section className="bcBets bcStage" id="bc-build">
-      <header><h2>Three product bets</h2><p>Each bet asks for a little more effort in exchange for a better group outcome. AI helps with search and passage scanning; members make every choice.</p></header>
-      <ol>{bets.map((b,i)=><li key={b.title} style={{'--k':i} as React.CSSProperties}>
-        <figure className="bcBetPhone"><BookclubDevice screen={b.screen} label={b.label}/></figure>
-        <em className={`bcJob job-${b.job.replace(' ','')}`}>{b.job}</em>
-        <h3>{b.title}</h3>
-        <p className="bcInstead"><s>{b.instead}</s></p>
-        <p className="bcTradeoff"><b>Tradeoff</b>{b.tradeoff}</p>
-      </li>)}</ol>
+      <DecisionMoment
+        statement={<>Rank the nominees.<br/>Don’t run a poll.</>}
+        sub="Three product bets shape this app. This is the one that decides whether the club survives its own book choice."
+        because={<p>A one-tap poll rewards whoever answers first and loudest. In a group of busy adults reading one book at a time, a pick that only half the club wanted is the thing that quietly ends a book club — so the choosing step is worth more friction than any other.</p>}
+        tradeoff={<Tradeoff pairs={[
+          ['One-tap polls where the loudest favourite wins','A few more taps for a pick the whole group accepts']
+        ]}/>}
+        result={<p>Private membership plus ranked preference turns scattered group-chat suggestions into one decision the club can live with. AI helps with search and passage scanning; members make every choice.</p>}
+      >
+        <figure className="bcBetPhone bcLeadBet"><BookclubDevice screen={bets[0].screen} label={bets[0].label}/></figure>
+      </DecisionMoment>
+
+      <Supporting title="The other two bets" note="Same shape: a little more effort, a better group outcome.">
+        <ol>{bets.slice(1).map((b,i)=><li key={b.title} style={{'--k':i} as React.CSSProperties}>
+          <figure className="bcBetPhone"><BookclubDevice screen={b.screen} label={b.label}/></figure>
+          <em className={`bcJob job-${b.job.replace(' ','')}`}>{b.job}</em>
+          <h3>{b.title}</h3>
+          <p className="bcInstead"><s>{b.instead}</s></p>
+          <p className="bcTradeoff"><b>Tradeoff</b>{b.tradeoff}</p>
+        </li>)}</ol>
+      </Supporting>
     </section>
 
     <section className="bcValidate bcStage" id="bc-validate">

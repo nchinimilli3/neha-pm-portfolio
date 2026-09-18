@@ -1,5 +1,5 @@
 /* A quiet reading journal: original screens, open space, and useful marginal notes. */
-.case-bookclub{--bc-ink:#203f3b;--bc-muted:#67736a;--bc-rule:#d4d9ce;--bc-rust:#895846;}
+.case-bookclub{--bc-ink:#203f3b;--bc-muted:#4c554e;--bc-rule:#d4d9ce;--bc-rust:#895846;}
 
 
 
@@ -19,7 +19,7 @@
 
 .bcHeroCaption{position:absolute;left:0;right:0;bottom:0;text-align:center;font:italic 13px/1.5 Georgia,serif;color:#7b8271}
 .bcHero:hover .bcHeroLeft{transform:translateX(-4px) rotate(-8deg)}.bcHero:hover .bcHeroRight{transform:translateX(4px) rotate(8deg)}
-.bcStory{--bc-ink:#203f3b;--bc-muted:#67736a;--bc-rule:#d4d9ce;--bc-rust:#895846;position:relative;z-index:2;color:var(--bc-ink)}
+.bcStory{--bc-ink:#203f3b;--bc-muted:#4c554e;--bc-rule:#d4d9ce;--bc-rust:#895846;position:relative;z-index:2;color:var(--bc-ink)}
 
 
 
@@ -229,7 +229,7 @@
 @media(prefers-reduced-motion:reduce){.bcMsg,.bcMsg>.bcJob,.bcPhase,.bcPeople figure,.bcTaskBar em,.bcMatrix b,.bcPlan:before{transition:none}.bcTyping i{animation:none}}
 
 /* Lifecycle road palette */
-.bcStory{--lc-ink:#203f3b;--lc-road:#2f5244;--lc-accent:#9d4f45;--lc-accent-2:#c9876f;--lc-muted:#7b857d;--lc-tint:#e6efe4f2;--lc-glass:#efe6d6}
+.bcStory{--lc-ink:#203f3b;--lc-road:#2f5244;--lc-accent:#9d4f45;--lc-accent-2:#c9876f;--lc-muted:#5b625c;--lc-tint:#e6efe4f2;--lc-glass:#efe6d6}
 .bcStage{scroll-margin-top:110px}
 
 /* Composition (desktop): problem beside the group thread → three bets under a centered header, stepped down the
@@ -247,3 +247,8 @@
  .bcValidate>.bcRules span{margin-right:6px}
  .bcValidate>.bcRules i{margin:0 4px}
 }
+
+/* The lead bet carries the decision; the other two run as a quieter pair. */
+.bcBets .cdMomentEvidence .bcLeadBet{max-width:340px;margin:0}
+.bcBets .cdSupporting ol{grid-template-columns:repeat(2,minmax(0,1fr));gap:40px}
+@media(max-width:820px){.bcBets .cdSupporting ol{grid-template-columns:1fr}}

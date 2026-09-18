@@ -156,7 +156,7 @@
 .case-accenture .axTrack.axStagger.isIn:before,.case-accenture .axTrack.axStagger.isIn:after{transform:none}
 
 /* Lifecycle road in Accenture purple */
-.case-accenture .accentureStory{--lc-ink:#1f1628;--lc-road:#3a2352;--lc-accent:#7b2fd0;--lc-accent-2:#c98aee;--lc-muted:#8a7d99;--lc-tint:#f0e6fbf2;--lc-glass:#efe3fb}
+.case-accenture .accentureStory{--lc-ink:#1f1628;--lc-road:#3a2352;--lc-accent:#7b2fd0;--lc-accent-2:#c98aee;--lc-muted:#665c71;--lc-tint:#f0e6fbf2;--lc-glass:#efe3fb}
 .case-accenture .axStage{scroll-margin-top:110px}
 .case-accenture .axRules .accentureSchemaWindow{max-width:760px}
 .case-accenture .axBuild .axRelay ol{grid-template-columns:repeat(4,1fr);gap:28px}
@@ -176,3 +176,24 @@
  .case-accenture .axBuild>header{grid-template-columns:1fr;justify-items:center;gap:14px;max-width:720px;margin:0 auto 48px;text-align:center}
  .case-accenture .axHuman>header{grid-template-columns:1fr;gap:18px;max-width:640px}
 }
+
+/* Connective tissue: each chapter hands the investigation to the next one
+   instead of ending as its own deliverable. */
+.accentureStory .axSpine{padding-bottom:0}
+.accentureStory .axHandoff{display:grid;gap:8px;justify-items:start;max-width:52ch;margin:34px 0 0;font-size:16px;line-height:1.5;color:var(--lc-muted)}
+.accentureStory .axHandoff i{font-style:normal;font-size:15px;color:var(--lc-accent)}
+.accentureStory .axBecause{margin:0 0 14px;max-width:56ch;font-size:15px;line-height:1.5;color:var(--lc-muted)}
+
+/* The live readout belongs to the ride, not under it: a transit placard pinned
+   inside the scene's top-left sky, so the number and the car read together. */
+.accentureStory .axRide{position:relative}
+.accentureStory .axRide>.axRideNow{position:absolute;top:18px;left:0;z-index:2;max-width:min(430px,46%);min-height:0;margin:0!important;padding:12px 16px 12px 12px;align-items:flex-start;border-radius:10px;background:color-mix(in srgb,#fff 82%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 10px 26px -14px rgba(31,22,40,.35),inset 0 0 0 1px rgba(31,22,40,.08);font-size:15px!important;font-weight:550;line-height:1.45}
+.accentureStory .axRide>.axRideNow b{flex:0 0 28px;height:28px;margin-top:-1px}
+@media(max-width:760px){
+ .accentureStory .axRide>.axRideNow{position:static;max-width:none;margin:12px 0 0!important}
+}
+
+/* Chapter sections are grids; the handoff line must span the whole track
+   rather than drop into a single narrow column. */
+.accentureStory .axChapter>.axHandoff,.accentureStory .axChapter>header>.axBecause{grid-column:1/-1}
+.accentureStory .axChapter>.axHandoff{max-width:60ch}

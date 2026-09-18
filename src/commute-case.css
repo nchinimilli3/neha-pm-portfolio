@@ -1,6 +1,6 @@
 /* Commute: palette taken from the product itself (dusky plum type, sage green, blush and mist cards on warm stone).
    Story: train, the problem on a platform sign beside the live demo, the plan as the app's itinerary, three rules, close. */
-.cmEditorial{--cm-ink:#2b2744;--cm-text:#4e4b5e;--cm-muted:#7a7788;--plum:#4a4170;--plum-soft:#8a82ad;--sage:#4f7a6c;--sage-soft:#8fb2a4;--blush:#e8d4dd;--mist:#dbe7e3;--stone:#ece9e3;--cream:#faf8f4;--rose:#b4607a;color:var(--cm-text)}
+.cmEditorial{--cm-ink:#2b2744;--cm-text:#4e4b5e;--cm-muted:#5a5865;--plum:#4a4170;--plum-soft:#8a82ad;--sage:#4f7a6c;--sage-soft:#8fb2a4;--blush:#e8d4dd;--mist:#dbe7e3;--stone:#ece9e3;--cream:#faf8f4;--rose:#b4607a;color:var(--cm-text)}
 /* Layout system: one 12-column grid (1180px, 32px gutters). Each section composes it differently so the
    story moves dense (lead) → quiet (train) → visual (demo) → analytical (plan) → immersive (rules) → result (close). */
 .cmEditorial{--cm-gap:32px}
@@ -224,5 +224,62 @@
 @media(prefers-reduced-motion:reduce){.cmBoardRow,.cmClockWin,.cmClockLate,.cmTrailPing,.cmLock .cmPing,.cmItinToggle i:after{transition:none}.cmBoardAsk.isFlash,.cmBusBody,.cmBusSpeed,.cmScopeStops .is-next i{animation:none}.cmClockWin,.cmClockLate{stroke-dashoffset:0}.cmTrailPing{opacity:1;transform:none}}
 
 /* Lifecycle road palette */
-.cmEditorial{--lc-ink:#2b2744;--lc-road:#4a4170;--lc-accent:#4f7a6c;--lc-accent-2:#8fb2a4;--lc-muted:#7a7788;--lc-tint:#ebe7f2f2;--lc-glass:#e8d4dd}
+.cmEditorial{--lc-ink:#2b2744;--lc-road:#4a4170;--lc-accent:#4f7a6c;--lc-accent-2:#8fb2a4;--lc-muted:#5a5865;--lc-tint:#ebe7f2f2;--lc-glass:#e8d4dd}
 .cmStage{scroll-margin-top:110px}
+
+/* The decision now carries this section, so it spans the full 12-column track
+   and the three rules sit inside it as its evidence. */
+.cmEditorial .cmRules>.cdMoment{grid-column:1/13;grid-row:1}
+.cmEditorial .cmRules .cmRulesLabel{margin:0 0 20px;font-size:13px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--cm-muted)}
+.cmEditorial .cmRules .cdMomentEvidence .cmRuleGrid{grid-column:auto;grid-row:auto}
+
+/* Board as its own full-width row: copy first, then the board, then the demo
+   beside nothing. Reads left to right like the 20-second arc: four partial
+   answers, the one question, Commute's single answer. */
+/* Compact: the phone runs down the left beside both rows, so the section is
+   one screen tall instead of three stacked blocks. */
+.cmEditorial .cmProblem{grid-template-rows:auto auto;row-gap:30px;align-items:start}
+/* The demo column stretches (never shrink-to-fit): the phone sizes itself as a
+   percentage of its column, so a centred, content-sized column collapsed it to
+   an unusable ~190px. The phone is pinned to a real device width instead. */
+.cmEditorial .cmProblem>.cmDemoStage{grid-column:1/6;grid-row:1/3;align-self:center;justify-self:stretch;width:100%;min-width:0}
+.cmEditorial .cmProblem>.cmProblemCopy{grid-column:6/13;grid-row:1;order:0;max-width:none}
+.cmEditorial .cmProblem>.cmBoard{grid-column:6/13;grid-row:2;margin-top:0}
+.cmEditorial .cmProblem .iphoneDemoStage{width:100%}
+.cmEditorial .cmProblem .iosPhoneDevice{width:min(340px,100%)!important;max-width:100%}
+@media(max-width:1100px){
+ .cmEditorial .cmProblem>.cmDemoStage{grid-column:1/-1;grid-row:3}
+ .cmEditorial .cmProblem>.cmProblemCopy{grid-column:1/-1}
+ .cmEditorial .cmProblem>.cmBoard{grid-column:1/-1}
+}
+
+.cmBoardFace{grid-template-columns:minmax(0,1.45fr) auto minmax(0,1fr);align-items:center;gap:0 20px;padding:20px 22px 22px}
+.cmBoardInputs{display:grid;gap:2px;min-width:0}
+.cmBoardFace>.cmBoardAsk{display:grid;justify-items:center;gap:4px;margin:0;padding:0 18px;border-left:2px dashed #34323c;border-right:2px dashed #34323c;font-size:14px;line-height:1.35;text-align:center}
+.cmBoardFace>.cmBoardAsk span{font-size:34px;line-height:1}
+.cmBoardFace>.cmBoardAnswer{grid-template-columns:1fr;gap:8px;margin:0;padding:0;border:0}
+.cmBoardFace>.cmBoardAnswer p{font-size:22px}
+
+@media(max-width:860px){
+ .cmBoardFace{grid-template-columns:1fr;gap:16px}
+ .cmBoardFace>.cmBoardAsk{justify-items:start;padding:14px 0;border:0;border-top:2px dashed #34323c;border-bottom:2px dashed #34323c;text-align:left}
+ .cmBoardFace>.cmBoardAsk br{display:none}
+ .cmBoardFace>.cmBoardAsk span{font-size:24px}
+}
+
+/* Split-flap rows never wrap: each reading is one line, like a real board. The
+   inputs get the width they need; the question column stays narrow. */
+.cmEditorial .cmProblem .cmBoardFace{grid-template-columns:minmax(0,2fr) auto minmax(0,1fr);gap:0 16px;padding:18px 20px 20px}
+.cmEditorial .cmProblem .cmBoardRow{grid-template-columns:48px minmax(0,1fr) auto;gap:10px;font-size:12.5px;white-space:nowrap}
+.cmEditorial .cmProblem .cmBoardRow span{overflow:hidden;text-overflow:ellipsis}
+.cmEditorial .cmProblem .cmBoardFace>.cmBoardAsk{padding:0 14px;font-size:12.5px}
+.cmEditorial .cmProblem .cmBoardFace>.cmBoardAsk span{font-size:28px}
+.cmEditorial .cmProblem .cmBoardFace>.cmBoardAnswer p{font-size:20px;white-space:nowrap}
+
+/* Surfaces stage: a centred header over the synced surfaces. The section is a
+   12-column grid like the rest of the case, so both children span it. */
+.cmEditorial .cmSurface{row-gap:40px;padding-top:110px}
+.cmEditorial .cmSurface>*{grid-column:1/-1}
+.cmSurfaceHead{display:grid;justify-items:center;gap:16px;text-align:center}
+.cmSurfaceHead h2{margin:0;max-width:18ch}
+.cmSurfaceHead p{margin:0;max-width:62ch;font-size:17px;line-height:1.65;color:var(--cm-muted,#6b6880)}

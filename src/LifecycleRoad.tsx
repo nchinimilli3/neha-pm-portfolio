@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './lifecycle-road.css';
+import { ShelbyMark } from './CarArt';
+import MachEArtwork from './MachEArtwork';
 
 // A sticky road across the top of the case. The car drives continuously with the scroll,
 // the road fills behind it, and the readout names the stage on screen.
@@ -42,6 +44,8 @@ const travelers:Record<string,React.ReactNode>={
   <path d="M84 19.4h8" stroke="#eaf6ff" strokeWidth="2" strokeLinecap="round"/><path d="M4.4 20h5" stroke="#ff4d4d" strokeWidth="2" strokeLinecap="round"/>
   <path d="M47.4 17.6l-3.4 4.8h3l-2.2 4.4 5.2-5.8h-3l1.9-3.4z" fill="#fff"/>
   {wheel(23,31,7.2,6)}{wheel(75,31,7.2,6)}</svg>,
+ mustang:<ShelbyMark/>,
+ mache:<MachEArtwork className="lcMarkCar lcMarkMachE"/>,
  cablecar:<svg viewBox="0 0 96 40"><defs>{ground}{rim}
   <G id="lcCcMaroon" stops={[['0','#b63a36'],['1','#6e1a1a']]}/>
   <G id="lcCcCream" stops={[['0','#fff8e6'],['1','#dccfa9']]}/>
@@ -151,7 +155,7 @@ const travelers:Record<string,React.ReactNode>={
   <text x="84" y="37.5" textAnchor="end" style={{font:'500 4.4px -apple-system,sans-serif',fill:'#8896a8'}}>Delivered</text></svg>
 };
 
-export type Traveler='car'|'ev'|'cablecar'|'box'|'cheese'|'train'|'calendar'|'book'|'bottle'|'bubble';
+export type Traveler='car'|'mustang'|'mache'|'ev'|'cablecar'|'box'|'cheese'|'train'|'calendar'|'book'|'bottle'|'bubble';
 export default function LifecycleRoad({stages,vehicle='car',label='Product lifecycle stages in this case study'}:{stages:{id:string,name:string,did:string}[],vehicle?:Traveler,label?:string}){
  const [progress,setProgress]=useState(0);
  const [shown,setShown]=useState(false);

@@ -1,6 +1,10 @@
 /* Shared sticky lifecycle road. Colors come from --lc-* tokens set by each case study. */
 .lcRoad{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:230px minmax(0,1fr);gap:48px;align-items:center;width:100%;margin:0 0 -78px;padding:6px max(24px,calc((100% - 1180px)/2)) 8px;background:none;opacity:0;transform:translateY(-100%);pointer-events:none;transition:opacity .35s,transform .45s cubic-bezier(.3,.8,.3,1)}
-.lcRoad:before{content:'';position:absolute;z-index:-1;top:0;bottom:0;left:calc(50% - 50vw);width:100vw;background:var(--lc-tint);-webkit-backdrop-filter:blur(16px) saturate(1.3);backdrop-filter:blur(16px) saturate(1.3);border-bottom:1px solid color-mix(in srgb,var(--lc-ink) 12%,transparent);box-shadow:0 12px 28px -24px var(--lc-ink);pointer-events:none}
+.lcRoad:before{content:'';position:absolute;z-index:-1;top:0;bottom:0;left:calc(50% - 50vw);width:100vw;background:linear-gradient(var(--lc-tint),var(--lc-tint)),var(--lc-glass,#f4f1ea);-webkit-backdrop-filter:blur(22px) saturate(1.2);backdrop-filter:blur(22px) saturate(1.2);border:0;box-shadow:none;pointer-events:none}
+/* The surface is solid so page text never shows through the stage labels.
+   Its edge is a soft cast shadow rather than a translucent fade, which read as
+   text being half-covered as it scrolled underneath. */
+.lcRoad:after{content:'';position:absolute;z-index:-1;left:calc(50% - 50vw);bottom:0;width:100vw;height:1px;box-shadow:0 6px 18px 2px color-mix(in srgb,var(--lc-ink) 14%,transparent);pointer-events:none}
 .lcRoad.isShown{opacity:1;transform:none;pointer-events:auto}
 .lcRoadTrack{position:relative;padding-top:30px}
 .lcAsphalt{position:absolute;left:calc(100% / var(--n) / 2);right:calc(100% / var(--n) / 2);top:33px;height:6px;border-radius:6px;background:var(--lc-road);box-shadow:inset 0 -2px 0 #0d253866,0 1px 0 #ffffff99}
@@ -70,3 +74,66 @@
 .lcRoad:not([data-traveler=car]):not([data-traveler=ev]) .lcFill{opacity:.62}
 [data-traveler=bubble] .lcFill,[data-traveler=cablecar] .lcFill{opacity:.9!important}
 @media(prefers-reduced-motion:reduce){.lcTypeDot,.lcRoad .lcAsphalt,.lcRoad .lcCar svg{animation:none!important}}
+
+/* Ford cases ride their own artwork in the bar: the same Shelby and Mach-E
+   that drive across the page, shrunk to road scale. */
+.lcMarkCar{display:block!important;width:100%;height:auto;overflow:visible}
+.lcRoad[data-traveler=mustang] .lcCar,.lcRoad[data-traveler=mache] .lcCar{width:88px;top:-2px}
+.lcRoad[data-traveler=mustang] .lcCar svg,.lcRoad[data-traveler=mache] .lcCar svg{width:88px;height:auto}
+.lcRoad[data-traveler=mache] .lcCar{width:84px;top:-7px}
+.lcRoad[data-traveler=mache] .lcCar svg{width:84px}
+.lcRoad.isMoving[data-traveler=mustang] .shelbyWheel,
+.lcRoad.isMoving[data-traveler=mache] .meWheel{animation:lcSpin .38s linear infinite}
+.lcRoad[data-traveler=mustang] .shelbyWheel,.lcRoad[data-traveler=mache] .meWheel{transform-box:fill-box;transform-origin:center}
+[data-traveler=mustang] .lcAsphalt,[data-traveler=mache] .lcAsphalt{height:6px;border-radius:6px;background:var(--lc-road);box-shadow:inset 0 -2px 0 #0d253866,0 1px 0 #ffffff99}
+[data-traveler=mustang] .lcAsphalt:after,[data-traveler=mache] .lcAsphalt:after{display:block}
+
+/* Full-bleed car band: the transition from the 20-second answer into the case. */
+.carBand{position:relative;width:100vw;margin-left:calc(50% - 50vw);margin-top:6px;margin-bottom:10px;padding:26px 0 22px;overflow:hidden}
+.carBandRoad{position:absolute;left:0;right:0;bottom:34px;height:2px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--case-accent,#4a5a52) 34%,transparent) 12%,color-mix(in srgb,var(--case-accent,#4a5a52) 34%,transparent) 88%,transparent)}
+.carBandRoad i{position:absolute;left:0;right:0;top:6px;height:1px;background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--case-accent,#4a5a52) 26%,transparent) 0 22px,transparent 22px 44px);opacity:.7}
+.carBandRider{width:clamp(200px,22vw,320px);will-change:transform}
+.carBandRider svg{display:block;width:100%;height:auto;overflow:visible}
+.carBand .shelbyWheel,.carBand .meWheel{transform-box:fill-box;transform-origin:center;transform:rotate(var(--band-wheel,0deg))}
+@media(prefers-reduced-motion:reduce){
+ .carBandRider{transform:translateX(24px)!important}
+ .carBand .shelbyWheel,.carBand .meWheel{transform:none}
+}
+@media(max-width:760px){
+ .carBand{padding:16px 0 14px}
+ .carBandRoad{bottom:22px}
+ .carBandRider{width:190px}
+}
+/* The Mach-E artwork carries more space under its wheels than the Shelby, so
+   its road line sits higher to meet them. */
+.carBand-mache .carBandRoad{bottom:56px}
+
+/* What the car leaves behind: exhaust for the Shelby, an electric wake for the
+   Mach-E. Both grow with how far the band has travelled up the viewport, and
+   both are dense enough to actually read on a pale page. */
+.carBandWake{position:absolute;left:0;bottom:0;width:calc(var(--band-x,0px) + 110px);height:100%;pointer-events:none;opacity:calc(.42 + var(--band-progress,0) * .58)}
+.carBandWake i{position:absolute;left:0;border-radius:999px}
+
+.carBand-shelby .carBandWake i{background:linear-gradient(90deg,transparent,#6f8896 34%,#4d6673 78%,#3d5560);filter:blur(4px)}
+.carBand-shelby .carBandWake i:nth-child(1){bottom:46px;height:13px;right:44px;opacity:.72}
+.carBand-shelby .carBandWake i:nth-child(2){bottom:60px;height:19px;right:26px;opacity:.55}
+.carBand-shelby .carBandWake i:nth-child(3){bottom:76px;height:11px;right:66px;opacity:.34}
+.carBand-shelby .carBandWake i:nth-child(4){bottom:38px;height:8px;right:14px;opacity:.6;filter:blur(6px)}
+
+.carBand-mache .carBandWake i{background:linear-gradient(90deg,transparent,#3da4ff 38%,#7fd0ff 72%,#d6f2ff);box-shadow:0 0 14px #148dff88;filter:blur(.4px)}
+.carBand-mache .carBandWake i:nth-child(1){bottom:64px;height:3px;right:38px;opacity:.9}
+.carBand-mache .carBandWake i:nth-child(2){bottom:75px;height:4px;right:22px;opacity:.72}
+.carBand-mache .carBandWake i:nth-child(3){bottom:88px;height:2px;right:56px;opacity:.5}
+.carBand-mache .carBandWake i:nth-child(4){bottom:55px;height:2px;right:68px;opacity:.42}
+
+@media(prefers-reduced-motion:reduce){.carBandWake{display:none}}
+@media(max-width:760px){
+ .carBand-shelby .carBandWake i:nth-child(1){bottom:26px}
+ .carBand-shelby .carBandWake i:nth-child(2){bottom:34px}
+ .carBand-shelby .carBandWake i:nth-child(3){bottom:42px}
+ .carBand-shelby .carBandWake i:nth-child(4){bottom:22px}
+ .carBand-mache .carBandWake i:nth-child(1){bottom:38px}
+ .carBand-mache .carBandWake i:nth-child(2){bottom:46px}
+ .carBand-mache .carBandWake i:nth-child(3){bottom:54px}
+ .carBand-mache .carBandWake i:nth-child(4){bottom:32px}
+}

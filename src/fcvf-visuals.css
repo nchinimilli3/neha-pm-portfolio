@@ -1,5 +1,5 @@
 /* FCVF visuals that replace boxed panels: a route, a lap strip, and a dash gauge. All sit directly on the case aura. */
-.fvEditorial{--fv-asphalt:#1d3a52;--fv-amber:#c7773f;--lc-ink:#102f48;--lc-road:#2a4a63;--lc-accent:#c7773f;--lc-accent-2:#e0975b;--lc-muted:#7d909c;--lc-tint:#e6eef8f2;--lc-glass:#dce8ee}
+.fvEditorial{--fv-asphalt:#1d3a52;--fv-accent:#0a5fd0;--lc-ink:#102f48;--lc-road:#2a4a63;--lc-accent:#0a5fd0;--lc-accent-2:#6aa9f0;--lc-muted:#7d909c;--lc-tint:#e6eef8f2;--lc-glass:#dce8ee}
 
 /* Lap strip: the score token rides mid-lap in the old flow, then parks at the finish. */
 .fvEditorial .fvSurveySection>header{grid-template-columns:1.2fr 1fr}
@@ -10,19 +10,19 @@
 .fvLapScore{position:absolute;top:50%;left:38%;display:grid;place-items:center;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;background:var(--fv-ink);color:#f3f1e9;font:600 13px/1 ui-monospace,monospace;animation:fvLapPark 5.5s cubic-bezier(.6,0,.2,1) infinite}
 .fvLapFlag{position:absolute;right:0;top:50%;width:26px;height:26px;margin-top:-20px;color:var(--fv-ink)}
 .fvLapLabels{display:flex;justify-content:space-between;margin-top:8px;font-size:13px;color:#5d788a}
-@keyframes fvLapPark{0%,22%{left:38%;background:#a2532f}48%,88%{left:calc(100% - 39px);background:var(--fv-ink)}100%{left:38%;background:#a2532f}}
+@keyframes fvLapPark{0%,22%{left:38%;background:#083f8c}48%,88%{left:calc(100% - 39px);background:var(--fv-ink)}100%{left:38%;background:#083f8c}}
 
 /* Dash gauge for the outcome metric. */
 .fvGauge{display:grid;justify-items:center;text-align:center}
 .fvGauge svg{display:block;width:min(100%,300px);overflow:visible}
 .fvGaugeTrack{fill:none;stroke:#173e5c26;stroke-width:12;stroke-linecap:round}
-.fvGaugeGain{fill:none;stroke:var(--fv-amber);stroke-width:12;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1s .5s ease-out}
+.fvGaugeGain{fill:none;stroke:var(--fv-accent);stroke-width:12;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1s .5s ease-out}
 .fvGauge.isOn .fvGaugeGain{stroke-dashoffset:0}
 .fvGauge line{stroke:#173e5c55;stroke-width:1.2}.fvGauge line.major{stroke:var(--fv-ink);stroke-width:2}
 .fvGauge text{font:11px -apple-system,BlinkMacSystemFont,sans-serif;fill:#5d788a}
 .fvGaugeNeedle{transform-origin:130px 132px;transform:rotate(var(--from));transition:transform 1.3s .5s cubic-bezier(.34,1.4,.5,1)}
 .fvGauge.isOn .fvGaugeNeedle{transform:rotate(var(--to))}
-.fvGaugeNeedle path{fill:#a2532f}.fvGaugeHub{fill:var(--fv-ink)}
+.fvGaugeNeedle path{fill:#083f8c}.fvGaugeHub{fill:var(--fv-ink)}
 .fvGauge strong{display:block;margin-top:-6px;font:400 clamp(64px,7vw,96px)/1 'Iowan Old Style',Georgia,serif;letter-spacing:-.05em;color:var(--fv-ink)}
 .fvGauge>span{display:block;margin-top:10px;font-size:15px;color:#526e81}
 
@@ -49,8 +49,8 @@
 .fvTradeoffs h3{margin:0 0 18px;font:400 28px/1.2 'Iowan Old Style',Georgia,serif;color:var(--fv-ink)}
 .fvTradeoffs>div{display:grid;grid-template-columns:1fr 1fr;gap:26px}
 .fvEditorial .fvTradeoffs p{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;margin:0;font-size:15px}
-.fvTradeoffs s{color:#7b8f9c;text-decoration-color:#a2532f}
-.fvTradeoffs i{font-style:normal;color:var(--fv-amber);font-size:20px}
+.fvTradeoffs s{color:#7b8f9c;text-decoration-color:#083f8c}
+.fvTradeoffs i{font-style:normal;color:var(--fv-accent);font-size:20px}
 .fvTradeoffs b{color:var(--fv-ink);font-weight:600}
 
 /* Deliver */
@@ -84,7 +84,7 @@
 .fvMeasureNext h3+ul+h3{margin-top:40px}
 .fvMeasureNext ul{display:grid;gap:12px;margin:0;padding:0;list-style:none}
 .fvMeasureNext li{position:relative;padding-left:26px;font-size:15px;line-height:1.5;color:#3f5a6c}
-.fvMeasureNext li:before{content:'';position:absolute;left:0;top:7px;width:10px;height:10px;border-radius:50%;box-shadow:inset 0 0 0 2.5px var(--fv-amber)}
+.fvMeasureNext li:before{content:'';position:absolute;left:0;top:7px;width:10px;height:10px;border-radius:50%;box-shadow:inset 0 0 0 2.5px var(--fv-accent)}
 .fvMeasureNext li b{margin-right:6px;color:var(--fv-ink)}
 
 @media(max-width:900px){
@@ -98,7 +98,7 @@
 .fvFact+.fvFact{padding-left:48px;border-left:1px solid #173e5c24}
 .fvFact:first-child{padding-right:48px}
 .fvFact strong{display:flex;align-items:baseline;gap:10px;font:400 clamp(56px,6vw,84px)/1 'Iowan Old Style',Georgia,serif;letter-spacing:-.04em;color:var(--fv-ink)}
-.fvFact strong small{font:300 .5em/1 var(--case-font,inherit);color:var(--fv-amber)}
+.fvFact strong small{font:300 .5em/1 var(--case-font,inherit);color:var(--fv-accent)}
 .fvFact>span{max-width:32ch;font-size:15px;line-height:1.5;color:#526e81}
 .fvFactHead{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 28px}
 .fvCss{display:grid;grid-template-columns:78px 40px 44px;align-items:center;gap:10px}
@@ -106,8 +106,8 @@
 .fvCssFiles span{position:absolute;top:0;left:calc(var(--i) * 9px);transition:left .8s cubic-bezier(.5,0,.2,1),opacity .6s;transition-delay:calc(.2s + var(--i) * .06s)}
 .fvCssFiles svg{display:block;width:26px;height:33px;fill:#f7f6f0;stroke:#526e81;stroke-width:1.3}
 .fvCss.isOn .fvCssFiles span{left:calc(var(--i) * 4px);opacity:calc(.35 + var(--i) * .1)}
-.fvCssArrow{position:relative;height:2px;background:repeating-linear-gradient(90deg,var(--fv-amber) 0 6px,transparent 6px 10px)}
-.fvCssArrow:after{content:'';position:absolute;right:-2px;top:-5px;border:6px solid transparent;border-left-color:var(--fv-amber)}
+.fvCssArrow{position:relative;height:2px;background:repeating-linear-gradient(90deg,var(--fv-accent) 0 6px,transparent 6px 10px)}
+.fvCssArrow:after{content:'';position:absolute;right:-2px;top:-5px;border:6px solid transparent;border-left-color:var(--fv-accent)}
 .fvCssTheme{opacity:.25;transform:scale(.8);transition:opacity .5s 1.1s,transform .5s 1.1s}
 .fvCss.isOn .fvCssTheme{opacity:1;transform:none}
 .fvCssTheme svg{display:block;width:44px;height:39px;fill:#1976d2}

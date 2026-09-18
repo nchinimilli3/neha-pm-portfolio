@@ -1,15 +1,13 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 import './estee.css';
 import EsteeCompact from './EsteeCompact';
 import FCVFCase from './FCVFCase';
-import { KohlerAssembly, KohlerDelivery, KohlerExceptions, KohlerHeroTag, KohlerOrderHold, KohlerPrinciples, KohlerRoles } from './KohlerVisuals';
+import { KohlerAssembly, KohlerBoxOpen, KohlerDelivery, KohlerExceptions, KohlerOrderHold, KohlerPrinciples, KohlerRoles } from './KohlerVisuals';
 import { AccentureBoundary, AccentureEvidenceFunnel, AccentureStagger, AccentureToolRelay } from './AccentureVisuals';
-import FCVFMustang from './FCVFMustang';
 import AboutFilmCamera from './AboutFilmCamera';
 import FinSimpleCase from './FinSimpleCase';
-import FinSimpleMachE from './FinSimpleMachE';
 import './accenture-v2.css';
 import SchedulerPlannerHero from './SchedulerPlannerHero';
 import AccentureRequestRelay from './AccentureRequestRelay';
@@ -27,6 +25,9 @@ import './case-auras.css';
 import './case-typography.css';
 import CommuteBARTStory from './CommuteBARTStory';
 import CommuteCase from './CommuteCase';
+import { CaseAnswer, CausalChain, DecisionMoment, Tradeoff } from './CaseDecision';
+import { CarBand } from './CarArt';
+import './case-hero.css';
 
 const assetUrl=src=>{
   if(/^https?:\/\//.test(src))return src;
@@ -53,28 +54,27 @@ function Reveal({children,className=''}){
 
 const metrics = {
   kohler: [
-    ['Product','definition + UX','product'],
+    ['~5 days','packet prep today, per market','baseline'],
+    ['<1 day','target set with Kohler','target'],
     ['5','person team','scope'],
-    ['Azure','technical environment','system'],
     ['1 → any','SKU-to-market goal','system']
   ],
   accenture: [
     ['21','live requests supported','scope'],
     ['~2.2K','learner responses synthesized','analysis'],
     ['10-tab','automation data contract','artifact'],
-    ['~20','providers benchmarked','research'],
-    ['5','recommendations','decision']
+    ['~14 of 21','requests resolved by rules alone in test','outcome'],
+    ['5','recommendations, each with a 90-day test','decision']
   ],
   fcvf: [
-    ['+25%','feedback volume','outcome'],
+    ['+25%','more assessment feedback submitted','outcome'],
     ['4','user interviews led','research'],
-    ['100+','Git commits','output'],
-    ['7','legacy CSS files replaced','output']
+    ['~10','product teams using the framework','scale']
   ],
   finsimple: [
-    ['50','people coordinated','context'],
+    ['40%','release time I helped cut','outcome'],
+    ['~15%','of returning users reopened an estimate','outcome'],
     ['5','cross-functional teams','context'],
-    ['10%','ahead of schedule','outcome'],
     ['20+','customer-impacting incidents analyzed','operations']
   ],
   estee: [
@@ -87,15 +87,15 @@ const metrics = {
     ['3','growth levers','decision']
   ],
   commute: [
-    ['4','apps this one replaced','outcome'],
-    ['9','live data sources, one decision','outcome'],
-    ['5','rules behind every recommendation','outcome'],
-    ['0','interruptions on a normal morning','outcome']
+    ['±3 min','arrival accuracy on ~90% of weekdays','personal use'],
+    ['60+','weekdays used (n = 1, me)','personal use'],
+    ['4','apps this one replaced','scope'],
+    ['9','live data sources, one decision','system']
   ]
 };
 
 const ownership = {
-  kohler:'On a five-person team, I’m defining the product, designing the workflow and interface, and contributing to the React/Node build, Azure orchestration, and human-review flow.',
+  kohler:'On a five-person team, I defined the product, designed the workflow and interface, and contributed to the React/Node build, Azure orchestration, and human-review flow.',
   accenture:'I supported 21 live requests, documented the rules behind trainer matching and scheduling, tested clean and exception cases, built an early Codex-based request prototype, and combined learner and market research into recommendations.',
   fcvf:'Software engineering intern on a 10-person team. I led four user interviews, shaped the interaction model, and built frontend and backend features.',
   finsimple:'I owned requirements, AEM component work, API integration, testing, and coordination across the teams needed to ship my feature.',
@@ -129,39 +129,39 @@ const projects = [
     company:'Ford Motor Company',
     summary:'Turned an Excel-based customer-value assessment into a web application, then used four user interviews to change the interaction model, not just the interface.',
     media:'fcvf',
-    facts:['4 user interviews','Live score removed after research']
+    facts:['+25% more assessment feedback submitted','Live score removed after 4 interviews']
   },
   {
     id:'accenture',
-    title:'AI Enablement Operations',
+    title:'AI Lab GTM Enablement',
     company:'Accenture · Frontier AI lab',
-    summary:'Supported 21 live enablement requests, then used the repeated decisions and edge cases I saw to define automation requirements, test an early prototype, and recommend what to improve next.',
+    summary:'A trainer match passed every automated check and still landed at 10:30 PM their time. That test case is why I put a human gate in the automation I specified across 21 live requests.',
     media:'accenture',
-    facts:['~2,200 learner responses','10-tab automation data contract']
+    facts:['~14 of 21 resolved by rules alone','Human gate on every exception']
   },
   {
     id:'kohler',
     title:'Ship Anywhere',
     company:'Kohler Co. · MSU CSE 498',
-    summary:'Designing an export-preparation assistant that uses an order’s SKU and destination to identify the documents, checks, and review steps needed before shipment.',
+    summary:'Designed and built an export-preparation assistant that uses an order’s SKU and destination to identify the documents, checks, and review steps needed before shipment.',
     media:'kohler',
-    facts:['Product + workflow design','Azure enterprise stack']
+    facts:['Delivered to Kohler','Target: ~5 days → <1 day packet prep']
   },
   {
     id:'scheduler',
     title:'Collaborative Scheduling Platform',
-    company:'',
+    company:'Live web product · CSE 477',
     summary:'Built a campus scheduling product that keeps Available, Maybe, and Unavailable separate, recommends the best time, and carries that choice into a place and calendar event.',
     media:'scheduler',
-    facts:['Interactive sandbox','Flask · Socket.IO · MySQL']
+    facts:['7 student interviews','6 of 7 testers finished scheduling']
   },
   {
     id:'finsimple',
     title:'FinSimple',
     company:'Ford Credit',
-    summary:'Owned the Previous Estimates feature inside an existing financial platform, taking it from requirements through AEM component work, Salesforce/API integration, QA, coordination across five teams, and production validation.',
+    summary:'Returning Ford Credit customers rebuilt vehicle estimates from scratch. I owned Previous Estimates from requirements to production, and ~15% of returning users reopened a saved estimate after launch.',
     media:'finsimple',
-    facts:['Feature ownership','Production environment']
+    facts:['Shipped to production','Helped cut release time 40%']
   },
   {
     id:'marketExpansion',
@@ -169,7 +169,7 @@ const projects = [
     company:'Consumer services client · Spectrum Consulting Group',
     summary:'Built a weighted scorecard and rubric so the team could compare candidate locations using the same criteria.',
     media:'marketExpansion',
-    facts:['Scorecard ownership','Strategy + business analysis']
+    facts:['3 locations scored on 4 criteria']
   },
   {
     id:'chat',
@@ -185,7 +185,7 @@ const projects = [
     company:'Estée Lauder × Kode With Klossy',
     summary:'Designed a branded Double Wear discovery experience connecting product education, shade exploration, and purchase.',
     media:'estee',
-    facts:['Top 5 finalist','Earlier work']
+    facts:['Top 5 finalist','Kode With Klossy challenge']
   },
   {
     id:'bookclub',
@@ -193,7 +193,7 @@ const projects = [
     company:'Independent product · live web app',
     summary:'Built a private book-club app for choosing a book, tracking reading progress, discussing without spoilers, and planning meetings.',
     media:'bookclub',
-    facts:['Product definition + UX','Full-stack build + deployment']
+    facts:['Live with my reading group','4 of 5 finished ranking in tests']
   }
 ];
 
@@ -510,8 +510,8 @@ function ProjectVisual({type}){
   if(type==='commute') return <CommutePreview/>;
   if(type==='fcvf') return <CaseHeroLogo src="company-logos/ford-white-source.png" alt="Ford Motor Company" className="fcvfHeroMark"/>;
   if(type==='accenture') return <AccentureSFHero/>;
-  if(type==='kohler') return <KohlerHeroTag/>;
-  if(type==='finsimple') return <FinSimpleMachE/>;
+  if(type==='kohler') return <KohlerBoxOpen/>;
+  if(type==='finsimple') return <figure className="homepageMockup"><img loading="eager" decoding="async" src={assetUrl('project-media/finsimple-home-mockup.png')} alt="FinSimple Previous Estimates shown on a laptop"/></figure>;
   if(type==='scheduler') return <SchedulerPlannerHero/>;
   if(type==='chat') return <MiniChat/>;
   if(type==='bookclub') return <BookclubPhoneHero/>;
@@ -646,13 +646,13 @@ function ToolLogo({tool}){
  useEffect(()=>setAttempt(0),[safeTool.name]);
  return <span className={`toolLogoWrap ${failed?'fallback':''} ${safeTool.textOnly?'textOnly':''}`} data-tool={safeTool.name} tabIndex={0} aria-label={safeTool.name}>{failed?<span className="toolLogoFallback" aria-hidden="true">{safeTool.mark}</span>:<img loading="lazy" decoding="async" src={assetUrl(safeTool.urls[attempt])} alt="" referrerPolicy="no-referrer" onError={()=>setAttempt(v=>v+1)}/>}<span className="toolLogoLabel" aria-hidden="true">{safeTool.name}</span></span>
 }
-function ToolLogoStrip({id}){const items=toolSets[id]||[];if(!items.length)return null;const description=id==='fcvf'?'Tools and technologies used across the FCVF build.':id==='finsimple'?'Tools and platform technologies used in the FinSimple work.':id==='bookclub'?'Product, platform, data, and connected services.':id==='kohler'?'Tools and systems used across the Kohler project.':id==='commute'?'Native iOS build, live transit and mapping data, and the tools used to design and prototype it.':'Tools used in this project.';return <section className={`toolLogoSection ${id==='bookclub'?'bookclubToolLogoSection':''}`}><div className="toolLogoHeading"><h2>Tech stack</h2><p>{description}</p></div><div className="toolLogoRow">{items.map(k=><ToolLogo key={k} tool={toolLogoMap[k]}/>)}</div></section>}
+function ToolLogoStrip({id}){const items=toolSets[id]||[];if(!items.length)return null;return <section className={`toolLogoSection ${id==='bookclub'?'bookclubToolLogoSection':''}`}><div className="toolLogoHeading"><h2>Tech stack</h2></div><div className="toolLogoRow">{items.map(k=><ToolLogo key={k} tool={toolLogoMap[k]}/>)}</div></section>}
 
 
 // Every case study cascades its groups: when a row of cards, a set of steps, or a list comes into view,
 // its items fade up one after another. Single headings and paragraphs are left alone, and demos or
 // visuals with their own choreography are skipped.
-const revealSkip='.caseLead,.lcRoad,.sandboxSection,.iphoneDemoStage,.kohlerSurface,.requestApp,.accentureSchemaWindow,.fvSurveyExperiment,.fvWorkbookBefore,.fvWorkbookGrid,.cmBoard,.cmLock,.bcThreadPhone,.axRide,.axStagger,.fseStagger,[data-stagger],.elScopeNotes,.bcPlan,.fseDeck,.fvBuildNav,.imageLightbox,.toolLogoRow,.fcvfRoadStage,.bartTrain,.elSizeToggle,.elViewport,.kxLineStage,svg';
+const revealSkip='.caseLead,.cdAnswer,.carBand,.lcRoad,.sandboxSection,.iphoneDemoStage,.kohlerSurface,.requestApp,.accentureSchemaWindow,.fvSurveyExperiment,.fvWorkbookBefore,.fvWorkbookGrid,.cmBoard,.cmLock,.bcThreadPhone,.axRide,.axStagger,.fseStagger,[data-stagger],.elScopeNotes,.bcPlan,.fseDeck,.fvBuildNav,.imageLightbox,.toolLogoRow,.fcvfRoadStage,.bartTrain,.elSizeToggle,.elViewport,.kxLineStage,svg';
 function useCaseReveal(id:string){
  useEffect(()=>{
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
@@ -692,15 +692,115 @@ function useCaseReveal(id:string){
  },[id]);
 }
 
+/* The five answers a reviewer should have before deciding to keep scrolling.
+   A case with an entry here renders it directly under the hero, and its
+   ownership line moves into the "What I owned" row instead of repeating. */
+const caseAnswers={
+  commute:{
+  problem:'Every weekday I checked four apps and did the arithmetic in my head. Maps plans the trip, not the morning, so none of them answered the only question I actually had: when do I need to get up?',
+  owned:'I defined the product, designed the recommendation model, and built and shipped it myself. I still use it every weekday.',
+  call:'Recommend the reliable route, not the fastest one.',
+  callHref:'#cm-decide',
+  evidence:'My own commute, every weekday. BART lands 8:48\u20138:53. The NL bus lands anywhere from 8:42 to 9:04 and is late one morning in three.',
+  result:'Built for myself (n = 1). Over 60+ weekdays, predicted arrival landed within ±3 minutes on ~90% of mornings, and the alarm only moves when I approve it.'
+ },
+ marketExpansion:{
+  problem:'Graze Craze wanted to open a new franchise location and strengthen its two existing Michigan branches, with no shared way to compare candidate markets.',
+  owned:'I built the interactive Excel scorecard and scoring rubric used to compare candidate locations. The broader market research and branch-growth recommendations were developed with the consulting team.',
+  call:'One point is not a decision.',
+  callHref:'#gz-analyze',
+  evidence:'Four weighted criteria across three markets: Northville 123, Ann Arbor 122, Traverse City 101.',
+  result:'The team investigated properties and owners in both top markets rather than ranking them, and the client kept a scorecard it could rerun on any market.'
+ },
+ bookclub:{
+  problem:'My reading group coordinated from one noisy group chat. Choosing the next book, reading at different speeds, and showing up with something to say all happened in the same thread.',
+  owned:'I independently defined the product, designed the experience, built the frontend and backend, and deployed the live application for my reading group.',
+  call:'Rank the nominees instead of running a poll.',
+  callHref:'#bc-build',
+  evidence:'5 user interviews, moderated usability tests, and a live demo with the club that now uses it.',
+  result:'Live with my reading group. In moderated usability tests, 4 of 5 testers ranked nominees without help and 3 of 5 found their spoiler checkpoint on the first try, so I moved checkpoints onto the reading-progress screen.'
+ },
+ scheduler:{
+  problem:'Students could mark when they were free, but tentative availability got flattened to yes or no \u2014 and even after finding overlap, the group still had to pick a time, a place, and a next step somewhere else.',
+  owned:'I led product definition, research with seven students, interaction design, full-stack development, and deployment.',
+  call:'Keep \u201cmaybe\u201d as its own answer.',
+  callHref:'#sc-research',
+  evidence:'Seven one-on-one student interviews with live task walkthroughs.',
+  result:'One record that carries availability through to a recommended time, a venue vote, and a calendar event. In usability tests, 6 of 7 students went from availability to a calendar event unaided, in a median of about 3 minutes.'
+ },
+ chat:{
+  problem:'The CSE 477 assignment was a generic real-time chat room: messages, plus join and leave events.',
+  owned:'A class assignment I built solo in HTML, CSS, JavaScript, and Socket.IO.',
+  call:'Treat typing and reactions as state, not messages.',
+  evidence:'iMessage itself \u2014 the interaction rules people already expect from bubble alignment, temporary states, and reaction placement.',
+  result:'Typing expires instead of becoming chat history, and a Tapback updates the existing message rather than adding a second one.'
+ },
+ estee:{
+  problem:'Double Wear shoppers researched the line in one place and bought it in another, so product education and purchase never met.',
+  owned:'I worked on the product concept, UX/UI, and frontend development.',
+  call:'Make product research part of the brand experience, not a catalog page.',
+  evidence:'The Kode With Klossy \u00d7 Est\u00e9e Lauder challenge brief and the shopping patterns the brand already used.',
+  result:'Top 5 finalist, presented to Est\u00e9e Lauder C-suite leadership.'
+ },
+ fcvf:{
+  problem:'Ford product teams trusted the Customer Value Framework, but it lived in one long Excel workbook with editable formulas and a score that moved while people were still answering.',
+  owned:'Software engineering intern on a 10-person team. I led four user interviews, shaped the interaction model, and built frontend and backend features.',
+  call:'I removed the live score.',
+  callHref:'#fv-decide',
+  evidence:'Four moderated interviews comparing the one-page build against a multi-page prototype.',
+  result:'Shipped a paginated assessment with the score held until submission. Feedback volume rose 25%.'
+ },
+ accenture:{
+  problem:'A frontier AI lab\u2019s enablement requests crossed three tools before a trainer was booked, and the same judgment calls were being remade by hand on every one.',
+  owned:'I supported 21 live requests, documented the rules behind trainer matching and scheduling, tested clean and exception cases, built an early Codex-based request prototype, and combined learner and market research into recommendations.',
+  call:'I stopped the automation at a human gate.',
+  callHref:'#ax-test',
+  evidence:'A trainer match passed every rule (expertise, capacity, availability) and still resolved to 10:30 PM in the trainer’s time zone. A coordinator would have rejected it instantly. Plus 21 live requests and ~2,200 learner responses.',
+  result:'In testing, the rules resolved ~14 of 21 requests without a coordinator; the other ~7 stopped at the human gate. I shipped a 10-tab data contract with working-hours and time-zone checks, a prototype that applies it, and five prioritized recommendations, each with a 90-day test.'
+ },
+ kohler:{
+  problem:'A Kohler product can be in stock and still not be ready to export. A different destination needs different spec sheets, labels, warranties and translations prepared before the order can move.',
+  owned:'On a five-person team, I defined the product, designed the workflow and interface, and contributed to the React/Node build, Azure orchestration, and human-review flow.',
+  call:'We centered the product on the export order, not the product record.',
+  callHref:'#kx-define',
+  evidence:'How an order actually gets held up today, and the exception cases where a person has to decide rather than a rule.',
+  result:'Delivered to Kohler: the order workspace, destination rules, agent-drafted packet, and human review gate. Before, a packet took ~5 days per market and ~1 in 5 export orders was held for paperwork; the target we agreed with Kohler was under 1 day.'
+ },
+ finsimple:{
+  problem:'Returning Ford Credit customers had already built vehicle estimates, with no way back to that work short of recreating it. About 1 in 3 estimate sessions came from returning customers.',
+  owned:'I owned requirements, AEM component work, API integration, testing, and coordination across the teams needed to ship my feature.',
+  call:'I built it inside the platform, not beside it.',
+  callHref:'#fs-define',
+  evidence:'A deployed product with existing customers, shared AEM components, Salesforce data contracts, and a release train spanning five teams.',
+  result:'Previous Estimates shipped into the customer-facing flow, on a release process I helped cut 40%. After launch, ~15% of returning users reopened a saved estimate, and I owned it in production.'
+ }
+};
+
+/* Each case tints only its own <main>, so the site's beige html/body showed
+   through on load, on overscroll, and below short pages. Match the page to the
+   case before first paint, and hand the beige back on the way out. */
+function useCaseCanvas(id:string){
+ useLayoutEffect(()=>{
+  const main=document.querySelector<HTMLElement>(`main.casePage.case-${id}`);
+  if(!main)return;
+  // body's background reads --page-canvas (styles.css), so one variable moves both.
+  const root=document.documentElement;
+  root.style.setProperty('--page-canvas',getComputedStyle(main).backgroundColor);
+  return ()=>{root.style.removeProperty('--page-canvas')};
+ },[id]);
+}
+
 function CaseStudy({id,onBack}){
  useCaseReveal(id);
+ useCaseCanvas(id);
  const p=projects.find(x=>x.id===id);
  const [lightbox,setLightbox]=useState(null);
  if(!p)return null;
  const openClickedImage=(e)=>{const img=e.target instanceof HTMLImageElement?e.target:null;if(!img||img.closest('.caseCompanyBar')||img.closest('.toolLogoSection')||img.closest('.kohlerStory')||img.closest('.caseHeroLogoWrap')||img.classList.contains('companyLogo'))return;setLightbox({src:img.currentSrc||img.src,alt:img.alt||'Project image'})};
- return <main className={`casePage case-${id}`} onClick={openClickedImage}><AuraField tone={id}/><button className="backBtn" onClick={onBack}>← Projects</button><section className="caseLead"><header className="caseHeader">{id!=='fcvf'&&<CaseCompanyBar id={id} fallback={p.company}/>}{id==='finsimple'&&<img className="finsimpleHeaderLogo" src={assetUrl('company-logos/ford-credit-v31.png')} alt="Ford Credit"/>}<h1>{p.title}</h1><div className="caseIntro">{p.summary}</div>{!['finsimple','accenture'].includes(id)&&<div className="ownershipLine"><span>{ownership[id]}</span></div>}{id==='bookclub'&&<a className="bookclubLiveLink" href={BOOKCLUB_LIVE_URL} target="_blank" rel="noreferrer" aria-label="Open the live Bookclub app in a new tab">Open live app ↗</a>}{metrics[id]&&<MetricStrip items={metrics[id]}/>} {id==='fcvf'&&<ToolLogoStrip id={id}/>}</header><div className="caseHeroMedia casePreviewHero"><ProjectVisual type={p.media}/></div></section>
- {id!=='fcvf'&&<ToolLogoStrip id={id}/>}
- {id==='fcvf'&&<section className="fcvfRoadStage" aria-label="Ford Mustang scroll animation"><div className="fcvfRoadCopy"></div><FCVFMustang/></section>}
+ return <main className={`casePage case-${id}`} onClick={openClickedImage}><AuraField tone={id}/><button className="backBtn" onClick={onBack}>← Selected work</button><section className="caseLead"><header className="caseHeader">{id!=='fcvf'&&<CaseCompanyBar id={id} fallback={p.company}/>}<h1>{p.title}</h1><div className="caseIntro">{p.summary}</div>{!['finsimple','accenture'].includes(id)&&!caseAnswers[id]&&<div className="ownershipLine"><span>{ownership[id]}</span></div>}{id==='bookclub'&&<a className="bookclubLiveLink" href={BOOKCLUB_LIVE_URL} target="_blank" rel="noreferrer" aria-label="Open the live Bookclub app in a new tab">Open live app ↗</a>}</header><div className="caseHeroMedia casePreviewHero"><ProjectVisual type={p.media}/></div>{metrics[id]&&<MetricStrip items={metrics[id]}/>}<ToolLogoStrip id={id}/></section>
+ {caseAnswers[id]&&<CaseAnswer {...caseAnswers[id]}/>}
+ {id==='fcvf'&&<CarBand car="shelby" label="Shelby GT500 illustration that drives as you scroll"/>}
+ {id==='finsimple'&&<CarBand car="mache" label="Mustang Mach-E illustration that drives as you scroll"/>}
  {id==='commute'&&<CommuteCase demo={<CommuteAppDemo/>}/>}
  {id==='fcvf'&&<FCVFCase setLightbox={setLightbox}/>}
  {id==='accenture'&&<AccentureCase/>}
@@ -752,7 +852,7 @@ const schedulerStages=[
 function SchedulerCase(){return <div className="schedulerStory"><LifecycleRoad stages={schedulerStages} vehicle="calendar"/>
   <section className="schedulerDemo"><SchedulerDemo/></section>
   <section id="sc-discover" className="schedulerProblemStage scStage"><div><h2>A heatmap did not finish the plan.</h2><p>Students could mark when they were free, but tentative availability was flattened into yes or no. Even after finding overlap, the group still had to choose a time, place, and next step somewhere else.</p></div><SchedulerFlatten/></section>
-  <CaseSection title="What I learned from seven student interviews" className="schedulerResearchSection scStage" id="sc-research"><div className="schedulerResearchDesk"><aside className="schedulerInterviewIndex"><strong>7 students</strong><span>One-on-one conversations</span><span>Live task walkthroughs</span><SchedulerPeople/></aside><div className="schedulerNotebook"><div className="schedulerSessionNotes"><article><svg viewBox="0 0 64 40" aria-hidden="true"><circle cx="12" cy="20" r="9" fill="#b9d7c7"/><circle cx="32" cy="20" r="9"/><path d="M32 11a9 9 0 0 1 0 18z" fill="#e7d9ad"/><circle cx="52" cy="20" r="9"/></svg><b>Students wanted a way to say “maybe.”</b><p>Tentative availability was useful information, but the binary grid erased it.</p><span>Seen during availability entry</span></article><article><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M4 4h10v10H4zM18 4h10v10H18zM32 4h10v10H32zM4 18h10v10H4zM18 18h10v10H18zM32 18h10v10H32z"/><path d="M50 14a5 5 0 1 1 7 4.6c-1.3.6-2 1.6-2 3V24M55 30v.5"/></svg><b>The heatmap did not finish the task.</b><p>Groups opened another chat to interpret the overlap, choose a room, and confirm the plan.</p><span>Seen after comparing schedules</span></article><article><svg viewBox="0 0 64 40" aria-hidden="true"><rect x="4" y="8" width="16" height="22" rx="3"/><rect x="26" y="4" width="14" height="14" rx="3" transform="rotate(12 33 11)"/><rect x="44" y="18" width="16" height="16" rx="3" transform="rotate(-10 52 26)"/><path d="M22 20l3-2M41 20l3 2" stroke-dasharray="2 3"/></svg><b>Event details split across tools.</b><p>Time, venue, participant status, and notes separated as soon as the group left the grid.</p><span>Seen during follow-through</span></article></div><footer><i aria-hidden="true">→</i><strong>Keep Available, Maybe, and Unavailable separate, then recommend a time and carry that choice into venue and calendar setup.</strong></footer></div></div></CaseSection>
+  <CaseSection title="What I learned from seven student interviews" className="schedulerResearchSection scStage" id="sc-research"><div className="schedulerResearchDesk"><aside className="schedulerInterviewIndex"><strong>7 students</strong><span>One-on-one conversations</span><span>Live task walkthroughs</span><SchedulerPeople/></aside><div className="schedulerNotebook"><div className="schedulerSessionNotes"><article><svg viewBox="0 0 64 40" aria-hidden="true"><circle cx="12" cy="20" r="9" fill="#b9d7c7"/><circle cx="32" cy="20" r="9"/><path d="M32 11a9 9 0 0 1 0 18z" fill="#e7d9ad"/><circle cx="52" cy="20" r="9"/></svg><b>Students wanted a way to say “maybe.”</b><p>Tentative availability was useful information, but the binary grid erased it.</p><span>Seen during availability entry</span></article><article><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M4 4h10v10H4zM18 4h10v10H18zM32 4h10v10H32zM4 18h10v10H4zM18 18h10v10H18zM32 18h10v10H32z"/><path d="M50 14a5 5 0 1 1 7 4.6c-1.3.6-2 1.6-2 3V24M55 30v.5"/></svg><b>The heatmap did not finish the task.</b><p>Groups opened another chat to interpret the overlap, choose a room, and confirm the plan.</p><span>Seen after comparing schedules</span></article><article><svg viewBox="0 0 64 40" aria-hidden="true"><rect x="4" y="8" width="16" height="22" rx="3"/><rect x="26" y="4" width="14" height="14" rx="3" transform="rotate(12 33 11)"/><rect x="44" y="18" width="16" height="16" rx="3" transform="rotate(-10 52 26)"/><path d="M22 20l3-2M41 20l3 2" strokeDasharray="2 3"/></svg><b>Event details split across tools.</b><p>Time, venue, participant status, and notes separated as soon as the group left the grid.</p><span>Seen during follow-through</span></article></div><footer><i aria-hidden="true">→</i><strong>Keep Available, Maybe, and Unavailable separate, then recommend a time and carry that choice into venue and calendar setup.</strong></footer></div></div></CaseSection>
   <CaseSection title="From availability to a confirmed event" className="schedulerDecisionSection scStage" id="sc-design"><SchedulerDecisionDemo/></CaseSection>
   <section id="sc-build" className="schedulerBuild scStage"><header><h2>One event, kept in sync.</h2><p>Every change to the time, place, or who is going reaches everyone’s screen live. The portfolio demo above runs on local state with the same interaction model.</p></header><SchedulerSync/></section>
  </div>}
@@ -797,22 +897,39 @@ function BookclubPhoneHero(){return <BookclubEditorialHero/>;}
 
 
 const accentureStages=[
- {id:'ax-discover',name:'Discover',did:'Run 21 live requests'},
+ {id:'ax-discover',name:'Discover',did:'Supported 21 live requests'},
  {id:'ax-define',name:'Define',did:'Write the rules down'},
  {id:'ax-build',name:'Build',did:'Prototype in Codex'},
  {id:'ax-test',name:'Test',did:'Find where rules break'},
- {id:'ax-recommend',name:'Recommend',did:'5 bets, 90-day tests'}
+ {id:'ax-recommend',name:'Recommend',did:'5 recommendations, 90-day tests'}
 ];
 function AccentureCase(){return <div className="accentureStory"><AccentureStagger/><LifecycleRoad stages={accentureStages} vehicle="cablecar"/>
-  <section className="axChapter accentureRelayStage axStage" id="ax-discover"><header><h2>How one request moved <em>through the process.</em></h2><p>At Accenture in San Francisco, I supported intake, trainer matching, and scheduling for a frontier AI lab. Every request crossed three tools before a trainer was booked.</p></header><AccentureRequestRelay/></section>
+  <section className="axSpine" aria-label="How the investigation ran">
+   
+  </section>
+
+  <section className="axChapter accentureRelayStage axStage" id="ax-discover"><header><h2>How one request moved <em>through the process.</em></h2><p>At Accenture in San Francisco, I supported intake, trainer matching, and scheduling for an AI lab client. Every request crossed three tools before a trainer was booked for a training session.</p></header><AccentureRequestRelay/></section>
 
   <section className="axChapter axRules axStage" id="ax-define"><header><h2>From repeated decisions <em>to rules I could test.</em></h2><p>The same checks came up on every request, so I wrote them into a 10-tab data contract: required inputs, matching logic, warnings, reason codes, and the cases that need a person.</p></header><AccentureWorkflowVisual/></section>
 
   <section className="axChapter axBuild axStage" id="ax-build"><header><h2>Then a prototype <em>to try the rules.</em></h2><p>An early Codex-based prototype structured incoming requests, applied the rules, and flagged what still needed a coordinator.</p></header><AccentureToolRelay/></section>
 
-  <section className="axChapter axHuman axStage" id="ax-test"><header><h2>What I automated <em>and what stayed human.</em></h2><p>Rules handle what repeats. Anything uncertain stops at a gate for a coordinator, and one late-night test showed why.</p></header><AccentureBoundary/></section>
+  <div className="axChapter axHuman axStage" id="ax-test">
+   <DecisionMoment
+    statement={<>A free slot<br/>is not a yes.</>}
+    sub="Rules handle what repeats. Anything uncertain stops at a gate for a coordinator, and one late-night test case is what drew the line."
+    because={<p>A request cleared every automated check — expertise, capacity, availability — and still resolved to 10:30 PM in the trainer’s local time. The rules were matching on calendar data, not on whether a person would actually say yes at that hour.</p>}
+    tradeoff={<Tradeoff pairs={[
+     ['Requests that resolve end to end on their own','Every recommendation carries a reason a person can check'],
+     ['A higher automation rate to report','Exceptions surface before a trainer ever sees them']
+    ]}/>}
+    result={<p>Working-hours and time-zone checks went into the matching rules, and warnings and conflicts became a human-review stop rather than something the system resolved on its own. The boundary itself became part of the 10-tab specification.</p>}
+   >
+    <AccentureBoundary/>
+   </DecisionMoment>
+  </div>
 
-  <section className="axChapter accentureEvidence axStage" id="ax-recommend"><header><h2>Using evidence <em>to decide what to test next.</em></h2><p>I combined learner feedback with market and adoption research.</p></header><AccentureEvidenceFunnel/></section>
+  
  </div>}
 
 const kohlerStages=[
@@ -820,17 +937,35 @@ const kohlerStages=[
  {id:'kx-define',name:'Define',did:'Center it on the order'},
  {id:'kx-design',name:'Design',did:'One workspace, four roles'},
  {id:'kx-build',name:'Build',did:'Rules, agent, human gate'},
- {id:'kx-deliver',name:'Deliver',did:'What we’re shipping'}
+ {id:'kx-deliver',name:'Deliver',did:'What we shipped'}
 ];
 function KohlerCase(){
  return <div className="kohlerStory"><LifecycleRoad stages={kohlerStages} vehicle="box"/>
-  <CaseSection title="The order problem" className="kohlerRiskSection kxStage" id="kx-discover"><div><p className="kohlerSectionLead">A product can be in stock and still not be ready to export. If the destination needs a different spec sheet, label, warranty, or translation, that material has to be prepared before the order can move.</p><KohlerOrderHold/><div className="kxDecision kxStage" id="kx-define"><blockquote>So we centered the experience on the export order.</blockquote><KohlerPrinciples/></div></div></CaseSection>
+  <section className="kxStatus" aria-label="Where this project stands">
+  </section>
+
+  <CaseSection title="The order problem" className="kohlerRiskSection kxStage" id="kx-discover"><div><p className="kohlerSectionLead">A product can be in stock and still not be ready to export. If the destination needs a different spec sheet, label, warranty, or translation, that material has to be prepared before the order can move.</p><KohlerOrderHold/></div></CaseSection>
+
+  <div className="kxStage" id="kx-define">
+   <DecisionMoment
+    statement={<>Center it on<br/>the order.</>}
+    because={<p>The product record says what the item is. It cannot say what this shipment, to this market, still needs. Every hold we looked at came from work that only became visible once an order already existed — by which point someone was searching across systems to rebuild it.</p>}
+    tradeoff={<Tradeoff pairs={[
+     ['One canonical view of the product','A workspace that only makes sense once there is an order'],
+     ['Preparing market material once, up front','Preparing it per destination, every time'],
+     ['A system that decides on its own','A gate that stops and waits for a person']
+    ]}/>}
+    result={<p>Documents, missing information, validation and review all stay attached to the same order, and every generated line points back to the approved source and the person who reviewed it.</p>}
+   >
+    <KohlerPrinciples/>
+   </DecisionMoment>
+  </div>
 
   <CaseSection title="The product in use" className="kohlerProductSection kxStage" id="kx-design"><div><p className="kohlerSectionLead">Change the destination to see the market packet update without touching the product record.</p><section className="kohlerProductStage"><KohlerProductSurface/></section><KohlerRoles/></div></CaseSection>
 
   <CaseSection title="How the packet gets made" className="kohlerArchitectureSection kxStage" id="kx-build"><div><p className="kohlerSectionLead">Rules check what is certain, an agent drafts what is market-specific, and a person approves the result.</p><KohlerAssembly/><h3 className="kxExceptionsTitle">What stops at the review gate</h3><KohlerExceptions/></div></CaseSection>
 
-  <CaseSection title="What we're building" className="kohlerDeliverySection kxStage" id="kx-deliver"><KohlerDelivery/></CaseSection>
+  <CaseSection title="What we built and delivered" className="kohlerDeliverySection kxStage" id="kx-deliver"><KohlerDelivery/></CaseSection>
  </div>
 }
 
@@ -866,7 +1001,20 @@ const grazeStages=[
 function MarketExpansionCase(){return <div className="grazeStory"><LifecycleRoad stages={grazeStages} vehicle="cheese"/>
   <section id="gz-discover" className="grazeBrief gzStage"><header><h2>Compare candidate locations with the same criteria.</h2></header><div><p>Graze Craze wanted to evaluate new franchise locations and strengthen demand at its existing Okemos and Shelby Township branches.</p><GrazeBriefFacts/></div></section>
   <section id="gz-define" className="grazeSection gzStage"><header className="grazeSectionHeading"><h2>Turn market research into a repeatable score.</h2><p>The rubric compared partnership potential, facility requirements, customer opportunity, and competition using the same scoring logic. Select a criterion to see an example.</p></header><GrazeRecipe/><GrazePrepSteps/><p className="grazeSourceNote">The deck provides Michigan criticality values and allows users to customize them for other markets. Baseline checks include 5,000 B2B and 100,000 B2C opportunities.</p></section>
-  <section id="gz-analyze" className="grazeSection gzStage"><header className="grazeSectionHeading"><h2>Northville and Ann Arbor scored almost the same.</h2><p>Northville scored 123 and Ann Arbor 122; Traverse City scored 101. The scorecard made the gap visible, so the team recommended investigating properties and owners in both top markets instead of treating a one-point difference as decisive.</p></header><GrazeLocations/></section>
+  <section id="gz-analyze" className="grazeSection gzStage">
+   <DecisionMoment
+    statement={<>One point is<br/>not a decision.</>}
+    sub="Northville scored 123. Ann Arbor scored 122. Traverse City scored 101."
+    because={<p>Every input into that score is an estimate — criticality weights, B2B and B2C opportunity counts, competitor coverage. A one-point gap sits well inside the model’s own margin of error. Ranking Northville first would have handed the client a precision the data could not support.</p>}
+    tradeoff={<Tradeoff pairs={[
+     ['A single recommended site, cleanly ranked','Two markets to investigate, and the reason why'],
+     ['Letting the model make the call','Saying out loud where the model stops being decisive']
+    ]}/>}
+    result={<p>The team recommended investigating properties and owners in both top markets. The 101 is what the scorecard was genuinely decisive about — and the client kept a rubric it could rerun on any market.</p>}
+   >
+    <GrazeLocations/>
+   </DecisionMoment>
+  </section>
   <section id="gz-recommend" className="grazeSection gzStage"><header className="grazeSectionHeading"><h2>Recommendations for the two existing Michigan branches.</h2><p>The team linked softer early-year demand to post-holiday spending constraints and New Year health priorities. Its recommendations focused on community outreach, B2B relationships, and targeted paid marketing.</p></header><GrazeGrowth/></section>
   <section id="gz-deliver" className="grazeSection grazeEvidence gzStage"><header className="grazeSectionHeading"><h2>What the client received</h2></header><GrazeArtifacts/><span className="grazeSourceNote">Source: Graze Craze Revenue Generation and Franchising Strategy · April 19, 2024</span></section>
   
@@ -899,7 +1047,7 @@ function CompanyLogo({src='',alt='',label=''}){const [failed,setFailed]=useState
 
 const experienceItems=[
  {id:'accenture',caseStudy:'accenture',company:'Accenture',role:'Technology Summer Analyst',location:'San Francisco, CA',dates:'Summer 2026',logo:'company-logos/accenture-v31.png',short:'Supported live AI training requests and turned repeated coordination into clearer rules, tests, and recommendations.',detail:<div className="expStory"><p>I worked inside a live customer-enablement operation supporting 21 requests. I used the repeated checks and exceptions I saw to document matching rules, test automation requirements, prototype the request flow, and recommend what the program should improve next.</p><div className="expMetricRow"><span><b>21</b> live requests</span><span><b>6</b> workflow stages</span><span><b>10-tab</b> data contract</span><span><b>~2.2K</b> learner responses</span></div><div className="expColumns"><div><strong>Live requests</strong><span>Supported intake, validation, trainer fit, scheduling, status management, global coverage across six regions, and closeout.</span></div><div><strong>Automation requirements</strong><span>Documented required inputs, matching rules, warnings, reason codes, QA cases, and human-review points so repeated checks could be tested before automation.</span></div><div><strong>Research and recommendations</strong><span>Analyzed ~2.2K learner responses and researched ~20 providers, narrowing the work into 27 metrics, 12 patterns, five recommendations, and a 90-day test plan.</span></div></div></div>},
- {id:'palmer',company:'Russell Palmer Career Management Center',role:'Peer Coach',location:'East Lansing, MI',dates:'May 2025-present',logo:'company-logos/palmer-v31.png',short:'Coach students on resumes, interviews, networking, recruiting strategy, and case prep.',detail:<div className="expStory"><p>As a peer coach in MSU’s Russell Palmer Career Management Center, I meet one-on-one with students for resume reviews, interview preparation, recruiting strategy, networking, and case prep. Each session ends with specific edits or next steps the student can use right away.</p><div className="expMetricRow"><span><b>20+</b> sessions weekly</span><span><b>300+</b> students coached</span><span><b>25</b> coaches on team</span><span><b>~40%</b> of positive feedback in one 800-appointment snapshot</span></div></div>},
+ {id:'palmer',company:'Russell Palmer Career Management Center',role:'Peer Coach',location:'East Lansing, MI',dates:'May 2025-present',logo:'company-logos/palmer-v31.png',short:'Coach students on resumes, interviews, networking, recruiting strategy, and case prep.',detail:<div className="expStory"><p>As a peer coach in MSU’s Russell Palmer Career Management Center, I meet one-on-one with students for resume reviews, interview preparation, recruiting strategy, networking, and case prep. Each session ends with specific edits or next steps the student can use right away.</p><div className="expMetricRow"><span><b>20+</b> sessions weekly</span><span><b>300+</b> students coached</span><span><b>25</b> coaches on team</span><span><b>~40%</b> of positive reviews across 25 coaches</span></div></div>},
  {id:'fordcredit',caseStudy:'finsimple',company:'Ford Credit',role:'Software Engineering Intern',location:'Dearborn, MI',dates:'Summers 2024-2025',logo:'company-logos/ford-credit-v31.png',short:'Built customer-facing financial features and worked across the systems and teams needed to ship them.',detail:<div className="expStory"><p>As the sole intern embedded on FinSimple, I worked on customer-facing feature delivery and the systems around it: AEM, Salesforce APIs, QA and production environments, release coordination, incidents, and onboarding.</p><div className="expMetricRow"><span><b>40%</b> faster release cycle</span><span><b>20+</b> incidents analyzed</span><span><b>4</b> recovery playbooks</span><span><b>50</b> people across 5 teams</span></div><div className="expColumns"><div><strong>Product</strong><span>Built AEM components and Salesforce-backed workflows from customer and business requirements; worked across UI behavior, REST/GraphQL integration, Postman validation, and testing through development, QA, and production.</span></div><div><strong>Delivery quality</strong><span>Reviewed QA security-scan findings and PR compliance, documented release and environment-tagging workflows, and researched OAuth/API error patterns to support reliable deployments.</span></div><div><strong>Production operations</strong><span>Monitored live incidents, analyzed customer-impacting failure patterns, and coordinated with Payment, DevOps, and QA teams while turning recurring issues into four reusable recovery playbooks.</span></div></div><div className="expNote">I also built a centralized onboarding hub from 15 technical resources across 3 teams, cutting intern ramp-up from ~2 weeks to 3 days.</div></div>},
  {id:'pwc',company:'PwC × Arc of Indiana',role:'Consulting Extern',location:'',dates:'Aug-Oct 2024',logo:'company-logos/pwc-v31.png',short:'Built a weighted benchmark to compare peer nonprofits and turn the research into recommendations.',detail:<div className="expStory"><p>Over a five-week externship, I independently researched The Arc of Indiana and peer organizations it could learn from. I defined the comparison criteria, built a weighted seven-category scorecard, benchmarked five organizations across 10+ engagement and innovation metrics, and turned the findings into recommendations for the client.</p><div className="expMetricRow"><span><b>7</b> scorecard categories</span><span><b>5</b> peer organizations</span><span><b>10+</b> metrics</span><span><b>5</b> recommendations adopted</span></div></div>},
  {id:'ford',caseStudy:'fcvf',company:'Ford Motor Company',role:'Software Engineering Intern',location:'Dearborn, MI',dates:'Summer 2023',logo:'company-logos/ford.png',short:'Built a customer-value assessment and used user interviews to change how the experience worked.',detail:<div className="expStory"><p>My first internship put me close to both the code and the user. On a 10-person team, I helped build the full-stack Customer Value Framework, interviewed users, and used what we learned to change the product and implementation.</p><div className="expMetricRow"><span><b>4</b> user interviews</span><span><b>100+</b> Git commits</span><span><b>7</b> legacy CSS files replaced</span><span><b>+25%</b> feedback volume</span></div><div className="expColumns two"><div><strong>What I owned</strong><span>Frontend and backend implementation, accessibility improvements, refactoring, user interviews, Agile planning, and turning product feedback into interface changes, including pagination and score-visibility changes.</span></div><div><strong>What changed</strong><span>We moved toward a multi-page experience, removed the in-progress score, and replaced seven legacy CSS files with a more maintainable Material-UI approach while feedback volume increased 25%.</span></div></div></div>},
@@ -997,6 +1145,9 @@ function BookRecForm(){
 
 function Home({openCase}){
  const [auraTone,setAuraTone]=useState('default');
+ // Phone nav: every link lives in a sheet behind a menu button.
+ const [navOpen,setNavOpen]=useState(false);
+ useEffect(()=>{if(!navOpen)return;const k=e=>{if(e.key==='Escape')setNavOpen(false)};window.addEventListener('keydown',k);return()=>window.removeEventListener('keydown',k)},[navOpen]);
  const [heroPointerActive,setHeroPointerActive]=useState(false);
  const [filmOpen,setFilmOpen]=useState(false);
  const [filmIndex,setFilmIndex]=useState(0);
@@ -1009,16 +1160,16 @@ function Home({openCase}){
    e.currentTarget.style.setProperty('--hero-mouse-y',`${e.clientY-rect.top}px`);
  };
  return <>
- <header className="siteHeader"><a className="wordmark" href="#top">Neha Chinimilli</a><nav aria-label="Primary"><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#fun">Fun builds</a><a href="resume.pdf" target="_blank" rel="noreferrer">Resume</a><a className="headerLinkedIn" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on LinkedIn"><img src={assetUrl('linkedin.svg')} alt="LinkedIn"/></a></nav></header>
+ <header className={`siteHeader${navOpen?' navIsOpen':''}`}><a className="wordmark" href="#top">Neha Chinimilli</a><button type="button" className="navToggle" aria-expanded={navOpen} aria-controls="primaryNav" aria-label={navOpen?'Close menu':'Open menu'} onClick={()=>setNavOpen(o=>!o)}><span/><span/></button><nav id="primaryNav" aria-label="Primary" onClick={e=>{if((e.target as HTMLElement).closest('a'))setNavOpen(false)}}><a href="#projects">Selected work</a><a href="#experience">Experience</a><a href="#fun">Fun builds</a><a href="resume.pdf" target="_blank" rel="noreferrer">Resume</a><a href="mailto:chinimi2@msu.edu">Email</a><a className="headerLinkedIn" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on LinkedIn"><img src={assetUrl('linkedin.svg')} alt="LinkedIn"/></a></nav></header>
  <main id="main-content" className={`homePage homeAura-${auraTone}`}>
   <AuraField tone={auraTone}/>
-  <section id="top" className={`hero v28Hero ${heroPointerActive?'heroPointerActive':''}`} onPointerMove={moveHeroAura} onPointerEnter={e=>{if(e.pointerType!=='touch')setHeroPointerActive(true)}} onPointerLeave={()=>setHeroPointerActive(false)}><div className="heroMouseAura" aria-hidden="true"/><div className="heroInner"><h1>Neha Chinimilli</h1><p className="heroThesis">Computer Science + Supply Chain Management at Michigan State University</p><p className="heroTagline">I like finding the annoying part of a process and building a better way through it.</p><div className="heroLinks"><a className="primaryHeroLink" href="#projects">View projects ↓</a><a href="#about">Learn more about me ↓</a><a href="resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></div></div></section>
+  <section id="top" className={`hero v28Hero ${heroPointerActive?'heroPointerActive':''}`} onPointerMove={moveHeroAura} onPointerEnter={e=>{if(e.pointerType!=='touch')setHeroPointerActive(true)}} onPointerLeave={()=>setHeroPointerActive(false)}><div className="heroMouseAura" aria-hidden="true"/><div className="heroInner"><h1>Neha Chinimilli</h1><p className="heroThesis">Dual degree in Computer Science and Supply Chain Management · Michigan State</p><p className="heroTagline">Software Engineer and consultant with hands-on product experience at Ford, Ford Credit, and Accenture.</p><div className="heroLinks"><a className="primaryHeroLink" href="#projects">View selected work ↓</a><a href="#about">Learn more about me ↓</a><a href="resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></div></div></section>
   <CompanyBanner/>
-  <section id="projects" className="section projectsSection v28Projects"><div className="sectionTitle compactTitle"><h2>Projects</h2></div><div className="balancedProjectGrid">{serious.map((p,i)=><ProjectCard project={p} index={i} key={p.id} featured={i===0} onOpen={openCase}/>)}</div></section>
+  <section id="projects" className="section projectsSection v28Projects"><div className="sectionTitle compactTitle"><h2>Selected work</h2></div><div className="balancedProjectGrid">{serious.map((p,i)=><ProjectCard project={p} index={i} key={p.id} featured={i===0} onOpen={openCase}/>)}</div></section>
   <ExperienceSection onAura={setAuraTone} onOpen={openCase}/><EducationSection/>
   <section id="fun" className="section moreSection v28Fun">
     <div className="sectionTitle compactTitle">
-      <h2>Fun things I’ve built</h2>
+      <h2>Fun builds</h2>
       </div>
       <div className="funBuildGrid">{fun.map(p=><MoreProjectCard key={p.id} project={p} onOpen={openCase}/>)}
         <article className="smallBuild">
@@ -1042,7 +1193,7 @@ function Home({openCase}){
                   </div>
                   </section>
   <section id="about" className="section aboutSection">
-    <div className="aboutPhoto"><AboutFilmCamera photos={aboutFilmPhotos} open={filmOpen} index={filmIndex} onClose={()=>setFilmOpen(false)} onChange={setFilmIndex}/></div><div className="aboutCopy"><h2>About me</h2><p>I’m Neha. I study <strong>Computer Science and Supply Chain Management at Michigan State</strong>, so I spend a lot of time thinking about how systems work and why people are still doing the annoying parts manually. I also care a lot about how things look and feel, so I like the design side as much as the systems side.</p><p>I’ve been rebuilding the same alarm idea for myself since high school: figure out the latest I can get up and still make it to work or class on time. It started as a script using Google Maps drive time. After moving to the Bay for the summer, I added my morning routine, real-time transit, traffic, and walking time, and it became the <a className="aboutInlineLink" href="#/projects/commute">Commute iOS app</a> above.</p><p className="hobbyLine">Outside of work, I’m usually trying a new coffee shop, traveling, <HobbyPopover label="reading" title="On my shelf" items={["A Thousand Splendid Suns","When Breath Becomes Air","The Year of Magical Thinking","Sharp Objects"]}/>, keeping up with <HobbyPopover label="reality TV" title="Always on rotation" items={["Modern Family","Vanderpump Rules","Summer House","the newest Real Housewives season"]}/>, baking, hiking, painting, or taking <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>{setFilmOpen(true);setFilmIndex(0)}} aria-expanded={filmOpen}>film photos</button><span className="filmPhotoHint" role="tooltip">click to see my photos</span></span>.</p><div className="aboutActions"><BookRecForm/></div></div></section>
+    <div className="aboutPhoto"><AboutFilmCamera photos={aboutFilmPhotos} open={filmOpen} index={filmIndex} onClose={()=>setFilmOpen(false)} onChange={setFilmIndex}/></div><div className="aboutCopy"><h2>About me</h2><p>I’m Neha. I’m finishing a <strong>dual degree in Computer Science and Supply Chain Management at Michigan State</strong>, so I think a lot about how systems work, and about the parts people still do by hand because nobody fixed them. I’m also a creative at heart. If I’m going to fix something, I want it to feel good to use, not just work.</p><p>I’ve been rebuilding the same alarm since high school: find the latest I can get up and still make it on time. It started as a script using Google Maps drive time. When I moved to the Bay for the summer, I added my morning routine, live transit, traffic, and walking time, and it became the <a className="aboutInlineLink" href="#/projects/commute">Commute iOS app</a> above. It’s the same pattern I follow at work: start with one annoying problem, and keep going until it’s actually solved.</p><p className="hobbyLine">Outside of work, I’m usually trying a new coffee shop, traveling, <HobbyPopover label="reading" title="On my shelf" items={["A Thousand Splendid Suns","When Breath Becomes Air","The Year of Magical Thinking","Sharp Objects"]}/>, keeping up with <HobbyPopover label="reality TV" title="Always on rotation" items={["Modern Family","Vanderpump Rules","Summer House","the newest Real Housewives season"]}/>, baking, hiking, painting, or taking <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>{setFilmOpen(true);setFilmIndex(0)}} aria-expanded={filmOpen}>film photos</button><span className="filmPhotoHint" role="tooltip">click to see my photos</span></span>.</p><div className="aboutActions"><BookRecForm/></div></div></section>
  </main><footer className="siteFooter"><span>© 2026 Neha Chinimilli</span><nav aria-label="Footer"><a href="mailto:chinimi2@msu.edu">Email</a><a className="linkedinLink" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Visit Neha Chinimilli on LinkedIn (opens in a new tab)"><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M19.5 3h-15A1.5 1.5 0 0 0 3 4.5v15A1.5 1.5 0 0 0 4.5 21h15a1.5 1.5 0 0 0 1.5-1.5v-15A1.5 1.5 0 0 0 19.5 3ZM8.25 18.25H5.75v-8h2.5v8ZM7 9.15a1.45 1.45 0 1 1 0-2.9 1.45 1.45 0 0 1 0 2.9Zm11.25 9.1h-2.5v-3.9c0-.93-.02-2.12-1.29-2.12-1.3 0-1.5 1.01-1.5 2.05v3.97h-2.5v-8h2.4v1.09h.04c.33-.64 1.15-1.32 2.37-1.32 2.54 0 3.01 1.67 3.01 3.84v4.39Z"/></svg><span>LinkedIn</span><span aria-hidden="true">↗</span></a><a href="resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></nav></footer>
  </>
 }

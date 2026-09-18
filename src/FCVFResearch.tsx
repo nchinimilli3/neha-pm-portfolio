@@ -108,15 +108,13 @@ export function SurveyDemo() {
       <header>
         <div>
           <h2>
-            Why I moved the score
+            Try it
             <br />
-            <em>to the end.</em>
+            <em>both ways.</em>
           </h2>
         </div>
 
-        <p>
-          I kept the scoring logic but moved the result to after submission. Try both versions below.
-        </p>
+
 
         <div className="fvLap" aria-hidden="true">
           <div className="fvLapTrack">
@@ -211,10 +209,6 @@ export function SurveyDemo() {
             </button>
           )}
 
-          <small>
-            This demo uses simplified example values, not Ford's scoring
-            formula.
-          </small>
         </div>
 
         <aside

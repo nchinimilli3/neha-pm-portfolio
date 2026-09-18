@@ -77,7 +77,7 @@
 @media(max-width:500px){.grazeProjectPreview{min-height:310px}.grazePreviewHeading>img{width:75px;height:52px}.grazePreviewHeading b{font-size:14px}.grazePreviewWorkbook{top:45%}.grazePreviewMap{padding:10px}.grazePreviewMap>div{font-size:8px}}
 
 /* Lifecycle road in Graze plum, gold, and sage */
-.grazeStory{--lc-ink:#2d2226;--lc-road:#6c394c;--lc-accent:#d9a441;--lc-accent-2:#f0cf86;--lc-muted:#857a74;--lc-tint:#f4e6ecf2;--lc-glass:#f6ecef}
+.grazeStory{--lc-ink:#2d2226;--lc-road:#6c394c;--lc-accent:#d9a441;--lc-accent-2:#f0cf86;--lc-muted:#625a56;--lc-tint:#f4e6ecf2;--lc-glass:#f6ecef}
 .gzStage{scroll-margin-top:110px}
 
 /* Composition (desktop): Define keeps the split header over the rubric; Analyze sets its header as a left rail

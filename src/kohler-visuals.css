@@ -1,5 +1,5 @@
 /* Kohler Ship Anywhere: content sits on the case aura as drawn objects, stamps, and routes instead of panels. */
-.kohlerStory{--kx-green:#245b48;--kx-green-soft:#6c9383;--kx-brass:#927047;--kx-rust:#a0482f;--kx-paper:#fbf8ef;--kx-ink:#1f2b26;--kx-muted:#56665e}
+.kohlerStory{--kx-green:#245b48;--kx-green-soft:#6c9383;--kx-brass:#927047;--kx-rust:#a0482f;--kx-paper:#fbf8ef;--kx-ink:#1f2b26;--kx-muted:#404b46}
 
 
 .kxStamp{display:inline-block;padding:6px 14px;border:2.5px solid var(--kx-rust);border-radius:6px;color:var(--kx-rust);font:800 13px/1 -apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:.08em;text-transform:uppercase;transform:rotate(-8deg);white-space:nowrap;mix-blend-mode:multiply;box-shadow:inset 0 0 0 1.5px #a0482f33}
@@ -146,7 +146,7 @@
 @media(prefers-reduced-motion:reduce){.kxBelt i,.kxCargo,.kxTagWrap{animation:none}}
 
 /* Lifecycle road in Kohler green and brass */
-.kohlerStory{--lc-ink:#1f2b26;--lc-road:#245b48;--lc-accent:#b8935a;--lc-accent-2:#dcc08e;--lc-muted:#72827a;--lc-tint:#e3efe8f2;--lc-glass:#eef5f1}
+.kohlerStory{--lc-ink:#1f2b26;--lc-road:#245b48;--lc-accent:#b8935a;--lc-accent-2:#dcc08e;--lc-muted:#54605a;--lc-tint:#e3efe8f2;--lc-glass:#eef5f1}
 .kxStage{scroll-margin-top:110px}
 
 /* Composition (desktop): all four chapters were the same title rail + body. Discover keeps the rail (dense);
@@ -165,3 +165,42 @@
  .case-kohler .kohlerStory>.caseSection.kohlerDeliverySection{grid-template-columns:1fr!important;gap:36px!important}
  .case-kohler .kohlerStory>.kohlerDeliverySection>h2{max-width:none!important;position:static!important}
 }
+
+/* In-progress discipline: the status chain sits above the story, and the
+   delivery list is labelled as design intent rather than shipped features. */
+.kohlerStory .kxStatus{width:min(1180px,calc(100% - 64px));margin:0 auto;padding:6px 0 4px}
+.kxIntent{margin-top:8px}
+.kxIntentLabel{margin:0 0 14px;font-size:13px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:#6a7a72}
+
+/* Hero: an open carton; the three missing documents rise out of it once. */
+.kxBoxScene{display:grid;justify-items:center;gap:12px;width:100%}
+.kxBoxScene svg{display:block;width:100%;max-width:460px;height:auto;overflow:visible}
+.kxBoxShadow{fill:rgba(31,43,38,.18)}
+.kxBoxBody{filter:drop-shadow(0 14px 22px rgba(31,43,38,.18))}
+.kxFlapEdge{stroke:rgba(110,80,40,.34);stroke-width:1.2;stroke-linejoin:round}
+.kxBoxSeam{stroke:rgba(110,80,40,.3);stroke-width:1.2;fill:none}
+
+.kxDoc{opacity:0;animation:kxDocRise .9s cubic-bezier(.22,1.1,.36,1) forwards;animation-delay:calc(.25s + var(--i) * .14s)}
+.kxDocFace{stroke:rgba(90,66,32,.22);stroke-width:1.2;filter:drop-shadow(0 8px 14px rgba(31,43,38,.16))}
+.kxDocHead{fill:var(--case-accent,#245b48)}
+.kxDocLabel{font:700 8px/1 Inter,sans-serif;letter-spacing:.06em;fill:#fff}
+.kxDocLines{stroke:rgba(46,60,53,.24);stroke-width:3;stroke-linecap:round;fill:none}
+.kxDocTable rect{fill:none;stroke:rgba(46,60,53,.26);stroke-width:1}
+.kxDocBadge{fill:none;stroke:var(--case-accent,#245b48);stroke-width:2}
+.kxDocBadgeText{font:800 17px/1 Inter,sans-serif;fill:var(--case-accent,#245b48);letter-spacing:.04em}
+.kxDocBarcode{stroke:#2e3c35;stroke-width:1.6}
+.kxDocSeal{fill:#b8935a}
+.kxDocSealTick{fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.kxDocRibbon{fill:#927047}
+
+.kxShipLabel rect{fill:#fbf8ef;stroke:rgba(90,66,32,.2)}
+.kxShipBarcode{stroke:#2e3c35;stroke-width:1.5}
+.kxBoxSku{font:700 15px/1 Inter,sans-serif;fill:#3a2f1c;letter-spacing:.02em}
+.kxBoxTo{font:500 11.5px/1 Inter,sans-serif;fill:#6b5a3c;letter-spacing:.02em}
+.kxBoxArrow{font:700 16px/1 Inter,sans-serif;fill:rgba(90,66,32,.4);letter-spacing:-.1em}
+.kxBoxCaption{margin:0;font-size:14px;color:#5c6b63}
+.kxBoxCaption b{color:var(--case-accent,#245b48)}
+
+@keyframes kxDocRise{from{opacity:0;transform:translateY(70px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.kxDoc{animation:none;opacity:1;transform:none}}
+

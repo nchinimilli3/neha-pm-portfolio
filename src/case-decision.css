@@ -1,0 +1,154 @@
+/* Ranking layer for case studies. Everything here sits directly on the case
+   background: weight comes from type scale, hairlines and space, never a box.
+   Elements are deliberately p/dl/ol so the global case type scale in
+   case-typography.css does not apply and nothing needs an !important answer. */
+
+/* Every case keeps its own accent: --case-accent is already defined per case in
+   styles.css, so the decision layer borrows it instead of inventing a colour.
+   Only Ford's blue belongs to Ford. */
+.casePage{--cd-ink:#232a27;--cd-muted:#444a47;--cd-rule:rgba(35,42,39,.17);--cd-accent:var(--case-accent,#3d4a45)}
+.case-fcvf{--cd-ink:#102f48;--cd-muted:#3b4f5d;--cd-rule:rgba(16,47,72,.18);--cd-accent:#0a5fd0}
+.case-accenture{--cd-ink:#1f1628;--cd-muted:#4f475c;--cd-rule:rgba(31,22,40,.18)}
+.case-finsimple{--cd-ink:#0b3052;--cd-muted:#42586a;--cd-rule:rgba(11,48,82,.18)}
+.case-kohler{--cd-ink:#1f2b26;--cd-muted:#4a5550;--cd-rule:rgba(31,43,38,.18)}
+.case-commute{--cd-ink:#2b2744;--cd-muted:#4d4b5c;--cd-rule:rgba(43,39,68,.18)}
+.case-bookclub{--cd-ink:#203f3b;--cd-muted:#4e5852;--cd-rule:rgba(32,63,59,.18)}
+.case-marketExpansion{--cd-ink:#2d3a34;--cd-muted:#4d5753;--cd-rule:rgba(45,58,52,.18)}
+
+/* These blocks are <section>s, so a case's generic `… section {width; padding}`
+   rule would otherwise inset them by that case's own gutter. They should span
+   whatever column they are dropped into and keep their own vertical rhythm. */
+.casePage .cdMoment,.casePage .cdSupporting{width:100%;margin-left:0;margin-right:0}
+.casePage .cdMoment{padding:40px 0 44px}
+.casePage .cdSupporting{padding:22px 0 0}
+.casePage .cdAnswer{width:100%;max-width:1040px;padding:0}
+
+/* ---- The 20-second version -------------------------------------------
+   A drawn causal arc, centred on the page. The curve rises out of the problem,
+   peaks on the decision and comes down on the outcome, so the shape says which
+   of the three matters before a word is read. */
+
+.casePage .cdAnswer{margin:10px auto 6px;max-width:1120px;text-align:center}
+.casePage .cdAnswerHead{display:flex;align-items:center;gap:20px;margin-bottom:16px}
+.casePage .cdAnswerKicker{flex:0 0 auto;margin:0;font-size:12px;font-weight:600;letter-spacing:.17em;text-transform:uppercase;color:var(--cd-accent)}
+.casePage .cdAnswerRule{flex:1 1 auto;height:1px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--cd-accent) 42%,transparent))}
+.casePage .cdAnswerHead .cdAnswerRule:last-child{background:linear-gradient(90deg,color-mix(in srgb,var(--cd-accent) 42%,transparent),transparent)}
+
+.casePage .cdAnswerRole{display:block;margin:0 auto 6px;max-width:82ch;font-size:15px;line-height:1.58;color:var(--cd-muted)}
+.casePage .cdAnswerRole b{display:inline;margin-right:10px;font-size:11.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--cd-muted)}
+.casePage .cdAnswerRole span{display:inline}
+
+/* The drawn arc. The nodes sit on the curve's start, apex and end. */
+.casePage .cdArcVisual{position:relative;height:86px;margin:18px 0 -6px}
+.casePage .cdArcVisual svg{display:block;width:100%;height:86px;overflow:visible}
+.casePage .cdArcCurve{fill:none;stroke:color-mix(in srgb,var(--cd-accent) 40%,transparent);stroke-width:1.5;stroke-linecap:round;stroke-dasharray:4 7}
+.casePage .cdArcNode{position:absolute;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:var(--cd-rule);box-shadow:0 0 0 4px color-mix(in srgb,var(--cd-accent) 8%,transparent)}
+.casePage .cdArcNodeStart{left:6%;top:86%}
+.casePage .cdArcNodeEnd{left:94%;top:86%}
+.casePage .cdArcNodePeak{left:50%;top:14%;width:15px;height:15px;margin:-7.5px 0 0 -7.5px;background:var(--cd-accent);box-shadow:0 0 0 6px color-mix(in srgb,var(--cd-accent) 14%,transparent)}
+
+.casePage .cdArc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,1fr);align-items:start;gap:0 30px}
+.casePage .cdArcCol{display:grid;gap:10px;align-content:start;min-width:0;justify-items:center}
+.casePage .cdArcCol>b{font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cd-muted)}
+.casePage .cdArcCol>p{margin:0;font-size:16px;line-height:1.58;color:var(--cd-ink);max-width:34ch}
+.casePage .cdArcSide>p{color:color-mix(in srgb,var(--cd-ink) 80%,transparent)}
+.casePage .cdArcSide{padding-top:6px}
+
+/* The middle column is the point of the whole block. */
+.casePage .cdArcCall{padding:0 18px}
+.casePage .cdArcCall>b{color:var(--cd-accent)}
+.casePage .cdArcCall>p.cdArcStatement{margin:2px 0 0;max-width:20ch;font-size:clamp(23px,2.5vw,34px);line-height:1.14;letter-spacing:-.03em;font-weight:500;color:var(--cd-ink);text-wrap:balance}
+.casePage .cdArcCall .cdArcStatement a{display:inline;text-decoration:none;color:inherit;background-image:linear-gradient(var(--cd-accent),var(--cd-accent));background-size:100% 1.5px;background-repeat:no-repeat;background-position:0 100%;padding-bottom:3px;transition:color .2s}
+.casePage .cdArcCall .cdArcStatement a:hover{color:var(--cd-accent)}
+.casePage .cdArcCall .cdArcStatement a i{font-style:normal;font-size:.5em;margin-left:.35em;color:var(--cd-accent)}
+.casePage .cdArcCall>p.cdArcEvidence{display:grid;gap:5px;justify-items:center;margin:18px auto 0;padding-top:14px;max-width:38ch;border-top:1px solid color-mix(in srgb,var(--cd-accent) 24%,transparent);font-size:14.5px;line-height:1.5;color:var(--cd-muted)}
+.casePage .cdArcCall .cdArcEvidence span{font-size:11px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:color-mix(in srgb,var(--cd-accent) 76%,transparent)}
+
+@media(max-width:980px){
+ .casePage .cdAnswer{text-align:left}
+ .casePage .cdArcVisual{display:none}
+ .casePage .cdAnswerHead .cdAnswerRule:first-child{display:none}
+ .casePage .cdArc{grid-template-columns:minmax(0,1fr);gap:0}
+ .casePage .cdArcCol{justify-items:start;padding-top:16px;border-top:1px solid var(--cd-rule)}
+ .casePage .cdArcCol>p{max-width:none}
+ .casePage .cdArcCall{padding:18px 0 0;border-top:2px solid var(--cd-accent)}
+ .casePage .cdArcCall>p.cdArcStatement{max-width:none}
+ .casePage .cdArcCall>p.cdArcEvidence{justify-items:start;margin-left:0;max-width:none}
+ .casePage .cdAnswerRole{margin-bottom:20px}
+}
+
+/* ---- The decision moment --------------------------------------------- */
+
+.casePage .cdMoment{position:relative;margin:70px 0;padding:40px 0 44px;border-top:2px solid var(--cd-ink);border-bottom:1px solid var(--cd-rule);scroll-margin-top:96px}
+.casePage .cdMomentKicker{display:flex;align-items:center;gap:10px;margin:0 0 20px;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--cd-accent)}
+.casePage .cdMomentKicker:before{content:'';width:26px;height:2px;background:var(--cd-accent)}
+.casePage .cdStatement{margin:0;max-width:22ch;font-size:clamp(40px,6vw,78px);line-height:.98;letter-spacing:-.045em;font-weight:450;color:var(--cd-ink);text-wrap:balance}
+.casePage .cdMomentSub{margin:22px 0 0;max-width:62ch;font-size:19px;line-height:1.55;color:var(--cd-muted)}
+
+.casePage .cdMomentGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px;margin-top:38px;padding-top:26px;border-top:1px solid var(--cd-rule)}
+.casePage .cdMomentCol{display:grid;gap:9px;align-content:start;position:relative}
+.casePage .cdMomentCol+.cdMomentCol:before{content:'';position:absolute;left:-18px;top:5px;bottom:0;width:1px;background:var(--cd-rule)}
+.casePage .cdMomentCol>b{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cd-muted)}
+.casePage .cdMomentCol>div{font-size:16px;line-height:1.55;color:var(--cd-ink)}
+.casePage .cdMomentCol p{margin:0 0 8px}
+.casePage .cdMomentCol p:last-child{margin-bottom:0}
+
+/* Tradeoff ledger: struck-through cost on top, what it bought underneath. */
+.casePage .cdTradeoff{list-style:none;margin:0;padding:0;display:grid;gap:16px}
+.casePage .cdTradeoff li{display:grid;gap:3px;justify-items:start}
+.casePage .cdTradeoff s{font-size:15px;line-height:1.4;color:var(--cd-muted);text-decoration-color:var(--cd-accent);text-decoration-thickness:1.5px}
+.casePage .cdTradeoff i{font-style:normal;font-size:13px;line-height:1;color:var(--cd-accent)}
+.casePage .cdTradeoff b{font-size:16px;line-height:1.45;font-weight:600;color:var(--cd-ink)}
+
+.casePage .cdMomentEvidence{margin-top:40px}
+.casePage .cdEvidenceLabel{margin:0 0 18px;font-size:13px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--cd-muted)}
+
+/* ---- Causal chain ----------------------------------------------------- */
+
+.casePage .cdChain{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:30px;list-style:none;margin:0;padding:0}
+.casePage .cdChain li{position:relative;display:grid;gap:7px;align-content:start;padding-top:14px;border-top:1px solid var(--cd-rule)}
+.casePage .cdChain li+li:before{content:'→';position:absolute;left:-21px;top:9px;font-size:14px;color:var(--cd-muted)}
+.casePage .cdChain b{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cd-muted)}
+.casePage .cdChain span{font-size:16px;line-height:1.5;color:var(--cd-ink)}
+.casePage .cdChain .isPivot{border-top-color:var(--cd-accent);border-top-width:2px}
+.casePage .cdChain .isPivot b{color:var(--cd-accent)}
+.casePage .cdChain .isPivot span{font-weight:500}
+
+/* ---- Supporting evidence, deliberately quieter ------------------------ */
+
+.casePage .cdSupporting{margin:44px 0;padding-top:22px;border-top:1px solid var(--cd-rule)}
+.casePage .cdSupporting>header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 18px;margin-bottom:22px}
+.casePage .cdSupportingTitle{margin:0;font-size:13px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--cd-muted)}
+.casePage .cdSupportingNote{margin:0;max-width:56ch;font-size:15px;line-height:1.55;color:var(--cd-muted)}
+
+@media(max-width:860px){
+ .casePage .cdMoment{margin:48px 0;padding:30px 0 34px}
+ .casePage .cdMomentGrid{grid-template-columns:1fr;gap:22px;margin-top:28px}
+ .casePage .cdMomentCol+.cdMomentCol:before{display:none}
+ .casePage .cdMomentCol+.cdMomentCol{padding-top:18px;border-top:1px solid var(--cd-rule)}
+ .casePage .cdChain{grid-auto-flow:row;gap:18px}
+ .casePage .cdChain li+li:before{display:none}
+}
+
+/* "This is what caused the decision below." Used on the finding that pivots. */
+.casePage .cdLeadsTo{display:inline-flex;align-items:center;gap:8px;margin-top:12px;font-size:14px;font-weight:600;letter-spacing:.02em;color:var(--cd-accent);text-decoration:none;border-bottom:1.5px solid currentColor;padding-bottom:2px}
+.casePage .cdLeadsTo i{font-style:normal}
+
+/* The FCVF tradeoff pairs sit in a narrow column inside the moment, so the
+   before/after pair stacks instead of running across. */
+.casePage .cdMomentCol .fvTradeoffs{display:grid;gap:14px;padding-top:0}
+.casePage .cdMomentCol .fvTradeoffs p{grid-template-columns:1fr;gap:2px;font-size:16px;line-height:1.45}
+.casePage .cdMomentCol .fvTradeoffs i{justify-self:start;transform:rotate(90deg);font-size:15px;line-height:1}
+
+/* Safety net: the 20-second read is the most important block on the page, so
+   it must never depend on a scroll animation firing to become visible. */
+.casePage .cdAnswer *{opacity:1!important;translate:none!important}
+
+/* Column medallions: soft tinted discs for the sides, a solid accent disc for
+   the call that sits on the arc's apex. */
+.casePage .cdArcMedal{display:grid;place-items:center;width:40px;height:40px;margin-bottom:4px;border-radius:50%;background:color-mix(in srgb,var(--cd-accent) 11%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--cd-accent) 22%,transparent)}
+.casePage .cdArcMedal svg{width:20px;height:20px;fill:none;stroke:var(--cd-accent);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.casePage .cdArcMedal svg circle{fill:var(--cd-accent);stroke:none}
+.casePage .cdArcMedalCall{width:54px;height:54px;margin-top:-30px;background:var(--cd-accent);box-shadow:0 0 0 7px color-mix(in srgb,var(--cd-accent) 14%,transparent),0 10px 22px -10px var(--cd-accent)}
+.casePage .cdArcMedalCall svg{width:26px;height:26px;stroke:#fff;stroke-width:2.6}
+@media(max-width:980px){.casePage .cdArcMedalCall{margin-top:0;width:46px;height:46px}}

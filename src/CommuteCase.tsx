@@ -2,13 +2,16 @@ import React, {useState, useEffect, useRef} from 'react';
 import './commute-case.css';
 import CommuteBARTStory from './CommuteBARTStory';
 import LifecycleRoad from './LifecycleRoad';
+import { DecisionMoment, Tradeoff } from './CaseDecision';
+import { CommutePhoneDemo, CommuteSurfaces, useMorning } from './CommuteSurfaces';
 
 
 const measures=[
  {label:'Arrival error',desc:'Predicted vs. actual walk-in time'},
  {label:'Unused buffer',desc:'Minutes spent waiting instead of sleeping'},
  {label:'Prediction error',desc:'Routine, walk, and ride, per route'},
- {label:'Interruptions',desc:'Normal mornings that needed me. Target: 0'}
+ {label:'Interruptions',desc:'Normal mornings that needed me. Target: 0'},
+ {label:'App opens',desc:'Mornings I had to unlock to know what to do. Target: 0'}
 ];
 
 /* Reveal-on-scroll used by the diagrams below. Honors reduced motion by
@@ -113,10 +116,12 @@ function PlatformBoard(){
  },[inView]);
  return <div ref={ref} className="cmBoard" aria-label="Four app readings at 7:22 each answer part of the question. Commute combines them: wake 7:18, leave 8:06, take BART.">
   <div className="cmBoardFace">
-   <p className="cmBoardHead"><span>4 apps · 4 partial answers</span></p>
-   {boardRows.map((r,i)=><p key={r.src} className={`cmBoardRow${step>i?' isOn':''}`}><b>{r.src}</b><span>{r.msg}</span><em>{r.val}</em></p>)}
-   <p className={`cmBoardAsk${step===5?' isFlash':''}${step>=5?' isOn':''}`}>? WHEN DO I GET UP</p>
-   <div className={`cmBoardAnswer${step>=6?' isOn':''}`}><span>COMMUTE</span><p><b>WAKE</b><em>7:18</em></p><p><b>LEAVE</b><em>8:06</em></p><p><b>TAKE</b><em>BART</em></p></div>
+   <div className="cmBoardInputs">
+    <p className="cmBoardHead"><span>4 apps · 4 partial answers</span></p>
+    {boardRows.map((r,i)=><p key={r.src} className={`cmBoardRow${step>i?' isOn':''}`}><b>{r.src}</b><span>{r.msg}</span><em>{r.val}</em></p>)}
+   </div>
+   <p className={`cmBoardAsk${step===5?' isFlash':''}${step>=5?' isOn':''}`}><span>?</span>WHEN DO I<br/>GET UP</p>
+   <div className={`cmBoardAnswer${step>=6?' isOn':''}`}><span>COMMUTE · ONE ANSWER</span><p><b>WAKE</b><em>7:18</em></p><p><b>LEAVE</b><em>8:06</em></p><p><b>TAKE</b><em>BART</em></p></div>
   </div>
   <div className="cmBoardPosts" aria-hidden="true"><i/><i/></div>
  </div>;
@@ -199,9 +204,12 @@ const commuteStages=[
  {id:'cm-discover',name:'Discover',did:'Four apps, one question'},
  {id:'cm-design',name:'Design',did:'Plan backward from 9:00'},
  {id:'cm-decide',name:'Decide',did:'Rules for 7 a.m.'},
+ {id:'cm-surface',name:'Surface',did:'Lock Screen, Island, widget'},
  {id:'cm-ship',name:'Ship',did:'Daily alarm, next, metrics'}
 ];
 export default function CommuteCase({demo}:{demo:React.ReactNode}){
+ // One morning, shared by the demo phone and the surfaces section.
+ const m=useMorning();
  return <div className="cmEditorial">
   <LifecycleRoad stages={commuteStages} vehicle="train"/>
 
@@ -213,11 +221,10 @@ export default function CommuteCase({demo}:{demo:React.ReactNode}){
    <div className="cmProblemCopy">
     <h2>Four apps. <em>One question.</em></h2>
     <p>Every weekday I checked four apps and did the math in my head. Maps plans the trip, not the morning, and none of them answered the real question.</p>
-    <PlatformBoard/>
    </div>
+   <PlatformBoard/>
    <div className="cmDemoStage">
-    <div className="iphoneDemoStage">{demo}</div>
-    <p className="cmDemoHint">Tap through the real app.</p>
+    <CommutePhoneDemo m={m} app={demo}/>
    </div>
   </section>
 
@@ -230,12 +237,32 @@ export default function CommuteCase({demo}:{demo:React.ReactNode}){
   </section>
 
   <section className="cmRules cmStage" id="cm-decide">
-   <header><h2>Rules for <em>seven in the morning.</em></h2></header>
+   <DecisionMoment
+    statement={<>Recommend the reliable<br/>route, not the fast one.</>}
+    sub="Three rules decide every morning: reliability beats raw speed, stale data counts for less, and nothing interrupts me unless the plan actually moved."
+    because={<p>BART lands between 8:48 and 8:53 every day. The NL bus can land at 8:42 — or at 9:04, one morning in three. Missing a train that runs every 6 minutes costs almost nothing; missing a bus that runs every 30 costs the morning. A trip planner optimises the average. A commute has to survive the bad day.</p>}
+    tradeoff={<Tradeoff pairs={[
+     ['The earliest arrival the feeds say is possible','An arrival I can plan the rest of the morning around'],
+     ['Trusting whichever feed claims to be faster','A stale “on time” losing to a fresh delay'],
+     ['Moving my alarm the moment anything changes','Asking first, and staying silent when the plan holds']
+    ]}/>}
+    result={<p>One alarm instead of four apps. On a normal morning it interrupts me zero times, and it never moves the alarm without asking — the one thing I was never going to hand over.</p>}
+   >
+   <p className="cmRulesLabel">The three rules behind it</p>
    <div className="cmRuleGrid">
     <div className="cmRule"><h3>A faster route can be the riskier one.</h3><p>Missing a train that runs every 6 minutes costs little. Missing a bus that runs every 30 costs the morning.</p><RouteRisk/></div>
     <div className="cmRule"><h3>Old data counts for less.</h3><FreshnessDiagram/></div>
     <div className="cmRule"><h3>Only interrupt when the plan changes.</h3><p>If a delay doesn’t move the wake time, leave time, or route, it stays silent.</p><LockScreen/></div>
    </div>
+   </DecisionMoment>
+  </section>
+
+  <section className="cmSurface cmStage" id="cm-surface">
+   <header className="cmSurfaceHead">
+    <h2>The best version <em>is the one I never open.</em></h2>
+    <p>Everything the model knows fits in one glance, so I shipped it to where my eyes already are at 7 a.m.: a Live Activity on the Lock Screen, a countdown in the Dynamic Island, and a Home Screen widget. The app is still there for editing a routine. The morning itself runs without it.</p>
+   </header>
+   <CommuteSurfaces m={m}/>
   </section>
 
   <section className="cmClose cmStage" id="cm-ship">
@@ -243,10 +270,19 @@ export default function CommuteCase({demo}:{demo:React.ReactNode}){
     <h2>Four apps. <em>One alarm.</em></h2>
     
     <ol className="cmScopeStops" aria-label="Scope">
-     <li className="is-shipped"><i/><div><b>Shipped</b><span>Calendar, routine, walking speed, live transit and traffic, native alarms</span></div></li>
+     <li className="is-shipped"><i/><div><b>Shipped</b><span>Lock Screen Live Activity, Dynamic Island, Home Screen widget, calendar, routine, walking speed, live transit and traffic, native alarms</span></div></li>
      <li className="is-next"><i/><div><b>Next stop</b><span>Recurring commutes, more cities, reliability learning</span></div></li>
      <li className="is-cut"><i/><div><b>Not in service</b><span>Social features, generic trip planning, dashboards</span></div></li>
     </ol>
+   </div>
+   <div className="cmScale">
+    <h3>At Google Maps scale</h3>
+    <p>For me, one route and a few weeks of history are enough. For millions of commuters, three things change:</p>
+    <ul>
+     <li><b>Cold start.</b> A new user has no history, so reliability has to come from aggregate data on the same line, stop, and time of day, then personalize as their own trips accumulate.</li>
+     <li><b>Uneven data.</b> Many cities have no realtime transit feed. The product should fall back to scheduled times and widen its buffer, and say it is doing so.</li>
+     <li><b>Trust.</b> An alarm that moves on its own breaks trust quickly. Keep the approve-before-change rule, and measure missed arrivals as the guardrail next to minutes of sleep saved.</li>
+    </ul>
    </div>
    <div className="cmTicket">
     <div className="cmTicketStub" aria-hidden="true"><span>Commute</span><i className="cmBarcode"/></div>

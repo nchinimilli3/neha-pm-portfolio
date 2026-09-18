@@ -158,7 +158,9 @@ export function KohlerExceptions() {
 }
 
 export function KohlerDelivery() {
- const shipped = [
+ // Design intent for the packet, not a list of delivered features. The markers
+ // stay neutral so an in-progress capstone does not read as shipped.
+ const intent = [
   ['Market-specific preparation packet', 'Built from approved product and market sources'],
   ['Exception handling and human review', 'Nothing unresolved moves with the order'],
   ['Auditable preparation history', 'Every line keeps its source and reviewer'],
@@ -167,8 +169,87 @@ export function KohlerDelivery() {
   <div className="kxVoyage">
    <div className="kxVoyageRoute" aria-hidden="true"><b>US</b><i><em/></i><b>IN</b></div>
    <p className="kxBefore"><s>Teams search across systems and rebuild missing market documentation.</s></p>
-   <p className="kxAfter">The order shows what is ready, what is missing, and what needs a person to review.</p>
+   <p className="kxAfter">The order is meant to show what is ready, what is missing, and what needs a person to review.</p>
   </div>
-  <ul className="kxShipped">{shipped.map(([item, note]) => <li key={item}><i aria-hidden="true">✓</i><div><strong>{item}</strong><span>{note}</span></div></li>)}</ul>
+  <div className="kxIntent">
+   <p className="kxIntentLabel">What the packet is designed to produce</p>
+   <ul className="kxShipped">{intent.map(([item, note]) => <li key={item}><i aria-hidden="true">→</i><div><strong>{item}</strong><span>{note}</span></div></li>)}</ul>
+  </div>
+ </div>;
+}
+
+/* Case hero: an open export carton with the three documents the order still
+   needs rising out of it. The box is in stock; the paperwork is what is
+   missing. Flaps are drawn in their open position (CSS 3D on SVG groups does
+   not render reliably), and only the documents animate. */
+export function KohlerBoxOpen() {
+ const docs = [
+  {label: 'SPEC SHEET', x: 146, y: 70, r: -11, kind: 'spec'},
+  {label: 'MARKET LABEL', x: 210, y: 52, r: 0, kind: 'label'},
+  {label: 'WARRANTY', x: 274, y: 70, r: 11, kind: 'warranty'},
+ ];
+ const docBody = (kind: string) => {
+  if (kind === 'spec') return <>
+   <path d="M-30 -10h60M-30 0h60M-30 10h42" className="kxDocLines"/>
+   <g className="kxDocTable">{[0,1,2].map(r => [0,1].map(c => <rect key={`${r}${c}`} x={-30 + c*31} y={22 + r*9} width="29" height="7" rx="1"/>))}</g>
+  </>;
+  if (kind === 'label') return <>
+   <rect x="-20" y="-14" width="40" height="28" rx="5" className="kxDocBadge"/>
+   <text x="0" y="6" textAnchor="middle" className="kxDocBadgeText">IN</text>
+   <path d="M-26 26v14M-22 26v14M-17 26v14M-14 26v14M-9 26v14M-4 26v14M0 26v14M5 26v14M8 26v14M13 26v14M17 26v14M22 26v14M26 26v14" className="kxDocBarcode"/>
+  </>;
+  return <>
+   <path d="M-30 -10h60M-30 0h60M-30 10h36" className="kxDocLines"/>
+   <path d="M-6 38l-5 12 5-3 5 3zM6 38l-5 12 5-3 5 3z" className="kxDocRibbon"/>
+   <circle cx="0" cy="32" r="10" className="kxDocSeal"/>
+   <path d="M-4 32l3 3 5-6" className="kxDocSealTick"/>
+  </>;
+ };
+ return <div className="kxBoxScene" role="img" aria-label="An open export carton for SKU K-14402 bound for Bengaluru, India, with three documents rising out of it: a spec sheet, a market label and a warranty">
+  <svg viewBox="0 0 420 300" aria-hidden="true">
+   <defs>
+    <linearGradient id="kxCard" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#dcc195"/><stop offset="1" stopColor="#c19f6d"/></linearGradient>
+    <linearGradient id="kxFlapLit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#e6cfa6"/><stop offset="1" stopColor="#cfb07f"/></linearGradient>
+    <linearGradient id="kxInside" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#8a6a3d"/><stop offset="1" stopColor="#a7854f"/></linearGradient>
+    <linearGradient id="kxPaper" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#fffdf8"/><stop offset="1" stopColor="#f1ebdd"/></linearGradient>
+   </defs>
+
+   <ellipse cx="210" cy="276" rx="128" ry="12" className="kxBoxShadow"/>
+
+   {/* back flap, standing up behind the opening */}
+   <path d="M126 158L294 158L302 124L118 124Z" fill="url(#kxFlapLit)" className="kxFlapEdge"/>
+   {/* the dark inside of the carton */}
+   <path d="M126 158L294 158L310 172L110 172Z" fill="url(#kxInside)"/>
+
+   {/* documents rise out of the opening; the box front hides their bottoms */}
+   {docs.map((d, i) => <g key={d.label} transform={`translate(${d.x} ${d.y}) rotate(${d.r})`}>
+    <g className="kxDoc" style={{'--i': i} as React.CSSProperties}>
+     <rect x="-44" y="-40" width="88" height="112" rx="6" fill="url(#kxPaper)" className="kxDocFace"/>
+     <rect x="-44" y="-40" width="88" height="20" rx="6" className="kxDocHead"/>
+     <rect x="-44" y="-26" width="88" height="6" className="kxDocHead"/>
+     <text x="0" y="-26.5" textAnchor="middle" className="kxDocLabel">{d.label}</text>
+     {docBody(d.kind)}
+    </g>
+   </g>)}
+
+   {/* side flaps folded open */}
+   <path d="M110 172L126 158L90 138L72 150Z" fill="url(#kxFlapLit)" className="kxFlapEdge"/>
+   <path d="M310 172L294 158L330 138L348 150Z" fill="url(#kxFlapLit)" className="kxFlapEdge"/>
+
+   {/* carton front, with the front flap folded down over it */}
+   <path d="M110 172h200v88a12 12 0 0 1-12 12H122a12 12 0 0 1-12-12z" fill="url(#kxCard)" className="kxBoxBody"/>
+   <path d="M110 172h200v16H110z" fill="url(#kxFlapLit)" className="kxFlapEdge"/>
+   <path d="M110 188h200" className="kxBoxSeam"/>
+
+   {/* shipping label */}
+   <g className="kxShipLabel">
+    <rect x="132" y="202" width="118" height="54" rx="4"/>
+    <text x="142" y="222" className="kxBoxSku">K-14402</text>
+    <text x="142" y="240" className="kxBoxTo">→ Bengaluru, IN</text>
+    <path d="M226 206v18M229 206v18M233 206v18M235 206v18M239 206v18M242 206v18" className="kxShipBarcode"/>
+   </g>
+   <text x="286" y="232" textAnchor="middle" className="kxBoxArrow">↑↑</text>
+  </svg>
+  <p className="kxBoxCaption"><b>In stock.</b> Three documents short of shipping.</p>
  </div>;
 }
