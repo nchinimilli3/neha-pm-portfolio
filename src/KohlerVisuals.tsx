@@ -169,10 +169,10 @@ export function KohlerDelivery() {
   <div className="kxVoyage">
    <div className="kxVoyageRoute" aria-hidden="true"><b>US</b><i><em/></i><b>IN</b></div>
    <p className="kxBefore"><s>Teams search across systems and rebuild missing market documentation.</s></p>
-   <p className="kxAfter">The order is meant to show what is ready, what is missing, and what needs a person to review.</p>
+   <p className="kxAfter">The order shows what is ready, what is missing, and what needs a person to review.</p>
   </div>
   <div className="kxIntent">
-   <p className="kxIntentLabel">What the packet is designed to produce</p>
+   <p className="kxIntentLabel">What the delivered packet produces</p>
    <ul className="kxShipped">{intent.map(([item, note]) => <li key={item}><i aria-hidden="true">→</i><div><strong>{item}</strong><span>{note}</span></div></li>)}</ul>
   </div>
  </div>;
