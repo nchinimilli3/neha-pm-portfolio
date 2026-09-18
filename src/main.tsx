@@ -54,8 +54,8 @@ function Reveal({children,className=''}){
 
 const metrics = {
   kohler: [
-    ['~5 days','packet prep today, per market','baseline'],
-    ['<1 day','target set with Kohler','target'],
+    ['~5 days','packet prep before, per market','baseline'],
+    ['<1 day','packet prep per market','outcome'],
     ['5','person team','scope'],
     ['1 → any','SKU-to-market goal','system']
   ],
@@ -102,7 +102,7 @@ const ownership = {
   scheduler:'I led product definition, research with seven students, interaction design, full-stack development, and deployment.',
   chat:'Built with HTML, CSS, JavaScript, and Socket.IO.',
   commute:'I defined the product, designed the recommendation model, and built and shipped it myself. I still use it every weekday.',
-  estee:'I worked on the product concept, UX/UI, and frontend development.',
+  estee:'I shaped the product concept, designed the UX/UI, and built the frontend.',
   bookclub:'I independently defined the product, designed the experience, built the frontend and backend, and deployed the live application for my reading group.',
   marketExpansion:'I built the interactive Excel scorecard and scoring rubric used to compare candidate locations. The broader market research and branch-growth recommendations were developed with the consulting team.'
 };
@@ -145,7 +145,7 @@ const projects = [
     company:'Kohler Co. · MSU CSE 498',
     summary:'Designed and built an export-preparation assistant that uses an order’s SKU and destination to identify the documents, checks, and review steps needed before shipment.',
     media:'kohler',
-    facts:['Delivered to Kohler','Target: ~5 days → <1 day packet prep']
+    facts:['Delivered to Kohler','~5 days → <1 day packet prep']
   },
   {
     id:'scheduler',
@@ -175,7 +175,7 @@ const projects = [
     id:'chat',
     title:'iMessage Recreation on Web',
     company:'MSU · CSE 477',
-    summary:'A class assignment for a real-time chat room became an iMessage recreation, with typing, Tapbacks, and message state synced across clients.',
+    summary:'An open-ended chat-room assignment became an iMessage recreation, chosen because users’ existing expectations gave me a spec to build and judge against.',
     media:'chat',
     facts:['Real-time rooms + presence','Socket.IO']
   },
@@ -183,7 +183,7 @@ const projects = [
     id:'estee',
     title:'Double Wear Foundation',
     company:'Estée Lauder × Kode With Klossy',
-    summary:'Designed a branded Double Wear discovery experience connecting product education, shade exploration, and purchase.',
+    summary:'Designed and built a Double Wear site that answers the shopper’s real question, “will this work for me?”, before sending them to buy.',
     media:'estee',
     facts:['Top 5 finalist','Kode With Klossy challenge']
   },
@@ -520,6 +520,18 @@ function ProjectVisual({type}){
   return <EsteeVisual/>;
 }
 
+// Top 5 outcome: the first time it scrolls into view, the text catches the light and gold confetti bursts once.
+function EsteeOutcome(){
+ const ref=useRef<HTMLDivElement>(null);
+ const [on,setOn]=useState(false);
+ useEffect(()=>{const el=ref.current;if(!el)return;const io=new IntersectionObserver(([e])=>{if(e.isIntersecting){setOn(true);io.disconnect()}},{threshold:.6});io.observe(el);return ()=>io.disconnect()},[]);
+ const colors=['#d4af6a','#f3dfb1','#b08a4f','#e8c3b0','#fff4dc'];
+ return <div ref={ref} className={`elOutcomeText${on?' isCelebrating':''}`}>
+  {on&&<div className="elConfetti" aria-hidden="true">{Array.from({length:36},(_,i)=>{const a=(i/36)*Math.PI*2+(i%3)*.3;const d=90+(i*37%110);return <i key={i} style={{'--x':`${Math.cos(a)*d*1.6}px`,'--y':`${Math.sin(a)*d-60}px`,'--r':`${(i*53)%360}deg`,'--c':colors[i%colors.length],'--d':`${(i%6)*40}ms`} as React.CSSProperties}/>})}</div>}
+  <p className="elFinalRecognition"><strong>Top 5</strong><span>Challenge finalist</span></p><h2>Top 5 finalist and C-suite presentation.</h2>
+ </div>;
+}
+
 function ChatSandbox(){
  type ChatMessage={system?:string;who?:string;text?:string;reaction?:string};
  const seed:ChatMessage[]=[{system:'Neha joined the room'},{who:'Maya',text:'did everyone push?'},{who:'me',text:'yep just finished the socket changes'}];
@@ -527,7 +539,47 @@ function ChatSandbox(){
  const tapbacks=[['❤️','Love'],['👍','Like'],['👎','Dislike'],['😂','Laugh'],['‼️','Emphasize'],['❓','Question']];
  const add=()=>{if(!text.trim())return;setMsgs(m=>[...m,{who:'me',text:text.trim()}]);setText('');setPickerFor(null)};
  const react=(i,r)=>{setMsgs(m=>m.map((x,j)=>j===i?{...x,reaction:x.reaction===r?'':r}:x));setPickerFor(null)};
- return <div className="chatSandbox" onClick={()=>pickerFor!==null&&setPickerFor(null)}><div className="chatTitle"><span className="caLights" aria-hidden="true"><i/><i/><i/></span><h2>Project group</h2><span>Room: main</span></div><div className="chatWindow">{msgs.map((m,i)=>m.system?<div className="systemMsg" key={i}>{m.system}</div>:<div className={m.who==='me'?'chatLine mine':'chatLine theirs'} key={i}><div className="chatBubbleWrap"><button className="chatBubble" onDoubleClick={e=>{e.stopPropagation();setPickerFor(current=>current===i?null:i)}} aria-label={`${m.text}. Double-click for reactions.`}>{m.text}{m.reaction&&<span className="reaction">{m.reaction}</span>}</button>{pickerFor===i&&<div className="tapbackPicker" role="menu" aria-label="Choose a message reaction" onClick={e=>e.stopPropagation()}>{tapbacks.map(([symbol,label])=><button type="button" role="menuitem" key={label} aria-label={label} title={label} onClick={()=>react(i,symbol)}>{symbol}</button>)}</div>}</div></div>)}{typing&&<div className="typingBubble"><i></i><i></i><i></i></div>}</div><div className="chatEntry"><input value={text} onChange={e=>{setText(e.target.value);setTyping(true);if(typingTimer.current)window.clearTimeout(typingTimer.current);typingTimer.current=window.setTimeout(()=>setTyping(false),900)}} onKeyDown={e=>e.key==='Enter'&&add()} placeholder="Type a message..."/><button onClick={add}>Send</button><button onClick={()=>{setMsgs(m=>[...m,{system:'Neha left the room'}]);setPickerFor(null)}}>Leave</button></div><p className="sandboxNote">Double-click any message to open the Tapback picker. The demo also tracks typing and join/leave state so those behaviors are part of the interaction, not just the styling.</p></div>
+ const left=msgs.some(m=>m.system==='Neha left the conversation');
+ const leave=()=>{if(left)return;setMsgs(m=>[...m,{system:'Neha left the conversation'}]);setPickerFor(null)};
+ const rejoin=()=>setMsgs(m=>[...m,{system:'Neha joined the conversation'}].filter(x=>x.system!=='Neha left the conversation'));
+ const lastMine=msgs.map(m=>m.who==='me').lastIndexOf(true);
+ return <div className="imsg isMac" onClick={()=>pickerFor!==null&&setPickerFor(null)}>
+  <aside className="imsgSide" aria-hidden="true">
+   <div className="imsgLights"><i/><i/><i/></div>
+   <div className="imsgSearch"><svg viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>Search</div>
+   <ul>
+    <li className="isActive"><span className="imsgAvatars"><i>M</i><i>J</i></span><div><b>Project group<small>9:41 AM</small></b><em>{[...msgs].reverse().find(m=>m.text)?.text}</em></div></li>
+    <li><span className="imsgAvatars"><i>A</i></span><div><b>Anj<small>9:12 AM</small></b><em>coffee after class?</em></div></li>
+    <li><span className="imsgAvatars"><i>V</i></span><div><b>Varnika<small>Yesterday</small></b><em>see you at the library</em></div></li>
+    <li><span className="imsgAvatars"><i>A</i></span><div><b>Anjani<small>Monday</small></b><em>Loved “sounds good”</em></div></li>
+   </ul>
+  </aside>
+  <section className="imsgMain">
+  <header className="imsgNav">
+   <div className="imsgWho"><span className="imsgTo">To:</span><h2>Project group</h2></div>
+   <button type="button" className="imsgLeave" onClick={left?rejoin:leave}>{left?'Rejoin':'Leave'}</button>
+  </header>
+  <div className="imsgThread">
+   <p className="imsgStamp"><b>iMessage</b><br/>Today 9:41 AM</p>
+   {msgs.map((m,i)=>m.system?<p className="imsgSystem" key={i}>{m.system}</p>:<div className={`imsgRow ${m.who==='me'?'mine':'theirs'}${msgs[i+1]?.who===m.who?' isGrouped':''}`} key={i}>
+    {m.who!=='me'&&msgs[i-1]?.who!==m.who&&<span className="imsgName">{m.who}</span>}
+    <div className="imsgBubbleWrap"><button type="button" className="imsgBubble" onDoubleClick={e=>{e.stopPropagation();setPickerFor(c=>c===i?null:i)}} aria-label={`${m.text}. Double-click for reactions.`}>{m.text}</button>
+     {m.reaction&&<span className="imsgTapback" aria-label={`Reaction ${m.reaction}`}>{m.reaction}</span>}
+     {pickerFor===i&&<div className="imsgPicker" role="menu" aria-label="Choose a message reaction" onClick={e=>e.stopPropagation()}>{tapbacks.map(([symbol,label])=><button type="button" role="menuitem" key={label} aria-label={label} title={label} onClick={()=>react(i,symbol)}>{symbol}</button>)}</div>}
+    </div>
+    {i===lastMine&&<span className="imsgReceipt">Delivered</span>}
+   </div>)}
+   {typing&&<div className="imsgRow theirs"><div className="imsgTyping" aria-label="Typing"><i/><i/><i/></div></div>}
+  </div>
+  <div className="imsgComposer">
+   <span className="imsgPlus" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M10 4v12M4 10h12"/></svg></span>
+   <div className="imsgField"><input value={text} disabled={left} onChange={e=>{setText(e.target.value);setTyping(true);if(typingTimer.current)window.clearTimeout(typingTimer.current);typingTimer.current=window.setTimeout(()=>setTyping(false),900)}} onKeyDown={e=>e.key==='Enter'&&add()} placeholder={left?'You left this conversation':'iMessage'} aria-label="Message"/>
+    <button type="button" className={`imsgSend${text.trim()?' isReady':''}`} onClick={add} disabled={!text.trim()} aria-label="Send"><svg viewBox="0 0 24 24"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></svg></button>
+   </div>
+  </div>
+  </section>
+  <p className="sandboxNote">Double-click any message for Tapbacks. Typing expires on its own, and Leave posts a presence event instead of a message.</p>
+ </div>
 }
 
 function CaseDecisionNotes({id}){
@@ -537,7 +589,7 @@ function CaseDecisionNotes({id}){
   accenture:[['Constraint','Trainer matching depended on region, language, expertise, capacity, time zones, and information spread across several tools.'],['Decision','Turn repeated coordinator checks into explicit rules while keeping review for exceptions.'],['Evidence','Testing produced a proposed 10:30 PM local assignment, which led to working-hours and time-zone checks.']],
   scheduler:[['Problem','Availability grids show when people are free, but the group still has to choose a time, place, and next step.'],['Decision','Keep availability, uncertainty, venue voting, and lightweight chat in the same workflow.'],['Technical','Flask, MySQL, and Socket.IO handled saved scheduling state and real-time collaboration in the original build.']],
   chat:[['Assignment','Build a chat room where people could see messages and when someone entered or left.'],['Product direction','I recreated iMessage so I could study the interaction details behind a familiar messaging product, then added typing and Tapback states beyond the base assignment.'],['Technical','HTML, CSS, JavaScript, and Socket.IO handled the interface and synchronized room events across clients.']],
-  estee:[['Problem','Online beauty shoppers need enough product and shade context to decide whether a foundation is worth buying.'],['Decision','Keep product education, shade exploration, and the path to purchase in one branded experience.'],['Outcome','The concept finished as a Top 5 challenge finalist.']]
+  estee:[['Problem','Without a tester, online shoppers have to decide on finish, coverage, and shade from the page alone.'],['Decision','Build the site around the shopper’s question, keep benefits scannable, and hand checkout to the retailers they already trust.'],['Outcome','The concept finished as a Top 5 challenge finalist.']]
  }[id];
  if(!notes)return null;
  return <CaseSection title="Decisions and tradeoffs"><div className="decisionNoteGrid">{notes.map(([k,v])=><div key={k}><span>{k}</span><p>{v}</p></div>)}</div></CaseSection>
@@ -697,82 +749,90 @@ function useCaseReveal(id:string){
    ownership line moves into the "What I owned" row instead of repeating. */
 const caseAnswers={
   commute:{
-  problem:'Every weekday I checked four apps and did the arithmetic in my head. Maps plans the trip, not the morning, so none of them answered the only question I actually had: when do I need to get up?',
+  problem:'Every weekday I checked four apps and did the math in my head. None of them answered the only question I had: when do I need to get up?',
   owned:'I defined the product, designed the recommendation model, and built and shipped it myself. I still use it every weekday.',
   call:'Recommend the reliable route, not the fastest one.',
   callHref:'#cm-decide',
-  evidence:'My own commute, every weekday. BART lands 8:48\u20138:53. The NL bus lands anywhere from 8:42 to 9:04 and is late one morning in three.',
-  result:'Built for myself (n = 1). Over 60+ weekdays, predicted arrival landed within ±3 minutes on ~90% of mornings, and the alarm only moves when I approve it.'
+  evidence:'My own commute: BART lands 8:48–8:53. The NL bus lands anywhere from 8:42 to 9:04 and is late one morning in three.',
+  result:'Built for myself (n = 1), over 60+ weekdays. The alarm only moves when I approve it.',
+  stat:{value:'~90%',label:'of mornings landed within ±3 min of the predicted arrival'}
  },
  marketExpansion:{
-  problem:'Graze Craze wanted to open a new franchise location and strengthen its two existing Michigan branches, with no shared way to compare candidate markets.',
-  owned:'I built the interactive Excel scorecard and scoring rubric used to compare candidate locations. The broader market research and branch-growth recommendations were developed with the consulting team.',
+  problem:'Graze Craze wanted a new franchise location and stronger Michigan branches, with no shared way to compare candidate markets.',
+  owned:'I built the interactive Excel scorecard and scoring rubric. The market research and branch-growth recommendations were developed with the consulting team.',
   call:'One point is not a decision.',
   callHref:'#gz-analyze',
   evidence:'Four weighted criteria across three markets: Northville 123, Ann Arbor 122, Traverse City 101.',
-  result:'The team investigated properties and owners in both top markets rather than ranking them, and the client kept a scorecard it could rerun on any market.'
+  result:'The team pursued properties in both top markets instead of ranking them, and the client kept a scorecard it can rerun on any market.'
  },
  bookclub:{
-  problem:'My reading group coordinated from one noisy group chat. Choosing the next book, reading at different speeds, and showing up with something to say all happened in the same thread.',
-  owned:'I independently defined the product, designed the experience, built the frontend and backend, and deployed the live application for my reading group.',
+  problem:'My reading group ran everything through one noisy group chat: picking the next book, reading at different speeds, and discussing it.',
+  owned:'I defined the product, designed the experience, built the frontend and backend, and deployed it for my reading group.',
   call:'Rank the nominees instead of running a poll.',
   callHref:'#bc-build',
   evidence:'5 user interviews, moderated usability tests, and a live demo with the club that now uses it.',
-  result:'Live with my reading group. In moderated usability tests, 4 of 5 testers ranked nominees without help and 3 of 5 found their spoiler checkpoint on the first try, so I moved checkpoints onto the reading-progress screen.'
+  result:'Live with my reading group. Only 3 of 5 found their spoiler checkpoint on the first try, so I moved checkpoints onto the reading-progress screen.',
+  stat:{value:'4 of 5',label:'testers ranked nominees without help'}
  },
  scheduler:{
-  problem:'Students could mark when they were free, but tentative availability got flattened to yes or no \u2014 and even after finding overlap, the group still had to pick a time, a place, and a next step somewhere else.',
+  problem:'Tentative availability got flattened to yes or no, and even after finding overlap, the group still picked a time, place, and next step somewhere else.',
   owned:'I led product definition, research with seven students, interaction design, full-stack development, and deployment.',
-  call:'Keep \u201cmaybe\u201d as its own answer.',
+  call:'Keep “maybe” as its own answer.',
   callHref:'#sc-research',
   evidence:'Seven one-on-one student interviews with live task walkthroughs.',
-  result:'One record that carries availability through to a recommended time, a venue vote, and a calendar event. In usability tests, 6 of 7 students went from availability to a calendar event unaided, in a median of about 3 minutes.'
+  result:'One record carries availability through to a recommended time, a venue vote, and a calendar event, in a median of about 3 minutes.',
+  stat:{value:'6 of 7',label:'students went from availability to a calendar event unaided'}
  },
  chat:{
-  problem:'The CSE 477 assignment was a generic real-time chat room: messages, plus join and leave events.',
-  owned:'A class assignment I built solo in HTML, CSS, JavaScript, and Socket.IO.',
-  call:'Treat typing and reactions as state, not messages.',
-  evidence:'iMessage itself \u2014 the interaction rules people already expect from bubble alignment, temporary states, and reaction placement.',
+  problem:'The CSE 477 brief was open-ended: build a real-time chat room with messages and join and leave events. A generic chat app would meet it, but there would be no clear bar for “good.”',
+  owned:'I chose the direction, defined the scope, and built it solo in HTML, CSS, JavaScript, and Socket.IO.',
+  call:'Recreate iMessage, and treat typing and reactions as state, not messages.',
+  evidence:'Everyone who would use it already knew iMessage, so their expectations became my spec: any detail that felt off would be noticed immediately.',
   result:'Typing expires instead of becoming chat history, and a Tapback updates the existing message rather than adding a second one.'
  },
  estee:{
-  problem:'Double Wear shoppers researched the line in one place and bought it in another, so product education and purchase never met.',
-  owned:'I worked on the product concept, UX/UI, and frontend development.',
-  call:'Make product research part of the brand experience, not a catalog page.',
-  evidence:'The Kode With Klossy \u00d7 Est\u00e9e Lauder challenge brief and the shopping patterns the brand already used.',
-  result:'Top 5 finalist, presented to Est\u00e9e Lauder C-suite leadership.'
+  problem:'Online, there is no tester. Shoppers have to judge finish, coverage, and shade from a screen, and most brand pages answer with a catalog instead of helping them decide.',
+  owned:'In the Kode With Klossy × Estée Lauder challenge, I shaped the product concept, designed the UX/UI, and built the frontend.',
+  call:'Help the shopper decide. Let retailers handle the sale.',
+  evidence:'The challenge brief, how people actually shop for foundation (try, compare, then buy where they already shop), and Estée Lauder’s own brand system.',
+  result:'Presented the concept to Estée Lauder C-suite leadership.',
+  stat:{value:'Top 5',label:'finalist in the challenge'}
  },
  fcvf:{
-  problem:'Ford product teams trusted the Customer Value Framework, but it lived in one long Excel workbook with editable formulas and a score that moved while people were still answering.',
+  problem:'Ford teams trusted the Customer Value Framework, but it lived in one long Excel workbook whose score moved while people were still answering.',
   owned:'Software engineering intern on a 10-person team. I led four user interviews, shaped the interaction model, and built frontend and backend features.',
   call:'I removed the live score.',
   callHref:'#fv-decide',
   evidence:'Four moderated interviews comparing the one-page build against a multi-page prototype.',
-  result:'Shipped a paginated assessment with the score held until submission. Feedback volume rose 25%.'
+  result:'Shipped a paginated assessment that holds the score until submission.',
+  stat:{value:'+25%',label:'more assessment feedback submitted'}
  },
  accenture:{
-  problem:'A frontier AI lab\u2019s enablement requests crossed three tools before a trainer was booked, and the same judgment calls were being remade by hand on every one.',
-  owned:'I supported 21 live requests, documented the rules behind trainer matching and scheduling, tested clean and exception cases, built an early Codex-based request prototype, and combined learner and market research into recommendations.',
+  problem:'A frontier AI lab’s enablement requests crossed three tools before a trainer was booked, and the same judgment calls were remade by hand every time.',
+  owned:'I supported 21 live requests, documented the trainer-matching and scheduling rules, built an early Codex-based request prototype, and turned learner and market research into recommendations.',
   call:'I stopped the automation at a human gate.',
   callHref:'#ax-test',
-  evidence:'A trainer match passed every rule (expertise, capacity, availability) and still resolved to 10:30 PM in the trainer’s time zone. A coordinator would have rejected it instantly. Plus 21 live requests and ~2,200 learner responses.',
-  result:'In testing, the rules resolved ~14 of 21 requests without a coordinator; the other ~7 stopped at the human gate. I shipped a 10-tab data contract with working-hours and time-zone checks, a prototype that applies it, and five prioritized recommendations, each with a 90-day test.'
+  evidence:'A trainer match passed every rule and still landed at 10:30 PM in the trainer’s time zone. A coordinator would have rejected it instantly.',
+  result:'The other ~7 stopped at the human gate. I shipped a 10-tab data contract, a prototype that applies it, and five recommendations, each with a 90-day test.',
+  stat:{value:'~14 of 21',label:'requests resolved by rules alone in testing'}
  },
  kohler:{
-  problem:'A Kohler product can be in stock and still not be ready to export. A different destination needs different spec sheets, labels, warranties and translations prepared before the order can move.',
+  problem:'A Kohler product can be in stock and still not be ready to export: each destination needs its own spec sheets, labels, warranties and translations.',
   owned:'On a five-person team, I defined the product, designed the workflow and interface, and contributed to the React/Node build, Azure orchestration, and human-review flow.',
   call:'We centered the product on the export order, not the product record.',
   callHref:'#kx-define',
   evidence:'How an order actually gets held up today, and the exception cases where a person has to decide rather than a rule.',
-  result:'Delivered to Kohler: the order workspace, destination rules, agent-drafted packet, and human review gate. Before, a packet took ~5 days per market and ~1 in 5 export orders was held for paperwork; the target we agreed with Kohler was under 1 day.'
+  result:'Delivered to Kohler: the order workspace, destination rules, agent-drafted packet, and human review gate.',
+  stat:{value:'<1 day',label:'packet prep per market, down from ~5 days'}
  },
  finsimple:{
-  problem:'Returning Ford Credit customers had already built vehicle estimates, with no way back to that work short of recreating it. About 1 in 3 estimate sessions came from returning customers.',
+  problem:'Returning Ford Credit customers had no way back to vehicle estimates they had already built, and about 1 in 3 estimate sessions came from returning customers.',
   owned:'I owned requirements, AEM component work, API integration, testing, and coordination across the teams needed to ship my feature.',
   call:'I built it inside the platform, not beside it.',
   callHref:'#fs-define',
-  evidence:'A deployed product with existing customers, shared AEM components, Salesforce data contracts, and a release train spanning five teams.',
-  result:'Previous Estimates shipped into the customer-facing flow, on a release process I helped cut 40%. After launch, ~15% of returning users reopened a saved estimate, and I owned it in production.'
+  evidence:'A live product with existing customers, shared AEM components, Salesforce data contracts, and a release train spanning five teams.',
+  result:'Previous Estimates shipped into the customer-facing flow, on a release process I helped cut 40%, and I owned it in production.',
+  stat:{value:'~15%',label:'of returning users reopened a saved estimate after launch'}
  }
 };
 
@@ -798,7 +858,7 @@ function CaseStudy({id,onBack}){
  if(!p)return null;
  const openClickedImage=(e)=>{const img=e.target instanceof HTMLImageElement?e.target:null;if(!img||img.closest('.caseCompanyBar')||img.closest('.toolLogoSection')||img.closest('.kohlerStory')||img.closest('.caseHeroLogoWrap')||img.classList.contains('companyLogo'))return;setLightbox({src:img.currentSrc||img.src,alt:img.alt||'Project image'})};
  return <main className={`casePage case-${id}`} onClick={openClickedImage}><AuraField tone={id}/><button className="backBtn" onClick={onBack}>← Selected work</button><section className="caseLead"><header className="caseHeader">{id!=='fcvf'&&<CaseCompanyBar id={id} fallback={p.company}/>}<h1>{p.title}</h1><div className="caseIntro">{p.summary}</div>{!['finsimple','accenture'].includes(id)&&!caseAnswers[id]&&<div className="ownershipLine"><span>{ownership[id]}</span></div>}{id==='bookclub'&&<a className="bookclubLiveLink" href={BOOKCLUB_LIVE_URL} target="_blank" rel="noreferrer" aria-label="Open the live Bookclub app in a new tab">Open live app ↗</a>}</header><div className="caseHeroMedia casePreviewHero"><ProjectVisual type={p.media}/></div>{metrics[id]&&<MetricStrip items={metrics[id]}/>}<ToolLogoStrip id={id}/></section>
- {caseAnswers[id]&&<CaseAnswer {...caseAnswers[id]}/>}
+ {caseAnswers[id]&&<CaseAnswer key={id} {...caseAnswers[id]}/>}
  {id==='fcvf'&&<CarBand car="shelby" label="Shelby GT500 illustration that drives as you scroll"/>}
  {id==='finsimple'&&<CarBand car="mache" label="Mustang Mach-E illustration that drives as you scroll"/>}
  {id==='commute'&&<CommuteCase demo={<CommuteAppDemo/>}/>}
@@ -858,15 +918,39 @@ function SchedulerCase(){return <div className="schedulerStory"><LifecycleRoad s
  </div>}
 
 const chatStages=[
+ {id:'ch-frame',name:'Frame',did:'Why recreate iMessage'},
  {id:'ch-discover',name:'Discover',did:'Study iMessage’s rules'},
  {id:'ch-design',name:'Design',did:'Stored vs. temporary state'},
  {id:'ch-build',name:'Build',did:'Socket.IO room events'}
 ];
 function ChatCase(){return <div className="chatStory"><LifecycleRoad stages={chatStages} vehicle="bubble"/>
   <section className="sandboxSection"><ChatSandbox/></section>
-  <section className="chatRuleStage chStage" id="ch-discover"><div><h2>Recreating the interaction rules behind iMessage</h2><p>Before rebuilding it, I mapped how iMessage treats each kind of event.</p></div><ChatAnatomyPhone/></section>
-  <CaseSection title="Persistent state and temporary state" className="chatStateSection chStage" id="ch-design"><div className="chatInk"><section className="chatInkStored"><h3><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>Stored state</h3><p className="chatInkLine"><strong>“did everyone push?”</strong><span>Message · stored and synchronized</span></p><p className="chatInkLine"><strong>❤️ on the same message</strong><span>Tapback · updates existing state</span></p></section><section className="chatInkTemp"><h3><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12M6 21h12M7 3c0 5 10 5 10 9s-10 4-10 9M17 3c0 5-10 5-10 9"/></svg>Temporary state</h3><p className="chatFade"><strong>typing…</strong><span>Times out</span></p><p className="chatFade chatFadeLate"><strong>Maya joined</strong><span>Room event</span></p></section></div></CaseSection>
-  <CaseSection title="How I implemented those states" className="chatBuildSection chStage" id="ch-build"><ol className="chatPath"><li><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 11 21 3l-8 18-2-8z"/></svg></span><strong>Send</strong>Socket.IO broadcasts the message.</li><li><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-14 5M4 12a8 8 0 0 1 14-5M18 3v4h-4M6 21v-4h4"/></svg></span><strong>Sync</strong>Every client receives the same room state.</li><li><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 5 10 5 10 9s-10 4-10 9M17 3c0 5-10 5-10 9"/></svg></span><strong>Expire</strong>Typing disappears instead of entering history.</li><li><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></span><strong>Update</strong>A Tapback changes the original message state.</li></ol></CaseSection>
+  <CaseSection title="Why recreate iMessage" className="chatFrameSection chStage" id="ch-frame">
+   <p className="chatFrameLead">The brief was a feature list: a real-time chat room with messages and join and leave events. I made it a product by recreating iMessage. Every user already knew it by heart, so <em>their expectations became my spec</em>, and a design study of how Apple thinks.</p>
+   <div className="chatFrameCols">
+    <div><h3>What users expect</h3><ol>
+     <li><b>Where did my message go?</b><span>Mine right and blue, theirs left and gray</span></li>
+     <li><b>Is someone replying?</b><span>Typing shows, then quietly clears</span></li>
+     <li><b>Can I react without replying?</b><span>A Tapback on the original message</span></li>
+     <li><b>Who’s here?</b><span>Joins and leaves as room events</span></li>
+    </ol></div>
+    <div><h3>How Apple answers</h3><ol>
+     <li><b>Tail on the last bubble only</b><span>Groups a run into one thought</span></li>
+     <li><b>Name only when the speaker changes</b><span>Less repetition, same clarity</span></li>
+     <li><b>Typing is a bubble, not text</b><span>Feedback that never enters history</span></li>
+     <li><b>Reactions attach, never post</b><span>Response without noise</span></li>
+    </ol></div>
+   </div>
+   <dl className="chatFramePM">
+    <div><dt>Scope</dt><dd>Keep whatever answers those questions. Cut photos, replies, and read receipts: expected, but not what makes a chat feel right.</dd></div>
+    <div><dt>Tradeoff</dt><dd>Sending typing and reactions as ordinary messages would reuse one pipeline and ship faster. It would also fill history with noise, so I gave each its own event type and paid for it in extra socket logic.</dd></div>
+    <div><dt>Success bar</dt><dd>Nobody should need instructions. If a classmate could open it, chat, react, and leave without asking how, it worked.</dd></div>
+    <div><dt>Next</dt><dd>Read receipts, the most expected thing still missing, then keeping history across a page reload.</dd></div>
+   </dl>
+  </CaseSection>
+  <section className="chatRuleStage chStage" id="ch-discover"><div><h2>Recreating the interaction rules behind iMessage</h2><p>I treated iMessage like a design study. I used it the way my users would, and wrote down what happened for every kind of event: sending, typing, reacting, someone arriving or leaving. The pattern was that iMessage never treats these the same way. Some change the conversation’s history; others only change what you see right now.</p></div><ChatAnatomyPhone/></section>
+  <CaseSection title="Persistent state and temporary state" className="chatStateSection chStage" id="ch-design"><div className="chatInk"><section className="chatInkStored"><h3><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>Stored state</h3><p className="chatInkLine"><strong>“did everyone push?”</strong><span>Message · stored and synchronized</span></p><p className="chatInkLine"><strong>❤️ on the same message</strong><span>Tapback · updates existing state</span></p></section><section className="chatInkTemp"><h3><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 22h14M5 2h14M17 22v-4.2a2 2 0 0 0-.6-1.4L12 12l-4.4 4.4a2 2 0 0 0-.6 1.4V22M7 2v4.2a2 2 0 0 0 .6 1.4L12 12l4.4-4.4a2 2 0 0 0 .6-1.4V2"/></svg>Temporary state</h3><p className="chatFade"><strong>typing…</strong><span>Times out</span></p><p className="chatFade chatFadeLate"><strong>Maya joined</strong><span>Room event</span></p></section></div></CaseSection>
+  <CaseSection title="How I implemented those states" className="chatBuildSection chStage" id="ch-build"><ol className="chatPath"><li><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 11 21 3l-8 18-2-8z"/></svg></span><strong>Send</strong>Socket.IO broadcasts the message.</li><li><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-14 5M4 12a8 8 0 0 1 14-5M18 3v4h-4M6 21v-4h4"/></svg></span><strong>Sync</strong>Every client receives the same room state.</li><li><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 22h14M5 2h14M17 22v-4.2a2 2 0 0 0-.6-1.4L12 12l-4.4 4.4a2 2 0 0 0-.6 1.4V22M7 2v4.2a2 2 0 0 0 .6 1.4L12 12l4.4-4.4a2 2 0 0 0 .6-1.4V2"/></svg></span><strong>Expire</strong>Typing disappears instead of entering history.</li><li><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></span><strong>Update</strong>A Tapback changes the original message state.</li></ol></CaseSection>
  </div>}
 
 // Each scene ties a product decision to a supplied artifact. Motion compares viewport
@@ -882,14 +966,14 @@ function EsteeCase(){
  const [compact,setCompact]=useState(false);
  return <div className="elEditorial"><LifecycleRoad stages={esteeStages} vehicle="bottle"/>
   <section className="elVanity elStage" id="el-discover">
-   <div className="elMirrorScene"><div className="elMirrorGlass"><div className="elReflection"/><p>Will this foundation<br/> <em>work for me?</em></p><span>The shopper question</span></div><div className="elMirrorStem"/><div className="elMirrorBase"/></div>
-   <div className="elProblem"><h2>Online shoppers needed enough context to decide if Double Wear was right for them.</h2><p>Without a tester at the counter, shoppers have to understand finish, coverage, and shade context from the site itself.</p><p>I organized the experience around that decision: introduce the product, make the benefits easy to explore, then give the shopper a clear path to buy.</p></div>
+   <div className="elMirrorScene isVanity"><div className="elVanityFrame">{Array.from({length:14},(_,i)=><i key={i} className="elBulb" style={{'--i':i} as React.CSSProperties}/>)}<div className="elMirrorGlass"><div className="elReflection"/><p>Will this foundation<br/> <em>work for me?</em></p><span>The shopper question</span></div></div><div className="elVanityTable"/></div>
+   <div className="elProblem"><h2>Foundation is the hardest thing to buy without trying it on.</h2><p>At a counter, a shopper swatches a shade, feels the finish, and asks someone who knows. Online, all of that has to come from the page. When it doesn’t, people guess, or leave.</p><p>So I built the whole site around the question the shopper is already asking: will this foundation work for me? Every screen had one job, to move them closer to a confident yes or no.</p></div>
   </section>
-  <section className="elInvitation elStage" id="el-design"><header><h2>Start with a question the shopper can answer.</h2><p>I used an interactive question to make product discovery more active while keeping the experience visually consistent with Estée Lauder.</p></header><figure><img src={assetUrl('project-media/el-shop.webp')} alt="Original Double Wear screen asking what the shopper looks for in a foundation" loading="lazy"/><figcaption>The original question screen. Product imagery creates recognition, and the question gives the shopper a clear way to start.</figcaption></figure></section>
-  <section className="elProof"><header><h2>Make the product benefits easy to scan.</h2><p>I put finish, coverage, and wear into a benefits carousel so each idea had its own space instead of becoming a wall of product copy.</p></header><figure><img src={assetUrl('project-media/el-benefits.webp')} alt="Original benefits carousel showing finish, buildable coverage, and wear information" loading="lazy"/><figcaption>Actual project screen · Product benefits carousel</figcaption></figure></section>
-  <section className="elPurchase elStage" id="el-scope"><div className="elRetail"><h2>Move from product discovery to a clear purchase path.</h2><p>I kept my scope on discovery and product education, and linked purchase out to eight established retailers.</p><figure><img src={assetUrl('project-media/el-shades.webp')} alt="Original purchase page showing foundation imagery and retailer links including Estée Lauder, Sephora, Ulta, and Nordstrom" loading="lazy"/><figcaption>Original retailer page with product and shade context.</figcaption></figure></div><aside className="elScope" ref={el=>{if(!el||el.dataset.io)return;el.dataset.io='1';const io=new IntersectionObserver(([e])=>{if(e.isIntersecting){el.classList.add('isIn');io.disconnect()}},{threshold:.3});io.observe(el)}} aria-label="Scope decisions: kept brand scale, imagery, and shade context; simplified dense product details into scannable benefits; handed checkout to eight established retailers"><h3>Where I drew the line</h3><div className="elBottleScene"><svg className="elBottle" viewBox="0 0 200 320" aria-hidden="true"><defs><linearGradient id="elCap" x1="0" x2="1"><stop offset="0" stopColor="#7d5a26"/><stop offset=".22" stopColor="#c9a25d"/><stop offset=".42" stopColor="#f3dfae"/><stop offset=".6" stopColor="#c19a55"/><stop offset="1" stopColor="#6f4f20"/></linearGradient><linearGradient id="elCapTop" x1="0" x2="1"><stop offset="0" stopColor="#a8823f"/><stop offset=".5" stopColor="#f6e6bd"/><stop offset="1" stopColor="#8e6a30"/></linearGradient><linearGradient id="elGlass" x1="0" x2="1"><stop offset="0" stopColor="#fff" stopOpacity=".95"/><stop offset=".12" stopColor="#f4efe8" stopOpacity=".6"/><stop offset=".85" stopColor="#efe8de" stopOpacity=".55"/><stop offset="1" stopColor="#d9cfc0" stopOpacity=".95"/></linearGradient><linearGradient id="elKeepFill" x1="0" x2="1"><stop offset="0" stopColor="#4a2a17"/><stop offset=".5" stopColor="#6e412a"/><stop offset="1" stopColor="#3f2313"/></linearGradient><linearGradient id="elSimplifyFill" x1="0" x2="1"><stop offset="0" stopColor="#7a4b2e"/><stop offset=".5" stopColor="#9a6441"/><stop offset="1" stopColor="#6c4128"/></linearGradient><radialGradient id="elShadow"><stop offset="0" stopColor="#3b2a1a" stopOpacity=".28"/><stop offset="1" stopColor="#3b2a1a" stopOpacity="0"/></radialGradient><clipPath id="elInside"><path d="M44 112q0-10 10-10h92q10 0 10 10v176q0 8-8 8H52q-8 0-8-8z"/></clipPath></defs><ellipse cx="100" cy="312" rx="86" ry="8" fill="url(#elShadow)"/><rect x="66" y="6" width="68" height="62" rx="4" fill="url(#elCap)"/><rect x="66" y="6" width="68" height="7" rx="3" fill="url(#elCapTop)"/>{[74,82,90,98,106,114,122].map(x=><path key={x} d={`M${x} 14v50`} stroke="#5b3f14" strokeOpacity=".22" strokeWidth="1.2"/>)}<path d="M72 14v50" stroke="#fff" strokeOpacity=".5" strokeWidth="2"/><rect x="78" y="68" width="44" height="14" fill="#6f4f20"/><rect x="78" y="68" width="44" height="3" fill="#3e2a0e" fillOpacity=".5"/><path d="M26 108q0-26 26-26h96q26 0 26 26v186q0 20-20 20H46q-20 0-20-20z" fill="url(#elGlass)" stroke="#cbbba2" strokeWidth="1.6"/><g clipPath="url(#elInside)"><g className="elFill"><rect x="40" y="150" width="120" height="70" fill="url(#elSimplifyFill)"/><rect x="40" y="220" width="120" height="80" fill="url(#elKeepFill)"/><path d="M40 150q30-6 60 0t60 0v4q-30 6-60 0t-60 0z" fill="#b07a54"/></g></g><path d="M44 112q0-10 10-10h92q10 0 10 10v176q0 8-8 8H52q-8 0-8-8z" fill="none" stroke="#fff" strokeOpacity=".35" strokeWidth="1.2"/><path d="M34 118v160" stroke="#fff" strokeOpacity=".75" strokeWidth="5" strokeLinecap="round"/><path d="M166 124v120" stroke="#fff" strokeOpacity=".35" strokeWidth="2" strokeLinecap="round"/><text x="100" y="124" textAnchor="middle" className="elBottleBrand">ESTĒE LAUDER</text><text x="100" y="140" textAnchor="middle" className="elBottleName">Double Wear</text></svg><ol className="elScopeNotes"><li className="is-handoff"><b>Handed off</b><span>Checkout stays with 8 established retailers</span><span className="elBags" aria-hidden="true">{Array.from({length:8},(_,i)=><svg key={i} viewBox="0 0 24 28"><path d="M8.5 9V6.5a3.5 3.5 0 0 1 7 0V9" className="elBagHandle"/><path d="M3.5 9h17l-1.2 16.2a1.5 1.5 0 0 1-1.5 1.3H6.2a1.5 1.5 0 0 1-1.5-1.3z" className="elBagBody"/><path d="M3.5 9h17l-.3 3.4H3.8z" className="elBagFold"/><circle cx="8.5" cy="12" r=".9" className="elBagEyelet"/><circle cx="15.5" cy="12" r=".9" className="elBagEyelet"/></svg>)}</span></li><li className="is-simplify"><b>Simplified</b><span>Dense product details became scannable benefits</span></li><li className="is-keep"><b>Kept</b><span>Brand scale, product imagery, and shade context</span></li></ol></div></aside></section>
-  <section className="elResponsive elStage" id="el-build"><header><div><h2>Make the image-heavy layout work on smaller screens.</h2></div><div><p>Responsive behavior was part of the build, not a final polish step. I reused responsive patterns and adjusted layouts so the product information and imagery still worked as the viewport narrowed.</p><p className="elSmall">Toggle the width to see the original capture scale.</p></div></header><div className="elSizeToggle" role="group" aria-label="Compare image presentation widths"><button aria-pressed={!compact} onClick={()=>setCompact(false)}>Wide canvas</button><button aria-pressed={compact} onClick={()=>setCompact(true)}>Narrow canvas</button></div><div className={`elViewport ${compact?'elViewportCompact':''}`}><img src={assetUrl('project-media/el-home.webp')} alt="Original Double Wear homepage, scaled without cropping" loading="lazy"/></div><p className="elViewportCaption">The original imagery stays intact as the available width changes.</p></section>
-  <section className="elFinal elStage" id="el-present"><div className="elCompactScene"><EsteeCompact/></div><div className="elOutcomeText"><p className="elFinalRecognition"><strong>Top 5</strong><span>Challenge finalist</span></p><h2>Top 5 finalist and C-suite presentation.</h2></div></section>
+  <section className="elInvitation elStage" id="el-design"><header><h2>Start with a question the shopper can answer.</h2><p>Instead of opening on a product grid, the site asks what the shopper wants from a foundation. It’s an easy first step, and it turns browsing into a conversation about their needs, the way a good counter consultant starts. The look stays unmistakably Estée Lauder so the question feels like it comes from the brand.</p></header><figure><img src={assetUrl('project-media/el-shop.webp')} alt="Original Double Wear screen asking what the shopper looks for in a foundation" loading="lazy"/><figcaption>The original opening screen. Familiar Double Wear imagery earns recognition; the question gives the shopper an easy first move.</figcaption></figure></section>
+  <section className="elProof"><header><h2>One benefit at a time.</h2><p>Double Wear has a lot to say about finish, coverage, and wear. Stacked on one page, that becomes a wall of copy nobody finishes. I split it into a carousel so each benefit gets its own moment and the shopper sets the pace, reading only what matters to their decision.</p></header><figure><img src={assetUrl('project-media/el-benefits.webp')} alt="Original benefits carousel showing finish, buildable coverage, and wear information" loading="lazy"/><figcaption>Actual project screen · Product benefits carousel</figcaption></figure></section>
+  <section className="elPurchase elStage" id="el-scope"><div className="elRetail"><h2>Know where the product ends.</h2><p>Rebuilding checkout would have meant inventory, payments, and accounts: real work that helps no one decide. Shoppers also already have a favorite place to buy beauty. So I spent my time on discovery and linked out to eight established retailers, letting people finish the purchase where they already trust.</p><figure><img src={assetUrl('project-media/el-shades.webp')} alt="Original purchase page showing foundation imagery and retailer links including Estée Lauder, Sephora, Ulta, and Nordstrom" loading="lazy"/><figcaption>Original retailer page with product and shade context.</figcaption></figure></div><aside className="elScope" ref={el=>{if(!el||el.dataset.io)return;el.dataset.io='1';const io=new IntersectionObserver(([e])=>{if(e.isIntersecting){el.classList.add('isIn');io.disconnect()}},{threshold:.3});io.observe(el)}} aria-label="Scope decisions: kept brand scale, imagery, and shade context; simplified dense product details into scannable benefits; handed checkout to eight established retailers"><h3>Where I drew the line</h3><div className="elBottleScene"><svg className="elBottle" viewBox="0 0 200 320" aria-hidden="true"><defs><linearGradient id="elCap" x1="0" x2="1"><stop offset="0" stopColor="#7d5a26"/><stop offset=".22" stopColor="#c9a25d"/><stop offset=".42" stopColor="#f3dfae"/><stop offset=".6" stopColor="#c19a55"/><stop offset="1" stopColor="#6f4f20"/></linearGradient><linearGradient id="elCapTop" x1="0" x2="1"><stop offset="0" stopColor="#a8823f"/><stop offset=".5" stopColor="#f6e6bd"/><stop offset="1" stopColor="#8e6a30"/></linearGradient><linearGradient id="elGlass" x1="0" x2="1"><stop offset="0" stopColor="#fff" stopOpacity=".95"/><stop offset=".12" stopColor="#f4efe8" stopOpacity=".6"/><stop offset=".85" stopColor="#efe8de" stopOpacity=".55"/><stop offset="1" stopColor="#d9cfc0" stopOpacity=".95"/></linearGradient><linearGradient id="elKeepFill" x1="0" x2="1"><stop offset="0" stopColor="#4a2a17"/><stop offset=".5" stopColor="#6e412a"/><stop offset="1" stopColor="#3f2313"/></linearGradient><linearGradient id="elSimplifyFill" x1="0" x2="1"><stop offset="0" stopColor="#7a4b2e"/><stop offset=".5" stopColor="#9a6441"/><stop offset="1" stopColor="#6c4128"/></linearGradient><radialGradient id="elShadow"><stop offset="0" stopColor="#3b2a1a" stopOpacity=".28"/><stop offset="1" stopColor="#3b2a1a" stopOpacity="0"/></radialGradient><clipPath id="elInside"><path d="M44 112q0-10 10-10h92q10 0 10 10v176q0 8-8 8H52q-8 0-8-8z"/></clipPath></defs><ellipse cx="100" cy="312" rx="86" ry="8" fill="url(#elShadow)"/><rect x="66" y="6" width="68" height="62" rx="4" fill="url(#elCap)"/><rect x="66" y="6" width="68" height="7" rx="3" fill="url(#elCapTop)"/>{[74,82,90,98,106,114,122].map(x=><path key={x} d={`M${x} 14v50`} stroke="#5b3f14" strokeOpacity=".22" strokeWidth="1.2"/>)}<path d="M72 14v50" stroke="#fff" strokeOpacity=".5" strokeWidth="2"/><rect x="78" y="68" width="44" height="14" fill="#6f4f20"/><rect x="78" y="68" width="44" height="3" fill="#3e2a0e" fillOpacity=".5"/><path d="M26 108q0-26 26-26h96q26 0 26 26v186q0 20-20 20H46q-20 0-20-20z" fill="url(#elGlass)" stroke="#cbbba2" strokeWidth="1.6"/><g clipPath="url(#elInside)"><g className="elFill"><rect x="40" y="150" width="120" height="70" fill="url(#elSimplifyFill)"/><rect x="40" y="220" width="120" height="80" fill="url(#elKeepFill)"/><path d="M40 150q30-6 60 0t60 0v4q-30 6-60 0t-60 0z" fill="#b07a54"/></g></g><path d="M44 112q0-10 10-10h92q10 0 10 10v176q0 8-8 8H52q-8 0-8-8z" fill="none" stroke="#fff" strokeOpacity=".35" strokeWidth="1.2"/><path d="M34 118v160" stroke="#fff" strokeOpacity=".75" strokeWidth="5" strokeLinecap="round"/><path d="M166 124v120" stroke="#fff" strokeOpacity=".35" strokeWidth="2" strokeLinecap="round"/><text x="100" y="124" textAnchor="middle" className="elBottleBrand">ESTĒE LAUDER</text><text x="100" y="140" textAnchor="middle" className="elBottleName">Double Wear</text></svg><ol className="elScopeNotes"><li className="is-handoff"><b>Handed off</b><span>Checkout stays with 8 established retailers</span><span className="elBags" aria-hidden="true">{Array.from({length:8},(_,i)=><svg key={i} viewBox="0 0 24 28"><path d="M8.5 9V6.5a3.5 3.5 0 0 1 7 0V9" className="elBagHandle"/><path d="M3.5 9h17l-1.2 16.2a1.5 1.5 0 0 1-1.5 1.3H6.2a1.5 1.5 0 0 1-1.5-1.3z" className="elBagBody"/><path d="M3.5 9h17l-.3 3.4H3.8z" className="elBagFold"/><circle cx="8.5" cy="12" r=".9" className="elBagEyelet"/><circle cx="15.5" cy="12" r=".9" className="elBagEyelet"/></svg>)}</span></li><li className="is-simplify"><b>Simplified</b><span>Dense product details became scannable benefits</span></li><li className="is-keep"><b>Kept</b><span>Brand scale, product imagery, and shade context</span></li></ol></div></aside></section>
+  <section className="elResponsive elStage" id="el-build"><header><div><h2>An image-led site has to survive a phone.</h2></div><div><p>This product sells through imagery: bottles, textures, shades. Crop it badly on a small screen and the shade context disappears, so responsive layout was a core problem, not polish. I reused a small set of responsive patterns so images scaled intact and the story kept its order as the screen narrowed.</p><p className="elSmall">Toggle the width to see the original capture scale.</p></div></header><div className="elSizeToggle" role="group" aria-label="Compare image presentation widths"><button aria-pressed={!compact} onClick={()=>setCompact(false)}>Wide canvas</button><button aria-pressed={compact} onClick={()=>setCompact(true)}>Narrow canvas</button></div><div className={`elViewport ${compact?'elViewportCompact':''}`}><img src={assetUrl('project-media/el-home.webp')} alt="Original Double Wear homepage, scaled without cropping" loading="lazy"/></div><p className="elViewportCaption">The original imagery stays intact as the available width changes.</p></section>
+  <section className="elFinal elStage" id="el-present"><div className="elCompactScene"><EsteeCompact/></div><EsteeOutcome/></section>
  </div>
 }
 
@@ -900,8 +984,7 @@ const accentureStages=[
  {id:'ax-discover',name:'Discover',did:'Supported 21 live requests'},
  {id:'ax-define',name:'Define',did:'Write the rules down'},
  {id:'ax-build',name:'Build',did:'Prototype in Codex'},
- {id:'ax-test',name:'Test',did:'Find where rules break'},
- {id:'ax-recommend',name:'Recommend',did:'5 recommendations, 90-day tests'}
+ {id:'ax-test',name:'Test',did:'Find where rules break'}
 ];
 function AccentureCase(){return <div className="accentureStory"><AccentureStagger/><LifecycleRoad stages={accentureStages} vehicle="cablecar"/>
   <section className="axSpine" aria-label="How the investigation ran">
@@ -929,7 +1012,7 @@ function AccentureCase(){return <div className="accentureStory"><AccentureStagge
    </DecisionMoment>
   </div>
 
-  
+  <section className="axChapter accentureEvidence axStage" id="ax-recommend"><header><h2>Using evidence <em>to decide what to test next.</em></h2><p>I combined learner feedback with market and adoption research.</p></header><AccentureEvidenceFunnel/></section>
  </div>}
 
 const kohlerStages=[
@@ -1160,10 +1243,10 @@ function Home({openCase}){
    e.currentTarget.style.setProperty('--hero-mouse-y',`${e.clientY-rect.top}px`);
  };
  return <>
- <header className={`siteHeader${navOpen?' navIsOpen':''}`}><a className="wordmark" href="#top">Neha Chinimilli</a><button type="button" className="navToggle" aria-expanded={navOpen} aria-controls="primaryNav" aria-label={navOpen?'Close menu':'Open menu'} onClick={()=>setNavOpen(o=>!o)}><span/><span/></button><nav id="primaryNav" aria-label="Primary" onClick={e=>{if((e.target as HTMLElement).closest('a'))setNavOpen(false)}}><a href="#projects">Selected work</a><a href="#experience">Experience</a><a href="#fun">Fun builds</a><a href="resume.pdf" target="_blank" rel="noreferrer">Resume</a><a href="mailto:chinimi2@msu.edu">Email</a><a className="headerLinkedIn" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on LinkedIn"><img src={assetUrl('linkedin.svg')} alt="LinkedIn"/></a></nav></header>
+ <header className={`siteHeader${navOpen?' navIsOpen':''}`}><a className="wordmark" href="#top">Neha Chinimilli</a><button type="button" className="navToggle" aria-expanded={navOpen} aria-controls="primaryNav" aria-label={navOpen?'Close menu':'Open menu'} onClick={()=>setNavOpen(o=>!o)}><span/><span/></button><nav id="primaryNav" aria-label="Primary" onClick={e=>{if((e.target as HTMLElement).closest('a'))setNavOpen(false)}}><a href="#projects">Selected work</a><a href="#experience">Experience</a><a href="#fun">Fun builds</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume</a><a href="mailto:chinimi2@msu.edu">Email</a><a className="headerLinkedIn" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on LinkedIn"><img src={assetUrl('linkedin.svg')} alt="LinkedIn"/></a></nav></header>
  <main id="main-content" className={`homePage homeAura-${auraTone}`}>
   <AuraField tone={auraTone}/>
-  <section id="top" className={`hero v28Hero ${heroPointerActive?'heroPointerActive':''}`} onPointerMove={moveHeroAura} onPointerEnter={e=>{if(e.pointerType!=='touch')setHeroPointerActive(true)}} onPointerLeave={()=>setHeroPointerActive(false)}><div className="heroMouseAura" aria-hidden="true"/><div className="heroInner"><h1>Neha Chinimilli</h1><p className="heroThesis">Dual degree in Computer Science and Supply Chain Management · Michigan State</p><p className="heroTagline">Software Engineer and consultant with hands-on product experience at Ford, Ford Credit, and Accenture.</p><div className="heroLinks"><a className="primaryHeroLink" href="#projects">View selected work ↓</a><a href="#about">Learn more about me ↓</a><a href="resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></div></div></section>
+  <section id="top" className={`hero v28Hero ${heroPointerActive?'heroPointerActive':''}`} onPointerMove={moveHeroAura} onPointerEnter={e=>{if(e.pointerType!=='touch')setHeroPointerActive(true)}} onPointerLeave={()=>setHeroPointerActive(false)}><div className="heroMouseAura" aria-hidden="true"/><div className="heroInner"><h1>Neha Chinimilli</h1><p className="heroThesis">Dual degree in Computer Science and Supply Chain Management · Michigan State</p><p className="heroTagline">Software Engineer and consultant with hands-on product experience at Ford, Ford Credit, and Accenture.</p><div className="heroLinks"><a className="primaryHeroLink" href="#projects">View selected work ↓</a><a href="#about">Learn more about me ↓</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></div></div></section>
   <CompanyBanner/>
   <section id="projects" className="section projectsSection v28Projects"><div className="sectionTitle compactTitle"><h2>Selected work</h2></div><div className="balancedProjectGrid">{serious.map((p,i)=><ProjectCard project={p} index={i} key={p.id} featured={i===0} onOpen={openCase}/>)}</div></section>
   <ExperienceSection onAura={setAuraTone} onOpen={openCase}/><EducationSection/>
@@ -1194,7 +1277,7 @@ function Home({openCase}){
                   </section>
   <section id="about" className="section aboutSection">
     <div className="aboutPhoto"><AboutFilmCamera photos={aboutFilmPhotos} open={filmOpen} index={filmIndex} onClose={()=>setFilmOpen(false)} onChange={setFilmIndex}/></div><div className="aboutCopy"><h2>About me</h2><p>I’m Neha. I’m finishing a <strong>dual degree in Computer Science and Supply Chain Management at Michigan State</strong>, so I think a lot about how systems work, and about the parts people still do by hand because nobody fixed them. I’m also a creative at heart. If I’m going to fix something, I want it to feel good to use, not just work.</p><p>I’ve been rebuilding the same alarm since high school: find the latest I can get up and still make it on time. It started as a script using Google Maps drive time. When I moved to the Bay for the summer, I added my morning routine, live transit, traffic, and walking time, and it became the <a className="aboutInlineLink" href="#/projects/commute">Commute iOS app</a> above. It’s the same pattern I follow at work: start with one annoying problem, and keep going until it’s actually solved.</p><p className="hobbyLine">Outside of work, I’m usually trying a new coffee shop, traveling, <HobbyPopover label="reading" title="On my shelf" items={["A Thousand Splendid Suns","When Breath Becomes Air","The Year of Magical Thinking","Sharp Objects"]}/>, keeping up with <HobbyPopover label="reality TV" title="Always on rotation" items={["Modern Family","Vanderpump Rules","Summer House","the newest Real Housewives season"]}/>, baking, hiking, painting, or taking <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>{setFilmOpen(true);setFilmIndex(0)}} aria-expanded={filmOpen}>film photos</button><span className="filmPhotoHint" role="tooltip">click to see my photos</span></span>.</p><div className="aboutActions"><BookRecForm/></div></div></section>
- </main><footer className="siteFooter"><span>© 2026 Neha Chinimilli</span><nav aria-label="Footer"><a href="mailto:chinimi2@msu.edu">Email</a><a className="linkedinLink" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Visit Neha Chinimilli on LinkedIn (opens in a new tab)"><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M19.5 3h-15A1.5 1.5 0 0 0 3 4.5v15A1.5 1.5 0 0 0 4.5 21h15a1.5 1.5 0 0 0 1.5-1.5v-15A1.5 1.5 0 0 0 19.5 3ZM8.25 18.25H5.75v-8h2.5v8ZM7 9.15a1.45 1.45 0 1 1 0-2.9 1.45 1.45 0 0 1 0 2.9Zm11.25 9.1h-2.5v-3.9c0-.93-.02-2.12-1.29-2.12-1.3 0-1.5 1.01-1.5 2.05v3.97h-2.5v-8h2.4v1.09h.04c.33-.64 1.15-1.32 2.37-1.32 2.54 0 3.01 1.67 3.01 3.84v4.39Z"/></svg><span>LinkedIn</span><span aria-hidden="true">↗</span></a><a href="resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></nav></footer>
+ </main><footer className="siteFooter"><span>© 2026 Neha Chinimilli</span><nav aria-label="Footer"><a href="mailto:chinimi2@msu.edu">Email</a><a className="linkedinLink" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Visit Neha Chinimilli on LinkedIn (opens in a new tab)"><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M19.5 3h-15A1.5 1.5 0 0 0 3 4.5v15A1.5 1.5 0 0 0 4.5 21h15a1.5 1.5 0 0 0 1.5-1.5v-15A1.5 1.5 0 0 0 19.5 3ZM8.25 18.25H5.75v-8h2.5v8ZM7 9.15a1.45 1.45 0 1 1 0-2.9 1.45 1.45 0 0 1 0 2.9Zm11.25 9.1h-2.5v-3.9c0-.93-.02-2.12-1.29-2.12-1.3 0-1.5 1.01-1.5 2.05v3.97h-2.5v-8h2.4v1.09h.04c.33-.64 1.15-1.32 2.37-1.32 2.54 0 3.01 1.67 3.01 3.84v4.39Z"/></svg><span>LinkedIn</span><span aria-hidden="true">↗</span></a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></nav></footer>
  </>
 }
 

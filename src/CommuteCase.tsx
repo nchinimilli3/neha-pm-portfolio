@@ -65,36 +65,37 @@ function RouteRisk(){
 
 function FreshnessDiagram(){
  const [ref,seen]=useInView<HTMLDivElement>();
- // Live tracking: the bus keeps driving while its older GPS pings trail behind and count for less.
- const pings=[{t:'8 min ago',w:.2,x:34},{t:'5 min ago',w:.46,x:110},{t:'2 min ago',w:.78,x:186}];
- return <div ref={ref} className={`cmTrail${seen?' isIn':''}`} role="img" aria-label="A bus's newest location counts 100 percent. A ping 2 minutes old counts 78 percent, 5 minutes old 46 percent, and 8 minutes old 20 percent.">
+ // Older location pings shrink and fade: how faint a dot is shows how much that update still counts.
+ const pings=[{t:'8 min ago',w:.2,x:40},{t:'5 min ago',w:.46,x:112},{t:'2 min ago',w:.78,x:184}];
+ return <div ref={ref} className={`cmTrail${seen?' isIn':''}`} role="img" aria-label="The Muni bus's current location counts 100 percent. Its position 2 minutes ago counts 78 percent, 5 minutes ago 46 percent, and 8 minutes ago 20 percent, drawn as fading dots behind the bus.">
   <svg viewBox="0 0 340 150" aria-hidden="true">
-   <path d="M0 104H340" className="cmTrailRoad"/>
-   <path d="M0 104H340" className="cmTrailLane"/>
+   <path d="M20 104H330" className="cmTrailLine"/>
+   <path d={`M40 104H224`} className="cmTrailPath"/>
    {pings.map((p,i)=><g key={p.t} className="cmTrailPing" style={{'--i':i} as React.CSSProperties}>
-    <circle cx={p.x} cy="104" r={5+p.w*9} className="cmPingHalo" style={{opacity:.15+p.w*.35}}/>
-    <circle cx={p.x} cy="104" r={3+p.w*3} className="cmPingCore" style={{opacity:.3+p.w*.7}}/>
-    <text x={p.x} y="74" className="cmPingPct">{Math.round(p.w*100)}%</text>
-    <text x={p.x} y="136" className="cmPingAge">{p.t}</text>
+    <circle cx={p.x} cy="104" r={3+p.w*4} className="cmPingDot" style={{opacity:.25+p.w*.75}}/>
+    <text x={p.x} y="82" className="cmPingPct" style={{opacity:.35+p.w*.65}}>{Math.round(p.w*100)}%</text>
+    <text x={p.x} y="130" className="cmPingAge">{p.t}</text>
    </g>)}
-   <g className="cmBus" transform="translate(272 104)">
+   <g className="cmBus" transform="translate(282 99)">
     <g className="cmBusBody">
-     <path d="M-36 -8V-34a12 12 0 0 1 12-12h46a14 14 0 0 1 13 9l6 16v13z" className="cmBusShell"/>
-     <path d="M-36 -8h77v4a6 6 0 0 1-6 6h-65a6 6 0 0 1-6-6z" className="cmBusSkirt"/>
-     <rect x="-30" y="-39" width="14" height="14" rx="4" className="cmBusWin"/>
-     <rect x="-12" y="-39" width="14" height="14" rx="4" className="cmBusWin"/>
-     <path d="M6 -39h13a5 5 0 0 1 4.6 3l3.8 9a3 3 0 0 1-2.8 4H6z" className="cmBusWin"/>
-     <circle cx="37" cy="-12" r="2.6" className="cmBusLamp"/>
-     <path d="M-36 -20h72" className="cmBusStripe"/>
+     <path d="M-54 -6V-43a5 5 0 0 1 5-5h96a6 6 0 0 1 5.6 4l2.4 8V-6z" className="cmMuniShell"/>
+     <path d="M-54 -41v-2a5 5 0 0 1 5-5h96a6 6 0 0 1 5.6 4l.8 3z" className="cmMuniBand"/>
+     <path d="M-54 -14h109v8a3 3 0 0 1-3 3h-103a3 3 0 0 1-3-3z" className="cmMuniBand"/>
+     <path d="M-54 -14h6v11h-3a3 3 0 0 1-3-3z" className="cmMuniRear"/>
+     {[-50,-37,-24,-11,2,15,28].map((x,i)=><rect key={x} x={x} y="-37" width={i===0?10:11.5} height="13" rx="1" className="cmMuniWin"/>)}
+     <path d="M-37 -31h11.5M-11 -31h11.5M15 -31h11.5" className="cmMuniMull"/>
+     <path d="M42 -37h9.5a2 2 0 0 1 1.9 1.4l3.6 13.6v5H42z" className="cmMuniWin"/>
+     <path d="M47 -37v20" className="cmMuniMull"/>
+     <g transform="translate(-9 -22) scale(.5)" className="cmMuniLogo"><path d="M0 12V3.5a3.5 3.5 0 0 1 7 0V12M7 3.5a3.5 3.5 0 0 1 7 0V12M16.5 0v8.5a3.5 3.5 0 0 0 7 0V0M26 12V3.5a3.5 3.5 0 0 1 7 0V12M35.5 0v12" className="cmWormOut"/><path d="M0 10V4a3 3 0 0 1 6 0v2a3 3 0 0 1 6 0v4 M15 0v6a3 3 0 0 0 6 0V0 M24 10V4a3 3 0 0 1 6 0v6 M33 0v10" className="cmWormIn"/></g>
+     <rect x="55" y="-9" width="3" height="5" rx="1" className="cmMuniBumper"/>
+     <rect x="-56" y="-9" width="3" height="5" rx="1" className="cmMuniBumper"/>
     </g>
-    <circle cx="-20" cy="2" r="7" className="cmBusWheel"/><circle cx="-20" cy="2" r="2.4" className="cmBusHub"/>
-    <circle cx="24" cy="2" r="7" className="cmBusWheel"/><circle cx="24" cy="2" r="2.4" className="cmBusHub"/>
-    <path d="M-50 -30h-10M-48 -20h-16M-50 -10h-8" className="cmBusSpeed"/>
-    <text x="0" y="-60" className="cmPingPct">100%</text>
-    <text x="0" y="32" className="cmPingAge">now</text>
+    <circle cx="-34" cy="-2" r="7" className="cmBusWheel"/><circle cx="36" cy="-2" r="7" className="cmBusWheel"/>
+    <circle cx="-34" cy="-2" r="3" className="cmBusHub"/><circle cx="36" cy="-2" r="3" className="cmBusHub"/>
+    <text x="0" y="-60" className="cmPingPct cmPingNow">100%</text>
+    <text x="0" y="31" className="cmPingAge">now</text>
    </g>
   </svg>
-  <p className="cmTrailKey">How much each location update counts in the plan</p>
  </div>;
 }
 
@@ -276,13 +277,16 @@ export default function CommuteCase({demo}:{demo:React.ReactNode}){
     </ol>
    </div>
    <div className="cmScale">
-    <h3>At Google Maps scale</h3>
-    <p>For me, one route and a few weeks of history are enough. For millions of commuters, three things change:</p>
-    <ul>
-     <li><b>Cold start.</b> A new user has no history, so reliability has to come from aggregate data on the same line, stop, and time of day, then personalize as their own trips accumulate.</li>
-     <li><b>Uneven data.</b> Many cities have no realtime transit feed. The product should fall back to scheduled times and widen its buffer, and say it is doing so.</li>
-     <li><b>Trust.</b> An alarm that moves on its own breaks trust quickly. Keep the approve-before-change rule, and measure missed arrivals as the guardrail next to minutes of sleep saved.</li>
-    </ul>
+    <header>
+     <span className="cmScaleKicker">If this were Google Maps</span>
+     <h3>What changes at scale</h3>
+     <p>For me, one route and a few weeks of history are enough. For millions of commuters, three things break first.</p>
+    </header>
+    <ol>
+     <li><i>01</i><b>Cold start</b><p>A new user has no history, so reliability comes from aggregate data on the same line, stop, and time of day, then personalizes as their own trips accumulate.</p></li>
+     <li><i>02</i><b>Uneven data</b><p>Many cities have no realtime feed. Fall back to scheduled times, widen the buffer, and say so.</p></li>
+     <li><i>03</i><b>Trust</b><p>An alarm that moves on its own loses trust fast. Keep approve-before-change, and guard missed arrivals against minutes of sleep saved.</p></li>
+    </ol>
    </div>
    <div className="cmTicket">
     <div className="cmTicketStub" aria-hidden="true"><span>Commute</span><i className="cmBarcode"/></div>

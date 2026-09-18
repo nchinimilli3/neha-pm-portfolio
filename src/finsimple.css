@@ -1,5 +1,5 @@
 /* FinSimple: electric blue atmosphere, saved context, connected systems. */
-.case-finsimple{--fs-ink:#0b3052;color:var(--fs-ink);isolation:isolate}.case-finsimple .caseHeader h1{color:#123e69!important;background:none!important;-webkit-text-fill-color:currentColor!important}.case-finsimple .caseLead{grid-template-columns:1fr 1.15fr!important;gap:36px!important;align-items:center!important}.fseEditorial{color:var(--fs-ink);font-size:17px;line-height:1.65}.fseEditorial *{box-sizing:border-box}.fseEditorial section{width:min(1180px,calc(100% - 64px));margin:auto;padding:clamp(56px,7vw,96px) 0 0}.fseEditorial section:last-child{padding-bottom:96px}.fseEditorial h2{font:450 clamp(38px,4.5vw,64px)/1.06 var(--case-font);letter-spacing:-.035em;margin:20px 0 28px}.fseEditorial h2 em{color:#4779a5;font-weight:400}.fseEditorial p{margin:0 0 22px;max-width:560px}.fseReturn,.fseDelivery{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}.fsePlatform>header,.fseBuild>header,.fseTest>header,.fseOperate>header{display:grid;grid-template-columns:1.2fr 1fr;gap:70px;align-items:end}.fsePlatform>header p,.fseBuild>header p{margin-bottom:28px}.fseConnection{display:grid;grid-template-columns:1fr 70px 1fr;align-items:center;margin-top:35px}.fseEditorial button:focus-visible{outline:3px solid #398acd;outline-offset:5px}.fseEvidence{margin:0;min-width:0}.fseEvidence button{position:relative;display:block;width:100%;padding:0;border:0;background:#fff;cursor:zoom-in}.fseEvidence img{display:block;width:100%;height:500px;object-fit:contain;object-position:top}.fseEvidence button>span{position:absolute;bottom:12px;right:12px;padding:7px 12px;background:#173f65;color:white;font-size:11px;border-radius:3px}.fseEvidence figcaption{font:10px/1.5 var(--case-font);color:#5b7990;margin-top:14px}
+.case-finsimple{--fs-ink:#0b3052;color:var(--fs-ink);isolation:isolate}.case-finsimple .caseLead{grid-template-columns:1fr 1.15fr!important;gap:36px!important;align-items:center!important}.fseEditorial{color:var(--fs-ink);font-size:17px;line-height:1.65}.fseEditorial *{box-sizing:border-box}.fseEditorial section{width:min(1180px,calc(100% - 64px));margin:auto;padding:clamp(56px,7vw,96px) 0 0}.fseEditorial section:last-child{padding-bottom:96px}.fseEditorial h2{font:450 clamp(38px,4.5vw,64px)/1.06 var(--case-font);letter-spacing:-.035em;margin:20px 0 28px}.fseEditorial h2 em{color:#4779a5;font-weight:400}.fseEditorial p{margin:0 0 22px;max-width:560px}.fseReturn,.fseDelivery{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}.fsePlatform>header,.fseBuild>header,.fseTest>header,.fseOperate>header{display:grid;grid-template-columns:1.2fr 1fr;gap:70px;align-items:end}.fsePlatform>header p,.fseBuild>header p{margin-bottom:28px}.fseConnection{display:grid;grid-template-columns:1fr 70px 1fr;align-items:center;margin-top:35px}.fseEditorial button:focus-visible{outline:3px solid #398acd;outline-offset:5px}.fseEvidence{margin:0;min-width:0}.fseEvidence button{position:relative;display:block;width:100%;padding:0;border:0;background:#fff;cursor:zoom-in}.fseEvidence img{display:block;width:100%;height:500px;object-fit:contain;object-position:top}.fseEvidence button>span{position:absolute;bottom:12px;right:12px;padding:7px 12px;background:#173f65;color:white;font-size:11px;border-radius:3px}.fseEvidence figcaption{font:10px/1.5 var(--case-font);color:#5b7990;margin-top:14px}
 
 @media(max-width:1000px){}
 
@@ -106,7 +106,6 @@
 
 /* Lifecycle road in FinSimple blue */
 .fseEditorial{--lc-ink:#0b3052;--lc-road:#1d4f7a;--lc-accent:#2f8fe0;--lc-accent-2:#7cc3ff;--lc-muted:#6d8aa3;--lc-tint:#e2edf9f2;--lc-glass:#d9ecfb}
-.fseEditorial nav.lcRoad{width:100%;padding-left:max(24px,calc((100% - 1180px)/2));padding-right:max(24px,calc((100% - 1180px)/2))}
 .fseStage{scroll-margin-top:110px}
 
 /* Test: three environment gates */
@@ -244,3 +243,8 @@
 .fseOperate .fseHub{max-width:none}
 .fseOperate .fseClose{max-width:none;margin:48px 0 0;text-align:center;font-size:clamp(20px,2vw,25px)}
 @media(max-width:850px){.fseOperate .cdSupporting{grid-template-columns:1fr}}
+
+/* Launch: the freeway shows the five workstreams; only my own handoff gets words */
+.fseMine{grid-column:1/-1;max-width:760px;margin:28px 0 0;padding-left:18px;border-left:3px solid #15609f}
+.fseMine b{display:block;margin-bottom:6px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#15609f}
+.fseMine p{margin:0;font-size:17px;line-height:1.55;color:#0b3052}

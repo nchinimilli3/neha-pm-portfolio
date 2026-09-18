@@ -79,9 +79,7 @@ const tasks=[
   {task:'Nominate a book and rank the shortlist',time:'target < 2 min'},
   {task:'Save a thought, then find it in the meeting',time:'target < 90 sec'},
 ];
-const matrix=[
-  {x:78,y:22,label:'Fix first'},{x:64,y:34},{x:30,y:28},{x:72,y:70},{x:22,y:74},{x:46,y:52},
-];
+const rank=[{t:'Ranking the ballot',w:.94},{t:'Tagging checkpoints',w:.66},{t:'Thoughts reaching the meeting',w:.48},{t:'Finding the current read',w:.28}];
 
 function ValidationPlan(){
   const [ref,inView]=useInView<HTMLDivElement>(.25);
@@ -102,11 +100,11 @@ function ValidationPlan(){
       <span className="bcPhaseNum">3</span>
       <h3>Live demo with the club</h3>
       <p>Walk the group through a full cycle, then rank every issue by how often it happens and how much it hurts.</p>
-      <div className="bcMatrix" aria-label="Priority matrix: frequency by impact">
-        <span className="bcAxisY">Impact</span><span className="bcAxisX">Frequency</span>
-        <i className="bcQuad"/>
-        {matrix.map((d,i)=><b key={i} className={d.label?'isTop':''} style={{left:`${d.x}%`,top:`${d.y}%`,'--k':i} as React.CSSProperties}>{d.label&&<small>{d.label}</small>}</b>)}
-      </div>
+      <ol className="bcRank" aria-label="Issues ranked by how often they happen times how much they hurt">
+        {rank.map((d,i)=><li key={d.t} className={i===0?'isTop':''} style={{'--k':i,'--w':d.w} as React.CSSProperties}>
+          <span>{d.t}</span><b/>{i===0&&<em>Fix first</em>}
+        </li>)}
+      </ol>
     </article>
   </div>;
 }
@@ -160,9 +158,10 @@ export function BookclubEditorial(){
       <header><h2>How I’ll know <em>it works</em></h2><p>The app is live for my reading group. Before building more, I’m validating the core loop in three steps.</p></header>
       <ValidationPlan/>
       <div className="bcRules">
-        <p><span>If</span> fewer than 4 of 5 people finish ranking <i aria-hidden="true">→</i> simplify the ballot before adding features.</p>
-        <p><span>If</span> readers skip checkpoint tags <i aria-hidden="true">→</i> suggest the tag from their saved progress.</p>
-        <p><span>If</span> saved thoughts never reach the meeting <i aria-hidden="true">→</i> turn them into the meeting’s opening prompts.</p>
+        <p className="bcRulesHead">If the tests show…</p>
+        <div className="bcRule"><span>Fewer than 4 of 5 finish ranking</span><b>Simplify the ballot before adding features</b></div>
+        <div className="bcRule"><span>Readers skip checkpoint tags</span><b>Suggest the tag from their saved progress</b></div>
+        <div className="bcRule"><span>Saved thoughts never reach the meeting</span><b>Turn them into the meeting’s opening prompts</b></div>
       </div>
     </section>
   </div>;

@@ -16,9 +16,9 @@
 
 .elVanity{display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center;border-top:1px solid #bca98c66}
 .elMirrorScene{position:relative;padding:0 25px 32px;isolation:isolate}
-.elMirrorGlass{position:relative;aspect-ratio:1/1.14;border-radius:48% 48% 44% 44%;padding:14px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:linear-gradient(115deg,#6d5839,#e4d3b4 12%,#a38a61 20%,#f8edd8 26%,#a38a61 65%,#f6e9d2 80%,#796342);box-shadow:14px 22px 30px #30271322,inset 0 0 0 1px #82704d}
-.elMirrorGlass:before{content:'';position:absolute;inset:8px;border-radius:inherit;background:linear-gradient(130deg,#fff8 10%,transparent 45%,#f6ece17a 65%,#fff9);z-index:1;box-shadow:inset 0 0 18px #272b3c44;border:1px solid #fff9}
-.elReflection{position:absolute;inset:12px;border-radius:inherit;background:linear-gradient(#f5eee9ba,#f5eee9e8),url('/project-media/el-home.webp') center 65%/auto 150%;}
+.elMirrorGlass{position:relative;aspect-ratio:1/1.14;border-radius:48% 48% 44% 44%;padding:18px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:linear-gradient(115deg,#6d5839,#e4d3b4 12%,#a38a61 20%,#f8edd8 26%,#a38a61 65%,#f6e9d2 80%,#796342);box-shadow:14px 22px 30px #30271322,inset 0 0 0 1px #82704d}
+.elMirrorGlass:before{content:'';position:absolute;inset:18px;border-radius:inherit;z-index:1;pointer-events:none;background:linear-gradient(118deg,transparent 18%,#ffffffb8 20%,#ffffff40 25%,transparent 27%,transparent 31%,#ffffff8c 32.5%,transparent 35%),linear-gradient(118deg,transparent 64%,#ffffff55 66%,transparent 70%);box-shadow:inset 0 0 0 2px #ffffffb0,inset 0 3px 10px #4a3a2240,inset 0 -6px 24px #ffffff80}
+.elReflection{position:absolute;inset:18px;border-radius:inherit;overflow:hidden;background:radial-gradient(120% 90% at 30% 20%,#fbfcfdeb,#e3e8edd9 55%,#c4ccd4e0),url('/project-media/el-home.webp') center 65%/auto 150%;background-blend-mode:normal,luminosity}
 .elMirrorGlass p{position:relative;z-index:2;font:400 clamp(27px,3vw,43px)/1.2 Georgia,serif;margin:0 10px 22px;text-shadow:0 1px 12px #fff}
 .elMirrorGlass p em{font-weight:400}
 .elMirrorGlass>span{z-index:2;font-size:13px;color:#5c5146}
@@ -92,3 +92,32 @@
  .elEditorial .elFinal>.elOutcomeText{grid-column:1/6;grid-row:1}
  .elEditorial .elFinal>.elCompactScene{grid-column:7/13;grid-row:1}
 }
+
+/* Hollywood vanity mirror: a lit frame of bulbs around silvered glass, sitting on a dressing table. */
+.isVanity{padding:0 0 10px}
+.elVanityFrame{position:relative;padding:34px;border-radius:26px;background:linear-gradient(135deg,#f3e6cc,#c9ad7c 30%,#f6ead2 52%,#b8996a 78%,#e9d8b8);box-shadow:0 30px 50px #3a2a1433,inset 0 1px 0 #fff,inset 0 0 0 1px #9c7f52}
+.isVanity .elMirrorGlass{aspect-ratio:1/1.05;border-radius:12px;padding:0;background:none;box-shadow:inset 0 0 0 3px #8a6f45,0 0 0 1px #fff8}
+.isVanity .elReflection,.isVanity .elMirrorGlass:before{inset:0;border-radius:12px}
+.elBulb{position:absolute;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff,#fff6d8 45%,#ffd98a);box-shadow:0 0 10px 3px #ffe7a6b3,0 0 26px 8px #ffd98a55;animation:elBulbOn .5s ease-out both;animation-delay:calc(var(--i) * 60ms)}
+/* 4 across top and bottom, 3 down each side. */
+.elBulb:nth-child(-n+4){top:9px;left:calc(14% + (var(--i)) * 24%)}
+.elBulb:nth-child(n+5):nth-child(-n+8){bottom:9px;left:calc(14% + (var(--i) - 4) * 24%)}
+.elBulb:nth-child(n+9):nth-child(-n+11){left:9px;top:calc(27% + (var(--i) - 8) * 23%)}
+.elBulb:nth-child(n+12){right:9px;top:calc(27% + (var(--i) - 11) * 23%)}
+.elBulb{translate:-50% 0}.elBulb:nth-child(n+9){translate:0 -50%}
+@keyframes elBulbOn{from{opacity:.25;filter:grayscale(1)}}
+.elVanityTable{height:18px;margin:0 -24px;border-radius:4px 4px 10px 10px;background:linear-gradient(#f4e9d8,#d9c6a8);box-shadow:0 14px 24px #3a2a1426}
+@media(prefers-reduced-motion:reduce){.elBulb{animation:none}}
+
+/* Top 5 celebration: a gold shimmer sweeps the text and confetti bursts once. */
+.elOutcomeText{position:relative}
+.elOutcomeText .elFinalRecognition strong{background:linear-gradient(100deg,#8a6a38 0 35%,#fff3d1 45%,#d4af6a 52%,#8a6a38 62% 100%) 100% 0/250% 100% no-repeat;-webkit-background-clip:text;background-clip:text;transition:text-shadow .8s}
+.isCelebrating .elFinalRecognition strong{-webkit-text-fill-color:transparent;animation:elShimmer 1.6s cubic-bezier(.3,.7,.3,1) .15s both;text-shadow:0 0 28px #f3d99a88}
+@keyframes elShimmer{from{background-position:100% 0}to{background-position:0 0}}
+.isCelebrating h2{animation:elGlow 2.2s ease-out .3s both}
+@keyframes elGlow{0%{text-shadow:none}35%{text-shadow:0 0 22px #f3d99acc,0 0 2px #fff}100%{text-shadow:0 0 14px #f3d99a40}}
+.elConfetti{position:absolute;left:24%;top:30%;width:0;height:0;pointer-events:none;z-index:2}
+.elConfetti i{position:absolute;width:9px;height:14px;border-radius:2px;background:var(--c);opacity:0;animation:elBurst 1.5s cubic-bezier(.15,.7,.3,1) var(--d) forwards}
+.elConfetti i:nth-child(3n){width:8px;height:8px;border-radius:50%}
+@keyframes elBurst{0%{opacity:1;transform:translate(0,0) rotate(0) scale(.4)}70%{opacity:1}100%{opacity:0;transform:translate(var(--x),calc(var(--y) + 120px)) rotate(calc(var(--r) + 540deg)) scale(1)}}
+@media(prefers-reduced-motion:reduce){.elConfetti{display:none}.isCelebrating .elFinalRecognition strong,.isCelebrating h2{animation:none}}

@@ -132,19 +132,25 @@ const travelers:Record<string,React.ReactNode>={
   <path d="M20 15.2h40M20 17.4h26" stroke="#e8cf8f" strokeWidth=".9"/><path d="M9.5 16v18" stroke="#e8cf8f" strokeWidth=".6" strokeOpacity=".7"/>
   <path d="M70 11.5h5v25l-2.5-2.6-2.5 2.6z" fill="url(#lcRibbonG)"/>
   <path d="M11 12.4h72" stroke="#fff" strokeOpacity=".22" strokeWidth=".8"/></svg>,
- bottle:<svg viewBox="0 0 96 40"><defs>{ground}
-  <G id="lcCapG" x2="1" y2="0" stops={[['0','#7d5a26'],['.25','#d4ae67'],['.45','#f6e3b3'],['.65','#c29b55'],['1','#6f4f20']]}/>
-  <G id="lcGlassG" x2="1" y2="0" stops={[['0','#e2d7c6'],['.15','#fbf8f2'],['.8','#f3ede3'],['1','#cfc2ad']]}/>
-  <G id="lcLiquidG" x2="1" y2="0" stops={[['0','#4a2a17'],['.5','#7a4a2e'],['1','#3f2313']]}/>
-  </defs>{shadow(48,17,38)}
-  <rect x="39.5" y="1" width="17" height="11" rx="1.4" fill="url(#lcCapG)"/>
-  {[42,45,48,51,54].map(x=><path key={x} d={`M${x} 2.5v8.5`} stroke="#5b3f14" strokeOpacity=".28" strokeWidth=".7"/>)}
-  <rect x="42" y="12" width="12" height="2.6" fill="#6f4f20"/>
-  <path d="M33 18a4 4 0 0 1 4-4h22a4 4 0 0 1 4 4v15.5a3.5 3.5 0 0 1-3.5 3.5h-23a3.5 3.5 0 0 1-3.5-3.5z" fill="url(#lcGlassG)" stroke="#bfae92" strokeWidth=".6"/>
-  <path d="M36.2 24.5q5.9-1.4 11.8 0t11.8 0v9.3a1.6 1.6 0 0 1-1.6 1.6H37.8a1.6 1.6 0 0 1-1.6-1.6z" fill="url(#lcLiquidG)"/>
-  <text x="48" y="20" textAnchor="middle" style={{font:'600 3.2px Georgia,serif',fill:'#07132f',letterSpacing:'.14em'}}>ESTĒE LAUDER</text>
-  <text x="48" y="23.2" textAnchor="middle" style={{font:'italic 3.6px Georgia,serif',fill:'#07132f'}}>Double Wear</text>
-  <path d="M35.2 17v17" stroke="#fff" strokeOpacity=".85" strokeWidth="1.4" strokeLinecap="round"/><path d="M60.8 19v12" stroke="#fff" strokeOpacity=".4" strokeWidth=".8"/></svg>,
+ bottle:<svg viewBox="30 0 36 40"><defs>{ground}
+  <G id="lcCapG" x2="1" y2="0" stops={[['0','#6f4f20'],['.18','#c9a25d'],['.38','#f7e7bd'],['.55','#d4b06a'],['.8','#9c7a3d'],['1','#5e421a']]}/>
+  <G id="lcGlassG" x2="1" y2="0" stops={[['0','#d8cdbd'],['.12','#f7f3ec'],['.5','#fbf8f3'],['.88','#efe8dc'],['1','#c9bca6']]}/>
+  <G id="lcLiquidG" x2="1" y2="0" stops={[['0','#8a5634'],['.35','#c08a60'],['.65','#b27b52'],['1','#7a4a2b']]}/>
+  </defs>{shadow(48,15,38.4)}
+  {/* Brushed gold cap with a darker collar */}
+  <rect x="41" y="1" width="14" height="12.5" rx="1.2" fill="url(#lcCapG)"/>
+  <path d="M43 2.2v10M53 2.2v10" stroke="#fff" strokeOpacity=".35" strokeWidth=".6"/>
+  <rect x="42" y="13.5" width="12" height="1.8" fill="#5e421a"/>
+  {/* Thick frosted glass: outer body, then the foundation seen through an inner wall */}
+  <rect x="35" y="15.3" width="26" height="22.7" rx="3" fill="url(#lcGlassG)" stroke="#b9a88c" strokeWidth=".5"/>
+  <rect x="37.6" y="18" width="20.8" height="17.6" rx="1.6" fill="url(#lcLiquidG)"/>
+  <rect x="37.6" y="18" width="20.8" height="2" rx="1" fill="#d7a57c" opacity=".7"/>
+  {/* Label: brand line and product name as simple marks, legible at bar size */}
+  <rect x="40.5" y="22.4" width="15" height="7.6" rx=".6" fill="#fbf7f0" opacity=".92"/>
+  <path d="M42.3 24.6h11.4" stroke="#07132f" strokeWidth=".9"/>
+  <path d="M43.8 27.4h8.4" stroke="#07132f" strokeWidth=".6" strokeOpacity=".7"/>
+  <path d="M36.4 17v19" stroke="#fff" strokeOpacity=".9" strokeWidth="1.2" strokeLinecap="round"/>
+  <path d="M59.6 19v14" stroke="#fff" strokeOpacity=".45" strokeWidth=".6"/></svg>,
  bubble:<svg viewBox="0 0 96 40"><defs>
   <G id="lcBubG" stops={[['0','#5ab0ff'],['1','#0a6fe0']]}/>
   <filter id="lcBubShadow" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="2" stdDeviation="1.6" floodColor="#0a3d7a" floodOpacity=".28"/></filter>
@@ -161,6 +167,10 @@ export default function LifecycleRoad({stages,vehicle='car',label='Product lifec
  const [shown,setShown]=useState(false);
  const [moving,setMoving]=useState(false);
  const navRef=useRef<HTMLElement>(null);
+ // Mustang smoke is emitted into the scene: each puff stays where the car released it,
+ // then rises and thins toward the top of the bar while the car drives on.
+ const [puffs,setPuffs]=useState<{id:number,pos:string,v:number}[]>([]);
+ const posRef=useRef('0%');
  useEffect(()=>{
   let frame=0,stop=0;
   const update=()=>{
@@ -173,19 +183,32 @@ export default function LifecycleRoad({stages,vehicle='car',label='Product lifec
    }
    const atEnd=window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-4;
    setProgress(atEnd?stages.length-1:Math.min(p,stages.length-1));
-   const docked=(navRef.current?.getBoundingClientRect().top??1)<=1;
-   setShown(docked&&tops[0]<window.innerHeight*.6);
+   // The bar is fixed to the top, so it can only ever appear there: show it once the first stage is well on screen.
+   setShown(tops[0]<window.innerHeight*.5);
   };
   const onScroll=()=>{if(!frame)frame=requestAnimationFrame(update);setMoving(true);clearTimeout(stop);stop=window.setTimeout(()=>setMoving(false),180)};
   update();window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',onScroll);
   return ()=>{cancelAnimationFrame(frame);clearTimeout(stop);window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',onScroll)};
  },[]);
+ useEffect(()=>{
+  if(vehicle!=='mustang'||!moving||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  let id=Date.now();
+  const emit=window.setInterval(()=>{
+   const puff={id:id++,pos:posRef.current,v:Math.random()};
+   setPuffs(p=>[...p.slice(-40),puff]);
+   window.setTimeout(()=>setPuffs(p=>p.filter(x=>x.id!==puff.id)),2600);
+  },110);
+  return ()=>window.clearInterval(emit);
+ },[moving,vehicle]);
  const current=Math.min(stages.length-1,Math.floor(progress+.02));
  const go=(id:string)=>document.getElementById(id)?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
  const pos=`${(progress+.5)/stages.length*100}%`;
+ posRef.current=pos;
  return <nav ref={navRef} className={`lcRoad${shown?' isShown':''}${moving?' isMoving':''}`} data-traveler={vehicle} aria-label={label}>
   <div className="lcRoadTrack" style={{'--pos':pos,'--fill':`${progress/(stages.length-1)*100}%`,'--n':stages.length} as React.CSSProperties}>
    <span className="lcAsphalt" aria-hidden="true"><i className="lcFill"/></span>
+   <span className="lcWake" aria-hidden="true"><i/><i/><i/>{Array.from({length:7},(_,k)=><em key={k} style={{'--k':k} as React.CSSProperties}/>)}</span>
+   {vehicle==='mustang'&&<span className="lcSmoke" aria-hidden="true">{puffs.map(p=><i key={p.id} style={{left:p.pos,'--v':p.v} as React.CSSProperties}/>)}</span>}
    <span className="lcCar" aria-hidden="true">{travelers[vehicle]}</span>
    <ol>{stages.map((st,i)=><li key={st.id} className={i<current?'isPast':i===current?'isHere':''}><button type="button" onClick={()=>go(st.id)} aria-current={i===current?'step':undefined}><i className="lcPost" aria-hidden="true"/><b>{st.name}</b></button></li>)}</ol>
   </div>

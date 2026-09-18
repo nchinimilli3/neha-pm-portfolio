@@ -45,9 +45,8 @@
   .casePage .backBtn{margin-bottom:22px!important}
   .casePage .caseLead{margin-top:16px!important;margin-bottom:48px!important}
   .casePage .caseLead>.metricStrip{margin-top:clamp(26px,2.6vw,38px)!important}
-  .casePage .caseLead .caseHeroMedia{max-height:min(40vh,376px)!important;overflow:hidden!important}
-  .casePage .caseLead .caseHeroMedia>*{max-height:100%!important;height:auto!important}
-  .casePage .caseLead .caseHeroMedia img{max-height:min(40vh,376px)!important;object-fit:contain!important}
+  .casePage .caseLead .caseHeroMedia img:not(.bcHero img):not(.caseHeroLogoWrap img){width:100%!important;height:auto!important;max-height:none!important;object-fit:cover!important}
+  .casePage .caseLead .caseHeroMedia :is(.homepageMockup,.commuteHeroCover) img:not(.bcHero img):not(.caseHeroLogoWrap img){height:100%!important}
 }
 
 /* One even rhythm for the metric row, set here rather than inherited from the
@@ -90,3 +89,15 @@
 .casePage .cdMoment,
 .casePage .cdSupporting,
 .casePage .cdAnswer{grid-column:1 / -1}
+
+/* Shared vertical rhythm for every case study. Each case had drifted to its own
+   90–170px section padding; this one rule sets the spacing between stages and
+   at the end of the page so all cases breathe the same amount. */
+main.casePage{padding-bottom:64px!important}
+main.casePage :is(.axStage,.bcStage,.chStage,.cmStage,.elStage,.fvStage,.fseStage,.kxStage,.gzStage,.scStage){padding-top:56px!important;padding-bottom:40px!important}
+main.casePage :is(.elProof,.fvSurveySection){padding-top:56px!important;padding-bottom:56px!important}
+main.casePage .cdMoment{margin-top:40px;margin-bottom:40px;padding-top:32px}
+main.casePage .cdMoment:first-child{margin-top:0}main.casePage .cdMoment:last-child{margin-bottom:0}
+main.casePage :is(.sandboxSection,.schedulerDemo,.chatRuleStage,.schedulerProblemStage){margin-bottom:48px!important;padding-bottom:0!important}
+main.casePage>.caseLead,main.casePage .caseLead{padding-bottom:24px!important}
+main.casePage .cdSupporting:last-child{margin-bottom:0;padding-bottom:0!important}

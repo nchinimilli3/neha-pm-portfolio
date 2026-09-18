@@ -232,7 +232,7 @@ export default function FinSimpleCase({setLightbox}){
    </svg>
    <p className="fseFreewayNote"><b>5</b> workstreams<b>50</b> people<b>40%</b> release time cut</p>
   </figure>
-  <ol className="fseHandoffs" data-stagger>{handoffs.map(h=><li key={h.lane} className={h.mine?'isMine':''}><b>{h.lane}</b><strong>{h.gate}</strong><span>{h.blocked}</span>{h.mine&&<em><i aria-hidden="true">\u2192</i>{h.mine}</em>}</li>)}</ol>
+  {handoffs.filter(h=>h.mine).map(h=><aside key={h.lane} className="fseMine"><b>The handoff I owned · {h.lane}</b><p>{h.mine.replace('This is the one I chased. ','')}</p></aside>)}
  </section>
  <section className="fseOperate fseStage" id="fs-operate">
   <header><h2>Shipping was the start.<br/><em>Running it was the job.</em></h2><p>After launch I monitored live incidents with the Payment, DevOps, and QA teams, looked for patterns in what broke, and turned repeat problems into reusable fixes.</p></header>

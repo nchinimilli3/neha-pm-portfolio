@@ -15,22 +15,42 @@ import './case-decision.css';
 type Node = React.ReactNode;
 
 /* The five answers a reviewer should have before deciding to keep scrolling.
-   "The call" is the only row that links: it jumps to the DecisionMoment. */
+   Read in the order it should be understood: the call is the headline on the
+   left, and the right side is a short timeline of why and what came of it.
+   "The call" is the only link: it jumps to the DecisionMoment. */
 
-/* One medallion per column, reading as a sentence: ! (the problem), -> (the
-   call that moved it), ✓ (what came out). The call's medallion is solid
-   accent and larger, so it doubles as the arc's apex marker. */
-const arcIcons = {
-  problem: <span className="cdArcMedal" aria-hidden="true">
-    <svg viewBox="0 0 24 24"><path d="M12 6v7"/><circle cx="12" cy="17.2" r="1.3"/></svg>
-  </span>,
-  call: <span className="cdArcMedal cdArcMedalCall" aria-hidden="true">
-    <svg viewBox="0 0 24 24"><path d="M4.5 12h14"/><path d="M13 6.5l5.5 5.5-5.5 5.5"/></svg>
-  </span>,
-  result: <span className="cdArcMedal" aria-hidden="true">
-    <svg viewBox="0 0 24 24"><path d="M5.5 12.5l4 4 9-9"/></svg>
-  </span>
+const icons = {
+  call: <svg viewBox="0 0 24 24"><path d="M4.5 12h14"/><path d="M13 6.5l5.5 5.5-5.5 5.5"/></svg>,
+  problem: <svg viewBox="0 0 24 24"><path d="M12 6v7"/><circle cx="12" cy="17.2" r="1.3"/></svg>,
+  evidence: <svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="5.5"/><path d="M15 15l4.5 4.5"/></svg>,
+  result: <svg viewBox="0 0 24 24"><path d="M5.5 12.5l4 4 9-9"/></svg>,
+  role: <svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 19.5c1.2-3.6 4-5.2 7-5.2s5.8 1.6 7 5.2"/></svg>
 };
+
+/* Counts a stat like "+25%" or "~2.2K" up from zero once the block is on
+   screen. Anything without a leading number, or too small to count ("<1 day"),
+   is shown as written. */
+function CountUp({value, run}: {value: string; run: boolean}) {
+  const m = value.match(/^(\D*)(\d+(?:\.\d+)?)(.*)$/);
+  const [shown, setShown] = React.useState(value);
+  React.useEffect(() => {
+    if (!run || !m || parseFloat(m[2]) < 3) return;
+    const [, pre, num, post] = m;
+    const target = parseFloat(num);
+    const decimals = (num.split('.')[1] || '').length;
+    let frame = 0;
+    const t0 = performance.now();
+    const tick = (now: number) => {
+      const k = Math.min(1, (now - t0) / 1100);
+      const eased = 1 - Math.pow(1 - k, 3);
+      setShown(pre + (target * eased).toFixed(decimals) + post);
+      if (k < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [run, value]);
+  return <>{shown}</>;
+}
 
 export function CaseAnswer({
   problem,
@@ -38,7 +58,8 @@ export function CaseAnswer({
   call,
   callHref,
   evidence,
-  result
+  result,
+  stat
 }: {
   problem: Node;
   owned: Node;
@@ -46,48 +67,68 @@ export function CaseAnswer({
   callHref?: string;
   evidence: Node;
   result: Node;
+  stat?: {value: string; label: string};
 }) {
-  /* Not a list. A causal arc, drawn: the curve rises from the situation, peaks
-     on the decision, and comes down on the outcome, so the shape itself says
-     which of the three is the point. The evidence hangs under the apex. */
-  return <section className="cdAnswer" aria-label="The short version of this case study">
+  /* Visible by default. Only when JS runs and motion is allowed does the block
+     arm itself (hidden start state) and play in once it scrolls into view, so
+     the most important block on the page never depends on an animation. */
+  const ref = React.useRef<HTMLElement>(null);
+  const [phase, setPhase] = React.useState<'static' | 'armed' | 'in'>('static');
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    setPhase('armed');
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { setPhase('in'); io.disconnect(); }
+    }, {threshold: .25});
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  /* A plain-string call rises in word by word. */
+  const split = typeof call === 'string' ? call.split(' ') : null;
+  const words = split
+    ? split.map((w, i) => <span key={i} className="cdWord" style={{'--w': i} as React.CSSProperties}>{w} </span>)
+    : call;
+
+  const rows: {key: keyof typeof icons; label: string; body: Node}[] = [
+    {key: 'problem', label: 'The problem', body: <p>{problem}</p>},
+    {key: 'evidence', label: 'Because of', body: <p>{evidence}</p>},
+    {key: 'result', label: 'What happened', body: <>
+      {stat && <p className="cdStat"><strong><CountUp value={stat.value} run={phase === 'in'}/></strong><span>{stat.label}</span></p>}
+      <p>{result}</p>
+    </>}
+  ];
+
+  return <section ref={ref} className={`cdAnswer${phase === 'static' ? '' : ' isArmed'}${phase === 'in' ? ' isIn' : ''}`} aria-label="The short version of this case study">
     <header className="cdAnswerHead">
       <span className="cdAnswerRule" aria-hidden="true"/>
       <p className="cdAnswerKicker">The 20-second version</p>
       <span className="cdAnswerRule" aria-hidden="true"/>
     </header>
 
-    <p className="cdAnswerRole"><b>What I owned</b><span>{owned}</span></p>
-
-    <div className="cdArcVisual" aria-hidden="true">
-      <svg viewBox="0 0 1000 86" preserveAspectRatio="none">
-        <path className="cdArcCurve" d="M60 74C250 74 300 12 500 12S750 74 940 74"/>
-      </svg>
-      <i className="cdArcNode cdArcNodeStart"/>
-      <i className="cdArcNode cdArcNodeEnd"/>
-    </div>
-
-    <div className="cdArc">
-      <div className="cdArcCol cdArcSide">
-        {arcIcons.problem}
-        <b>The problem</b>
-        <p>{problem}</p>
-      </div>
-
-      <div className="cdArcCol cdArcCall">
-        {arcIcons.call}
-        <b>The call</b>
-        <p className="cdArcStatement">
-          {callHref ? <a href={callHref}>{call}<i aria-hidden="true">↓</i></a> : call}
+    <div className="cdAnswerBody">
+      <div className="cdCall">
+        <p className="cdCallLabel"><span className="cdMedal cdMedalCall" aria-hidden="true">{icons.call}</span>The call</p>
+        {/* --n lets the underline and arrow wait until the last word has landed. */}
+        <p className="cdCallStatement" style={{'--n': split ? split.length : 1} as React.CSSProperties}>
+          {callHref ? <a href={callHref} onClick={e => {
+            // The site routes on the URL hash, so a plain #anchor would leave the case study.
+            const target = document.getElementById(callHref.slice(1));
+            if (!target) return;
+            e.preventDefault();
+            target.scrollIntoView({behavior: 'smooth', block: 'start'});
+          }}>{words}<i aria-hidden="true">↓</i></a> : words}
         </p>
-        <p className="cdArcEvidence"><span>Because of</span>{evidence}</p>
+        <p className="cdRole"><span className="cdRoleIcon" aria-hidden="true">{icons.role}</span><span><b>What I owned</b>{owned}</span></p>
       </div>
 
-      <div className="cdArcCol cdArcSide">
-        {arcIcons.result}
-        <b>What happened</b>
-        <p>{result}</p>
-      </div>
+      <ol className="cdTimeline">
+        {rows.map((row, i) => <li key={row.key} className={`cdRow cdRow-${row.key}`} style={{'--r': i} as React.CSSProperties}>
+          <span className="cdMedal" aria-hidden="true">{icons[row.key]}</span>
+          <div className="cdRowText"><b>{row.label}</b>{row.body}</div>
+        </li>)}
+      </ol>
     </div>
   </section>;
 }

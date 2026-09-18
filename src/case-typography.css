@@ -2,7 +2,7 @@
 .casePage{--case-font:Inter,ui-sans-serif,-apple-system,"system-ui","Segoe UI",sans-serif;font-family:var(--case-font)}
 
 /* Title */
-.casePage .caseHeader h1{font-family:var(--case-font)!important;font-size:clamp(40px,4.6vw,60px)!important;font-weight:450!important;line-height:1.02!important;letter-spacing:-.045em!important}
+.casePage .caseHeader h1{font-family:var(--case-font)!important;font-size:clamp(40px,4.6vw,60px)!important;font-weight:450!important;line-height:1.12!important;letter-spacing:-.045em!important;padding-bottom:.08em!important;overflow:visible!important}
 .casePage .caseIntro{font-size:21px!important;line-height:1.5!important}
 
 /* Section titles */
