@@ -180,3 +180,15 @@
 .casePage .cdMomentCol .fvTradeoffs{display:grid;gap:14px;padding-top:0}
 .casePage .cdMomentCol .fvTradeoffs p{grid-template-columns:1fr;gap:2px;font-size:16px;line-height:1.45}
 .casePage .cdMomentCol .fvTradeoffs i{justify-self:start;transform:rotate(90deg);font-size:15px;line-height:1}
+
+/* Decision block reads in order: statement → Because → What it cost → So → evidence, one beat at a time */
+.casePage .cdMoment .cdMomentGrid>.cdMomentCol,.casePage .cdMoment .cdMomentEvidence .cmRule,.casePage .cdMoment .cdMomentEvidence>*:not(.cmRuleGrid){opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
+.casePage .cdMoment.isShown .cdMomentGrid>.cdMomentCol,.casePage .cdMoment.isShown .cdMomentEvidence .cmRule,.casePage .cdMoment.isShown .cdMomentEvidence>*:not(.cmRuleGrid){opacity:1;transform:none}
+.casePage .cdMoment.isShown .cdMomentGrid>.cdMomentCol:nth-child(1){transition-delay:.25s}
+.casePage .cdMoment.isShown .cdMomentGrid>.cdMomentCol:nth-child(2){transition-delay:.75s}
+.casePage .cdMoment.isShown .cdMomentGrid>.cdMomentCol:nth-child(3){transition-delay:1.25s}
+.casePage .cdMoment.isShown .cdMomentEvidence>*:not(.cmRuleGrid){transition-delay:1.7s}
+.casePage .cdMoment.isShown .cdMomentEvidence .cmRule:nth-child(1){transition-delay:1.9s}
+.casePage .cdMoment.isShown .cdMomentEvidence .cmRule:nth-child(2){transition-delay:2.3s}
+.casePage .cdMoment.isShown .cdMomentEvidence .cmRule:nth-child(3){transition-delay:2.7s}
+@media(prefers-reduced-motion:reduce){.casePage .cdMoment .cdMomentGrid>.cdMomentCol,.casePage .cdMoment .cdMomentEvidence .cmRule,.casePage .cdMoment .cdMomentEvidence>*{opacity:1!important;transform:none!important;transition:none!important}}

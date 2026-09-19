@@ -240,14 +240,14 @@ export default function CommuteCase({demo}:{demo:React.ReactNode}){
   <section className="cmRules cmStage" id="cm-decide">
    <DecisionMoment
     statement={<>Recommend the reliable<br/>route, not the fast one.</>}
-    sub="Three rules decide every morning: reliability beats raw speed, stale data counts for less, and nothing interrupts me unless the plan actually moved."
-    because={<p>BART lands between 8:48 and 8:53 every day. The NL bus can land at 8:42 — or at 9:04, one morning in three. Missing a train that runs every 6 minutes costs almost nothing; missing a bus that runs every 30 costs the morning. A trip planner optimises the average. A commute has to survive the bad day.</p>}
+    sub="A late bus costs more than a slow train saves."
+    because={<p>BART is almost never late. The NL bus is late one morning in three. A trip planner optimises the average; a commute has to survive the bad day.</p>}
     tradeoff={<Tradeoff pairs={[
-     ['The earliest arrival the feeds say is possible','An arrival I can plan the rest of the morning around'],
-     ['Trusting whichever feed claims to be faster','A stale “on time” losing to a fresh delay'],
-     ['Moving my alarm the moment anything changes','Asking first, and staying silent when the plan holds']
+     ['The earliest possible arrival','An arrival I can plan around'],
+     ['Trusting the fastest-looking feed','Fresh delays beat stale “on time”'],
+     ['Moving the alarm on every change','Asking first, silent otherwise']
     ]}/>}
-    result={<p>One alarm instead of four apps. On a normal morning it interrupts me zero times, and it never moves the alarm without asking — the one thing I was never going to hand over.</p>}
+    result={<p>One alarm instead of four apps, and it never moves without asking.</p>}
    >
    <p className="cmRulesLabel">The three rules behind it</p>
    <div className="cmRuleGrid">

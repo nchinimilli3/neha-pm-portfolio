@@ -175,7 +175,18 @@ export function DecisionMoment({
   result: Node;
   children?: Node;
 }) {
-  return <section className="cdMoment" id={id} aria-label="The consequential decision">
+  // Reveal the block in reading order: statement, then Because → What it cost → So, then the evidence.
+  const ref = React.useRef<HTMLElement>(null);
+  const [shown, setShown] = React.useState(false);
+  React.useEffect(() => {
+    const n = ref.current;
+    if (!n) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setShown(true); return; }
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setShown(true); io.disconnect(); } }, {threshold: .15});
+    io.observe(n);
+    return () => io.disconnect();
+  }, []);
+  return <section ref={ref} className={`cdMoment${shown ? ' isShown' : ''}`} id={id} aria-label="The consequential decision">
     <p className="cdMomentKicker">{kicker}</p>
     <p className="cdStatement">{statement}</p>
     {sub && <p className="cdMomentSub">{sub}</p>}

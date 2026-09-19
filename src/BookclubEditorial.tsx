@@ -75,9 +75,9 @@ const people=[
 ];
 const Avatar=({p}:{p:typeof people[number]})=><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="31" className="bcHalo"/><path d="M12 60c2-14 10-21 20-21s18 7 20 21" fill={p.shirt}/><circle cx="32" cy="26" r="11" fill={p.skin}/><path d="M20 25c0-9 5-14 12-14s13 5 12 14c-3-5-7-7-12-7s-9 2-12 7" fill={p.hair}/></svg>;
 const tasks=[
-  {task:'Join a club and find the current read',time:'target < 1 min'},
-  {task:'Nominate a book and rank the shortlist',time:'target < 2 min'},
-  {task:'Save a thought, then find it in the meeting',time:'target < 90 sec'},
+  {task:'Find the current read',time:'< 1 min'},
+  {task:'Rank the shortlist',time:'< 2 min'},
+  {task:'Bring a thought to the meeting',time:'< 90 sec'},
 ];
 const rank=[{t:'Ranking the ballot',w:.94},{t:'Tagging checkpoints',w:.66},{t:'Thoughts reaching the meeting',w:.48},{t:'Finding the current read',w:.28}];
 
@@ -87,19 +87,19 @@ function ValidationPlan(){
     <article className="bcPhase" style={{'--pi':0} as React.CSSProperties}>
       <span className="bcPhaseNum">1</span>
       <h3>5 user interviews</h3>
-      <p>Readers and organizers, 30 minutes each: how their club chooses books, keeps pace, and prepares for meetings today.</p>
+      <p>Readers and organizers on how their club runs today.</p>
       <div className="bcPeople">{people.map((p,i)=><figure key={i} style={{'--k':i} as React.CSSProperties}><Avatar p={p}/><figcaption>{p.role}</figcaption></figure>)}</div>
     </article>
     <article className="bcPhase" style={{'--pi':1} as React.CSSProperties}>
       <span className="bcPhaseNum">2</span>
-      <h3>Moderated usability tests</h3>
-      <p>The same five people think aloud through the three core tasks. Success means 4 of 5 finish each task without help.</p>
+      <h3>Usability tests</h3>
+      <p>Three core tasks. Pass = 4 of 5 unaided.</p>
       <ol className="bcTasks">{tasks.map((t,i)=><li key={t.task} style={{'--k':i} as React.CSSProperties}><span><b>{t.task}</b><small>{t.time}</small></span><i className="bcTaskBar"><em/></i><span className="bcTaskDots" aria-hidden="true">{[0,1,2,3,4].map(d=><i key={d} className={d<4?'ok':''}/>)}</span></li>)}</ol>
     </article>
     <article className="bcPhase" style={{'--pi':2} as React.CSSProperties}>
       <span className="bcPhaseNum">3</span>
-      <h3>Live demo with the club</h3>
-      <p>Walk the group through a full cycle, then rank every issue by how often it happens and how much it hurts.</p>
+      <h3>Live club demo</h3>
+      <p>Rank every issue by frequency × pain.</p>
       <ol className="bcRank" aria-label="Issues ranked by how often they happen times how much they hurt">
         {rank.map((d,i)=><li key={d.t} className={i===0?'isTop':''} style={{'--k':i,'--w':d.w} as React.CSSProperties}>
           <span>{d.t}</span><b/>{i===0&&<em>Fix first</em>}
@@ -155,7 +155,7 @@ export function BookclubEditorial(){
     </section>
 
     <section className="bcValidate bcStage" id="bc-validate">
-      <header><h2>How I’ll know <em>it works</em></h2><p>The app is live for my reading group. Before building more, I’m validating the core loop in three steps.</p></header>
+      <header><h2>How I’ll know <em>it works</em></h2><p>Live with my reading group. Three checks before building more.</p></header>
       <ValidationPlan/>
       <div className="bcRules">
         <p className="bcRulesHead">If the tests show…</p>
