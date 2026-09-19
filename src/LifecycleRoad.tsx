@@ -209,8 +209,8 @@ export default function LifecycleRoad({stages,vehicle='car',label='Product lifec
    <span className="lcAsphalt" aria-hidden="true"><i className="lcFill"/></span>
    <span className="lcWake" aria-hidden="true"><i/><i/><i/>{Array.from({length:7},(_,k)=><em key={k} style={{'--k':k} as React.CSSProperties}/>)}</span>
    {vehicle==='mustang'&&<span className="lcSmoke" aria-hidden="true">{puffs.map(p=><i key={p.id} style={{left:p.pos,'--v':p.v} as React.CSSProperties}/>)}</span>}
-   <span className="lcCar" aria-hidden="true">{travelers[vehicle]}</span>
-   <ol>{stages.map((st,i)=><li key={st.id} className={i<current?'isPast':i===current?'isHere':''}><button type="button" onClick={()=>go(st.id)} aria-current={i===current?'step':undefined}><i className="lcPost" aria-hidden="true"/><b>{st.name}</b></button></li>)}</ol>
+   <span className="lcCar" aria-hidden="true">{vehicle==='train'?<img className="lcBartImg" src={`${import.meta.env.BASE_URL}project-media/bart-train.webp`} alt="" draggable={false}/>:travelers[vehicle]}</span>
+   <ol>{stages.map((st,i)=><li key={st.id} className={i<current?'isPast':i===current?'isHere':''}><button type="button" onClick={()=>go(st.id)} aria-current={i===current?'step':undefined}><b>{st.name}</b></button></li>)}</ol>
   </div>
   <p className="lcNow" aria-live="polite"><span>{String(current+1).padStart(2,'0')} / {String(stages.length).padStart(2,'0')}</span><b key={current}>{stages[current].name}</b><small key={`d${current}`}>{stages[current].did}</small></p>
  </nav>;

@@ -114,7 +114,16 @@
 .fsePipeline>li{position:relative}
 .fseGate{position:relative;z-index:1;display:grid;gap:4px;justify-items:center;width:60px;padding:8px 0;border-radius:14px;background:#0b3052;box-shadow:0 10px 20px #0b305233}
 .fseGate i{width:12px;height:12px;border-radius:50%;background:#2c4a64}
-.fseGate i:last-child{background:#5fd38a;box-shadow:0 0 10px #5fd38a}
+/* Each gate is a working traffic light: red, then yellow, then green, on a loop */
+.fseGate i{animation:fseLight 3.6s steps(1,end) infinite;animation-delay:calc(var(--g,0) * -.4s)}
+.fseGate i:nth-child(1){--on:#ff5a5a;animation-name:fseRed}
+.fseGate i:nth-child(2){--on:#ffc53d;animation-name:fseAmber}
+.fseGate i:nth-child(3){--on:#5fd38a;animation-name:fseGreen}
+@keyframes fseRed{0%{background:#ff5a5a;box-shadow:0 0 10px #ff5a5a}33.33%,100%{background:#2c4a64;box-shadow:none}}
+@keyframes fseAmber{0%,33.33%{background:#2c4a64;box-shadow:none}33.34%{background:#ffc53d;box-shadow:0 0 10px #ffc53d}66.66%,100%{background:#2c4a64;box-shadow:none}}
+@keyframes fseGreen{0%,66.66%{background:#2c4a64;box-shadow:none}66.67%,100%{background:#5fd38a;box-shadow:0 0 10px #5fd38a}}
+.fsePipeline>li:nth-child(2) .fseGate i{--g:1}.fsePipeline>li:nth-child(3) .fseGate i{--g:2}.fsePipeline>li:nth-child(4) .fseGate i{--g:3}.fsePipeline>li:nth-child(5) .fseGate i{--g:4}
+@media(prefers-reduced-motion:reduce){.fseGate i{animation:none}.fseGate i:last-child{background:#5fd38a;box-shadow:0 0 10px #5fd38a}}
 .fsePipeline strong{display:block;margin-top:16px;font-size:22px;color:#0b3052}
 .fsePipeline ul{display:grid;gap:8px;margin:12px 0 0;padding:0;list-style:none}
 .fsePipeline ul li{display:flex;align-items:center;gap:8px;font-size:15px;color:#34546e}

@@ -29,7 +29,7 @@ export default function AccentureFieldKit(){
       </article>
       <article className="deliverable">
         <header><span className="fileBadge slideBadge">PPT</span><div><strong>Evidence & recommendations</strong><span>Explain what to test next</span></div></header>
-        <div className="deliverableSlide"><span className="documentEyebrow">RECOMMENDATION SUMMARY</span><h3>From feedback<br/>to next steps</h3><dl><div><dt>Evidence</dt><dd>~2,200 learner responses</dd></div><div><dt>Focus</dt><dd>5 recommendations</dd></div><div><dt>Next phase</dt><dd>A 90-day test plan</dd></div></dl><span className="slidePage">9-slide internship story</span></div>
+        <div className="deliverableSlide"><span className="documentEyebrow">RECOMMENDATION SUMMARY</span><h3>From feedback<br/>to next steps</h3><dl><div><dt>Evidence</dt><dd>3,862 user responses</dd></div><div><dt>Focus</dt><dd>5 recommendations</dd></div><div><dt>Next phase</dt><dd>A 90-day test plan</dd></div></dl><span className="slidePage">9-slide internship story</span></div>
         <footer><b>Purpose</b> Give leadership a clear basis for choosing the next phase.</footer>
       </article>
     </div>

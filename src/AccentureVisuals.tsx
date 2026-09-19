@@ -24,7 +24,7 @@ export function AccentureToolRelay() {
 // Synthesis as an SF cable car ride: a Powell-line car climbs out of the fog (raw responses), past
 // row houses and street signs where the evidence narrows, to 90-Day Test Hill. Loops while in view.
 const rideStops = [
- {n: '2,200', street: 'Responses St', caption: 'About 2,200 learner responses and ~20 researched providers, narrowed to 8 competitors.'},
+ {n: '3,862', street: 'Responses St', caption: '3,862 user responses and operational data, revealing an 8x utilization gap.'},
  {n: '27', street: 'Metrics Ave', caption: 'The signal is captured as 27 metrics.'},
  {n: '12', street: 'Patterns St', caption: 'Metrics are synthesized into 12 recurring patterns.'},
  {n: '5', street: 'Recommendations Way', caption: 'Patterns are prioritized into 5 recommendations.'},
@@ -95,7 +95,7 @@ export function AccentureEvidenceFunnel() {
  });
  const road = (dy: number) => `M-20 ${yAt(-20) + dy}L1020 ${yAt(1020) + dy}`;
  return <div ref={ref} className={`axRide stop-${stop} ${tick === 0 ? 'isBoarding' : ''}`}>
-  <svg viewBox="0 -30 1000 520" role="img" aria-label="A cable car climbs from 2,200 learner responses in the fog, past 27 metrics, 12 patterns, and 5 recommendations, to a 90-day test for each">
+  <svg viewBox="0 -30 1000 520" role="img" aria-label="A cable car climbs from 3,862 user responses in the fog, past 27 metrics, 12 patterns, and 5 recommendations, to a 90-day test for each">
    <defs>
     <linearGradient id="axHill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#bda3dc" stopOpacity=".5"/><stop offset="1" stopColor="#bda3dc" stopOpacity="0"/></linearGradient>
     <linearGradient id="axFogGrad" x1="0" x2="1"><stop offset="0" stopColor="#fff" stopOpacity=".95"/><stop offset=".6" stopColor="#fff" stopOpacity=".75"/><stop offset="1" stopColor="#fff" stopOpacity="0"/></linearGradient>

@@ -80,7 +80,7 @@ export default function AboutFilmCamera({photos,open,index,onClose,onChange}){
   window.addEventListener('keydown',key);
   return()=>window.removeEventListener('keydown',key);
  },[open,index,printing]);
- if(!open)return <div className="aboutFilmFrame"><img className="aboutHeadshot" src={asset('headshot.jpg')} alt="Neha Chinimilli" width={1066} height={1599}/></div>;
+ if(!open)return <div className="aboutFilmFrame"><img className="aboutHeadshot" src={asset('about-lakefront.webp')} alt="Neha smiling by the lakefront on a sunny day, shot on film" width={2000} height={1326}/></div>;
  const photo=photos[index];
  return <div className={`aboutFilmFrame isGallery instantFilmFrame ${printing?'isPrinting':''}`} style={{'--film-ratio':photo.width/photo.height} as React.CSSProperties}>
   {printing?<div className="filmCameraSequence" key={run}><InstantCamera photo={photo}/><div className="filmPrintStatus" role="status">Developing a little memory…</div><button className="filmSkip" type="button" onClick={finish}>Skip animation →</button></div>:<div className="filmGalleryReveal"><div className="filmGalleryHeader"><span>35 MM / NEHA’S FILM</span><button type="button" onClick={onClose} aria-label="Close film photos">×</button></div><img className="filmGalleryPhoto" src={asset(photo.src)} alt={photo.alt} width={photo.width} height={photo.height}/><div className="filmGalleryControls"><button type="button" onClick={()=>move(-1)} aria-label="Previous film photo">←</button><span aria-live="polite">{String(index+1).padStart(2,'0')} / {String(photos.length).padStart(2,'0')}</span><button type="button" onClick={()=>move(1)} aria-label="Next film photo">→</button></div><button className="filmReplay" type="button" onClick={start}>Replay camera ↻</button></div>}

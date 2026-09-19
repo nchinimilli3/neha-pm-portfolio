@@ -30,12 +30,14 @@ const icons = {
 /* Counts a stat like "+25%" or "~2.2K" up from zero once the block is on
    screen. Anything without a leading number, or too small to count ("<1 day"),
    is shown as written. */
-function CountUp({value, run}: {value: string; run: boolean}) {
-  const m = value.match(/^(\D*)(\d+(?:\.\d+)?)(.*)$/);
+export function CountUp({value, run}: {value: string; run: boolean}) {
+  const m = value.match(/^(\D*)(\d[\d,]*(?:\.\d+)?)(.*)$/);
   const [shown, setShown] = React.useState(value);
   React.useEffect(() => {
-    if (!run || !m || parseFloat(m[2]) < 3) return;
-    const [, pre, num, post] = m;
+    if (!run || !m || parseFloat(m[2].replace(/,/g, '')) < 3) return;
+    const [, pre, raw, post] = m;
+    const commas = raw.includes(',');
+    const num = raw.replace(/,/g, '');
     const target = parseFloat(num);
     const decimals = (num.split('.')[1] || '').length;
     let frame = 0;
@@ -43,7 +45,8 @@ function CountUp({value, run}: {value: string; run: boolean}) {
     const tick = (now: number) => {
       const k = Math.min(1, (now - t0) / 1100);
       const eased = 1 - Math.pow(1 - k, 3);
-      setShown(pre + (target * eased).toFixed(decimals) + post);
+      const n = (target * eased).toFixed(decimals);
+      setShown(pre + (commas ? Number(n).toLocaleString('en-US') : n) + post);
       if (k < 1) frame = requestAnimationFrame(tick);
     };
     frame = requestAnimationFrame(tick);

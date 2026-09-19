@@ -320,3 +320,4 @@
 .cmWormOut{stroke:#c8202f;stroke-width:3}
 .cmWormIn{stroke:#fff;stroke-width:1.9}
 .cmWormCore{fill:none;stroke:#c8202f;stroke-width:.7}
+.bartBody{-webkit-user-select:none;user-select:none;-webkit-user-drag:none}

@@ -9,7 +9,7 @@ export default function MachEArtwork({ className = '' }: { className?: string })
   <circle cx={x} cy="664" r="88" fill="#1b222b" stroke="#454d57" strokeWidth="2"/>
   <circle cx={x} cy="664" r="72" fill="#101923" stroke="#77818b" strokeWidth="4"/>
   <path d={`M${x+36} 620Q${x+53} 627 ${x+51} 664L${x+44} 687L${x+30} 685L${x+32} 639Z`} fill="#a52c39"/>
-  <g className={`meWheel ${name}`} style={{ transformOrigin: `${x}px 664px` }}>{Array.from({length:10},(_,i)=><g key={i} transform={`rotate(${i*36} ${x} 664)`}><path d={`M${x-7} 649L${x-20} 598L${x-9} 594L${x+4} 648Z`} fill="url(#maAlloy)" stroke="#202a36" strokeWidth="2"/><path d={`M${x+5} 646L${x+24} 599L${x+33} 605L${x+16} 652Z`} fill="#687887" stroke="#222d36" strokeWidth="2"/></g>)}</g>
+  <g className={`meWheel ${name}`}>{Array.from({length:10},(_,i)=><g key={i} transform={`rotate(${i*36} ${x} 664)`}><path d={`M${x-7} 649L${x-20} 598L${x-9} 594L${x+4} 648Z`} fill="url(#maAlloy)" stroke="#202a36" strokeWidth="2"/><path d={`M${x+5} 646L${x+24} 599L${x+33} 605L${x+16} 652Z`} fill="#687887" stroke="#222d36" strokeWidth="2"/></g>)}</g>
   <circle cx={x} cy="664" r="19" fill="#29333d" stroke="#94a1ad" strokeWidth="2"/>
   {[0,72,144,216,288].map(a=><circle key={a} cx={x+Math.cos(a*Math.PI/180)*27} cy={664+Math.sin(a*Math.PI/180)*27} r="4" fill="#d5dce2"/>)}
   <circle cx={x} cy="664" r="8" fill="#bcc7ce"/>

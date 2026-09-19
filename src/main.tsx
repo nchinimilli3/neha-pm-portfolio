@@ -25,7 +25,7 @@ import './case-auras.css';
 import './case-typography.css';
 import CommuteBARTStory from './CommuteBARTStory';
 import CommuteCase from './CommuteCase';
-import { CaseAnswer, CausalChain, DecisionMoment, Tradeoff } from './CaseDecision';
+import { CaseAnswer, CausalChain, CountUp, DecisionMoment, Tradeoff } from './CaseDecision';
 import { CarBand } from './CarArt';
 import './case-hero.css';
 
@@ -54,28 +54,27 @@ function Reveal({children,className=''}){
 
 const metrics = {
   kohler: [
-    ['~5 days','packet prep before, per market','baseline'],
-    ['<1 day','packet prep per market','outcome'],
+    ['42%','less processing time','outcome'],
+    ['71% → 94%','first-pass document accuracy','outcome'],
     ['5','person team','scope'],
     ['1 → any','SKU to any destination market','system']
   ],
   accenture: [
     ['21','live requests supported','scope'],
-    ['~2.2K','learner responses synthesized','analysis'],
+    ['3,862','user responses analyzed','analysis'],
     ['10-tab','automation data contract','artifact'],
-    ['~14 of 21','requests resolved by rules alone in test','outcome'],
+    ['30','edge cases evaluated','analysis'],
     ['5','recommendations, each with a 90-day test','decision']
   ],
   fcvf: [
     ['+25%','more assessment feedback submitted','outcome'],
-    ['4','user interviews led','research'],
-    ['~10','product teams using the framework','scale']
+    ['4','user interviews led','research']
   ],
   finsimple: [
-    ['40%','release time I helped cut','outcome'],
-    ['~15%','of returning users reopened an estimate','outcome'],
-    ['5','cross-functional teams','context'],
-    ['20+','customer-impacting incidents analyzed','operations']
+    ['15%','faster delivery','outcome'],
+    ['6%','fewer data errors','outcome'],
+    ['50%','faster incident restoration','outcome'],
+    ['25','customer-impacting issues investigated','operations']
   ],
   estee: [
     ['Top 5','challenge finalist','outcome']
@@ -87,8 +86,6 @@ const metrics = {
     ['3','growth levers','decision']
   ],
   commute: [
-    ['±3 min','arrival accuracy on ~90% of weekdays','personal use'],
-    ['60+','weekdays used (n = 1, me)','personal use'],
     ['4','apps this one replaced','scope'],
     ['9','live data sources, one decision','system']
   ]
@@ -137,7 +134,7 @@ const projects = [
     company:'Accenture · Frontier AI lab',
     summary:'A trainer match passed every automated check and still landed at 10:30 PM their time. That test case is why I put a human gate in the automation I specified across 21 live requests.',
     media:'accenture',
-    facts:['~14 of 21 resolved by rules alone','Human gate on every exception']
+    facts:['3,862 user responses analyzed','Human gate on every exception']
   },
   {
     id:'kohler',
@@ -145,7 +142,7 @@ const projects = [
     company:'Kohler Co. · MSU CSE 498',
     summary:'Designed and built an export-preparation assistant that uses an order’s SKU and destination to identify the documents, checks, and review steps needed before shipment.',
     media:'kohler',
-    facts:['Delivered to Kohler','~5 days → <1 day packet prep']
+    facts:['42% less processing time','Accuracy 71% → 94%']
   },
   {
     id:'scheduler',
@@ -153,15 +150,15 @@ const projects = [
     company:'Live web product · CSE 477',
     summary:'Built a campus scheduling product that keeps Available, Maybe, and Unavailable separate, recommends the best time, and carries that choice into a place and calendar event.',
     media:'scheduler',
-    facts:['7 student interviews','6 of 7 testers finished scheduling']
+    facts:['7 student interviews','Flask · Socket.IO · MySQL']
   },
   {
     id:'finsimple',
     title:'FinSimple',
     company:'Ford Credit',
-    summary:'Returning Ford Credit customers rebuilt vehicle estimates from scratch. I owned Previous Estimates from requirements to production, and ~15% of returning users reopened a saved estimate after launch.',
+    summary:'Returning Ford Credit customers rebuilt vehicle estimates from scratch. I owned Previous Estimates from requirements to production, integrating Salesforce APIs with Adobe Experience Manager.',
     media:'finsimple',
-    facts:['Shipped to production','Helped cut release time 40%']
+    facts:['Shipped to production','15% faster delivery']
   },
   {
     id:'marketExpansion',
@@ -193,12 +190,14 @@ const projects = [
     company:'Independent product · live web app',
     summary:'Built a private book-club app for choosing a book, tracking reading progress, discussing without spoilers, and planning meetings.',
     media:'bookclub',
-    facts:['Live with my reading group','4 of 5 finished ranking in tests']
+    facts:['Launched to active users','React · Cloudflare']
   }
 ];
 
 function MetricStrip({items}) {
-  return <div className={`metricStrip metricCount-${items.length}`}>{items.map(([v,l,type='context'])=><div className={`metric metric-${type}`} key={l}><strong>{v}</strong><span>{l}</span></div>)}</div>
+  const ref=useRef(null);const [run,setRun]=useState(false);
+  useEffect(()=>{const n=ref.current;if(!n)return;if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){setRun(false);return}const io=new IntersectionObserver(([e])=>{if(e.isIntersecting){setRun(true);io.disconnect()}},{threshold:.4});io.observe(n);return()=>io.disconnect()},[]);
+  return <div ref={ref} className={`metricStrip metricCount-${items.length}`}>{items.map(([v,l,type='context'])=><div className={`metric metric-${type}`} key={l}><strong><CountUp value={v} run={run}/></strong><span>{l}</span></div>)}</div>
 }
 
 
@@ -754,8 +753,7 @@ const caseAnswers={
   call:'Recommend the reliable route, not the fastest one.',
   callHref:'#cm-decide',
   evidence:'My own commute: BART lands 8:48–8:53. The NL bus lands anywhere from 8:42 to 9:04 and is late one morning in three.',
-  result:'Built for myself (n = 1), over 60+ weekdays. The alarm only moves when I approve it.',
-  stat:{value:'~90%',label:'of mornings landed within ±3 min of the predicted arrival'}
+  result:'Built for myself and used every weekday. The alarm only moves when I approve it.'
  },
  marketExpansion:{
   problem:'Graze Craze wanted a new franchise location and stronger Michigan branches, with no shared way to compare candidate markets.',
@@ -771,8 +769,7 @@ const caseAnswers={
   call:'Rank the nominees instead of running a poll.',
   callHref:'#bc-build',
   evidence:'5 user interviews, moderated usability tests, and a live demo with the club that now uses it.',
-  result:'Live with my reading group. Only 3 of 5 found their spoiler checkpoint on the first try, so I moved checkpoints onto the reading-progress screen.',
-  stat:{value:'4 of 5',label:'testers ranked nominees without help'}
+  result:'Taken from concept to launch as a full-stack React and Cloudflare product, now used by an invite-only club of active readers.'
  },
  scheduler:{
   problem:'Tentative availability got flattened to yes or no, and even after finding overlap, the group still picked a time, place, and next step somewhere else.',
@@ -780,8 +777,7 @@ const caseAnswers={
   call:'Keep “maybe” as its own answer.',
   callHref:'#sc-research',
   evidence:'Seven one-on-one student interviews with live task walkthroughs.',
-  result:'One record carries availability through to a recommended time, a venue vote, and a calendar event, in a median of about 3 minutes.',
-  stat:{value:'6 of 7',label:'students went from availability to a calendar event unaided'}
+  result:'One record carries availability through to a recommended time, a venue vote, and a calendar event.'
  },
  chat:{
   problem:'The CSE 477 brief was open-ended: build a real-time chat room with messages and join and leave events. A generic chat app would meet it, but there would be no clear bar for “good.”',
@@ -805,7 +801,7 @@ const caseAnswers={
   callHref:'#fv-decide',
   evidence:'Four moderated interviews comparing the one-page build against a multi-page prototype.',
   result:'Shipped a paginated assessment that holds the score until submission.',
-  stat:{value:'+25%',label:'more assessment feedback submitted'}
+  stat:{value:'+25%',label:'feedback volume across internal teams'}
  },
  accenture:{
   problem:'A frontier AI lab’s enablement requests crossed three tools before a trainer was booked, and the same judgment calls were remade by hand every time.',
@@ -813,8 +809,8 @@ const caseAnswers={
   call:'I stopped the automation at a human gate.',
   callHref:'#ax-test',
   evidence:'A trainer match passed every rule and still landed at 10:30 PM in the trainer’s time zone. A coordinator would have rejected it instantly.',
-  result:'The other ~7 stopped at the human gate. I shipped a 10-tab data contract, a prototype that applies it, and five recommendations, each with a 90-day test.',
-  stat:{value:'~14 of 21',label:'requests resolved by rules alone in testing'}
+  result:'Uncertain matches stop at a human gate. I shipped a 10-tab data contract, a prototype that applies it, and recommendations backed by 3,862 user responses.',
+  stat:{value:'30',label:'edge cases evaluated by value, feasibility, risk, and effort'}
  },
  kohler:{
   problem:'A Kohler product can be in stock and still not be ready to export: each destination needs its own spec sheets, labels, warranties and translations.',
@@ -823,16 +819,16 @@ const caseAnswers={
   callHref:'#kx-define',
   evidence:'How an order actually gets held up today, and the exception cases where a person has to decide rather than a rule.',
   result:'Delivered to Kohler: the order workspace, destination rules, agent-drafted packet, and human review gate.',
-  stat:{value:'<1 day',label:'packet prep per market, down from ~5 days'}
+  stat:{value:'42%',label:'less processing time, with first-pass accuracy up from 71% to 94%'}
  },
  finsimple:{
-  problem:'Returning Ford Credit customers had no way back to vehicle estimates they had already built, and about 1 in 3 estimate sessions came from returning customers.',
+  problem:'Returning Ford Credit customers had no way back to vehicle estimates they had already built.',
   owned:'I owned requirements, AEM component work, API integration, testing, and coordination across the teams needed to ship my feature.',
   call:'I built it inside the platform, not beside it.',
   callHref:'#fs-define',
   evidence:'A live product with existing customers, shared AEM components, Salesforce data contracts, and a release train spanning five teams.',
-  result:'Previous Estimates shipped into the customer-facing flow, on a release process I helped cut 40%, and I owned it in production.',
-  stat:{value:'~15%',label:'of returning users reopened a saved estimate after launch'}
+  result:'Previous Estimates shipped into the customer-facing flow with 6% fewer data errors, and I owned it in production.',
+  stat:{value:'15%',label:'faster delivery'}
  }
 };
 
@@ -856,7 +852,7 @@ function CaseStudy({id,onBack}){
  const p=projects.find(x=>x.id===id);
  const [lightbox,setLightbox]=useState(null);
  if(!p)return null;
- const openClickedImage=(e)=>{const img=e.target instanceof HTMLImageElement?e.target:null;if(!img||img.closest('.caseCompanyBar')||img.closest('.toolLogoSection')||img.closest('.kohlerStory')||img.closest('.caseHeroLogoWrap')||img.classList.contains('companyLogo'))return;setLightbox({src:img.currentSrc||img.src,alt:img.alt||'Project image'})};
+ const openClickedImage=(e)=>{const img=e.target instanceof HTMLImageElement?e.target:null;if(!img||img.closest('.caseCompanyBar')||img.closest('.toolLogoSection')||img.closest('[data-no-lightbox]')||img.closest('.kohlerStory')||img.closest('.caseHeroLogoWrap')||img.classList.contains('companyLogo'))return;setLightbox({src:img.currentSrc||img.src,alt:img.alt||'Project image'})};
  return <main className={`casePage case-${id}`} onClick={openClickedImage}><AuraField tone={id}/><button className="backBtn" onClick={onBack}>← Selected work</button><section className="caseLead"><header className="caseHeader">{id!=='fcvf'&&<CaseCompanyBar id={id} fallback={p.company}/>}<h1>{p.title}</h1><div className="caseIntro">{p.summary}</div>{!['finsimple','accenture'].includes(id)&&!caseAnswers[id]&&<div className="ownershipLine"><span>{ownership[id]}</span></div>}{id==='bookclub'&&<a className="bookclubLiveLink" href={BOOKCLUB_LIVE_URL} target="_blank" rel="noreferrer" aria-label="Open the live Bookclub app in a new tab">Open live app ↗</a>}</header><div className="caseHeroMedia casePreviewHero"><ProjectVisual type={p.media}/></div>{metrics[id]&&<MetricStrip items={metrics[id]}/>}<ToolLogoStrip id={id}/></section>
  {caseAnswers[id]&&<CaseAnswer key={id} {...caseAnswers[id]}/>}
  {id==='fcvf'&&<CarBand car="shelby" label="Shelby GT500 illustration that drives as you scroll"/>}
@@ -1129,18 +1125,18 @@ function CompanyLogo({src='',alt='',label=''}){const [failed,setFailed]=useState
 
 
 const experienceItems=[
- {id:'accenture',caseStudy:'accenture',company:'Accenture',role:'Technology Summer Analyst',location:'San Francisco, CA',dates:'Summer 2026',logo:'company-logos/accenture-v31.png',short:'Supported live AI training requests and turned repeated coordination into clearer rules, tests, and recommendations.',detail:<div className="expStory"><p>I worked inside a live customer-enablement operation supporting 21 requests. I used the repeated checks and exceptions I saw to document matching rules, test automation requirements, prototype the request flow, and recommend what the program should improve next.</p><div className="expMetricRow"><span><b>21</b> live requests</span><span><b>6</b> workflow stages</span><span><b>10-tab</b> data contract</span><span><b>~2.2K</b> learner responses</span></div><div className="expColumns"><div><strong>Live requests</strong><span>Supported intake, validation, trainer fit, scheduling, status management, global coverage across six regions, and closeout.</span></div><div><strong>Automation requirements</strong><span>Documented required inputs, matching rules, warnings, reason codes, QA cases, and human-review points so repeated checks could be tested before automation.</span></div><div><strong>Research and recommendations</strong><span>Analyzed ~2.2K learner responses and researched ~20 providers, narrowing the work into 27 metrics, 12 patterns, five recommendations, and a 90-day test plan.</span></div></div></div>},
- {id:'palmer',company:'Russell Palmer Career Management Center',role:'Peer Coach',location:'East Lansing, MI',dates:'May 2025-present',logo:'company-logos/palmer-v31.png',short:'Coach students on resumes, interviews, networking, recruiting strategy, and case prep.',detail:<div className="expStory"><p>As a peer coach in MSU’s Russell Palmer Career Management Center, I meet one-on-one with students for resume reviews, interview preparation, recruiting strategy, networking, and case prep. Each session ends with specific edits or next steps the student can use right away.</p><div className="expMetricRow"><span><b>20+</b> sessions weekly</span><span><b>300+</b> students coached</span><span><b>25</b> coaches on team</span><span><b>~40%</b> of the team’s positive reviews (25 coaches)</span></div></div>},
- {id:'fordcredit',caseStudy:'finsimple',company:'Ford Credit',role:'Software Engineering Intern',location:'Dearborn, MI',dates:'Summers 2024-2025',logo:'company-logos/ford-credit-v31.png',short:'Built customer-facing financial features and worked across the systems and teams needed to ship them.',detail:<div className="expStory"><p>As the sole intern embedded on FinSimple, I worked on customer-facing feature delivery and the systems around it: AEM, Salesforce APIs, QA and production environments, release coordination, incidents, and onboarding.</p><div className="expMetricRow"><span><b>40%</b> shorter release cycle</span><span><b>20+</b> incidents analyzed</span><span><b>4</b> recovery playbooks</span><span><b>50</b> people across 5 teams</span></div><div className="expColumns"><div><strong>Product</strong><span>Built AEM components and Salesforce-backed workflows from customer and business requirements; worked across UI behavior, REST/GraphQL integration, Postman validation, and testing through development, QA, and production.</span></div><div><strong>Delivery quality</strong><span>Reviewed QA security-scan findings and PR compliance, documented release and environment-tagging workflows, and researched OAuth/API error patterns to support reliable deployments.</span></div><div><strong>Production operations</strong><span>Monitored live incidents, analyzed customer-impacting failure patterns, and coordinated with Payment, DevOps, and QA teams while turning recurring issues into four reusable recovery playbooks.</span></div></div><div className="expNote">I also built a centralized onboarding hub from 15 technical resources across 3 teams, cutting intern ramp-up from ~2 weeks to 3 days.</div></div>},
+ {id:'accenture',caseStudy:'accenture',company:'Accenture',role:'Technology Summer Analyst',location:'San Francisco, CA',dates:'Summer 2026',logo:'company-logos/accenture-v31.png',short:'Supported live AI training requests and turned repeated coordination into clearer rules, tests, and recommendations.',detail:<div className="expStory"><p>I worked inside a live customer-enablement operation supporting 21 requests. I used the repeated checks and exceptions I saw to document matching rules, test automation requirements, prototype the request flow, and recommend what the program should improve next.</p><div className="expMetricRow"><span><b>21</b> live requests</span><span><b>6</b> workflow stages</span><span><b>10-tab</b> data contract</span><span><b>3,862</b> user responses</span></div><div className="expColumns"><div><strong>Live requests</strong><span>Supported intake, validation, trainer fit, scheduling, status management, global coverage across six regions, and closeout.</span></div><div><strong>Automation requirements</strong><span>Documented required inputs, matching rules, warnings, reason codes, QA cases, and human-review points so repeated checks could be tested before automation.</span></div><div><strong>Research and recommendations</strong><span>Analyzed 3,862 user responses and researched ~20 providers, narrowing the work into 27 metrics, 12 patterns, five recommendations, and a 90-day test plan.</span></div></div></div>},
+ {id:'palmer',company:'Russell Palmer Career Management Center',role:'Peer Coach',location:'East Lansing, MI',dates:'May 2025-present',logo:'company-logos/palmer-v31.png',short:'Coach students on resumes, interviews, networking, recruiting strategy, and case prep.',detail:<div className="expStory"><p>As a peer coach in MSU’s Russell Palmer Career Management Center, I meet one-on-one with students for resume reviews, interview preparation, recruiting strategy, networking, and case prep. Each session ends with specific edits or next steps the student can use right away.</p><div className="expMetricRow"><span><b>20+</b> sessions weekly</span><span><b>200+</b> students coached</span><span><b>25</b> coaches on team</span><span><b>~40%</b> of the team’s positive reviews (25 coaches)</span></div></div>},
+ {id:'fordcredit',caseStudy:'finsimple',company:'Ford Credit',role:'Software Engineering Intern',location:'Dearborn, MI',dates:'Summers 2024-2025',logo:'company-logos/ford-credit-v31.png',short:'Built customer-facing financial features and worked across the systems and teams needed to ship them.',detail:<div className="expStory"><p>As the sole intern embedded on FinSimple, I worked on customer-facing feature delivery and the systems around it: AEM, Salesforce APIs, QA and production environments, release coordination, incidents, and onboarding.</p><div className="expMetricRow"><span><b>15%</b> faster delivery</span><span><b>25</b> issues investigated</span><span><b>50%</b> faster restoration</span><span><b>4</b> recovery playbooks</span><span><b>50</b> people across 5 teams</span></div><div className="expColumns"><div><strong>Product</strong><span>Built AEM components and Salesforce-backed workflows from customer and business requirements; worked across UI behavior, REST/GraphQL integration, Postman validation, and testing through development, QA, and production.</span></div><div><strong>Delivery quality</strong><span>Reviewed QA security-scan findings and PR compliance, documented release and environment-tagging workflows, and researched OAuth/API error patterns to support reliable deployments.</span></div><div><strong>Production operations</strong><span>Monitored live incidents, analyzed customer-impacting failure patterns, and coordinated with Payment, DevOps, and QA teams while turning recurring issues into four reusable recovery playbooks.</span></div></div><div className="expNote">I also built a centralized onboarding hub from 15 technical resources across 3 teams, cutting intern ramp-up from ~2 weeks to 3 days.</div></div>},
  {id:'pwc',company:'PwC × Arc of Indiana',role:'Consulting Extern',location:'',dates:'Aug-Oct 2024',logo:'company-logos/pwc-v31.png',short:'Built a weighted benchmark to compare peer nonprofits and turn the research into recommendations.',detail:<div className="expStory"><p>Over a five-week externship, I independently researched The Arc of Indiana and peer organizations it could learn from. I defined the comparison criteria, built a weighted seven-category scorecard, benchmarked five organizations across 10+ engagement and innovation metrics, and turned the findings into recommendations for the client.</p><div className="expMetricRow"><span><b>7</b> scorecard categories</span><span><b>5</b> peer organizations</span><span><b>10+</b> metrics</span><span><b>5</b> recommendations adopted</span></div></div>},
  {id:'ford',caseStudy:'fcvf',company:'Ford Motor Company',role:'Software Engineering Intern',location:'Dearborn, MI',dates:'Summer 2023',logo:'company-logos/ford.png',short:'Built a customer-value assessment and used user interviews to change how the experience worked.',detail:<div className="expStory"><p>My first internship put me close to both the code and the user. On a 10-person team, I helped build the full-stack Customer Value Framework, interviewed users, and used what we learned to change the product and implementation.</p><div className="expMetricRow"><span><b>4</b> user interviews</span><span><b>100+</b> Git commits</span><span><b>7</b> legacy CSS files replaced</span><span><b>+25%</b> feedback volume</span></div><div className="expColumns two"><div><strong>What I owned</strong><span>Frontend and backend implementation, accessibility improvements, refactoring, user interviews, Agile planning, and turning product feedback into interface changes, including pagination and score-visibility changes.</span></div><div><strong>What changed</strong><span>We moved toward a multi-page experience, removed the in-progress score, and replaced seven legacy CSS files with a more maintainable Material-UI approach while feedback volume increased 25%.</span></div></div></div>},
- {id:'spectrum',caseStudy:'marketExpansion',company:'Spectrum Consulting Group',role:'Consultant',location:'East Lansing, MI',dates:'2022-2026',logo:'company-logos/spectrum-v31.png',short:'Built decision tools and recommendations across consumer services, utilities, hospitality, and automotive projects.',detail:<div className="expStory"><div className="expMetricRow"><span><b>3,000+</b> survey responses</span><span><b>19</b> utility KPIs</span><span><b>3</b> locations compared</span><span><b>2</b> analysts mentored</span></div><div className="expColumns spectrumColumns"><div><strong>Consumer services</strong><span>Built an interactive Excel scorecard and rubric so the team could compare candidate locations using the same market and operating criteria. The team also developed community, partnership, and paid-media recommendations for existing branches.</span></div><div><strong>Utilities</strong><span>Built a criticality/feasibility rubric, defined 19 KPIs, and evaluated three software options for a multimillion-dollar utility.</span></div><div><strong>Hospitality</strong><span>Found engagement gaps across 3,000+ responses and recommended three digital initiatives that increased social interaction by 20%.</span></div><div><strong>Automotive</strong><span>Led the analysis workstream, combined customer pain points with funnel evidence, built implementation-ready recommendations, and redesigned lead-management workflows.</span></div></div><div className="expNote spectrumSaaS"><strong>Automotive SaaS strategy</strong><span>Defined target accounts and buyer roles, outreach signals, multichannel sequences, CRM handoffs, objection handling, and demo guidance tied to customer workflow problems.</span></div></div>},
+ {id:'spectrum',caseStudy:'marketExpansion',company:'Spectrum Consulting Group',role:'Consultant',location:'East Lansing, MI',dates:'2022–present',logo:'company-logos/spectrum-v31.png',short:'Built decision tools and recommendations across consumer services, utilities, hospitality, and automotive projects.',detail:<div className="expStory"><div className="expMetricRow"><span><b>3,000+</b> data points</span><span><b>19</b> utility KPIs</span><span><b>3</b> locations compared</span><span><b>2</b> analysts mentored</span></div><div className="expColumns spectrumColumns"><div><strong>Consumer services</strong><span>Built an interactive Excel scorecard and rubric so the team could compare candidate locations using the same market and operating criteria. The team also developed community, partnership, and paid-media recommendations for existing branches.</span></div><div><strong>Utilities</strong><span>Built a criticality/feasibility rubric, defined 19 KPIs, and evaluated three software options for a multimillion-dollar utility.</span></div><div><strong>Hospitality</strong><span>Found engagement gaps across 3,000+ responses and recommended three digital initiatives that increased social interaction by 20%.</span></div><div><strong>Automotive</strong><span>Led the analysis workstream, combined customer pain points with funnel evidence, built implementation-ready recommendations, and redesigned lead-management workflows.</span></div></div><div className="expNote spectrumSaaS"><strong>Automotive SaaS strategy</strong><span>Defined target accounts and buyer roles, outreach signals, multichannel sequences, CRM handoffs, objection handling, and demo guidance tied to customer workflow problems.</span></div></div>},
 ];
 
 const experienceImpact:Record<string,string>={
- accenture:'Supported 21 live AI enablement requests, defined a 10-tab automation contract, and turned ~2.2K learner responses into five recommendations.',
- palmer:'Coach 20+ sessions each week and have helped 300+ students leave with stronger applications and specific next steps.',
- fordcredit:'Owned a customer-facing feature through production, helped cut release time 40%, and created four incident-recovery playbooks.',
+ accenture:'Supported 21 live AI enablement requests, defined a 10-tab automation contract, and analyzed 3,862 user responses to find an 8x utilization gap.',
+ palmer:'Coach 20+ sessions each week and have coached 200+ students leave with stronger applications and specific next steps.',
+ fordcredit:'Owned a customer-facing feature through production, improved delivery 15%, and wrote four recovery playbooks that cut restoration time 50%.',
  pwc:'Built a seven-category peer benchmark that led to five adopted client recommendations.',
  ford:'Built the web-based Customer Value Framework, led four interviews, and increased feedback volume 25%.',
  spectrum:'Built decision tools across four consulting projects, including a repeatable location scorecard and measurable growth recommendations.'
@@ -1171,8 +1167,8 @@ function ExperienceSection({onAura,onOpen}){
 
 function EducationSection(){
  const schools=[
-  {id:'broad',school:'Michigan State University',college:'Broad College of Business',degree:'B.A. Supply Chain Management',date:'May 2027',logo:'company-logos/msu-broad.webp'},
-  {id:'engineering',school:'Michigan State University',college:'College of Engineering',degree:'B.S. Computer Science',date:'May 2027',logo:'company-logos/msu-engineering.png'}
+  {id:'broad',school:'Michigan State University',college:'Broad College of Business',degree:'B.A. Supply Chain Management',date:'May 2027',logo:'company-logos/msu-broad-clean.png'},
+  {id:'engineering',school:'Michigan State University',college:'College of Engineering',degree:'B.S. Computer Science',date:'May 2027',logo:'company-logos/msu-engineering-clean.png'}
  ];
  return <section id="education" className="section educationSection"><div className="sectionTitle compactTitle"><h2>Education</h2></div><div className="educationRows">{schools.map(item=><article className={`educationRow education-${item.id}`} key={item.id}><div className="educationLogo"><img loading="lazy" decoding="async" src={item.logo} alt={`${item.college} logo`}/></div><div className="educationCopy"><span className="educationSchool">{item.school}</span><h3>{item.college}</h3><p>{item.degree}</p></div><time>{item.date}</time></article>)}</div></section>
 }
@@ -1223,13 +1219,16 @@ function BookRecForm(){
      setStatus('error');
    }
  };
- return <form className={`bookRecForm ${status}`} onSubmit={submit}><div className="bookRecRow"><input id="book-rec" aria-label="Leave me a book rec" value={book} onChange={e=>{setBook(e.target.value);if(status==='error'||status==='sent')setStatus('idle')}} placeholder={status==='sent'?'Added to my reading list :)':'Send me a book rec'} autoComplete="off" disabled={status==='sending'||status==='sent'}/><button type="submit" disabled={!book.trim()||status==='sending'||status==='sent'}>{status==='sending'?'Sending…':status==='sent'?'Sent ✓':'Submit'}</button></div>{status==='error'&&<span className="bookRecStatus" role="status">Couldn’t send that one. Try again.</span>}</form>
+ return <form className={`bookRecForm ${status}`} onSubmit={submit}><span className="bookRecSpine" aria-hidden="true"/><p className="bookRecTitle">Leave me a book rec</p><div className="bookRecRow"><input id="book-rec" aria-label="Leave me a book rec" value={book} onChange={e=>{setBook(e.target.value);if(status==='error'||status==='sent')setStatus('idle')}} placeholder={status==='sent'?'Added to my reading list :)':'Send me a book rec'} autoComplete="off" disabled={status==='sending'||status==='sent'}/><button type="submit" disabled={!book.trim()||status==='sending'||status==='sent'}>{status==='sending'?'Sending…':status==='sent'?'Sent ✓':'Submit'}</button></div>{status==='error'&&<span className="bookRecStatus" role="status">Couldn’t send that one. Try again.</span>}{status==='sent'&&<span className="bookRecThanks" role="status"><span className="bookFlip" aria-hidden="true"><i/><i/></span>Thanks! Added to my list.</span>}</form>
 }
 
 function Home({openCase}){
  const [auraTone,setAuraTone]=useState('default');
  // Phone nav: every link lives in a sheet behind a menu button.
  const [navOpen,setNavOpen]=useState(false);
+ const navRef=useRef(null);const [activeSection,setActiveSection]=useState('');const [navInd,setNavInd]=useState<React.CSSProperties>({opacity:0});
+ useEffect(()=>{const ids=['projects','experience','fun'];const onScroll=()=>{const y=window.innerHeight*.35;let cur='';for(const id of ids){const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<y)cur=id}const about=document.getElementById('about');if(about&&about.getBoundingClientRect().top<y)cur='';setActiveSection(cur)};onScroll();window.addEventListener('scroll',onScroll,{passive:true});return()=>window.removeEventListener('scroll',onScroll)},[]);
+ useEffect(()=>{const nav=navRef.current;if(!nav)return;const a=activeSection&&nav.querySelector(`a[href="#${activeSection}"]`);if(!a){setNavInd(v=>({...v,opacity:0}));return}setNavInd({opacity:1,width:`${a.offsetWidth}px`,transform:`translateX(${a.offsetLeft}px)`})},[activeSection]);
  useEffect(()=>{if(!navOpen)return;const k=e=>{if(e.key==='Escape')setNavOpen(false)};window.addEventListener('keydown',k);return()=>window.removeEventListener('keydown',k)},[navOpen]);
  const [heroPointerActive,setHeroPointerActive]=useState(false);
  const [filmOpen,setFilmOpen]=useState(false);
@@ -1243,10 +1242,10 @@ function Home({openCase}){
    e.currentTarget.style.setProperty('--hero-mouse-y',`${e.clientY-rect.top}px`);
  };
  return <>
- <header className={`siteHeader${navOpen?' navIsOpen':''}`}><a className="wordmark" href="#top">Neha Chinimilli</a><button type="button" className="navToggle" aria-expanded={navOpen} aria-controls="primaryNav" aria-label={navOpen?'Close menu':'Open menu'} onClick={()=>setNavOpen(o=>!o)}><span/><span/></button><nav id="primaryNav" aria-label="Primary" onClick={e=>{if((e.target as HTMLElement).closest('a'))setNavOpen(false)}}><a href="#projects">Selected work</a><a href="#experience">Experience</a><a href="#fun">Fun builds</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume</a><a href="mailto:chinimi2@msu.edu">Email</a><a className="headerLinkedIn" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on LinkedIn"><img src={assetUrl('linkedin.svg')} alt="LinkedIn"/></a></nav></header>
+ <header className={`siteHeader${navOpen?' navIsOpen':''}`}><a className="wordmark" href="#top">Neha Chinimilli</a><button type="button" className="navToggle" aria-expanded={navOpen} aria-controls="primaryNav" aria-label={navOpen?'Close menu':'Open menu'} onClick={()=>setNavOpen(o=>!o)}><span/><span/></button><nav id="primaryNav" ref={navRef} aria-label="Primary" onClick={e=>{if((e.target as HTMLElement).closest('a'))setNavOpen(false)}}><i className="navIndicator" aria-hidden="true" style={navInd}/><a href="#projects" className={activeSection==='projects'?'isActive':''}>Selected work</a><a href="#experience" className={activeSection==='experience'?'isActive':''}>Experience</a><a href="#fun" className={activeSection==='fun'?'isActive':''}>Fun builds</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume</a><a href="mailto:chinimi2@msu.edu">Email</a><a className="headerLinkedIn" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on LinkedIn"><img src={assetUrl('linkedin.svg')} alt="LinkedIn"/></a></nav></header>
  <main id="main-content" className={`homePage homeAura-${auraTone}`}>
   <AuraField tone={auraTone}/>
-  <section id="top" className={`hero v28Hero ${heroPointerActive?'heroPointerActive':''}`} onPointerMove={moveHeroAura} onPointerEnter={e=>{if(e.pointerType!=='touch')setHeroPointerActive(true)}} onPointerLeave={()=>setHeroPointerActive(false)}><div className="heroMouseAura" aria-hidden="true"/><div className="heroInner"><h1>Neha Chinimilli</h1><p className="heroThesis">Dual degree in Computer Science and Supply Chain Management · Michigan State</p><p className="heroTagline">Software Engineer and consultant with hands-on product experience at Ford, Ford Credit, and Accenture.</p><div className="heroLinks"><a className="primaryHeroLink" href="#projects">View selected work ↓</a><a href="#about">Learn more about me ↓</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></div></div></section>
+  <section id="top" className={`hero v28Hero ${heroPointerActive?'heroPointerActive':''}`} onPointerMove={moveHeroAura} onPointerEnter={e=>{if(e.pointerType!=='touch')setHeroPointerActive(true)}} onPointerLeave={()=>setHeroPointerActive(false)}><div className="heroMouseAura" aria-hidden="true"/><figure className="heroPortrait"><span className="heroPortraitGlow" aria-hidden="true"><i/><i/><i/></span><span className="heroPortraitFrame"><img src={assetUrl('headshot.jpg')} alt="Neha Chinimilli"/></span></figure><div className="heroInner"><h1>Neha Chinimilli</h1><p className="heroThesis">Dual degree in Computer Science and Supply Chain Management · Michigan State</p><p className="heroTagline">Software Engineer and consultant with hands-on product experience at Ford, Ford Credit, and Accenture.</p><div className="heroLinks"><a className="primaryHeroLink" href="#projects">View selected work ↓</a><a href="#about">Learn more about me ↓</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></div></div></section>
   <CompanyBanner/>
   <section id="projects" className="section projectsSection v28Projects"><div className="sectionTitle compactTitle"><h2>Selected work</h2></div><div className="balancedProjectGrid">{serious.map((p,i)=><ProjectCard project={p} index={i} key={p.id} featured={i===0} onOpen={openCase}/>)}</div></section>
   <ExperienceSection onAura={setAuraTone} onOpen={openCase}/><EducationSection/>
@@ -1276,15 +1275,32 @@ function Home({openCase}){
                   </div>
                   </section>
   <section id="about" className="section aboutSection">
-    <div className="aboutPhoto"><AboutFilmCamera photos={aboutFilmPhotos} open={filmOpen} index={filmIndex} onClose={()=>setFilmOpen(false)} onChange={setFilmIndex}/></div><div className="aboutCopy"><h2>About me</h2><p>I’m Neha. I’m finishing a <strong>dual degree in Computer Science and Supply Chain Management at Michigan State</strong>, so I think a lot about how systems work, and about the parts people still do by hand because nobody fixed them. I’m also a creative at heart. If I’m going to fix something, I want it to feel good to use, not just work.</p><p>I’ve been rebuilding the same alarm since high school: find the latest I can get up and still make it on time. It started as a script using Google Maps drive time. When I moved to the Bay for the summer, I added my morning routine, live transit, traffic, and walking time, and it became the <a className="aboutInlineLink" href="#/projects/commute">Commute iOS app</a> above. It’s the same pattern I follow at work: start with one annoying problem, and keep going until it’s actually solved.</p><p className="hobbyLine">Outside of work, I’m usually trying a new coffee shop, traveling, <HobbyPopover label="reading" title="On my shelf" items={["A Thousand Splendid Suns","When Breath Becomes Air","The Year of Magical Thinking","Sharp Objects"]}/>, keeping up with <HobbyPopover label="reality TV" title="Always on rotation" items={["Modern Family","Vanderpump Rules","Summer House","the newest Real Housewives season"]}/>, baking, hiking, painting, or taking <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>{setFilmOpen(true);setFilmIndex(0)}} aria-expanded={filmOpen}>film photos</button><span className="filmPhotoHint" role="tooltip">click to see my photos</span></span>.</p><div className="aboutActions"><BookRecForm/></div></div></section>
+    <div className="aboutPhoto"><AboutFilmCamera photos={aboutFilmPhotos} open={filmOpen} index={filmIndex} onClose={()=>setFilmOpen(false)} onChange={setFilmIndex}/></div><div className="aboutCopy"><h2>About me</h2><p>I’m Neha. I’m finishing a <strong>dual degree in Computer Science and Supply Chain Management at Michigan State</strong>, so I think a lot about how systems work, and about the parts people still do by hand because nobody fixed them. I’m also a <span className="creativeWord" tabIndex={0} aria-label="creative">{"creative".split("").map((c,i)=><span key={i} aria-hidden="true" style={{"--i":i} as React.CSSProperties}>{c}</span>)}<svg className="creativeLine" viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path d="M3 9 C 18 3, 30 13, 46 7 S 74 3, 88 8 S 108 12, 117 5"/></svg><svg className="creativeWash" viewBox="-130 -70 260 140" aria-hidden="true">
+ <defs>
+  <filter id="wcBleed" x="-30%" y="-30%" width="160%" height="160%">
+   <feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="3" seed="7" result="n"/>
+   <feDisplacementMap in="SourceGraphic" in2="n" scale="16" xChannelSelector="R" yChannelSelector="G" result="d"/>
+   <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="3" result="grain"/>
+   <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -.9 1.05" result="g"/>
+   <feComposite in="d" in2="g" operator="in" result="grained"/>
+   <feGaussianBlur in="grained" stdDeviation=".6"/>
+  </filter>
+  {[['wcRose','#f3a0b8','#d9587e'],['wcPeach','#fbc79a','#e8844f'],['wcGold','#fbd98f','#e0a13a'],['wcCoral','#f7a58f','#d9604f']].map(([id,a,e])=><radialGradient key={id} id={id}><stop offset="0" stopColor={a} stopOpacity=".28"/><stop offset=".62" stopColor={a} stopOpacity=".5"/><stop offset=".86" stopColor={e} stopOpacity=".72"/><stop offset=".95" stopColor={e} stopOpacity=".9"/><stop offset="1" stopColor={e} stopOpacity="0"/></radialGradient>)}
+ </defs>
+ <g filter="url(#wcBleed)">
+  {[[-70,-8,34,'wcRose'],[-22,-30,28,'wcPeach'],[34,-22,32,'wcCoral'],[78,6,26,'wcGold'],[-40,26,24,'wcPeach'],[22,30,27,'wcRose'],[-98,14,15,'wcCoral'],[100,-28,13,'wcRose']].map(([x,y,r,f],i)=><circle key={i} className="wcPool" cx={x} cy={y} r={r} fill={`url(#${f})`} style={{"--k":i} as React.CSSProperties}/>)}
+  {[[-112,-34,2.6,'#d9587e'],[-86,-48,1.6,'#e8844f'],[112,32,2.2,'#d9604f'],[92,48,1.4,'#e0a13a'],[-60,50,1.8,'#d9587e'],[58,-50,2,'#e8844f'],[124,-6,1.3,'#d9587e'],[-124,40,1.2,'#e0a13a']].map(([x,y,r,c],i)=><circle key={'d'+i} className="wcDrop" cx={x} cy={y} r={r} fill={c as string} style={{"--k":i} as React.CSSProperties}/>)}
+ </g>
+</svg></span> at heart. If I’m going to fix something, I want it to feel good to use, not just work.</p><p>I’ve been rebuilding the same alarm since high school: find the latest I can get up and still make it on time. It started as a script using Google Maps drive time. When I moved to the Bay for the summer, I added my morning routine, live transit, traffic, and walking time, and it became the <a className="aboutInlineLink" href="#/projects/commute">Commute iOS app</a> above. It’s the same pattern I follow at work: start with one annoying problem, and keep going until it’s actually solved.</p><p className="hobbyLine">Outside of work, I’m usually trying a new coffee shop<span className="coffeeCup" aria-hidden="true"><svg viewBox="0 0 24 24"><path className="steam s1" d="M9 7c-1.2-1.4 1.2-2.4 0-4"/><path className="steam s2" d="M12.5 7c-1.2-1.4 1.2-2.4 0-4"/><path className="steam s3" d="M16 7c-1.2-1.4 1.2-2.4 0-4"/><path className="cup" d="M5 10h14v4.5a5 5 0 0 1-5 5h-4a5 5 0 0 1-5-5z"/><path className="cup" d="M19 11.5h1.2a2.3 2.3 0 0 1 0 4.6H18.6"/></svg></span>, traveling, <HobbyPopover label="reading" title="On my shelf" items={["A Thousand Splendid Suns","When Breath Becomes Air","The Year of Magical Thinking","Sharp Objects"]}/>, keeping up with <HobbyPopover label="reality TV" title="Always on rotation" items={["Modern Family","Vanderpump Rules","Summer House","the newest Real Housewives season"]}/>, baking, hiking, painting, or taking <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>{setFilmOpen(true);setFilmIndex(0)}} aria-expanded={filmOpen}>film photos</button><span className="filmPhotoHint" role="tooltip">click to see my photos</span></span>.</p><div className="aboutActions"><BookRecForm/></div></div></section>
  </main><footer className="siteFooter"><span>© 2026 Neha Chinimilli</span><nav aria-label="Footer"><a href="mailto:chinimi2@msu.edu">Email</a><a className="linkedinLink" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Visit Neha Chinimilli on LinkedIn (opens in a new tab)"><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M19.5 3h-15A1.5 1.5 0 0 0 3 4.5v15A1.5 1.5 0 0 0 4.5 21h15a1.5 1.5 0 0 0 1.5-1.5v-15A1.5 1.5 0 0 0 19.5 3ZM8.25 18.25H5.75v-8h2.5v8ZM7 9.15a1.45 1.45 0 1 1 0-2.9 1.45 1.45 0 0 1 0 2.9Zm11.25 9.1h-2.5v-3.9c0-.93-.02-2.12-1.29-2.12-1.3 0-1.5 1.01-1.5 2.05v3.97h-2.5v-8h2.4v1.09h.04c.33-.64 1.15-1.32 2.37-1.32 2.54 0 3.01 1.67 3.01 3.84v4.39Z"/></svg><span>LinkedIn</span><span aria-hidden="true">↗</span></a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></nav></footer>
  </>
 }
 
 function ScrollToTopButton(){
  const [visible,setVisible]=useState(false);
- useEffect(()=>{const update=()=>setVisible(window.scrollY>520);update();window.addEventListener('scroll',update,{passive:true});return()=>window.removeEventListener('scroll',update)},[]);
- return <button type="button" className={`scrollTopButton ${visible?'visible':''}`} onClick={()=>window.scrollTo({top:0,behavior:'smooth'})} aria-label="Back to top" title="Back to top">↑</button>
+ const [progress,setProgress]=useState(0);
+ useEffect(()=>{const update=()=>{setVisible(window.scrollY>520);const max=document.documentElement.scrollHeight-window.innerHeight;setProgress(max>0?Math.min(1,window.scrollY/max):0)};update();window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update);return()=>{window.removeEventListener('scroll',update);window.removeEventListener('resize',update)}},[]);
+ return <button type="button" className={`scrollTopButton ${visible?'visible':''}`} onClick={()=>window.scrollTo({top:0,behavior:'smooth'})} aria-label="Back to top" title="Back to top"><svg className="scrollRing" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" className="scrollRingTrack"/><circle cx="24" cy="24" r="22" className="scrollRingFill" style={{strokeDashoffset:138.2*(1-progress)}}/></svg><span aria-hidden="true">↑</span></button>
 }
 
 function App(){

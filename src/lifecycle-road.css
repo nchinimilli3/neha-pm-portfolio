@@ -1,3 +1,5 @@
+/* Mach-E wheel spokes spin around their own center wherever the car is drawn */
+.meWheel{transform-box:fill-box;transform-origin:center}
 /* Shared sticky lifecycle road. Colors come from --lc-* tokens set by each case study. */
 .lcRoad{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:230px minmax(0,1fr);gap:48px;align-items:center;width:100%;margin:0 0 -78px;padding:6px max(24px,calc((100% - 1180px)/2)) 8px;background:none;opacity:0;transform:translateY(-100%);pointer-events:none;transition:opacity .35s,transform .45s cubic-bezier(.3,.8,.3,1)}
 .lcRoad:before{content:'';position:absolute;z-index:-1;top:0;bottom:0;left:calc(50% - 50vw);width:100vw;background:linear-gradient(var(--lc-tint),var(--lc-tint)),var(--lc-glass,#f4f1ea);-webkit-backdrop-filter:blur(22px) saturate(1.2);backdrop-filter:blur(22px) saturate(1.2);border:0;box-shadow:none;pointer-events:none}
@@ -20,12 +22,12 @@
 .lcRoad.isMoving[data-traveler=car] .lcCar svg,.lcRoad.isMoving[data-traveler=ev] .lcCar svg,.lcRoad.isMoving[data-traveler=train] .lcCar svg,.lcRoad.isMoving[data-traveler=cablecar] .lcCar svg{animation:lcRumble .18s ease-in-out infinite}
 @keyframes lcRumble{50%{transform:translateY(-.6px)}}
 .lcRoadTrack ol{position:relative;display:grid;grid-template-columns:repeat(var(--n),1fr);margin:0;padding:0;list-style:none}
-.lcRoadTrack button{display:grid;justify-items:center;width:100%;padding:0;border:0;background:none;cursor:pointer;color:inherit}
-.lcPost{width:2px;height:9px;margin-top:11px;border-radius:2px;background:#8aa0ae;transition:background .3s,height .3s}
+.lcRoadTrack button{display:grid;justify-items:center;width:100%;padding:18px 0 0;border:0;background:none;cursor:pointer;color:inherit}
+
 .lcRoadTrack b{margin-top:3px;font-size:11.5px;font-weight:600;letter-spacing:.01em;color:var(--lc-muted);transition:color .3s}
-.lcRoadTrack .isPast .lcPost{background:var(--lc-accent)}
+
 .lcRoadTrack .isPast b{color:#3f5a6c}
-.lcRoadTrack .isHere .lcPost{height:12px;background:var(--lc-accent)}
+
 .lcRoadTrack .isHere b{color:var(--lc-ink);font-weight:750}
 .lcRoadTrack button:hover b{color:var(--lc-ink)}
 .lcNow{order:-1;display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:10px;align-items:baseline;min-width:0;margin:0;line-height:1.3}
@@ -183,3 +185,9 @@
  45%{opacity:.26;transform:translate(calc(-8px - var(--v) * 10px),calc(-14px - var(--v) * 6px)) scale(2.4)}
  100%{opacity:0;transform:translate(calc(-14px - var(--v) * 18px),calc(-38px - var(--v) * 10px)) scale(4.4)}
 }
+/* Commute: the lifecycle traveler is the same BART car as the case study, with the same gentle ride */
+.lcRoad[data-traveler=train] .lcCar{width:104px;top:4px}
+.lcBartImg{display:block;width:104px;height:auto;filter:drop-shadow(0 3px 2px rgba(10,20,30,.28));-webkit-user-drag:none;user-select:none}
+.lcRoad.isMoving[data-traveler=train] .lcBartImg{animation:lcBartRide .22s ease-in-out infinite alternate}
+@keyframes lcBartRide{from{transform:translateY(0)}to{transform:translateY(-.8px)}}
+@media(prefers-reduced-motion:reduce){.lcBartImg{animation:none!important}}

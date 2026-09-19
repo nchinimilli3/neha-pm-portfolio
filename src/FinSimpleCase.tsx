@@ -34,7 +34,7 @@ const stages=[
  {id:'fs-define',name:'Define',did:'Fit a live platform'},
  {id:'fs-build',name:'Build',did:'Prototype, component, release'},
  {id:'fs-test',name:'Test',did:'Dev, QA, and production'},
- {id:'fs-launch',name:'Launch',did:'5 teams, release time cut 40%'},
+ {id:'fs-launch',name:'Launch',did:'5 teams, 15% faster delivery'},
  {id:'fs-operate',name:'Operate',did:'Incidents, playbooks, learnings'}
 ];
 const envs=[
@@ -163,7 +163,7 @@ export default function FinSimpleCase({setLightbox}){
     ['My own data shape','Salesforce contracts the record already had to match'],
     ['Shipping on my own schedule','A release train that made five teams a dependency']
    ]}/>}
-   result={<p>One customer action travels through the web experience, the AEM component, the API layer, and into Salesforce as a durable record — inside the product customers already used, shipped on a release process I helped cut 40%.</p>}
+   result={<p>One customer action travels through the web experience, the AEM component, the API layer, and into Salesforce as a durable record — inside the product customers already used, shipped with 15% faster delivery and 6% fewer data errors.</p>}
   >
    <p className="cdEvidenceLabel">One simple action, four connected layers</p>
   {/* Exploded view of the platform: a saved estimate drops through each layer to the system of record. */}
@@ -216,7 +216,7 @@ export default function FinSimpleCase({setLightbox}){
  </div>
   {/* Five workstreams merge like on-ramps into one release freeway. */}
   <figure className="fseFreeway">
-   <svg viewBox="0 0 600 330" data-loop role="img" aria-label="Five workstreams with 50 people merge into one production release, on a release cycle made 40 percent faster">
+   <svg viewBox="0 0 600 330" data-loop role="img" aria-label="Five workstreams with 50 people merge into one production release, with delivery 15 percent faster">
     {lanes.map((lane,i)=>{const y=40+i*52;const d=`M150 ${y}H270C350 ${y} 360 200 440 200H600`;return <g key={lane}>
      <path d={d} className="fseLaneEdge"/><path d={d} className="fseLane"/>
      <text x="138" y={y+5} textAnchor="end" className="fseLaneLabel">{lane}</text>
@@ -226,11 +226,11 @@ export default function FinSimpleCase({setLightbox}){
     <g className="fseSign"><path d="M478 200V120M578 200V120" className="fseSignPost"/>
      <rect x="452" y="52" width="148" height="74" rx="8" className="fseSignFace"/><rect x="457" y="57" width="138" height="64" rx="5" className="fseSignInset"/>
      <text x="526" y="80" className="fseSignTitle">Production release</text>
-     <text x="526" y="102" className="fseSignBig">40% cut</text>
+     <text x="526" y="102" className="fseSignBig">15% faster</text>
      <path d="M512 112h28" className="fseSignArrow"/><path d="M534 108l6 4-6 4" className="fseSignArrow"/>
     </g>
    </svg>
-   <p className="fseFreewayNote"><b>5</b> workstreams<b>50</b> people<b>40%</b> release time cut</p>
+   <p className="fseFreewayNote"><b>5</b> workstreams<b>50</b> people<b>15%</b> faster delivery</p>
   </figure>
   {handoffs.filter(h=>h.mine).map(h=><aside key={h.lane} className="fseMine"><b>The handoff I owned · {h.lane}</b><p>{h.mine.replace('This is the one I chased. ','')}</p></aside>)}
  </section>
@@ -239,9 +239,9 @@ export default function FinSimpleCase({setLightbox}){
   {/* Three numbers, stated as the chain they actually were: what broke, what I
       wrote because of it, what changed as a result. */}
   <ol className="fseOps" data-stagger>
-   <li className="fseOpsStat"><b>What broke</b><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M4 30l8-9 7 5 9-13 8 6"/><circle cx="28" cy="13" r="2.5"/></svg><strong>20+</strong><span>customer-impacting incidents analyzed for failure patterns</span></li>
+   <li className="fseOpsStat"><b>What broke</b><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M4 30l8-9 7 5 9-13 8 6"/><circle cx="28" cy="13" r="2.5"/></svg><strong>25</strong><span>customer-impacting issues investigated with Splunk and ServiceNow</span></li>
    <li className="fseOpsStat"><b>What I wrote</b><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M9 5h17l6 6v24H9z"/><path d="M26 5v6h6M14 18h13M14 24h13M14 30h8"/></svg><strong>4</strong><span>recovery playbooks written from those patterns</span></li>
-   <li className="fseOpsStat"><b>What changed</b><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="21" r="14"/><path d="M20 12v9l6 4M16 3h8"/></svg><strong>40%</strong><span>release time I helped cut</span></li>
+   <li className="fseOpsStat"><b>What changed</b><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="21" r="14"/><path d="M20 12v9l6 4M16 3h8"/></svg><strong>50%</strong><span>faster restoration with standardized troubleshooting</span></li>
   </ol>
   <Supporting title="Also while I was there" note="Onboarding was nobody’s deliverable, so the same two weeks got spent again with every new engineer.">
    <OnboardingHub/>

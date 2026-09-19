@@ -672,7 +672,7 @@ small,.freshness,.liveSources,.morningTimeline span,.iosTabBar small{font-size:m
 @media(max-width:800px){.aboutPhoto{max-width:235px!important}.aboutPhoto img{max-height:353px!important}}
 .balancedProjectGrid,.funLeadGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:26px!important}.funLeadGrid .moreBuildCard:first-child{grid-row:auto!important}.smallBuild .techVisual{height:auto!important;aspect-ratio:16/10!important;border-radius:16px!important}.smallBuild{padding:0 12px 10px!important}
 @media(max-width:800px){.balancedProjectGrid,.funLeadGrid{grid-template-columns:1fr!important}}
-.casePage img{cursor:zoom-in}.caseCompanyBar img,.toolLogoSection img{cursor:default!important}
+.casePage img{cursor:zoom-in}.caseCompanyBar img,.toolLogoSection img,.casePage img[data-no-lightbox]{cursor:default!important}
 
 /* V34: homepage aura restraint, full-width case section titles, and quieter sandbox UI */
 
@@ -1499,10 +1499,10 @@ input,select,button{accent-color:var(--color-focus)}
   }
 }
 
-/* V36.2: let the hero major/tagline read across the full hero width. */
+/* Hero major/tagline: capped so it wraps before the portrait on the right. */
 .v28Hero .heroThesis{
   width:100%!important;
-  max-width:none!important;
+  max-width:620px!important;
   display:block!important;
   white-space:normal!important;
   text-wrap:balance!important;
@@ -5044,3 +5044,23 @@ input,select,button{accent-color:var(--color-focus)}
 }
 @keyframes navSheet{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.siteHeader.navIsOpen nav{animation:none}.navToggle span{transition:none}}
+
+/* About: "creative" gets a hand-drawn underline, a slow warm shimmer, and letters that bounce on hover */
+.creativeWord{position:relative;z-index:0;display:inline-block;font-weight:700;font-style:italic;outline:none}
+.creativeWord>span{display:inline-block;background:linear-gradient(90deg,#e8577f,#f28a5b,#f6b24d,#e8577f);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:creativeShimmer 6s linear infinite;animation-delay:calc(var(--i) * -.25s)}
+.creativeWord .creativeLine{position:absolute;left:-2%;bottom:-.28em;width:104%;height:.5em;overflow:visible}
+.creativeLine path{fill:none;stroke:#f28a5b;stroke-width:2.6;stroke-linecap:round;stroke-dasharray:140;stroke-dashoffset:140;animation:creativeDraw 1.2s .4s cubic-bezier(.6,0,.2,1) forwards}
+.creativeWord:hover .creativeLine path,.creativeWord:focus-visible .creativeLine path{animation:creativeRedraw .7s cubic-bezier(.6,0,.2,1) forwards}
+@keyframes creativeShimmer{to{background-position:300% 0}}
+@keyframes creativeDraw{to{stroke-dashoffset:0}}
+@keyframes creativeRedraw{0%{stroke-dashoffset:140}100%{stroke-dashoffset:0}}
+@keyframes creativeHop{0%,100%{transform:none}40%{transform:translateY(-.28em) rotate(-6deg)}70%{transform:translateY(.04em) rotate(3deg)}}
+@media(prefers-reduced-motion:reduce){.creativeWord>span,.creativeLine path{animation:none!important}.creativeLine path{stroke-dashoffset:0}}
+.creativeWord{cursor:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2244%22 height=%2244%22 viewBox=%220 0 44 44%22%3E%3Cdefs%3E%3ClinearGradient id=%22h%22 x1=%220%22 y1=%220%22 x2=%220%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%23e3aa78%22/%3E%3Cstop offset=%22.45%22 stop-color=%22%23a8622f%22/%3E%3Cstop offset=%221%22 stop-color=%22%234a2712%22/%3E%3C/linearGradient%3E%3ClinearGradient id=%22f%22 x1=%220%22 y1=%220%22 x2=%220%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%23ffffff%22/%3E%3Cstop offset=%22.4%22 stop-color=%22%23cfd3d8%22/%3E%3Cstop offset=%221%22 stop-color=%22%235d636c%22/%3E%3C/linearGradient%3E%3ClinearGradient id=%22b%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%220%22%3E%3Cstop offset=%220%22 stop-color=%22%23f07a98%22/%3E%3Cstop offset=%22.45%22 stop-color=%22%23d8566f%22/%3E%3Cstop offset=%221%22 stop-color=%22%235a3a26%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg transform=%22translate(3 41) rotate(-45)%22%3E%3Cpath d=%22M22 -2.5Q34 -3.4 58 -1.5Q60.5 0 58 1.5Q34 3.4 22 2.5Z%22 fill=%22url(%23h)%22 stroke=%22%233a1e0e%22 stroke-width=%22.5%22/%3E%3Cpath d=%22M24 -1.6Q40 -2.2 56 -.9%22 stroke=%22%23fff%22 stroke-opacity=%22.35%22 stroke-width=%22.6%22 fill=%22none%22/%3E%3Crect x=%2214.5%22 y=%22-3%22 width=%228%22 height=%226%22 rx=%221%22 fill=%22url(%23f)%22 stroke=%22%233f444b%22 stroke-width=%22.5%22/%3E%3Cpath d=%22M17 -3v6M19.5 -3v6%22 stroke=%22%237a8089%22 stroke-width=%22.4%22/%3E%3Cpath d=%22M14.8 -2.9C9 -3.1 3.5 -1.6 0 0C3.5 1.6 9 3.1 14.8 2.9Z%22 fill=%22url(%23b)%22 stroke=%22%233a1e0e%22 stroke-width=%22.5%22/%3E%3Cpath d=%22M13 -1.2C9 -1.2 5 -.6 2 0M13 1.1C9 1.1 5 .6 2.5 .2%22 stroke=%22%23fff%22 stroke-opacity=%22.25%22 stroke-width=%22.4%22 fill=%22none%22/%3E%3C/g%3E%3C/svg%3E") 3 41, pointer}
+.creativeWash{position:absolute;left:50%;top:50%;width:260px;height:140px;margin:-70px 0 0 -130px;pointer-events:none;z-index:-1;overflow:visible;mix-blend-mode:multiply}
+.creativeWash .wcPool,.creativeWash .wcDrop{transform-box:fill-box;transform-origin:center;opacity:0;transform:scale(.15)}
+.creativeWord:hover .wcPool,.creativeWord:focus-visible .wcPool{animation:wcBloom 3.2s cubic-bezier(.12,.8,.25,1) both;animation-delay:calc(var(--k) * .07s)}
+.creativeWord:hover .wcDrop,.creativeWord:focus-visible .wcDrop{animation:wcFlick 3.2s cubic-bezier(.2,.9,.3,1) both;animation-delay:calc(.12s + var(--k) * .04s)}
+@keyframes wcBloom{0%{opacity:0;transform:scale(.15)}14%{opacity:.95}45%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(1.12)}}
+@keyframes wcFlick{0%{opacity:0;transform:scale(0)}10%{opacity:1;transform:scale(1.3)}20%{transform:scale(1)}70%{opacity:.9}100%{opacity:0;transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.creativeWash{display:none}}

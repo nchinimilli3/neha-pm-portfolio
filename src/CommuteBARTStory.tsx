@@ -55,7 +55,7 @@ export default function CommuteBARTStory(){
   <div ref={sceneRef} className="bartSceneSimple">
    <div className="bartRail" aria-hidden="true"/>
    <div ref={trainRef} className="bartTrain">
-    <img className="bartBody" src={SRC} width={IMG_W} height={IMG_H} decoding="async" alt="BART Fleet of the Future train car 3102 with blue wrapped ends and the BART logo, two pairs of sliding doors, and an SFO Airport destination sign"/>
+    <img data-no-lightbox draggable={false} className="bartBody" src={SRC} width={IMG_W} height={IMG_H} decoding="async" alt="BART Fleet of the Future train car 3102 with blue wrapped ends and the BART logo, two pairs of sliding doors, and an SFO Airport destination sign"/>
     {/* Each wheel is the same pixels from the photo, turned by the distance travelled. At rest
         the angle is 0, so they sit exactly on the original. */}
     {WHEEL_X.map(cx=><span key={cx} className="bartWheel" aria-hidden="true" style={{
