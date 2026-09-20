@@ -134,8 +134,8 @@ const projects = [
     id:'scheduler',
     title:'Group Scheduling App',
     company:'Live web product · CSE 477',
-    summary:'A campus scheduling product that keeps Available, Maybe, and Unavailable as three separate answers, because seven student interviews all landed on the same complaint: tentative kept getting flattened into yes or no. It recommends the best time and carries that choice through to a venue vote and a calendar event.',
-    blurb:'Keeps “maybe” as its own answer, then carries the winning time into a venue vote and a calendar event.',
+    summary:'A deployed campus scheduling product for real group use that keeps Available, Maybe, and Unavailable as three separate answers, because seven student interviews all landed on the same complaint: tentative kept getting flattened into yes or no. It recommends the best time and carries that choice through to a venue vote and a calendar event.',
+    blurb:'A deployed scheduling product that keeps “maybe” as its own answer, then carries the winning time into a venue vote and calendar event.',
     media:'scheduler'
   },
   {
@@ -754,7 +754,7 @@ const caseAnswers={
   owned:'I defined the product, designed the experience, built the frontend and backend, and deployed it for my reading group.',
   call:'Rank the nominees instead of running a poll.',
   callHref:'#bc-build',
-  evidence:'5 user interviews, moderated usability tests, and a live demo with the club that now uses it.',
+  evidence:'The live app is now in use with my club. Next: five user interviews and moderated usability tests to identify what to improve before building more.',
   result:'Taken from concept to launch as a full-stack React and Cloudflare product, now used by an invite-only club of active readers.'
  },
  scheduler:{
@@ -763,7 +763,7 @@ const caseAnswers={
   call:'Keep “maybe” as its own answer.',
   callHref:'#sc-research',
   evidence:'Seven one-on-one student interviews with live task walkthroughs.',
-  result:'One record carries availability through to a recommended time, a venue vote, and a calendar event.'
+  result:'A deployed product carries one group record from availability through to a recommended time, venue vote, and calendar event.'
  },
  chat:{
   problem:'The CSE 477 brief was open-ended: build a real-time chat room with messages and join and leave events. A generic chat app would meet it, but there would be no clear bar for “good.”',
@@ -888,6 +888,7 @@ function SchedulerDecisionDemo(){
 const schedulerStages=[
  {id:'sc-discover',name:'Discover',did:'A heatmap isn’t a plan'},
  {id:'sc-research',name:'Research',did:'7 student interviews'},
+ {id:'sc-brief',name:'Brief',did:'One flow to a confirmed event'},
  {id:'sc-design',name:'Design',did:'From overlap to an event'},
  {id:'sc-compare',name:'Compare',did:'What When2meet leaves out'},
  {id:'sc-build',name:'Build',did:'One record, kept in sync'}
@@ -932,9 +933,20 @@ function SchedulerCase(){return <div className="schedulerStory"><LifecycleRoad s
   <section className="schedulerDemo"><SchedulerDemo/></section>
   <section id="sc-discover" className="schedulerProblemStage scStage"><div><h2>A heatmap did not finish the plan.</h2><p>Students could mark when they were free, but tentative availability was flattened into yes or no. Even after finding overlap, the group still had to choose a time, place, and next step somewhere else.</p></div><SchedulerFlatten/></section>
   <CaseSection title="What I learned from seven student interviews" className="schedulerResearchSection scStage" id="sc-research"><div className="schedulerResearchDesk"><aside className="schedulerInterviewIndex"><strong>7 students</strong><span>One-on-one conversations</span><span>Live task walkthroughs</span><SchedulerPeople/></aside><div className="schedulerNotebook"><div className="schedulerSessionNotes"><article><svg viewBox="0 0 64 40" aria-hidden="true"><circle cx="12" cy="20" r="9" fill="#b9d7c7"/><circle cx="32" cy="20" r="9"/><path d="M32 11a9 9 0 0 1 0 18z" fill="#e7d9ad"/><circle cx="52" cy="20" r="9"/></svg><b>Students wanted a way to say “maybe.”</b><p>Tentative availability was useful information, but the binary grid erased it.</p><span>Seen during availability entry</span></article><article><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M4 4h10v10H4zM18 4h10v10H18zM32 4h10v10H32zM4 18h10v10H4zM18 18h10v10H18zM32 18h10v10H32z"/><path d="M50 14a5 5 0 1 1 7 4.6c-1.3.6-2 1.6-2 3V24M55 30v.5"/></svg><b>The heatmap did not finish the task.</b><p>Groups opened another chat to interpret the overlap, choose a room, and confirm the plan.</p><span>Seen after comparing schedules</span></article><article><svg viewBox="0 0 64 40" aria-hidden="true"><rect x="4" y="8" width="16" height="22" rx="3"/><rect x="26" y="4" width="14" height="14" rx="3" transform="rotate(12 33 11)"/><rect x="44" y="18" width="16" height="16" rx="3" transform="rotate(-10 52 26)"/><path d="M22 20l3-2M41 20l3 2" strokeDasharray="2 3"/></svg><b>Event details split across tools.</b><p>Time, venue, participant status, and notes separated as soon as the group left the grid.</p><span>Seen during follow-through</span></article></div><footer><i aria-hidden="true">→</i><strong>Keep Available, Maybe, and Unavailable separate, then recommend a time and carry that choice into venue and calendar setup.</strong></footer></div></div></CaseSection>
+  <section className="schedulerBriefSection scStage" id="sc-brief" aria-labelledby="scheduler-brief-title">
+   <header><span>Product brief · v1</span><h2 id="scheduler-brief-title">Turn availability into a plan the group can act on.</h2><p>I used this brief to keep the build focused on the student problem the interviews exposed, instead of stopping at a better scheduling grid.</p></header>
+   <dl className="schedulerBriefGrid">
+    <div><dt>Primary users</dt><dd>Students organizing study groups and campus organization meetings.</dd></div>
+    <div><dt>Job to be done</dt><dd>Find a time, settle the details, and give everyone one calendar-ready event.</dd></div>
+    <div><dt>Core requirement</dt><dd>Keep Available, Maybe, and Unavailable distinct so tentative information is useful instead of lost.</dd></div>
+    <div><dt>Experience scope</dt><dd>Shared availability, a recommended time, venue voting, participant status, notes, and calendar setup.</dd></div>
+    <div><dt>Product guardrail</dt><dd>Recommend a workable option, but leave the final choice with the group.</dd></div>
+    <div><dt>Measures next</dt><dd>Track how often a group reaches a confirmed event and test whether people can express tentative availability without confusion.</dd></div>
+   </dl>
+  </section>
   <CaseSection title="From availability to a confirmed event" className="schedulerDecisionSection scStage" id="sc-design"><SchedulerDecisionDemo/></CaseSection>
   <CaseSection title="Everything When2meet left to the group chat" className="schedulerCompareSection scStage" id="sc-compare"><SchedulerCompare/></CaseSection>
-  <section id="sc-build" className="schedulerBuild scStage"><header><h2>One event, kept in sync.</h2><p>Every change to the time, place, or who is going reaches everyone’s screen live. The portfolio demo above runs on local state with the same interaction model.</p></header><SchedulerSync/></section>
+  <section id="sc-build" className="schedulerBuild scStage"><header><h2>One event, kept in sync.</h2><p>Every change to the time, place, or who is going reaches everyone’s screen live. The deployed product supports real group use; the portfolio demo above uses local state to show the same interaction model.</p></header><SchedulerSync/></section>
  </div>}
 
 const chatStages=[
@@ -987,7 +999,7 @@ function EsteeCase(){
  return <div className="elEditorial"><LifecycleRoad stages={esteeStages} vehicle="bottle"/>
   <section className="elVanity elStage" id="el-discover">
    <div className="elMirrorScene isVanity"><div className="elVanityFrame">{Array.from({length:14},(_,i)=><i key={i} className="elBulb" style={{'--i':i} as React.CSSProperties}/>)}<div className="elMirrorGlass"><div className="elReflection"/><p>Will this foundation<br/> <em>work for me?</em></p><span>The shopper question</span></div></div><div className="elVanityTable"/></div>
-   <div className="elProblem"><h2>Foundation is the hardest thing to buy without trying it on.</h2><p>At a counter, a shopper swatches a shade, feels the finish, and asks someone who knows. Online, all of that has to come from the page. When it doesn’t, people guess, or leave.</p><p>So I built the whole site around the question the shopper is already asking: will this foundation work for me? Every screen had one job, to move them closer to a confident yes or no.</p></div>
+   <div className="elProblem"><h2>Foundation is the hardest thing to buy without trying it on.</h2><p>At a counter, a shopper swatches a shade, feels the finish, and asks someone who knows. Online, the page has to do all of that work. When it does not, people guess or leave.</p><p>I focused the experience on the job the shopper is already trying to do: build enough confidence in fit, finish, coverage, and shade to decide whether Double Wear is for them. That meant leading with their question instead of a product grid, then moving them toward a confident yes or no.</p></div>
   </section>
   <section className="elInvitation elStage" id="el-design"><header><h2>Start with a question the shopper can answer.</h2><p>Instead of opening on a product grid, the site asks what the shopper wants from a foundation. It’s an easy first step, and it turns browsing into a conversation about their needs, the way a good counter consultant starts. The look stays unmistakably Estée Lauder so the question feels like it comes from the brand.</p></header><figure><img src={assetUrl('project-media/el-shop.webp')} alt="Original Double Wear screen asking what the shopper looks for in a foundation" loading="lazy"/><figcaption>The original opening screen. Familiar Double Wear imagery earns recognition; the question gives the shopper an easy first move.</figcaption></figure></section>
   <section className="elProof"><header><h2>One benefit at a time.</h2><p>Double Wear has a lot to say about finish, coverage, and wear. Stacked on one page, that becomes a wall of copy nobody finishes. I split it into a carousel so each benefit gets its own moment and the shopper sets the pace, reading only what matters to their decision.</p></header><figure><img src={assetUrl('project-media/el-benefits.webp')} alt="Original benefits carousel showing finish, buildable coverage, and wear information" loading="lazy"/><figcaption>Actual project screen · Product benefits carousel</figcaption></figure></section>
@@ -1253,7 +1265,7 @@ function Home({openCase}){
  const [heroPointerActive,setHeroPointerActive]=useState(false);
  const [filmOpen,setFilmOpen]=useState(false);
  const [filmIndex,setFilmIndex]=useState(0);
- const serious=['fcvf','finsimple','accenture','kohler','marketExpansion','estee'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
+ const serious=['finsimple','accenture','fcvf','kohler','marketExpansion','estee'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
  const fun=['commute','bookclub','scheduler','chat'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
  const moveHeroAura=e=>{
    if(e.pointerType==='touch')return;
@@ -1262,16 +1274,16 @@ function Home({openCase}){
    e.currentTarget.style.setProperty('--hero-mouse-y',`${e.clientY-rect.top}px`);
  };
  return <>
- <header className={`siteHeader${navOpen?' navIsOpen':''}`}><a className="wordmark" href="#top">Neha Chinimilli</a><button type="button" className="navToggle" aria-expanded={navOpen} aria-controls="primaryNav" aria-label={navOpen?'Close menu':'Open menu'} onClick={()=>setNavOpen(o=>!o)}><span/><span/></button><nav id="primaryNav" ref={navRef} aria-label="Primary" onClick={e=>{if((e.target as HTMLElement).closest('a'))setNavOpen(false)}}><i className="navIndicator" aria-hidden="true" style={navInd}/><a href="#projects" className={activeSection==='projects'?'isActive':''}>Selected work</a><a href="#experience" className={activeSection==='experience'?'isActive':''}>Experience</a><a href="#fun" className={activeSection==='fun'?'isActive':''}>Fun builds</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume</a><a href="mailto:chinimi2@msu.edu">Email</a><a className="headerLinkedIn" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on LinkedIn"><img src={assetUrl('linkedin.svg')} alt="LinkedIn"/></a></nav></header>
+ <header className={`siteHeader${navOpen?' navIsOpen':''}`}><a className="wordmark" href="#top">Neha Chinimilli</a><button type="button" className="navToggle" aria-expanded={navOpen} aria-controls="primaryNav" aria-label={navOpen?'Close menu':'Open menu'} onClick={()=>setNavOpen(o=>!o)}><span/><span/></button><nav id="primaryNav" ref={navRef} aria-label="Primary" onClick={e=>{if((e.target as HTMLElement).closest('a'))setNavOpen(false)}}><i className="navIndicator" aria-hidden="true" style={navInd}/><a href="#projects" className={activeSection==='projects'?'isActive':''}>Selected work</a><a href="#experience" className={activeSection==='experience'?'isActive':''}>Experience</a><a href="#fun" className={activeSection==='fun'?'isActive':''}>Fun things I’ve built</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume</a><a href="mailto:chinimi2@msu.edu">Email</a><a className="headerLinkedIn" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on LinkedIn"><img src={assetUrl('linkedin.svg')} alt="LinkedIn"/></a></nav></header>
  <main id="main-content" className={`homePage homeAura-${auraTone}`}>
   <AuraField tone={auraTone}/>
-  <section id="top" className={`hero v28Hero ${heroPointerActive?'heroPointerActive':''}`} onPointerMove={moveHeroAura} onPointerEnter={e=>{if(e.pointerType!=='touch')setHeroPointerActive(true)}} onPointerLeave={()=>setHeroPointerActive(false)}><div className="heroMouseAura" aria-hidden="true"/><figure className="heroPortrait"><span className="heroPortraitGlow" aria-hidden="true"><i/><i/><i/></span><span className="heroPortraitFrame"><img src={assetUrl('headshot.jpg')} alt="Neha Chinimilli"/></span></figure><div className="heroInner"><h1>Neha Chinimilli</h1><p className="heroThesis">Dual degree in Computer Science and Supply Chain Management · Michigan State</p><p className="heroTagline">Software Engineer and consultant with hands-on product experience at Ford, Ford Credit, and Accenture.</p><div className="heroLinks"><a className="primaryHeroLink" href="#projects">View selected work ↓</a><a href="#about">Learn more about me ↓</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></div></div></section>
+  <section id="top" className={`hero v28Hero ${heroPointerActive?'heroPointerActive':''}`} onPointerMove={moveHeroAura} onPointerEnter={e=>{if(e.pointerType!=='touch')setHeroPointerActive(true)}} onPointerLeave={()=>setHeroPointerActive(false)}><div className="heroMouseAura" aria-hidden="true"/><figure className="heroPortrait"><span className="heroPortraitGlow" aria-hidden="true"><i/><i/><i/></span><span className="heroPortraitFrame"><img src={assetUrl('headshot.jpg')} alt="Neha Chinimilli"/></span></figure><div className="heroInner"><h1>Neha Chinimilli</h1><p className="heroThesis">Dual degree in Computer Science and Supply Chain Management · Michigan State</p><p className="heroTagline">Technical product builder with experience turning customer and operating problems into shipped products at Ford, Ford Credit, and Accenture.</p><div className="heroLinks"><a className="primaryHeroLink" href="#projects">View selected work ↓</a><a href="#about">Learn more about me ↓</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></div></div></section>
   <CompanyBanner/>
   <section id="projects" className="section projectsSection v28Projects"><div className="sectionTitle compactTitle"><h2>Selected work</h2></div><div className="balancedProjectGrid">{serious.map((p,i)=><ProjectCard project={p} index={i} key={p.id} featured={i===0} onOpen={openCase}/>)}</div></section>
   <ExperienceSection onAura={setAuraTone} onOpen={openCase}/><EducationSection/>
   <section id="fun" className="section moreSection v28Fun">
     <div className="sectionTitle compactTitle">
-      <h2>Fun builds</h2>
+      <h2>Fun things I’ve built</h2>
       </div>
       <div className="funBuildGrid">{fun.map(p=><MoreProjectCard key={p.id} project={p} onOpen={openCase}/>)}
         <article className="smallBuild">

@@ -40,3 +40,16 @@
  .scCompareRow .scCompareMine{gap:11px;grid-template-columns:26px 1fr}
  .scCompareRow .scCompareMine svg{width:26px;height:26px}
 }
+
+/* A compact product brief: enough evidence of PM framing to make the decisions legible,
+   presented as a working document rather than a separate deck or a wall of cards. */
+.schedulerBriefSection{width:min(1180px,calc(100% - 64px));margin:0 auto 96px;padding:4px 0 0;color:#24322c}
+.schedulerBriefSection>header{display:grid;grid-template-columns:minmax(240px,.72fr) minmax(0,1.28fr);gap:32px;padding:0 0 34px;border-bottom:2px solid #285b4c}
+.schedulerBriefSection>header>span{align-self:start;color:#285b4c;font:600 11px/1.2 ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase}
+.schedulerBriefSection h2{grid-column:2;margin:0;color:#1f2b27;font:500 clamp(32px,4vw,54px)/.98 Georgia,serif;letter-spacing:-.045em}
+.schedulerBriefSection>header>p{grid-column:2;max-width:62ch;margin:18px 0 0;color:#52615b;font-size:16px;line-height:1.6}
+.schedulerBriefGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 48px;margin:0}
+.schedulerBriefGrid>div{padding:24px 0 26px;border-bottom:1px solid rgba(40,91,76,.17)}
+.schedulerBriefGrid dt{margin:0 0 9px;color:#285b4c;font:600 11px/1.2 ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase}
+.schedulerBriefGrid dd{max-width:46ch;margin:0;color:#31443d;font-size:16px;line-height:1.52}
+@media(max-width:800px){.schedulerBriefSection{width:calc(100% - 40px);margin-bottom:62px}.schedulerBriefSection>header{grid-template-columns:1fr;gap:15px}.schedulerBriefSection h2,.schedulerBriefSection>header>p{grid-column:auto}.schedulerBriefGrid{grid-template-columns:1fr;gap:0}.schedulerBriefGrid>div{padding:20px 0}.schedulerBriefGrid dd{font-size:15px}}
