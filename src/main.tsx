@@ -734,12 +734,12 @@ function useCaseReveal(id:string){
    owned in the "What I owned" row. */
 const caseAnswers={
   commute:{
-  problem:'Every weekday I checked four apps and did the math in my head. None of them answered the only question I had: when do I need to get up?',
+  problem:'I had two plausible ways to reach the office by 9:00: a direct 35-minute bus that comes every 30 minutes and can be early, late, or missing; or BART, with a 19-minute walk to the station, an 11-minute ride, and a 7-minute walk to the office.',
   owned:'I defined the product, designed the recommendation model, and built and shipped it myself. I still use it every weekday.',
-  call:'Recommend the reliable route, not the fastest one.',
+  call:'Choose the route most likely to get me there—and set the wake-up time for it.',
   callHref:'#cm-decide',
-  evidence:'My own commute: BART lands 8:48–8:53. The NL bus lands anywhere from 8:42 to 9:04 and is late one morning in three.',
-  result:'Built for myself and used every weekday. The alarm only moves when I approve it.'
+  evidence:'BART comes every 5–6 minutes, so a missed train is recoverable. Missing a bus that comes every 30 minutes can cost the morning. The model evaluates the next departure, walking time, live disruptions, and each route’s arrival range before I leave home.',
+  result:'Built for myself and used every weekday. It selects the plan, leave time, and wake-up time without me doing the research; I can choose whether alarm changes happen automatically or ask first.'
  },
  marketExpansion:{
   problem:'Graze Craze wanted a new franchise location and stronger Michigan branches, with no shared way to compare candidate markets.',

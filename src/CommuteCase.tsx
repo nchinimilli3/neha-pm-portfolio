@@ -63,6 +63,21 @@ function RouteRisk(){
  </div>;
 }
 
+/* The product is not choosing the shortest-looking ride. It plans the entire
+   morning from a fixed arrival deadline, including whether a missed departure
+   can be recovered before the office. */
+function RouteDecisionModel(){
+ const routes=[
+  {name:'BART',legs:'19 min walk · 11 min train · 7 min walk',frequency:'Every 5–6 min',note:'A missed train is recoverable',tone:'train'},
+  {name:'NL bus',legs:'35 min direct to the office',frequency:'Every 30 min',note:'An early, late, or missing bus can cost the morning',tone:'bus'}
+ ];
+ return <div className="cmDecisionModel" aria-label="How Commute chooses between BART and the NL bus">
+  <header><span>Route decision</span><strong>9:00 AM arrival is the constraint.</strong><p>For every route, the app works backward from the calendar deadline and computes a reliable leave and wake-up time.</p></header>
+  <div className="cmRouteOptions">{routes.map(route=><article key={route.name} className={`is-${route.tone}`}><div className="cmRouteMark" aria-hidden="true">{route.tone==='train'?'B':'N'}</div><div><b>{route.name}</b><span>{route.legs}</span></div><aside><strong>{route.frequency}</strong><span>{route.note}</span></aside></article>)}</div>
+  <footer><span>Decision rule</span><p>Pick the latest wake-up time that still clears the arrival deadline at the chosen reliability level. Include the next departure, access walk, live service status, and a buffer based on that route’s typical variance.</p><b>Then recheck until I leave.</b></footer>
+ </div>;
+}
+
 function FreshnessDiagram(){
  const [ref,seen]=useInView<HTMLDivElement>();
  // Older location pings shrink and fade: how faint a dot is shows how much that update still counts.
@@ -160,10 +175,10 @@ function MorningItinerary(){
  },[inView,touched]);
  const d=delayed?10:0;
  const steps=[
-  {k:'wake',t:7*60+18-d,title:'Wake up',sub:'48 min morning routine',inputs:[['history','Commute history'],['alarm','AlarmKit']]},
-  {k:'leave',t:8*60+6-d,title:'Leave home',sub:'13 min walk to 19th St',inputs:[['health','HealthKit'],['routes','Google Routes'],['weather','WeatherKit'],['location','Location']]},
-  {k:'ride',t:8*60+19-d,title:'Board BART',sub:delayed?'42 min to Embarcadero · 10 min delay':'32 min to Embarcadero',inputs:[['transit','511 live BART + bus'],['traffic','511 traffic']]},
-  {k:'arrive',t:9*60,title:'Salesforce Tower',sub:'9 min walk · arrival is fixed',inputs:[['calendar','Calendar']]}
+  {k:'wake',t:7*60+30-d,title:'Wake up',sub:'48 min morning routine',inputs:[['history','Commute history'],['alarm','AlarmKit']]},
+  {k:'leave',t:8*60+18-d,title:'Leave home',sub:'19 min walk to BART',inputs:[['health','HealthKit'],['routes','Google Routes'],['weather','WeatherKit'],['location','Location']]},
+  {k:'ride',t:8*60+37-d,title:'Board BART',sub:delayed?'21 min ride · 10 min delay':'11 min ride · trains every 5–6 min',inputs:[['transit','511 live BART + bus'],['traffic','511 traffic']]},
+  {k:'arrive',t:9*60,title:'Office',sub:'7 min walk · arrival is fixed',inputs:[['calendar','Calendar']]}
  ];
  return <div ref={ref} className={`cmItin${delayed?' isDelayed':''}`}>
   <ol>{steps.map((st,i)=><li key={st.k} className={`is-${st.k}`} style={{'--i':i} as React.CSSProperties}>
@@ -239,16 +254,17 @@ export default function CommuteCase({demo}:{demo:React.ReactNode}){
 
   <section className="cmRules cmStage" id="cm-decide">
    <DecisionMoment
-    statement={<>Recommend the reliable<br/>route, not the fast one.</>}
-    sub="A late bus costs more than a slow train saves."
-    because={<p>BART is almost never late. The NL bus is late one morning in three. A trip planner optimises the average; a commute has to survive the bad day.</p>}
+    statement={<>Plan the whole morning,<br/>not the fastest ride.</>}
+    sub="A 35-minute direct bus can still be the worse commute when it only comes every 30 minutes."
+    because={<p>The real decision is not bus versus train. It is which complete route can still get me to the office by 9:00 if the live feed is wrong, the bus is early, or the next departure is missed.</p>}
     tradeoff={<Tradeoff pairs={[
-     ['The earliest possible arrival','An arrival I can plan around'],
-     ['Trusting the fastest-looking feed','Fresh delays beat stale “on time”'],
-     ['Moving the alarm on every change','Asking first, silent otherwise']
+     ['The shortest scheduled ride','The route with a recoverable missed departure'],
+     ['A fixed alarm and manual research','A wake time calculated from live service and route variance'],
+     ['Interrupting on every update','A notification only when the chosen plan breaks']
     ]}/>}
-    result={<p>One alarm instead of four apps, and it never moves without asking.</p>}
+    result={<p>One route decision and one wake-up plan instead of four apps. The app can auto-adjust the alarm or ask first, based on the setting I choose.</p>}
    >
+   <RouteDecisionModel/>
    <p className="cmRulesLabel">The three rules behind it</p>
    <div className="cmRuleGrid">
     <div className="cmRule"><h3>A faster route can be the riskier one.</h3><p>Missing a train that runs every 6 minutes costs little. Missing a bus that runs every 30 costs the morning.</p><RouteRisk/></div>

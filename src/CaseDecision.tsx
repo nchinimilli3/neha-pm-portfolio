@@ -15,9 +15,9 @@ import './case-decision.css';
 type Node = React.ReactNode;
 
 /* The five answers a reviewer should have before deciding to keep scrolling.
-   Read in the order it should be understood: the call is the headline on the
-   left, and the right side is a short timeline of why and what came of it.
-   "The call" is the only link: it jumps to the DecisionMoment. */
+   Read in the order it should be understood: the problem and evidence come
+   first, then the call it led to. "The call" is the only link: it jumps to
+   the DecisionMoment. */
 
 const icons = {
   call: <svg viewBox="0 0 24 24"><path d="M4.5 12h14"/><path d="M13 6.5l5.5 5.5-5.5 5.5"/></svg>,
@@ -111,6 +111,13 @@ export function CaseAnswer({
     </header>
 
     <div className="cdAnswerBody">
+      <ol className="cdTimeline">
+        {rows.map((row, i) => <li key={row.key} className={`cdRow cdRow-${row.key}`} style={{'--r': i} as React.CSSProperties}>
+          <span className="cdMedal" aria-hidden="true">{icons[row.key]}</span>
+          <div className="cdRowText"><b>{row.label}</b>{row.body}</div>
+        </li>)}
+      </ol>
+
       <div className="cdCall">
         <p className="cdCallLabel"><span className="cdMedal cdMedalCall" aria-hidden="true">{icons.call}</span>The call</p>
         {/* --n lets the underline and arrow wait until the last word has landed. */}
@@ -126,12 +133,6 @@ export function CaseAnswer({
         <p className="cdRole"><span className="cdRoleIcon" aria-hidden="true">{icons.role}</span><span><b>What I owned</b>{owned}</span></p>
       </div>
 
-      <ol className="cdTimeline">
-        {rows.map((row, i) => <li key={row.key} className={`cdRow cdRow-${row.key}`} style={{'--r': i} as React.CSSProperties}>
-          <span className="cdMedal" aria-hidden="true">{icons[row.key]}</span>
-          <div className="cdRowText"><b>{row.label}</b>{row.body}</div>
-        </li>)}
-      </ol>
     </div>
   </section>;
 }
