@@ -254,6 +254,7 @@
 @media(max-width:850px){.fseOperate .cdSupporting{grid-template-columns:1fr}}
 
 /* Launch: the freeway shows the five workstreams; only my own handoff gets words */
-.fseMine{grid-column:1/-1;max-width:760px;margin:28px 0 0;padding-left:18px;border-left:3px solid #15609f}
-.fseMine b{display:block;margin-bottom:6px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#15609f}
-.fseMine p{margin:0;font-size:17px;line-height:1.55;color:#0b3052}
+.fseMine{grid-column:1/-1;max-width:820px;margin:38px 0 0;padding-left:22px;border-left:4px solid #15609f}
+.fseMine b{display:block;margin-bottom:9px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#15609f}
+.fseMine p{margin:0;font-size:21px;line-height:1.5;color:#0b3052}
+@media(max-width:760px){.fseMine{margin-top:26px;padding-left:16px}.fseMine p{font-size:18px}}

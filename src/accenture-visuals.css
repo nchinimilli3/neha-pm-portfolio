@@ -78,7 +78,6 @@
 /* The three request screens share one numbered hand-off line. */
 @media(min-width:1001px){
  .case-accenture .requestScreens{position:relative}
- .case-accenture .requestScreens:before{content:'';position:absolute;top:14px;left:14px;right:calc((100% - 68px)/3 - 14px);border-top:2px dashed #7b2fd05c}
  .case-accenture .requestStep>header>b{position:relative;z-index:1;background:var(--ax-violet)!important;color:#fff!important;box-shadow:0 0 0 5px #7b2fd022}
 }
 
@@ -197,3 +196,9 @@
    rather than drop into a single narrow column. */
 .accentureStory .axChapter>.axHandoff,.accentureStory .axChapter>header>.axBecause{grid-column:1/-1}
 .accentureStory .axChapter>.axHandoff{max-width:60ch}
+
+/* The page used to end on the cable-car illustration; close on the finding instead. */
+.accentureStory .axClose{position:relative;max-width:66ch;margin:38px auto 0;padding:26px 30px 26px 34px;font-size:19px;line-height:1.62;color:var(--ax-ink);border-radius:0 14px 14px 0;background:linear-gradient(90deg,rgba(255,255,255,.72),rgba(255,255,255,.34));box-shadow:inset 3px 0 0 var(--ax-accent,#7d5cc6)}
+.accentureStory .axClose b{font-weight:600;font-size:21px;color:var(--ax-accent,#7d5cc6)}
+.accentureStory .accentureEvidence{padding-bottom:64px}
+@media(max-width:760px){.accentureStory .axClose{padding:20px 18px 20px 22px;font-size:17px}}

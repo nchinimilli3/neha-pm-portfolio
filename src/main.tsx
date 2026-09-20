@@ -57,33 +57,31 @@ const metrics = {
     ['42%','less processing time','outcome'],
     ['71% → 94%','first-pass document accuracy','outcome'],
     ['5','person team','scope'],
-    ['1 → any','SKU to any destination market','system']
+    ['1 → any','destination markets per SKU','system']
   ],
   accenture: [
     ['21','live requests supported','scope'],
     ['3,862','user responses analyzed','analysis'],
     ['10-tab','automation data contract','artifact'],
-    ['30','edge cases evaluated','analysis'],
+    ['8x','requests per trainer, top vs. bottom decile of teams','outcome'],
     ['5','recommendations, each with a 90-day test','decision']
   ],
   fcvf: [
-    ['+25%','more assessment feedback submitted','outcome'],
+    ['+25%','assessment feedback submitted','outcome'],
     ['4','user interviews led','research']
   ],
   finsimple: [
-    ['15%','faster delivery','outcome'],
-    ['6%','fewer data errors','outcome'],
-    ['50%','faster incident restoration','outcome'],
-    ['25','customer-impacting issues investigated','operations']
+    ['15%','less calendar time per story than the team’s prior average','outcome'],
+    ['6%','fewer Salesforce write failures per submitted estimate','outcome']
   ],
   estee: [
-    ['Top 5','challenge finalist','outcome']
+    ['Top 5','finalist, Kode With Klossy × Estée Lauder','outcome']
   ],
   marketExpansion: [
     ['4','decision criteria','scope'],
     ['3','locations compared','analysis'],
-    ['1','reusable scorecard','artifact'],
-    ['3','growth levers','decision']
+    ['1','scorecard the client can rerun','artifact'],
+    ['3','growth recommendations delivered','decision']
   ],
   commute: [
     ['4','apps this one replaced','scope'],
@@ -91,18 +89,6 @@ const metrics = {
   ]
 };
 
-const ownership = {
-  kohler:'On a five-person team, I defined the product, designed the workflow and interface, and contributed to the React/Node build, Azure orchestration, and human-review flow.',
-  accenture:'I supported 21 live requests, documented the rules behind trainer matching and scheduling, tested clean and exception cases, built an early Codex-based request prototype, and combined learner and market research into recommendations.',
-  fcvf:'Software engineering intern on a 10-person team. I led four user interviews, shaped the interaction model, and built frontend and backend features.',
-  finsimple:'I owned requirements, AEM component work, API integration, testing, and coordination across the teams needed to ship my feature.',
-  scheduler:'I led product definition, research with seven students, interaction design, full-stack development, and deployment.',
-  chat:'Built with HTML, CSS, JavaScript, and Socket.IO.',
-  commute:'I defined the product, designed the recommendation model, and built and shipped it myself. I still use it every weekday.',
-  estee:'I shaped the product concept, designed the UX/UI, and built the frontend.',
-  bookclub:'I independently defined the product, designed the experience, built the frontend and backend, and deployed the live application for my reading group.',
-  marketExpansion:'I built the interactive Excel scorecard and scoring rubric used to compare candidate locations. The broader market research and branch-growth recommendations were developed with the consulting team.'
-};
 
 
 function AuraField({tone='default'}){
@@ -114,83 +100,83 @@ function AuraField({tone='default'}){
 const projects = [
   {
     id:'commute',
-    title:'Commute App',
+    title:'Commute',
     company:'Independent app · iOS',
-    summary:'Works backward from where I need to be to decide when I should wake up, when I should leave, and which Bay Area commute is actually worth taking today.',
-    media:'commute',
-    facts:[]
+    summary:'Works backward from where I need to be to decide when I should wake up, when I should leave, and which Bay Area route is actually worth taking today. It replaced the four apps I was checking every morning, and I still use it every weekday.',
+    blurb:'Works backward from where I need to be to when I need to get up. Replaced the four apps I checked every morning.',
+    media:'commute'
   },
   {
     id:'fcvf',
     title:'Customer Value Framework',
     company:'Ford Motor Company',
-    summary:'Turned an Excel-based customer-value assessment into a web application, then used four user interviews to change the interaction model, not just the interface.',
-    media:'fcvf',
-    facts:['+25% more assessment feedback submitted','Live score removed after 4 interviews']
+    preview:'Turned an Excel-based customer-value assessment into a web app, then used four user interviews to raise feedback volume 25%.',
+    summary:'Turned an Excel-based customer-value assessment into a web application for Ford teams, then used four user interviews to change the interaction model, not just the interface. Removing the live score and paginating the assessment raised feedback volume 25%.',
+    media:'fcvf'
   },
   {
     id:'accenture',
     title:'AI Lab GTM Enablement',
     company:'Accenture · Frontier AI lab',
-    summary:'A trainer match passed every automated check and still landed at 10:30 PM their time. That test case is why I put a human gate in the automation I specified across 21 live requests.',
-    media:'accenture',
-    facts:['3,862 user responses analyzed','Human gate on every exception']
+    preview:'Go-to-market enablement for a frontier AI lab: 21 live requests, a 10-tab automation contract, and an 8x usage gap between teams.',
+    summary:'Go-to-market enablement for a frontier AI lab: I supported 21 live requests matching trainers to customer engagements, and wrote the judgment calls being remade by hand into a 10-tab automation contract. One match passed every automated check and still landed at 10:30 PM the trainer’s time, which is why the automation stops at a human gate.',
+    media:'accenture'
   },
   {
     id:'kohler',
     title:'Ship Anywhere',
     company:'Kohler Co. · MSU CSE 498',
-    summary:'Designed and built an export-preparation assistant that uses an order’s SKU and destination to identify the documents, checks, and review steps needed before shipment.',
-    media:'kohler',
-    facts:['42% less processing time','Accuracy 71% → 94%']
+    preview:'An export-preparation assistant that cut processing time 42% and took first-pass document accuracy from 71% to 94%.',
+    summary:'Designed and built an export-preparation assistant that uses an order’s SKU and destination to identify the documents, checks, and review steps needed before shipment. Delivered to Kohler with 42% less processing time and first-pass document accuracy up from 71% to 94%.',
+    media:'kohler'
   },
   {
     id:'scheduler',
-    title:'Collaborative Scheduling Platform',
+    title:'Group Scheduling App',
     company:'Live web product · CSE 477',
-    summary:'Built a campus scheduling product that keeps Available, Maybe, and Unavailable separate, recommends the best time, and carries that choice into a place and calendar event.',
-    media:'scheduler',
-    facts:['7 student interviews','Flask · Socket.IO · MySQL']
+    summary:'A campus scheduling product that keeps Available, Maybe, and Unavailable as three separate answers, because seven student interviews all landed on the same complaint: tentative kept getting flattened into yes or no. It recommends the best time and carries that choice through to a venue vote and a calendar event.',
+    blurb:'Keeps “maybe” as its own answer, then carries the winning time into a venue vote and a calendar event.',
+    media:'scheduler'
   },
   {
     id:'finsimple',
-    title:'FinSimple',
-    company:'Ford Credit',
-    summary:'Returning Ford Credit customers rebuilt vehicle estimates from scratch. I owned Previous Estimates from requirements to production, integrating Salesforce APIs with Adobe Experience Manager.',
-    media:'finsimple',
-    facts:['Shipped to production','15% faster delivery']
+    title:'Previous Estimates',
+    company:'Ford Credit · FinSimple',
+    preview:'Returning customers lost estimates they had built. I owned the feature that brought them back, with 6% fewer write failures per estimate.',
+    summary:'Returning Ford Credit customers had no way back to a vehicle estimate they’d already built, so they started over. I owned Previous Estimates from requirements to production, integrating Salesforce APIs with Adobe Experience Manager, and it shipped into the live customer flow: 6% fewer Salesforce write failures per submitted estimate, and 15% less calendar time per story than the team’s prior average.',
+    media:'finsimple'
   },
   {
     id:'marketExpansion',
-    title:'Market Expansion Decision System',
+    title:'Where to Open Next',
     company:'Consumer services client · Spectrum Consulting Group',
-    summary:'Built a weighted scorecard and rubric so the team could compare candidate locations using the same criteria.',
-    media:'marketExpansion',
-    facts:['3 locations scored on 4 criteria']
+    preview:'A weighted scorecard that let a franchise client compare three markets on the same four criteria, and rerun it on any market.',
+    summary:'A consumer services client wanted a new franchise location and had no shared way to compare markets. I built the weighted scorecard and rubric that scored three of them against the same four criteria, and the client kept it as something it can rerun on any market.',
+    media:'marketExpansion'
   },
   {
     id:'chat',
     title:'iMessage Recreation on Web',
     company:'MSU · CSE 477',
-    summary:'An open-ended chat-room assignment became an iMessage recreation, chosen because users’ existing expectations gave me a spec to build and judge against.',
-    media:'chat',
-    facts:['Real-time rooms + presence','Socket.IO']
+    summary:'An open-ended chat-room assignment became an iMessage recreation, because everyone who would use it already knew iMessage, and their expectations became my spec. Typing indicators expire instead of becoming chat history, and a Tapback updates the message instead of adding a second one.',
+    blurb:'An iMessage recreation, because everyone already knew the spec. Typing expires; a Tapback edits the message.',
+    media:'chat'
   },
   {
     id:'estee',
     title:'Double Wear Foundation',
     company:'Estée Lauder × Kode With Klossy',
-    summary:'Designed and built a Double Wear site that answers the shopper’s real question, “will this work for me?”, before sending them to buy.',
-    media:'estee',
-    facts:['Top 5 finalist','Kode With Klossy challenge']
+    preview:'A Double Wear site that answers “will this work for me?” before the shopper buys. Top 5 in the Kode With Klossy × Estée Lauder challenge.',
+    summary:'Designed and built a Double Wear site that answers the shopper’s real question, “will this work for me?”, before handing them off to retailers to buy. It finished top 5 in the Kode With Klossy × Estée Lauder challenge, and I presented the concept to Estée Lauder C-suite leadership.',
+    media:'estee'
   },
   {
     id:'bookclub',
     title:'Bookclub',
     company:'Independent product · live web app',
-    summary:'Built a private book-club app for choosing a book, tracking reading progress, discussing without spoilers, and planning meetings.',
-    media:'bookclub',
-    facts:['Launched to active users','React · Cloudflare']
+    summary:'My reading group was running everything through one loud group chat. I built and shipped a private book-club app for choosing the next book, tracking who’s how far in, discussing without spoilers, and planning meetings, and the club uses it now.',
+    blurb:'A private app for my reading group: pick the book, track progress, talk without spoilers. Live, and in use.',
+    media:'bookclub'
   }
 ];
 
@@ -496,7 +482,7 @@ function ProjectCard({project,index,onOpen,featured=true}){
     <article className={`projectCard project-${project.id} ${featured?'featured':''}`}>
       <a className="projectCardAction" href={`#/projects/${project.id}`} onClick={(event)=>{event.preventDefault();onOpen(project.id)}} aria-label={`Open ${project.title} case study`}>
         <div className="projectCardMedia"><ProjectCover type={project.media}/></div>
-        <div className="projectCardBody"><div className="projectCardTop"><span>{project.company}</span></div><h3>{project.title}</h3><p>{project.summary}</p><span className="projectTextLink">Learn more ↗</span></div>
+        <div className="projectCardBody"><div className="projectCardTop"><span>{project.company}</span></div><h3>{project.title}</h3><p>{project.preview||project.summary}</p><span className="projectTextLink">Learn more ↗</span></div>
       </a>
     </article>
   </Reveal>
@@ -744,8 +730,8 @@ function useCaseReveal(id:string){
 }
 
 /* The five answers a reviewer should have before deciding to keep scrolling.
-   A case with an entry here renders it directly under the hero, and its
-   ownership line moves into the "What I owned" row instead of repeating. */
+   A case with an entry here renders it directly under the hero, with what I
+   owned in the "What I owned" row. */
 const caseAnswers={
   commute:{
   problem:'Every weekday I checked four apps and did the math in my head. None of them answered the only question I had: when do I need to get up?',
@@ -806,11 +792,11 @@ const caseAnswers={
  accenture:{
   problem:'A frontier AI lab’s enablement requests crossed three tools before a trainer was booked, and the same judgment calls were remade by hand every time.',
   owned:'I supported 21 live requests, documented the trainer-matching and scheduling rules, built an early Codex-based request prototype, and turned learner and market research into recommendations.',
-  call:'I stopped the automation at a human gate.',
+  call:'A free slot is not a yes.',
   callHref:'#ax-test',
   evidence:'A trainer match passed every rule and still landed at 10:30 PM in the trainer’s time zone. A coordinator would have rejected it instantly.',
   result:'Uncertain matches stop at a human gate. I shipped a 10-tab data contract, a prototype that applies it, and recommendations backed by 3,862 user responses.',
-  stat:{value:'30',label:'edge cases evaluated by value, feasibility, risk, and effort'}
+  stat:{value:'8x',label:'requests per trainer between the heaviest- and lightest-using teams'}
  },
  kohler:{
   problem:'A Kohler product can be in stock and still not be ready to export: each destination needs its own spec sheets, labels, warranties and translations.',
@@ -822,13 +808,13 @@ const caseAnswers={
   stat:{value:'42%',label:'less processing time, with first-pass accuracy up from 71% to 94%'}
  },
  finsimple:{
-  problem:'Returning Ford Credit customers had no way back to vehicle estimates they had already built.',
+  problem:'FinSimple is where Ford Credit customers build a financing estimate for a vehicle. Returning customers had no way back to an estimate they had already built, so they started over.',
   owned:'I owned requirements, AEM component work, API integration, testing, and coordination across the teams needed to ship my feature.',
-  call:'I built it inside the platform, not beside it.',
-  callHref:'#fs-define',
+  call:'Nobody owned the release sequence, so I traced it myself.',
+  callHref:'#fs-launch',
   evidence:'A live product with existing customers, shared AEM components, Salesforce data contracts, and a release train spanning five teams.',
-  result:'Previous Estimates shipped into the customer-facing flow with 6% fewer data errors, and I owned it in production.',
-  stat:{value:'15%',label:'faster delivery'}
+  result:'Previous Estimates shipped into the customer-facing flow with 6% fewer Salesforce write failures per submitted estimate, and I owned it in production.',
+  stat:{value:'15%',label:'less calendar time per story'}
  }
 };
 
@@ -853,7 +839,7 @@ function CaseStudy({id,onBack}){
  const [lightbox,setLightbox]=useState(null);
  if(!p)return null;
  const openClickedImage=(e)=>{const img=e.target instanceof HTMLImageElement?e.target:null;if(!img||img.closest('.caseCompanyBar')||img.closest('.toolLogoSection')||img.closest('[data-no-lightbox]')||img.closest('.kohlerStory')||img.closest('.caseHeroLogoWrap')||img.classList.contains('companyLogo'))return;setLightbox({src:img.currentSrc||img.src,alt:img.alt||'Project image'})};
- return <main className={`casePage case-${id}`} onClick={openClickedImage}><AuraField tone={id}/><button className="backBtn" onClick={onBack}>← Selected work</button><section className="caseLead"><header className="caseHeader">{id!=='fcvf'&&<CaseCompanyBar id={id} fallback={p.company}/>}<h1>{p.title}</h1><div className="caseIntro">{p.summary}</div>{!['finsimple','accenture'].includes(id)&&!caseAnswers[id]&&<div className="ownershipLine"><span>{ownership[id]}</span></div>}{id==='bookclub'&&<a className="bookclubLiveLink" href={BOOKCLUB_LIVE_URL} target="_blank" rel="noreferrer" aria-label="Open the live Bookclub app in a new tab">Open live app ↗</a>}</header><div className="caseHeroMedia casePreviewHero"><ProjectVisual type={p.media}/></div>{metrics[id]&&<MetricStrip items={metrics[id]}/>}<ToolLogoStrip id={id}/></section>
+ return <main className={`casePage case-${id}`} onClick={openClickedImage}><AuraField tone={id}/><button className="backBtn" onClick={onBack}>← Selected work</button><section className="caseLead"><header className="caseHeader"><CaseCompanyBar id={id} fallback={p.company}/><h1>{p.title}</h1><div className="caseIntro">{p.summary}</div>{id==='bookclub'&&<a className="bookclubLiveLink" href={BOOKCLUB_LIVE_URL} target="_blank" rel="noreferrer" aria-label="Open the live Bookclub app in a new tab">Open live app ↗</a>}</header><div className="caseHeroMedia casePreviewHero"><ProjectVisual type={p.media}/></div>{metrics[id]&&<MetricStrip items={metrics[id]}/>}<ToolLogoStrip id={id}/></section>
  {caseAnswers[id]&&<CaseAnswer key={id} {...caseAnswers[id]}/>}
  {id==='fcvf'&&<CarBand car="shelby" label="Shelby GT500 illustration that drives as you scroll"/>}
  {id==='finsimple'&&<CarBand car="mache" label="Mustang Mach-E illustration that drives as you scroll"/>}
@@ -903,13 +889,51 @@ const schedulerStages=[
  {id:'sc-discover',name:'Discover',did:'A heatmap isn’t a plan'},
  {id:'sc-research',name:'Research',did:'7 student interviews'},
  {id:'sc-design',name:'Design',did:'From overlap to an event'},
+ {id:'sc-compare',name:'Compare',did:'What When2meet leaves out'},
  {id:'sc-build',name:'Build',did:'One record, kept in sync'}
 ];
+
+/* When2meet set the bar: every student I interviewed already used it. Each row is a step
+   it hands back to the group chat, and the feature I built to keep it in one window. */
+const scCompareRows=[
+ {label:'Availability',them:'Free or busy. Nothing in between.',mine:'Available, Maybe and Unavailable stay three separate answers.',
+  icon:<><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M7 12h3M13.5 12h3.5" strokeLinecap="round"/><circle cx="11.5" cy="12" r="1.2" fill="currentColor" stroke="none"/></>},
+ {label:'Filling it in',them:'Click every cell, one by one, every time.',mine:'Quick fill paints a whole block at once, or connect Google Calendar and your busy hours drop in already marked.',
+  icon:<><rect x="3" y="4.5" width="18" height="15.5" rx="2.5"/><path d="M3 9h18M8 2.5v4M16 2.5v4" strokeLinecap="round"/><path d="M9 14.5l2.2 2.2L15.5 12" strokeLinecap="round" strokeLinejoin="round"/></>},
+ {label:'Picking a time',them:'You read the heatmap and argue it out.',mine:'Ranked times, each with who it works for and who it costs.',
+  icon:<><path d="M4 20V13M10 20V8.5M16 20v-5M22 20V4.5" strokeLinecap="round"/></>},
+ {label:'Where to meet',them:'Not its job.',mine:'A location poll in the same window: options in, votes back, winner attached to the event.',
+  icon:<><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></>},
+ {label:'Talking it through',them:'Everyone opens a group chat somewhere else.',mine:'A chat room on the event itself, so the reason for a time stays next to the time.',
+  icon:<><path d="M20 14.5a2.5 2.5 0 0 1-2.5 2.5H8l-4 3.5V6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5z"/><path d="M8.5 9.5h7M8.5 13h4.5" strokeLinecap="round"/></>},
+ {label:'Making it real',them:'Retype the time into your calendar.',mine:'The chosen time becomes a calendar event with the place, the chat and the guest list attached.',
+  icon:<><rect x="3" y="4.5" width="18" height="15.5" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4" strokeLinecap="round"/><circle cx="12" cy="14.5" r="2" fill="currentColor" stroke="none"/></>},
+ {label:'When plans change',them:'Re-share the link and hope.',mine:'Every edit reaches everyone’s screen live.',
+  icon:<><path d="M20 12a8 8 0 0 1-13.7 5.6M4 12a8 8 0 0 1 13.7-5.6" strokeLinecap="round"/><path d="M4 21v-5h5M20 3v5h-5" strokeLinecap="round" strokeLinejoin="round"/></>},
+ {label:'Who is actually coming',them:'A grid of names.',mine:'Going, maybe or out, per person, on the event.',
+  icon:<><circle cx="9" cy="8" r="3.2"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 11.5a3 3 0 1 0-1.6-5.5M17 20a6 6 0 0 0-2.6-4.9" strokeLinecap="round"/></>}
+];
+function SchedulerCompare(){
+ return <div className="scCompareWrap">
+  <p className="scCompareIntro">Every student I interviewed already used When2meet, so it set the bar. The grid is genuinely good at one step, collecting availability, and then hands the rest back to the group chat. Each thing it handed back became something I built.</p>
+  <div className="scCompare">
+   <div className="scCompareHead"><span/><span className="scCompareThem">When2meet</span><span className="scCompareMine">This app</span></div>
+   {scCompareRows.map(row=><div className="scCompareRow" key={row.label}>
+    <span className="scCompareLabel">{row.label}</span>
+    <span className="scCompareThem">{row.them}</span>
+    <span className="scCompareMine"><svg viewBox="0 0 24 24" aria-hidden="true">{row.icon}</svg><b>{row.mine}</b></span>
+   </div>)}
+  </div>
+  <p className="scCompareNote">Built for MSU study groups and org meetings, which is where all seven interviews came from.</p>
+ </div>
+}
+
 function SchedulerCase(){return <div className="schedulerStory"><LifecycleRoad stages={schedulerStages} vehicle="calendar"/>
   <section className="schedulerDemo"><SchedulerDemo/></section>
   <section id="sc-discover" className="schedulerProblemStage scStage"><div><h2>A heatmap did not finish the plan.</h2><p>Students could mark when they were free, but tentative availability was flattened into yes or no. Even after finding overlap, the group still had to choose a time, place, and next step somewhere else.</p></div><SchedulerFlatten/></section>
   <CaseSection title="What I learned from seven student interviews" className="schedulerResearchSection scStage" id="sc-research"><div className="schedulerResearchDesk"><aside className="schedulerInterviewIndex"><strong>7 students</strong><span>One-on-one conversations</span><span>Live task walkthroughs</span><SchedulerPeople/></aside><div className="schedulerNotebook"><div className="schedulerSessionNotes"><article><svg viewBox="0 0 64 40" aria-hidden="true"><circle cx="12" cy="20" r="9" fill="#b9d7c7"/><circle cx="32" cy="20" r="9"/><path d="M32 11a9 9 0 0 1 0 18z" fill="#e7d9ad"/><circle cx="52" cy="20" r="9"/></svg><b>Students wanted a way to say “maybe.”</b><p>Tentative availability was useful information, but the binary grid erased it.</p><span>Seen during availability entry</span></article><article><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M4 4h10v10H4zM18 4h10v10H18zM32 4h10v10H32zM4 18h10v10H4zM18 18h10v10H18zM32 18h10v10H32z"/><path d="M50 14a5 5 0 1 1 7 4.6c-1.3.6-2 1.6-2 3V24M55 30v.5"/></svg><b>The heatmap did not finish the task.</b><p>Groups opened another chat to interpret the overlap, choose a room, and confirm the plan.</p><span>Seen after comparing schedules</span></article><article><svg viewBox="0 0 64 40" aria-hidden="true"><rect x="4" y="8" width="16" height="22" rx="3"/><rect x="26" y="4" width="14" height="14" rx="3" transform="rotate(12 33 11)"/><rect x="44" y="18" width="16" height="16" rx="3" transform="rotate(-10 52 26)"/><path d="M22 20l3-2M41 20l3 2" strokeDasharray="2 3"/></svg><b>Event details split across tools.</b><p>Time, venue, participant status, and notes separated as soon as the group left the grid.</p><span>Seen during follow-through</span></article></div><footer><i aria-hidden="true">→</i><strong>Keep Available, Maybe, and Unavailable separate, then recommend a time and carry that choice into venue and calendar setup.</strong></footer></div></div></CaseSection>
   <CaseSection title="From availability to a confirmed event" className="schedulerDecisionSection scStage" id="sc-design"><SchedulerDecisionDemo/></CaseSection>
+  <CaseSection title="Everything When2meet left to the group chat" className="schedulerCompareSection scStage" id="sc-compare"><SchedulerCompare/></CaseSection>
   <section id="sc-build" className="schedulerBuild scStage"><header><h2>One event, kept in sync.</h2><p>Every change to the time, place, or who is going reaches everyone’s screen live. The portfolio demo above runs on local state with the same interaction model.</p></header><SchedulerSync/></section>
  </div>}
 
@@ -983,10 +1007,6 @@ const accentureStages=[
  {id:'ax-test',name:'Test',did:'Find where rules break'}
 ];
 function AccentureCase(){return <div className="accentureStory"><AccentureStagger/><LifecycleRoad stages={accentureStages} vehicle="cablecar"/>
-  <section className="axSpine" aria-label="How the investigation ran">
-   
-  </section>
-
   <section className="axChapter accentureRelayStage axStage" id="ax-discover"><header><h2>How one request moved <em>through the process.</em></h2><p>At Accenture in San Francisco, I supported intake, trainer matching, and scheduling for an AI lab client. Every request crossed three tools before a trainer was booked for a training session.</p></header><AccentureRequestRelay/></section>
 
   <section className="axChapter axRules axStage" id="ax-define"><header><h2>From repeated decisions <em>to rules I could test.</em></h2><p>The same checks came up on every request, so I wrote them into a 10-tab data contract: required inputs, matching logic, warnings, reason codes, and the cases that need a person.</p></header><AccentureWorkflowVisual/></section>
@@ -1008,7 +1028,7 @@ function AccentureCase(){return <div className="accentureStory"><AccentureStagge
    </DecisionMoment>
   </div>
 
-  <section className="axChapter accentureEvidence axStage" id="ax-recommend"><header><h2>Using evidence <em>to decide what to test next.</em></h2><p>I combined learner feedback with market and adoption research.</p></header><AccentureEvidenceFunnel/></section>
+  <section className="axChapter accentureEvidence axStage" id="ax-recommend"><header><h2>Using evidence <em>to decide what to test next.</em></h2></header><AccentureEvidenceFunnel/><p className="axClose">The clearest signal in the data was how unevenly the program was used: the heaviest-using teams ran <b>8x</b> the requests per trainer of the lightest. That gap is what the five recommendations are aimed at, and each one ships with a 90-day test so the program can tell whether it closed.</p></section>
  </div>}
 
 const kohlerStages=[
@@ -1115,7 +1135,7 @@ function TechnicalCard({title,subtitle,kind,description}){
 }
 
 function MoreProjectCard({project,onOpen}){
-  return <article className={`moreBuildCard clickable project-${project.id}`}><a className="moreBuildAction" href={`#/projects/${project.id}`} onClick={(event)=>{event.preventDefault();onOpen(project.id)}} aria-label={`Open ${project.title}`}><div className="moreBuildVisual"><ProjectCover type={project.media}/></div><div className="moreBuildCopy"><span>{project.company}</span><h3>{project.title}</h3><span className="projectTextLink">Learn more ↗</span></div></a></article>
+  return <article className={`moreBuildCard clickable project-${project.id}`}><a className="moreBuildAction" href={`#/projects/${project.id}`} onClick={(event)=>{event.preventDefault();onOpen(project.id)}} aria-label={`Open ${project.title}`}><div className="moreBuildVisual"><ProjectCover type={project.media}/></div><div className="moreBuildCopy"><span>{project.company}</span><h3>{project.title}</h3>{project.blurb&&<p className="moreBuildBlurb">{project.blurb}</p>}<span className="projectTextLink">Learn more ↗</span></div></a></article>
 }
 function MoreTechnicalCard({title,subtitle,kind,description}){
   return <article className="moreBuildCard"><div className="moreBuildVisual technicalCompact"><TechnicalCard title={title} subtitle={subtitle} kind={kind} description={description}/></div></article>
@@ -1125,23 +1145,14 @@ function CompanyLogo({src='',alt='',label=''}){const [failed,setFailed]=useState
 
 
 const experienceItems=[
- {id:'accenture',caseStudy:'accenture',company:'Accenture',role:'Technology Summer Analyst',location:'San Francisco, CA',dates:'Summer 2026',logo:'company-logos/accenture-v31.png',short:'Supported live AI training requests and turned repeated coordination into clearer rules, tests, and recommendations.',detail:<div className="expStory"><p>I worked inside a live customer-enablement operation supporting 21 requests. I used the repeated checks and exceptions I saw to document matching rules, test automation requirements, prototype the request flow, and recommend what the program should improve next.</p><div className="expMetricRow"><span><b>21</b> live requests</span><span><b>6</b> workflow stages</span><span><b>10-tab</b> data contract</span><span><b>3,862</b> user responses</span></div><div className="expColumns"><div><strong>Live requests</strong><span>Supported intake, validation, trainer fit, scheduling, status management, global coverage across six regions, and closeout.</span></div><div><strong>Automation requirements</strong><span>Documented required inputs, matching rules, warnings, reason codes, QA cases, and human-review points so repeated checks could be tested before automation.</span></div><div><strong>Research and recommendations</strong><span>Analyzed 3,862 user responses and researched ~20 providers, narrowing the work into 27 metrics, 12 patterns, five recommendations, and a 90-day test plan.</span></div></div></div>},
- {id:'palmer',company:'Russell Palmer Career Management Center',role:'Peer Coach',location:'East Lansing, MI',dates:'May 2025-present',logo:'company-logos/palmer-v31.png',short:'Coach students on resumes, interviews, networking, recruiting strategy, and case prep.',detail:<div className="expStory"><p>As a peer coach in MSU’s Russell Palmer Career Management Center, I meet one-on-one with students for resume reviews, interview preparation, recruiting strategy, networking, and case prep. Each session ends with specific edits or next steps the student can use right away.</p><div className="expMetricRow"><span><b>20+</b> sessions weekly</span><span><b>200+</b> students coached</span><span><b>25</b> coaches on team</span><span><b>~40%</b> of the team’s positive reviews (25 coaches)</span></div></div>},
- {id:'fordcredit',caseStudy:'finsimple',company:'Ford Credit',role:'Software Engineering Intern',location:'Dearborn, MI',dates:'Summers 2024-2025',logo:'company-logos/ford-credit-v31.png',short:'Built customer-facing financial features and worked across the systems and teams needed to ship them.',detail:<div className="expStory"><p>As the sole intern embedded on FinSimple, I worked on customer-facing feature delivery and the systems around it: AEM, Salesforce APIs, QA and production environments, release coordination, incidents, and onboarding.</p><div className="expMetricRow"><span><b>15%</b> faster delivery</span><span><b>25</b> issues investigated</span><span><b>50%</b> faster restoration</span><span><b>4</b> recovery playbooks</span><span><b>50</b> people across 5 teams</span></div><div className="expColumns"><div><strong>Product</strong><span>Built AEM components and Salesforce-backed workflows from customer and business requirements; worked across UI behavior, REST/GraphQL integration, Postman validation, and testing through development, QA, and production.</span></div><div><strong>Delivery quality</strong><span>Reviewed QA security-scan findings and PR compliance, documented release and environment-tagging workflows, and researched OAuth/API error patterns to support reliable deployments.</span></div><div><strong>Production operations</strong><span>Monitored live incidents, analyzed customer-impacting failure patterns, and coordinated with Payment, DevOps, and QA teams while turning recurring issues into four reusable recovery playbooks.</span></div></div><div className="expNote">I also built a centralized onboarding hub from 15 technical resources across 3 teams, cutting intern ramp-up from ~2 weeks to 3 days.</div></div>},
- {id:'pwc',company:'PwC × Arc of Indiana',role:'Consulting Extern',location:'',dates:'Aug-Oct 2024',logo:'company-logos/pwc-v31.png',short:'Built a weighted benchmark to compare peer nonprofits and turn the research into recommendations.',detail:<div className="expStory"><p>Over a five-week externship, I independently researched The Arc of Indiana and peer organizations it could learn from. I defined the comparison criteria, built a weighted seven-category scorecard, benchmarked five organizations across 10+ engagement and innovation metrics, and turned the findings into recommendations for the client.</p><div className="expMetricRow"><span><b>7</b> scorecard categories</span><span><b>5</b> peer organizations</span><span><b>10+</b> metrics</span><span><b>5</b> recommendations adopted</span></div></div>},
- {id:'ford',caseStudy:'fcvf',company:'Ford Motor Company',role:'Software Engineering Intern',location:'Dearborn, MI',dates:'Summer 2023',logo:'company-logos/ford.png',short:'Built a customer-value assessment and used user interviews to change how the experience worked.',detail:<div className="expStory"><p>My first internship put me close to both the code and the user. On a 10-person team, I helped build the full-stack Customer Value Framework, interviewed users, and used what we learned to change the product and implementation.</p><div className="expMetricRow"><span><b>4</b> user interviews</span><span><b>100+</b> Git commits</span><span><b>7</b> legacy CSS files replaced</span><span><b>+25%</b> feedback volume</span></div><div className="expColumns two"><div><strong>What I owned</strong><span>Frontend and backend implementation, accessibility improvements, refactoring, user interviews, Agile planning, and turning product feedback into interface changes, including pagination and score-visibility changes.</span></div><div><strong>What changed</strong><span>We moved toward a multi-page experience, removed the in-progress score, and replaced seven legacy CSS files with a more maintainable Material-UI approach while feedback volume increased 25%.</span></div></div></div>},
- {id:'spectrum',caseStudy:'marketExpansion',company:'Spectrum Consulting Group',role:'Consultant',location:'East Lansing, MI',dates:'2022–present',logo:'company-logos/spectrum-v31.png',short:'Built decision tools and recommendations across consumer services, utilities, hospitality, and automotive projects.',detail:<div className="expStory"><div className="expMetricRow"><span><b>3,000+</b> data points</span><span><b>19</b> utility KPIs</span><span><b>3</b> locations compared</span><span><b>2</b> analysts mentored</span></div><div className="expColumns spectrumColumns"><div><strong>Consumer services</strong><span>Built an interactive Excel scorecard and rubric so the team could compare candidate locations using the same market and operating criteria. The team also developed community, partnership, and paid-media recommendations for existing branches.</span></div><div><strong>Utilities</strong><span>Built a criticality/feasibility rubric, defined 19 KPIs, and evaluated three software options for a multimillion-dollar utility.</span></div><div><strong>Hospitality</strong><span>Found engagement gaps across 3,000+ responses and recommended three digital initiatives that increased social interaction by 20%.</span></div><div><strong>Automotive</strong><span>Led the analysis workstream, combined customer pain points with funnel evidence, built implementation-ready recommendations, and redesigned lead-management workflows.</span></div></div><div className="expNote spectrumSaaS"><strong>Automotive SaaS strategy</strong><span>Defined target accounts and buyer roles, outreach signals, multichannel sequences, CRM handoffs, objection handling, and demo guidance tied to customer workflow problems.</span></div></div>},
+ {id:'accenture',caseStudy:'accenture',company:'Accenture',role:'Technology Summer Analyst',location:'San Francisco, CA',dates:'Summer 2026',logo:'company-logos/accenture-v31.png',short:'Supported 21 live enablement requests at a frontier AI lab, wrote the repeated judgment calls into a 10-tab automation contract, and turned 3,862 user responses into five recommendations, each with a 90-day test.',detail:<div className="expStory"><p>I worked inside a live customer-enablement operation supporting 21 requests. I used the repeated checks and exceptions I saw to document matching rules, test automation requirements, prototype the request flow, and recommend what the program should improve next.</p><div className="expMetricRow"><span><b>21</b> live requests</span><span><b>6</b> workflow stages</span><span><b>10-tab</b> data contract</span><span><b>3,862</b> user responses</span></div><div className="expColumns"><div><strong>Live requests</strong><span>Supported intake, validation, trainer fit, scheduling, status management, global coverage across six regions, and closeout.</span></div><div><strong>Automation requirements</strong><span>Documented required inputs, matching rules, warnings, reason codes, QA cases, and human-review points so repeated checks could be tested before automation.</span></div><div><strong>Research and recommendations</strong><span>Analyzed 3,862 user responses and researched ~20 providers, narrowing the work into 27 metrics, 12 patterns, five recommendations, and a 90-day test plan.</span></div></div></div>},
+ {id:'palmer',company:'Russell Palmer Career Management Center',role:'Peer Coach',location:'East Lansing, MI',dates:'May 2025-May 2026',logo:'company-logos/palmer-v31.png',short:'Coach 20+ sessions a week at MSU’s career center. 200+ students so far, and about 40% of the positive reviews on a 25-coach team.',detail:<div className="expStory"><p>As a peer coach in MSU’s Russell Palmer Career Management Center, I meet one-on-one with students for resume reviews, interview preparation, recruiting strategy, networking, and case prep. Each session ends with specific edits or next steps the student can use right away.</p><div className="expMetricRow"><span><b>20+</b> sessions weekly</span><span><b>200+</b> students coached</span><span><b>25</b> coaches on team</span><span><b>~40%</b> of the team’s positive reviews (25 coaches)</span></div></div>},
+ {id:'fordcredit',caseStudy:'finsimple',company:'Ford Credit',role:'Software Engineering Intern',location:'Dearborn, MI',dates:'Summers 2024-2025',logo:'company-logos/ford-credit-v31.png',short:'Owned a customer-facing Ford Credit feature from requirements through production, improved delivery 15%, and turned recurring incidents into four playbooks that cut restoration time 50%.',detail:<div className="expStory"><p>As the sole intern embedded on FinSimple, I worked on customer-facing feature delivery and the systems around it: AEM, Salesforce APIs, QA and production environments, release coordination, incidents, and onboarding.</p><div className="expMetricRow"><span><b>15%</b> faster delivery</span><span><b>25</b> issues investigated</span><span><b>50%</b> faster restoration</span><span><b>4</b> recovery playbooks</span><span><b>50</b> people across 5 teams</span></div><div className="expColumns"><div><strong>Product</strong><span>Built AEM components and Salesforce-backed workflows from customer and business requirements; worked across UI behavior, REST/GraphQL integration, Postman validation, and testing through development, QA, and production.</span></div><div><strong>Delivery quality</strong><span>Reviewed QA security-scan findings and PR compliance, documented release and environment-tagging workflows, and researched OAuth/API error patterns to support reliable deployments.</span></div><div><strong>Production operations</strong><span>Monitored live incidents, analyzed customer-impacting failure patterns, and coordinated with Payment, DevOps, and QA teams while turning recurring issues into four reusable recovery playbooks.</span></div></div><div className="expNote">I also built a centralized onboarding hub from 15 technical resources across 3 teams, cutting intern ramp-up from ~2 weeks to 3 days.</div></div>},
+ {id:'pwc',company:'PwC × Arc of Indiana',role:'Consulting Extern',location:'',dates:'Aug-Oct 2024',logo:'company-logos/pwc-v31.png',short:'Benchmarked five peer nonprofits for The Arc of Indiana on a seven-category scorecard I built, and all five recommendations were adopted.',detail:<div className="expStory"><p>Over a five-week externship, I independently researched The Arc of Indiana and peer organizations it could learn from. I defined the comparison criteria, built a weighted seven-category scorecard, benchmarked five organizations across 10+ engagement and innovation metrics, and turned the findings into recommendations for the client.</p><div className="expMetricRow"><span><b>7</b> scorecard categories</span><span><b>5</b> peer organizations</span><span><b>10+</b> metrics</span><span><b>5</b> recommendations adopted</span></div></div>},
+ {id:'ford',caseStudy:'fcvf',company:'Ford Motor Company',role:'Software Engineering Intern',location:'Dearborn, MI',dates:'Summer 2023',logo:'company-logos/ford.png',short:'Built Ford’s Customer Value Framework as a web app, led four user interviews, and changed the interaction model based on them. Feedback volume went up 25%.',detail:<div className="expStory"><p>My first internship put me close to both the code and the user. On a 10-person team, I helped build the full-stack Customer Value Framework, interviewed users, and used what we learned to change the product and implementation.</p><div className="expMetricRow"><span><b>4</b> user interviews</span><span><b>100+</b> Git commits</span><span><b>7</b> legacy CSS files replaced</span><span><b>+25%</b> feedback volume</span></div><div className="expColumns two"><div><strong>What I owned</strong><span>Frontend and backend implementation, accessibility improvements, refactoring, user interviews, Agile planning, and turning product feedback into interface changes, including pagination and score-visibility changes.</span></div><div><strong>What changed</strong><span>We moved toward a multi-page experience, removed the in-progress score, and replaced seven legacy CSS files with a more maintainable Material-UI approach while feedback volume increased 25%.</span></div></div></div>},
+ {id:'spectrum',caseStudy:'marketExpansion',company:'Spectrum Consulting Group',role:'Consultant',location:'East Lansing, MI',dates:'2022–May 2026',logo:'company-logos/spectrum-v31.png',short:'Seven client projects across consumer services, utilities, hospitality, automotive, and private equity: a location scorecard the client can rerun, 19 KPIs for a utility software selection, and a market-penetration strategy for a portfolio company in insurance tech.',detail:<div className="expStory"><div className="expMetricRow"><span><b>3,000+</b> data points</span><span><b>19</b> utility KPIs</span><span><b>3</b> locations compared</span><span><b>2</b> analysts mentored</span></div><div className="expColumns spectrumColumns"><div><strong>Consumer services</strong><span>Built an interactive Excel scorecard and rubric so the team could compare candidate locations using the same market and operating criteria. The team also developed community, partnership, and paid-media recommendations for existing branches.</span></div><div><strong>Utilities</strong><span>Built a criticality/feasibility rubric, defined 19 KPIs, and evaluated three software options for a multimillion-dollar utility.</span></div><div><strong>Hospitality</strong><span>Found engagement gaps across 3,000+ responses and recommended three digital initiatives that increased social interaction by 20%.</span></div><div><strong>Automotive SaaS</strong><span>Led the analysis workstream: combined customer pain points with funnel evidence, redesigned lead-management workflows, and defined target accounts, buyer roles, outreach sequences, CRM handoffs, and demo guidance tied to the workflow problems behind them.</span></div><div><strong>Private equity</strong><span>Built a market-penetration strategy for a private equity client’s portfolio company in insurance tech, and supported the value-creation work around integration and process rollout.</span></div></div></div>},
 ];
 
-const experienceImpact:Record<string,string>={
- accenture:'Supported 21 live AI enablement requests, defined a 10-tab automation contract, and analyzed 3,862 user responses to find an 8x utilization gap.',
- palmer:'Coach 20+ sessions each week and have coached 200+ students leave with stronger applications and specific next steps.',
- fordcredit:'Owned a customer-facing feature through production, improved delivery 15%, and wrote four recovery playbooks that cut restoration time 50%.',
- pwc:'Built a seven-category peer benchmark that led to five adopted client recommendations.',
- ford:'Built the web-based Customer Value Framework, led four interviews, and increased feedback volume 25%.',
- spectrum:'Built decision tools across four consulting projects, including a repeatable location scorecard and measurable growth recommendations.'
-};
-experienceItems.forEach(item=>{if(experienceImpact[item.id])item.short=experienceImpact[item.id]});
 
 function ExperienceSection({onAura,onOpen}){
  const [openIds,setOpenIds]=useState([]);
@@ -1175,9 +1186,11 @@ function EducationSection(){
 
 
 function HobbyPopover({label,title,items,variant=''}){
+  // Books fall onto the shelf the first time it opens; after that they're already there.
+  const [dropped,setDropped]=useState('');
   if(variant==='shelf'){
-    const spines=[['#6f3b4a','#f3dcc0',150],['#2f5b57','#f1e6cc',168],['#c9a45c','#3a2618',140],['#3d4a78','#e9e2ff',158],['#b85a3c','#fff1e0',146]];
-    return <span className="hobbyPopover"><button type="button" className="hobbyPopoverTrigger">{label}</button><span className="hobbyShelf" role="tooltip"><strong>{title}</strong><span className="shelfBooks">{items.map((item,i)=>{const [bg,fg,h]=spines[i%spines.length];return <span key={item} className="shelfBook" style={{'--bg':bg,'--fg':fg,'--h':`${h}px`,'--k':i} as React.CSSProperties}><em>{item}</em></span>})}<span className="shelfLean" aria-hidden="true"/></span><span className="shelfBoard" aria-hidden="true"/></span></span>;
+    const spines=[['#7d2f41','#f6e7c8',150],['#2f5a4f','#f3e6c4',168],['#b27639','#3a2616',140],['#353c66','#efe3c4',158],['#8f4432','#f6e7c8',146]];
+    return <span className="hobbyPopover" onMouseEnter={()=>setDropped(d=>d||'dropping')} onFocus={()=>setDropped(d=>d||'dropping')} onMouseLeave={()=>setDropped(d=>d==='dropping'?'done':d)} onBlur={()=>setDropped(d=>d==='dropping'?'done':d)}><button type="button" className="hobbyPopoverTrigger">{label}</button><span className={`hobbyShelf${dropped==='dropping'?' isDropping':dropped===''?' isFresh':''}`} role="tooltip"><strong>{title}</strong><span className="shelfBooks">{items.map((item,i)=>{const [bg,fg,h]=spines[i%spines.length];return <span key={item} className="shelfBook" style={{'--bg':bg,'--fg':fg,'--h':`${h}px`,'--k':i} as React.CSSProperties}><em>{item}</em></span>})}</span><span className="shelfBoard" aria-hidden="true"/></span></span>;
   }
   if(variant==='tv'){
     return <span className="hobbyPopover"><button type="button" className="hobbyPopoverTrigger">{label}</button><span className="hobbyTv" role="tooltip"><span className="tvAntenna" aria-hidden="true"/><span className="tvBody"><span className="tvScreen"><strong>{title}</strong>{items.map((item,i)=><span key={item} className="tvShow" style={{'--k':i,'--n':items.length} as React.CSSProperties}><b>CH {i+2}</b>{item}</span>)}</span><span className="tvKnobs" aria-hidden="true"><i/><i/><span/></span></span><span className="tvLegs" aria-hidden="true"/></span></span>;
@@ -1271,18 +1284,18 @@ function Home({openCase}){
               </div>
               </div>
               <h3>Spartan Touchdown</h3>
-              <p>MSU CSE 335 team project built in C++ with wxWidgets. We worked from shared gameplay requirements and constraints, split the build across player movement, collision handling, enemies, scoring, level/state logic, and 2D graphics/assets, then integrated and tested the systems together.</p>
+              <p>MSU CSE 335 team project in C++ with wxWidgets: player movement, collisions, enemies, scoring and level state, integrated and tested together.</p>
               </article><article className="smallBuild">
                 <div className="techVisual fluids">
                   <img src="project-media/stable-fluids.png" alt="Stable Fluids simulation"/>
                   </div>
                   <h3>Stable Fluids</h3>
-                  <p>MSU CSE 472 computer graphics project built in C++. I implemented a 2D Stable Fluids simulation based on the Stam method, modeling advection, diffusion/viscosity, buoyancy, velocity and density fields on a grid, with interactive emitters and obstacles rendered in real time.</p>
+                  <p>MSU CSE 472 graphics project in C++: a 2D Stable Fluids simulation using the Stam method, with interactive emitters and obstacles in real time.</p>
                   </article>
                   </div>
                   </section>
   <section id="about" className="section aboutSection">
-    <div className="aboutPhoto"><AboutFilmCamera photos={aboutFilmPhotos} open={filmOpen} index={filmIndex} onClose={()=>setFilmOpen(false)} onChange={setFilmIndex}/></div><div className="aboutCopy"><h2>About me</h2><p>I’m Neha. I’m finishing a <strong>dual degree in Computer Science and Supply Chain Management at Michigan State</strong>, so I think a lot about how systems work, and about the parts people still do by hand because nobody fixed them. I’m also a <span className="creativeWord" tabIndex={0} aria-label="creative">{"creative".split("").map((c,i)=><span key={i} aria-hidden="true" style={{"--i":i} as React.CSSProperties}>{c}</span>)}<svg className="creativeLine" viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path d="M3 9 C 18 3, 30 13, 46 7 S 74 3, 88 8 S 108 12, 117 5"/></svg><svg className="creativeWash" viewBox="-130 -70 260 140" aria-hidden="true">
+    <div className="aboutPhoto"><AboutFilmCamera photos={aboutFilmPhotos} open={filmOpen} index={filmIndex} onClose={()=>setFilmOpen(false)} onChange={setFilmIndex}/></div><div className="aboutCopy"><h2>About me</h2><p>I’m Neha. I’m finishing <strong>two degrees at Michigan State in Computer Science and Supply Chain Management</strong>, which mostly means I notice how systems work, and which parts people are still doing by hand because nobody got around to fixing them. I’m a <span className="creativeWord" tabIndex={0} aria-label="creative">{"creative".split("").map((c,i)=><span key={i} aria-hidden="true" style={{"--i":i} as React.CSSProperties}>{c}</span>)}<svg className="creativeLine" viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path d="M3 9 C 18 3, 30 13, 46 7 S 74 3, 88 8 S 108 12, 117 5"/></svg><svg className="creativeWash" viewBox="-130 -70 260 140" aria-hidden="true">
  <defs>
   <filter id="wcBleed" x="-30%" y="-30%" width="160%" height="160%">
    <feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="3" seed="7" result="n"/>
@@ -1298,7 +1311,7 @@ function Home({openCase}){
   {[[-70,-8,34,'wcRose'],[-22,-30,28,'wcPeach'],[34,-22,32,'wcCoral'],[78,6,26,'wcGold'],[-40,26,24,'wcPeach'],[22,30,27,'wcRose'],[-98,14,15,'wcCoral'],[100,-28,13,'wcRose']].map(([x,y,r,f],i)=><circle key={i} className="wcPool" cx={x} cy={y} r={r} fill={`url(#${f})`} style={{"--k":i} as React.CSSProperties}/>)}
   {[[-112,-34,2.6,'#d9587e'],[-86,-48,1.6,'#e8844f'],[112,32,2.2,'#d9604f'],[92,48,1.4,'#e0a13a'],[-60,50,1.8,'#d9587e'],[58,-50,2,'#e8844f'],[124,-6,1.3,'#d9587e'],[-124,40,1.2,'#e0a13a']].map(([x,y,r,c],i)=><circle key={'d'+i} className="wcDrop" cx={x} cy={y} r={r} fill={c as string} style={{"--k":i} as React.CSSProperties}/>)}
  </g>
-</svg></span> at heart. If I’m going to fix something, I want it to feel good to use, not just work.</p><p>I’ve been rebuilding the same alarm since high school: find the latest I can get up and still make it on time. It started as a script using Google Maps drive time. When I moved to the Bay for the summer, I added my morning routine, live transit, traffic, and walking time, and it became the <a className="aboutInlineLink" href="#/projects/commute">Commute iOS app</a> above. It’s the same pattern I follow at work: start with one annoying problem, and keep going until it’s actually solved.</p><p className="hobbyLine">Outside of work, I’m usually trying a new coffee shop<span className="coffeeCup" aria-hidden="true"><svg viewBox="0 0 24 24"><path className="steam s1" d="M9.5 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/><path className="steam s2" d="M13 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/><path className="cupLine" d="M5 11h13v3.5A5.5 5.5 0 0 1 12.5 20h-2A5.5 5.5 0 0 1 5 14.5z"/><path className="cupLine" d="M18 12.2h.9a2.2 2.2 0 0 1 0 4.4h-1.3"/><path className="cupLine" d="M4 22h15"/></svg></span>, traveling, <HobbyPopover variant="shelf" label="reading" title="On my shelf" items={["A Thousand Splendid Suns","When Breath Becomes Air","The Year of Magical Thinking","Sharp Objects"]}/>, keeping up with <HobbyPopover variant="tv" label="reality TV" title="Always on rotation" items={["Modern Family","Vanderpump Rules","Summer House","the newest Real Housewives season"]}/>, baking, hiking, painting, or taking <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>{setFilmOpen(true);setFilmIndex(0)}} aria-expanded={filmOpen}>film photos</button><span className="filmPhotoHint" role="tooltip">click to see my photos</span></span>.</p><div className="aboutActions"><BookRecForm/></div></div></section>
+</svg></span> at heart, so if I’m going to fix something I want it to look good while I’m at it, not just work. I built and shipped customer-facing software at Ford and Ford Credit, then went to the business side at Accenture and Spectrum, where the question is which problems are even worth doing. Product is the part that needs both, so that’s where I’m going full time.</p><p>Honestly, I’ve been doing a version of this since high school. I keep rebuilding the same alarm: find the latest I can get up and still make it on time. It started as a script that just checked Google Maps drive time. When I moved to the Bay for the summer I added my morning routine, live transit, traffic and walking time, and it turned into the <a className="aboutInlineLink" href="#/projects/commute">Commute iOS app</a> above. I’ve never been good at leaving a problem half-fixed.</p><p className="hobbyLine">Outside of work, I’m usually trying a new coffee shop<span className="coffeeCup" aria-hidden="true"><svg viewBox="0 0 24 24"><path className="steam s1" d="M9.5 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/><path className="steam s2" d="M13 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/><path className="cupLine" d="M5 11h13v3.5A5.5 5.5 0 0 1 12.5 20h-2A5.5 5.5 0 0 1 5 14.5z"/><path className="cupLine" d="M18 12.2h.9a2.2 2.2 0 0 1 0 4.4h-1.3"/><path className="cupLine" d="M4 22h15"/></svg></span>, traveling, <HobbyPopover variant="shelf" label="reading" title="On my shelf" items={["A Thousand Splendid Suns","When Breath Becomes Air","The Year of Magical Thinking","Sharp Objects"]}/>, keeping up with <HobbyPopover variant="tv" label="reality TV" title="Always on rotation" items={["Modern Family","Vanderpump Rules","Summer House","the newest Real Housewives season"]}/>, baking, hiking, painting, or taking <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>{setFilmOpen(true);setFilmIndex(0)}} aria-expanded={filmOpen}>film photos</button><span className="filmPhotoHint" role="tooltip">click to see my photos</span></span>.</p><div className="aboutActions"><BookRecForm/></div></div></section>
  </main><footer className="siteFooter"><span>© 2026 Neha Chinimilli</span><nav aria-label="Footer"><a href="mailto:chinimi2@msu.edu">Email</a><a className="linkedinLink" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Visit Neha Chinimilli on LinkedIn (opens in a new tab)"><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M19.5 3h-15A1.5 1.5 0 0 0 3 4.5v15A1.5 1.5 0 0 0 4.5 21h15a1.5 1.5 0 0 0 1.5-1.5v-15A1.5 1.5 0 0 0 19.5 3ZM8.25 18.25H5.75v-8h2.5v8ZM7 9.15a1.45 1.45 0 1 1 0-2.9 1.45 1.45 0 0 1 0 2.9Zm11.25 9.1h-2.5v-3.9c0-.93-.02-2.12-1.29-2.12-1.3 0-1.5 1.01-1.5 2.05v3.97h-2.5v-8h2.4v1.09h.04c.33-.64 1.15-1.32 2.37-1.32 2.54 0 3.01 1.67 3.01 3.84v4.39Z"/></svg><span>LinkedIn</span><span aria-hidden="true">↗</span></a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></nav></footer>
  </>
 }

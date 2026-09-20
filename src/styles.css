@@ -681,7 +681,7 @@ small,.freshness,.liveSources,.morningTimeline span,.iosTabBar small{font-size:m
 .tone-ford .bloom2,.tone-ford .bloom6,.tone-fordcredit .bloom2,.tone-fordcredit .bloom6{background:rgba(116,146,213,.38)!important}
 .tone-ford .bloom3,.tone-ford .bloom7,.tone-fordcredit .bloom3,.tone-fordcredit .bloom7{background:rgba(89,173,210,.31)!important}
 .tone-palmer .bloom1,.tone-palmer .bloom4{background:rgba(102,151,117,.36)!important}.tone-palmer .bloom2,.tone-palmer .bloom6{background:rgba(174,188,127,.30)!important}.tone-palmer .bloom3,.tone-palmer .bloom7{background:rgba(87,157,145,.28)!important}
-.tone-spectrum .bloom1,.tone-spectrum .bloom4{background:rgba(68,157,150,.38)!important}.tone-spectrum .bloom2,.tone-spectrum .bloom6{background:rgba(129,111,193,.31)!important}.tone-spectrum .bloom3,.tone-spectrum .bloom7{background:rgba(113,175,187,.28)!important}
+.tone-spectrum .bloom1,.tone-spectrum .bloom4{background:rgba(84,180,48,.34)!important}.tone-spectrum .bloom2,.tone-spectrum .bloom6{background:rgba(36,96,24,.24)!important}.tone-spectrum .bloom3,.tone-spectrum .bloom7{background:rgba(108,228,60,.26)!important}
 .tone-pwc .bloom1,.tone-pwc .bloom4{background:rgba(226,150,95,.34)!important}.tone-pwc .bloom2,.tone-pwc .bloom6{background:rgba(222,116,131,.29)!important}.tone-pwc .bloom3,.tone-pwc .bloom7{background:rgba(205,173,113,.26)!important}
 
 /* Experience hierarchy and control placement. */
@@ -2638,9 +2638,6 @@ input,select,button{accent-color:var(--color-focus)}
 .expColumns.two{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 .expMetricRow{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:18px!important;align-items:start!important}
 .expMetricRow span{min-width:0!important}
-@media(min-width:1180px){
-  .experienceSummary p{white-space:nowrap!important}
-}
 
 /* ---------- case-study hero: one deliberate layout, no mystery bubble ---------- */
 .caseLead{

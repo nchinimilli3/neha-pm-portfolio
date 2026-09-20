@@ -131,9 +131,9 @@ export default function AccentureRequestRelay() {
             <div className="calendarExample">
               <div className="calendarDays">
                 <span />
-                <b>MON</b>
-                <b>TUE</b>
-                <b>WED</b>
+                <b>MON<em>14</em></b>
+                <b className="isToday">TUE<em>15</em></b>
+                <b>WED<em>16</em></b>
               </div>
 
               <div className="calendarHours">

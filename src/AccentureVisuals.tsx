@@ -24,7 +24,7 @@ export function AccentureToolRelay() {
 // Synthesis as an SF cable car ride: a Powell-line car climbs out of the fog (raw responses), past
 // row houses and street signs where the evidence narrows, to 90-Day Test Hill. Loops while in view.
 const rideStops = [
- {n: '3,862', street: 'Responses St', caption: '3,862 user responses and operational data, revealing an 8x utilization gap.'},
+ {n: '3,862', street: 'Responses St', caption: '3,862 user responses and operational data. The heaviest-using teams ran 8x the requests per trainer of the lightest.'},
  {n: '27', street: 'Metrics Ave', caption: 'The signal is captured as 27 metrics.'},
  {n: '12', street: 'Patterns St', caption: 'Metrics are synthesized into 12 recurring patterns.'},
  {n: '5', street: 'Recommendations Way', caption: 'Patterns are prioritized into 5 recommendations.'},

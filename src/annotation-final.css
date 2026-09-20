@@ -38,7 +38,7 @@ body{font-size:18px!important}
 
 /* A quiet lavender-blue band preserves contrast and makes every supplied mark visible. */
 
-.companyBanner img.companyBannerLogo{height:38px!important;max-width:145px!important;filter:brightness(0) invert(1) drop-shadow(0 1px 2px rgba(80,40,50,.28))!important;mix-blend-mode:normal!important;opacity:.95!important;transition:filter .4s ease,transform .4s ease}.companyBanner img.companyBannerLogo:hover{filter:drop-shadow(0 0 10px rgba(255,255,255,.95)) drop-shadow(0 0 18px rgba(255,190,200,.8))!important;opacity:1!important;transform:translateY(-1px) scale(1.04)}.companyBanner .companyBannerLogo-est-e-lauder{width:146px!important;max-width:146px!important;object-fit:contain!important}
+.companyBanner img.companyBannerLogo{height:38px!important;max-width:145px!important;filter:brightness(0) sepia(48%) saturate(260%) hue-rotate(338deg) brightness(.42) contrast(1.05)!important;mix-blend-mode:normal!important;opacity:.82!important;transition:filter .4s ease,transform .4s ease}.companyBanner img.companyBannerLogo:hover{filter:drop-shadow(0 0 10px rgba(255,255,255,.95)) drop-shadow(0 0 18px rgba(255,190,200,.8))!important;opacity:1!important;transform:translateY(-1px) scale(1.04)}.companyBanner .companyBannerLogo-est-e-lauder{width:146px!important;max-width:146px!important;object-fit:contain!important}
 
 /* The requested two-feature-plus-four-small build hierarchy. */
 .v28Fun .funBuildGrid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:34px 26px!important;align-items:start!important}
@@ -253,40 +253,78 @@ body{font-size:18px!important}
 .companyBanner img.companyBannerLogo-est-e-lauder:hover{filter:brightness(0) saturate(100%) invert(12%) sepia(40%) saturate(2400%) hue-rotate(208deg) brightness(90%) contrast(98%) drop-shadow(0 0 10px rgba(255,255,255,.95)) drop-shadow(0 0 16px rgba(26,38,84,.35))!important}
 
 /* ===== Hobby popovers: a real bookshelf for "reading", a retro TV for "reality TV" ===== */
-.hobbyShelf,.hobbyTv{position:absolute;z-index:30;left:50%;bottom:calc(100% + 14px);transform:translate(-50%,8px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,transform .25s cubic-bezier(.3,1.3,.5,1),visibility .2s;text-align:left;white-space:normal}
+.hobbyShelf,.hobbyTv{position:absolute;z-index:30;left:50%;bottom:calc(100% + 12px);transform:translate(-50%,6px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,transform .25s cubic-bezier(.3,1.3,.5,1),visibility .2s;text-align:left;white-space:normal}
 .hobbyPopover:hover .hobbyShelf,.hobbyPopover:focus-within .hobbyShelf,.hobbyPopover:hover .hobbyTv,.hobbyPopover:focus-within .hobbyTv{opacity:1;visibility:visible;transform:translate(-50%,0)}
 
-/* Bookshelf: a stack of books lying flat, spines facing out so titles read normally */
-.hobbyShelf{display:block;width:max-content;padding:12px 16px 0;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,#6b4428,#4e2f1b);box-shadow:inset 0 0 0 5px #5a3820,inset 0 6px 10px rgba(0,0,0,.35),0 18px 40px rgba(40,20,10,.28)}
-.hobbyShelf>strong{display:block;margin:0 0 10px;font:700 10.5px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#f1dcc0}
-.shelfBooks{display:flex;flex-direction:column-reverse;align-items:flex-start;gap:2px;padding:0 2px}
-.shelfBook{position:relative;display:flex;align-items:center;height:30px;width:calc(var(--h) + 80px);padding:0 16px;border-radius:3px 6px 6px 3px;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(0,0,0,0) 35%,rgba(0,0,0,.2)),var(--bg);box-shadow:inset 0 0 0 1px rgba(0,0,0,.12),0 2px 0 rgba(0,0,0,.18);margin-left:calc(var(--k) * 7px - 10px);opacity:0;transform:translateX(-14px);transition:transform .35s cubic-bezier(.3,1.4,.5,1),opacity .25s;transition-delay:calc(var(--k) * .05s)}
-.shelfBook:nth-child(odd){margin-left:calc(var(--k) * -4px + 6px)}
-.shelfBook:before,.shelfBook:after{content:'';position:absolute;top:5px;bottom:5px;width:2px;background:color-mix(in srgb,var(--fg) 55%,transparent)}
-.shelfBook:before{left:7px}.shelfBook:after{right:7px}
-.shelfBook em{font:italic 600 13px/1 "PT Serif",Georgia,serif;color:var(--fg);white-space:nowrap}
-.hobbyPopover:hover .shelfBook,.hobbyPopover:focus-within .shelfBook{opacity:1;transform:none}
-.shelfBook:hover{transform:translateX(6px)!important}
-.shelfLean{display:none}
-.shelfBoard{display:block;height:12px;margin:0 -16px;border-radius:0 0 3px 3px;background:linear-gradient(180deg,#8a5a34,#5e391f);box-shadow:0 3px 6px rgba(0,0,0,.3)}
+/* No card around either popover: the object itself is the tooltip */
+.hobbyShelf,.hobbyTv{padding:0;border-radius:0;background:none;box-shadow:none}
+.hobbyShelf>strong{display:none}
+.tvScreen>strong{display:block;margin:0 0 5px;font:600 9.5px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#9fe3c6}
 
-/* Retro TV */
-.hobbyTv{display:flex;flex-direction:column;align-items:center;width:300px}
-.tvAntenna{position:relative;width:70px;height:34px;margin-bottom:-2px}
-.tvAntenna:before,.tvAntenna:after{content:'';position:absolute;bottom:0;left:50%;width:2.5px;height:40px;border-radius:2px;background:#4a3a44;transform-origin:bottom center}
-.tvAntenna:before{transform:rotate(-32deg)}.tvAntenna:after{transform:rotate(30deg)}
-.tvBody{display:grid;grid-template-columns:1fr 46px;gap:10px;width:100%;padding:12px;border-radius:18px;background:linear-gradient(160deg,#e8577f,#c4486c);box-shadow:inset 0 2px 0 rgba(255,255,255,.35),inset 0 -4px 0 rgba(0,0,0,.18),0 18px 40px rgba(90,30,50,.3)}
-.tvScreen{position:relative;display:flex;flex-direction:column;gap:5px;padding:12px 14px;border-radius:14px/18px;background:radial-gradient(120% 100% at 30% 20%,#34465c,#141c26 70%);box-shadow:inset 0 0 0 3px #2a1c22,inset 0 0 18px rgba(0,0,0,.6);overflow:hidden}
-.tvScreen:after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(180deg,rgba(255,255,255,.05) 0 1px,transparent 1px 3px);pointer-events:none;animation:tvFlicker 3s steps(2) infinite}
-.tvScreen>strong{font:700 10px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#9fe3c6;margin-bottom:3px;text-shadow:0 0 6px rgba(159,227,198,.6)}
-.tvShow{display:flex;gap:8px;align-items:baseline;font:500 13px/1.35 Inter,sans-serif;color:rgba(233,240,255,.72);transition:color .2s}
-.tvShow b{flex:none;font:700 9.5px/1 ui-monospace,Menlo,monospace;color:rgba(159,227,198,.7)}
+/* Bookshelf: lifelike flat stack. Each spine is a rounded cloth-bound back (light rolls over the curve
+   top-to-bottom), cover boards overhang as thin darker lips top and bottom, raised ribs near the ends,
+   gold-foil stamped titles, worn ends, and a contact shadow where each book rests on the one below. */
+.hobbyShelf{display:block;width:max-content;filter:drop-shadow(0 16px 16px rgba(60,30,20,.2))}
+.shelfBooks{position:relative;display:flex;flex-direction:column-reverse;align-items:flex-start;gap:0;padding:0 8px 0 6px}
+.shelfBook{--t:calc(19px + var(--th,0) * 1px);position:relative;display:flex;align-items:center;height:var(--t);width:auto;padding:0 calc(22px + (var(--h) - 140px) * .9) 0 20px;margin:0 0 0 calc(var(--k) * 4px);border-radius:3px;
+ background:
+  linear-gradient(90deg,rgba(0,0,0,.22),rgba(0,0,0,0) 7%,rgba(0,0,0,0) 93%,rgba(0,0,0,.26)),
+  linear-gradient(180deg,rgba(0,0,0,.35) 0 1.5px,rgba(255,255,255,.34) 1.5px,rgba(255,255,255,.12) 28%,rgba(255,255,255,0) 48%,rgba(0,0,0,.08) 72%,rgba(0,0,0,.34) calc(100% - 1.5px),rgba(0,0,0,.45) calc(100% - 1.5px)),
+  repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0 1px,rgba(0,0,0,.03) 1px 2px),
+  var(--bg);
+ box-shadow:0 2px 2px -1px rgba(30,15,8,.45),0 1px 0 rgba(0,0,0,.2);
+ transform:rotate(calc((var(--k) - 1.5) * .5deg)) translateX(-8px);opacity:0;transition:transform .35s cubic-bezier(.3,1.3,.5,1),opacity .22s;transition-delay:calc(var(--k) * .05s)}
+.shelfBook:nth-child(1){--th:5}.shelfBook:nth-child(2){--th:1}.shelfBook:nth-child(3){--th:8}.shelfBook:nth-child(4){--th:2}
+.shelfBook:nth-child(even){margin-left:calc(var(--k) * -3px + 10px)}
+/* raised ribs near each end of the spine */
+.shelfBook:before,.shelfBook:after{content:'';position:absolute;top:1.5px;bottom:1.5px;width:2px;border-radius:1px;background:linear-gradient(90deg,rgba(0,0,0,.28),rgba(255,255,255,.22) 60%,rgba(0,0,0,.18))}
+.shelfBook:before{left:8px}.shelfBook:after{right:9px}
+.shelfBook em{position:relative;font:italic 700 11.5px/1 "PT Serif",Georgia,serif;letter-spacing:.02em;white-space:nowrap;
+ color:#e7c98a;background:linear-gradient(180deg,#f7e3ae,#d9b064 55%,#b98a3e);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+ filter:drop-shadow(0 1px 0 rgba(0,0,0,.45)) drop-shadow(0 -.5px 0 rgba(255,255,255,.15))}
+.shelfBook em:after{content:none}
+.hobbyPopover:hover .shelfBook,.hobbyPopover:focus-within .shelfBook{opacity:1;transform:rotate(calc((var(--k) - 1.5) * .5deg))}
+.shelfBook:hover{transform:translateX(4px) rotate(0deg)!important}
+.shelfLean{display:none}
+/* First open: books drop onto the shelf one at a time, bottom first */
+.hobbyShelf.isDropping .shelfBook{animation:bookDrop .55s cubic-bezier(.3,1.35,.55,1) both;animation-delay:calc(var(--k) * .16s)}
+@keyframes bookDrop{0%{opacity:0;transform:translateY(-70px) rotate(calc((var(--k) - 1.5) * 6deg))}60%{opacity:1}100%{opacity:1;transform:rotate(calc((var(--k) - 1.5) * .7deg))}}
+@media(prefers-reduced-motion:reduce){.hobbyShelf.isDropping .shelfBook{animation:none}}
+
+
+
+/* Retro TV: compact blush set, small screen, same type scale as the paragraph around it */
+.hobbyTv{display:flex;flex-direction:column;align-items:center;width:232px;filter:drop-shadow(0 14px 16px rgba(30,60,50,.28))}
+.tvAntenna{position:relative;width:40px;height:16px;margin-bottom:-1px}
+.tvAntenna:before,.tvAntenna:after{content:'';position:absolute;bottom:0;left:50%;width:1.5px;height:18px;border-radius:2px;background:#3f6b5f;transform-origin:bottom center}
+.tvAntenna:before{transform:rotate(-30deg)}.tvAntenna:after{transform:rotate(28deg)}
+.tvBody{display:grid;grid-template-columns:1fr 22px;gap:8px;width:100%;padding:8px;border-radius:12px;background:linear-gradient(160deg,#7fb5a4,#4f8a78);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -2px 0 rgba(0,0,0,.08)}
+.tvScreen{position:relative;display:flex;flex-direction:column;gap:3px;padding:9px 10px;border-radius:9px/12px;background:radial-gradient(120% 100% at 30% 20%,#2f3b3a,#161d1d 75%);box-shadow:inset 0 0 0 2px rgba(0,0,0,.25);overflow:hidden}
+.tvScreen:after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(180deg,rgba(255,255,255,.04) 0 1px,transparent 1px 3px);pointer-events:none}
+.tvScreen>strong{color:#9fe3c6;margin-bottom:5px}
+.tvShow{display:flex;gap:7px;align-items:baseline;font:500 12px/1.35 Inter,sans-serif;color:rgba(235,248,243,.6)}
+.tvShow b{flex:none;font:600 8.5px/1 ui-monospace,Menlo,monospace;color:rgba(159,227,198,.7)}
 .hobbyPopover:hover .tvShow,.hobbyPopover:focus-within .tvShow{animation:tvOnAir calc(var(--n) * 1.4s) steps(1) infinite;animation-delay:calc(var(--k) * 1.4s)}
-@keyframes tvOnAir{0%{color:#fff;text-shadow:0 0 8px rgba(255,255,255,.55)}25%,100%{color:rgba(233,240,255,.72);text-shadow:none}}
-@keyframes tvFlicker{0%{opacity:.8}50%{opacity:1}}
-.tvKnobs{display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:6px}
-.tvKnobs i{width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff4f6,#f3b4c6 60%,#b8455e);box-shadow:0 2px 3px rgba(0,0,0,.25)}
-.tvKnobs span{width:26px;flex:1;min-height:30px;border-radius:4px;background:repeating-linear-gradient(180deg,rgba(0,0,0,.28) 0 2px,transparent 2px 5px)}
-.tvLegs{width:62%;height:14px;margin-top:-1px;background:linear-gradient(90deg,transparent 0 8%,#4a3a44 8% 12%,transparent 12% 88%,#4a3a44 88% 92%,transparent 92%)}
-@media(max-width:760px){.hobbyShelf,.hobbyTv{left:0;transform:translate(0,8px)}.hobbyPopover:hover .hobbyShelf,.hobbyPopover:focus-within .hobbyShelf,.hobbyPopover:hover .hobbyTv,.hobbyPopover:focus-within .hobbyTv{transform:translate(0,0)}.hobbyTv{width:260px}}
+@keyframes tvOnAir{0%{color:#fff}25%,100%{color:rgba(235,248,243,.6)}}
+.tvKnobs{display:flex;flex-direction:column;align-items:center;gap:6px;padding-top:4px}
+.tvKnobs i{width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff,#f3e3c8 60%,#c7a064);box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.tvKnobs span{width:12px;flex:1;min-height:18px;border-radius:3px;background:repeating-linear-gradient(180deg,rgba(0,0,0,.14) 0 1.5px,transparent 1.5px 4px)}
+.tvLegs{width:50%;height:6px;margin-top:0;background:linear-gradient(90deg,transparent 0 10%,#3f6b5f 10% 13%,transparent 13% 87%,#3f6b5f 87% 90%,transparent 90%)}
+@media(max-width:760px){.hobbyShelf,.hobbyTv{left:0;transform:translate(0,8px)}.hobbyPopover:hover .hobbyShelf,.hobbyPopover:focus-within .hobbyShelf,.hobbyPopover:hover .hobbyTv,.hobbyPopover:focus-within .hobbyTv{transform:translate(0,0)}.hobbyTv{width:232px}}
 @media(prefers-reduced-motion:reduce){.shelfBook,.hobbyShelf,.hobbyTv{transition:opacity .15s}.tvShow,.tvScreen:after{animation:none!important}}
+/* Soft, edgeless halo so the objects lift off the paragraph without a visible card */
+.hobbyShelf:before,.hobbyTv:before{content:'';position:absolute;inset:-30px -36px;z-index:-1;border-radius:50%;background:radial-gradient(closest-side,rgba(255,250,246,.98) 62%,rgba(255,250,246,0));pointer-events:none}
+.hobbyShelf{bottom:calc(100% + 18px)}
+.hobbyShelf.isFresh .shelfBook{opacity:0!important}
+.shelfBoard{display:block;position:relative;height:9px;margin:0;border-radius:1px 1px 2px 2px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0 2px,transparent 2px 9px,rgba(0,0,0,.05) 9px 10px,transparent 10px 23px),linear-gradient(180deg,#c89a6d 0,#a87a52 45%,#8a5f3b 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 2px 0 #6e4a2d}
+.shelfBoard:after{content:'';position:absolute;left:8%;right:8%;top:100%;height:10px;background:radial-gradient(50% 100% at 50% 0,rgba(60,30,20,.22),transparent)}
+
+/* Fun builds: one preview voice across all four cards — same family, same small size. */
+.v28Fun .funBuildGrid .moreBuildBlurb,
+.v28Fun .funLeadGrid .moreBuildBlurb,
+.v28Fun .funBuildGrid>.smallBuild p,.v28Fun .smallBuild p{
+ font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+ font-size:14px!important;line-height:1.5!important;color:#5a4a42!important;
+ margin:7px 0 0!important;display:-webkit-box!important;overflow:hidden!important;
+ -webkit-box-orient:vertical!important;-webkit-line-clamp:3!important
+}

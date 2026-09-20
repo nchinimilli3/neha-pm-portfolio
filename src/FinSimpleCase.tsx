@@ -33,14 +33,8 @@ const stages=[
  {id:'fs-discover',name:'Discover',did:'Customers lose their saved work'},
  {id:'fs-define',name:'Define',did:'Fit a live platform'},
  {id:'fs-build',name:'Build',did:'Prototype, component, release'},
- {id:'fs-test',name:'Test',did:'Dev, QA, and production'},
- {id:'fs-launch',name:'Launch',did:'5 teams, 15% faster delivery'},
+ {id:'fs-launch',name:'Launch',did:'The handoff nobody owned'},
  {id:'fs-operate',name:'Operate',did:'Incidents, playbooks, learnings'}
-];
-const envs=[
- {name:'Dev',checks:['Component behavior','Postman API validation']},
- {name:'QA',checks:['Security-scan findings reviewed','PR compliance']},
- {name:'Production',checks:['Release validated','Environment tags documented']}
 ];
 
 // Reveal grouped items one after another the first time they scroll into view; loop SVG motion only while visible.
@@ -155,15 +149,16 @@ export default function FinSimpleCase({setLightbox}){
 
  <section className="fsePlatform fseStage" id="fs-define">
   <DecisionMoment
-   statement={<>I built it inside<br/>the platform.</>}
-   sub="I turned customer and business requirements into a feature that fit the platform’s shared AEM components, Salesforce data contracts, and release environments."
-   because={<p>FinSimple was already deployed, with existing customers and a workflow they knew. A cleaner standalone Previous Estimates screen would have been faster to design and impossible to put in front of anyone, because the estimate history only means anything inside the financing journey it belongs to.</p>}
+   kicker="The constraint"
+   statement={<>It had to live inside<br/>a running platform.</>}
+   sub="FinSimple was already deployed, with existing customers and a workflow they knew, so Previous Estimates had to fit the platform’s shared AEM components, Salesforce data contracts, and release environments."
+   because={<p>A cleaner standalone Previous Estimates screen would have been faster to design and impossible to put in front of anyone, because the estimate history only means anything inside the financing journey it belongs to. Everything below is what working inside a live product actually cost.</p>}
    tradeoff={<Tradeoff pairs={[
     ['A clean screen I could design from scratch','Shared AEM components I had to work inside'],
     ['My own data shape','Salesforce contracts the record already had to match'],
     ['Shipping on my own schedule','A release train that made five teams a dependency']
    ]}/>}
-   result={<p>One customer action travels through the web experience, the AEM component, the API layer, and into Salesforce as a durable record — inside the product customers already used, shipped with 15% faster delivery and 6% fewer data errors.</p>}
+   result={<p>One customer action travels through the web experience, the AEM component, the API layer, and into Salesforce as a durable record — inside the product customers already used, shipped with 6% fewer Salesforce write failures per submitted estimate.</p>}
   >
    <p className="cdEvidenceLabel">One simple action, four connected layers</p>
   {/* Exploded view of the platform: a saved estimate drops through each layer to the system of record. */}
@@ -204,19 +199,12 @@ export default function FinSimpleCase({setLightbox}){
   </div>
  </section>
 
- <section className="fseTest fseStage" id="fs-test"><header><h2>Proven in every<br/><em>environment.</em></h2><p>I validated the APIs in Postman and carried the feature through development, QA, and production checks.</p></header>
-  <ol className="fsePipeline" data-stagger>{envs.map((env,i)=><li key={env.name}>
-   <span className="fseGate" aria-hidden="true"><i/><i/><i/></span>
-   <strong>{env.name}</strong>
-   <ul>{env.checks.map(c=><li key={c}><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7"/></svg>{c}</li>)}</ul>
-  </li>)}</ol>
- </section>
 
  <section className="fseDelivery fseStage" id="fs-launch"><div><h2>The handoffs were<br/><em>part of the product.</em></h2><p>Five workstreams each held something the feature could not ship without. Coordinating them was the work, not overhead around it.</p>
  </div>
   {/* Five workstreams merge like on-ramps into one release freeway. */}
   <figure className="fseFreeway">
-   <svg viewBox="0 0 600 330" data-loop role="img" aria-label="Five workstreams with 50 people merge into one production release, with delivery 15 percent faster">
+   <svg viewBox="0 0 600 330" data-loop role="img" aria-label="Five workstreams merge into one production release, with each story taking 15 percent less calendar time">
     {lanes.map((lane,i)=>{const y=40+i*52;const d=`M150 ${y}H270C350 ${y} 360 200 440 200H600`;return <g key={lane}>
      <path d={d} className="fseLaneEdge"/><path d={d} className="fseLane"/>
      <text x="138" y={y+5} textAnchor="end" className="fseLaneLabel">{lane}</text>
@@ -230,9 +218,18 @@ export default function FinSimpleCase({setLightbox}){
      <path d="M512 112h28" className="fseSignArrow"/><path d="M534 108l6 4-6 4" className="fseSignArrow"/>
     </g>
    </svg>
-   <p className="fseFreewayNote"><b>5</b> workstreams<b>50</b> people<b>15%</b> faster delivery</p>
+   <p className="fseFreewayNote"><b>5</b> workstreams<b>15%</b> less calendar time per story</p>
   </figure>
-  {handoffs.filter(h=>h.mine).map(h=><aside key={h.lane} className="fseMine"><b>The handoff I owned · {h.lane}</b><p>{h.mine.replace('This is the one I chased. ','')}</p></aside>)}
+  <DecisionMoment
+   statement={<>Nobody owned the<br/>release sequence.</>}
+   sub="The component was ready before the release was, and the order environments had to be tagged in lived with release and DevOps rather than with the feature."
+   because={<p>I could have waited for someone on the release side to pick it up, which is what an intern is expected to do. Instead I traced the sequence myself, got Previous Estimates onto the train, and wrote the release and environment-tagging workflow down so the next person would not have to trace it again.</p>}
+   tradeoff={<Tradeoff pairs={[
+    ['Staying inside my feature’s scope','Learning a release process that was not mine'],
+    ['Waiting for the owning team','Time I spent chasing it down instead of building']
+   ]}/>}
+   result={<p>Previous Estimates made its release window, and the workflow I documented outlived my internship.</p>}
+  />
  </section>
  <section className="fseOperate fseStage" id="fs-operate">
   <header><h2>Shipping was the start.<br/><em>Running it was the job.</em></h2><p>After launch I monitored live incidents with the Payment, DevOps, and QA teams, looked for patterns in what broke, and turned repeat problems into reusable fixes.</p></header>
