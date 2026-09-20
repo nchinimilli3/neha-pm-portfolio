@@ -148,7 +148,7 @@ const projects = [
   },
   {
     id:'marketExpansion',
-    title:'Where to Open Next',
+    title:'Market Expansion Scorecard',
     company:'Consumer services client · Spectrum Consulting Group',
     preview:'A weighted scorecard that let a franchise client compare three markets on the same four criteria, and rerun it on any market.',
     summary:'A consumer services client wanted a new franchise location and had no shared way to compare markets. I built the weighted scorecard and rubric that scored three of them against the same four criteria, and the client kept it as something it can rerun on any market.',
@@ -455,7 +455,7 @@ function KohlerProductSurface({compact=false}){
    <aside><span>PREPARATION</span>{['Overview','Requirements','Documents','Validation','Audit'].map((item,index)=><div className={index===0?'active':''} key={item}><b>{String(index+1).padStart(2,'0')}</b>{item}</div>)}</aside>
    <div className="kohlerSurfaceMain">
     <div className="kohlerWorkspaceHead"><div><span>ORDER SO-28471</span><strong>Export preparation for this order</strong></div><i>Workflow prototype</i></div>
-    {!compact&&<div className="kohlerMarketTabs" role="group" aria-label="Choose a sample destination">{Object.entries(kohlerMarkets).map(([key,value])=><button type="button" className={key===market?'selected':''} onClick={()=>setMarket(key)} aria-pressed={key===market} key={key}>{value.label}</button>)}</div>}
+    {!compact&&<div className="kohlerMarketControl"><div className="kohlerMarketPrompt"><span>Try another destination</span><small>Choose a market to update the checklist and document <i aria-hidden="true">↓</i></small></div><div className="kohlerMarketTabs" role="group" aria-label="Choose a sample destination">{Object.entries(kohlerMarkets).map(([key,value])=><button type="button" className={key===market?'selected':''} onClick={()=>setMarket(key)} aria-pressed={key===market} key={key}>{value.label}</button>)}</div></div>}
     <div className="kohlerFieldRail"><div><span>PRODUCT</span><strong>Purist single-handle faucet</strong></div><div><span>DESTINATION</span><strong>{detail.label}</strong></div><div><span>ORDER SOURCE</span><strong>SAP ECC</strong></div></div>
     <div className="kohlerWorkspaceGrid"><section className="kohlerRoute"><header><span>REQUIREMENT PACKET</span><b>{detail.readiness}% ready</b></header><div className="kohlerRouteLine"><i></i><strong>US</strong><em></em><strong>{market==='india'?'IN':market==='china'?'CN':'AE'}</strong></div><ul>{requirements.slice(0,compact?3:4).map((item,index)=><li key={item}><span>{index<2?'✓':index===2?'↻':'!'}</span><div><strong>{item}</strong><small>{index<2?'Validated against source':'Prepared for review'}</small></div></li>)}</ul></section><section className="kohlerDocument"><header><span>GENERATED DOCUMENT</span><b>{detail.page}</b></header><div className="kohlerPaper"><span>SPECIFICATION</span><strong>Purist® faucet</strong><i></i><small>{detail.language}</small><p>Regional contacts, warranty language, compliance notes, and approved product attributes assembled for the destination.</p></div><footer><span>Validation</span><strong>Human review required</strong></footer></section></div>
    </div>
@@ -879,7 +879,7 @@ function SchedulerPeople(){
 function SchedulerDecisionDemo(){
  const [committed,setCommitted]=useState(false);
  return <div className={`schedulerDecisionCanvas ${committed?'is-committed':''}`}>
-   <div className="schedulerRecommendationGrid" aria-label="Tuesday 10:30 selected from the group availability grid"><header><span>Group availability</span><strong>3 responses</strong></header><div className="schedulerDecisionDays"><b>Mon</b><b>Tue</b><b>Wed</b></div><div className="schedulerDecisionRows"><span>10:00</span><i></i><i className="warm"></i><i></i><span>10:30</span><i className="warm"></i><i className="chosen">3</i><i className="warm"></i><span>11:00</span><i></i><i className="warm"></i><i></i></div><footer>Highest availability · fewest conflicts</footer><button type="button" className="schedulerChooseButton" onClick={()=>setCommitted(true)} aria-expanded={committed}>{committed?'Calendar event created':'Choose Tue · 10:30'}</button></div>
+   <div className="schedulerRecommendationGrid" aria-label="Tuesday 10:30 selected from the group availability grid"><header><span>Group availability</span><strong>3 responses</strong></header><div className="schedulerDecisionDays"><b>Mon</b><b>Tue</b><b>Wed</b></div><div className="schedulerDecisionRows"><span>10:00</span><i></i><i className="warm"></i><i></i><span>10:30</span><i className="warm"></i><i className="chosen">3</i><i className="warm"></i><span>11:00</span><i></i><i className="warm"></i><i></i></div><footer>Highest availability · fewest conflicts</footer><button type="button" className={`schedulerChooseButton ${committed?'is-committed':''}`} onClick={()=>setCommitted(true)} aria-expanded={committed}>{committed?'Calendar event created':<><span>Choose Tue · 10:30</span><small>Click to create the shared event <i aria-hidden="true">↓</i></small></>}</button></div>
    {committed&&<><div className="schedulerCommitPath" aria-hidden="true"><i></i><span>Chosen</span></div><article className="schedulerCalendarInvite" aria-live="polite"><header><time><b>16</b><span>SEP</span></time><div><span>Tuesday</span><strong>Design Sync</strong></div></header><dl><div><dt>Time</dt><dd>10:30–11:00 AM</dd></div><div><dt>Place</dt><dd>Minskoff Pavilion</dd></div><div><dt>Going</dt><dd><span className="schedulerAvatars"><i>N</i><i>M</i><i>A</i></span>3 participants</dd></div></dl><strong className="schedulerCalendarAction">Calendar ready</strong></article></>}
    <p className="schedulerDecisionCaption">{committed?'The selected time carries the venue, participants, notes, and sharing details into one calendar-ready event.':'Pick the best overlap to carry it forward as a complete event.'}</p>
  </div>
@@ -929,21 +929,41 @@ function SchedulerCompare(){
  </div>
 }
 
-function SchedulerCase(){return <div className="schedulerStory"><LifecycleRoad stages={schedulerStages} vehicle="calendar"/>
+function SchedulerBrief(){return <section className="schedulerBriefSection scStage" id="sc-brief" aria-labelledby="scheduler-brief-title">
+  <header className="schedulerBriefMasthead">
+   <div className="schedulerBriefKicker"><span>Product requirements document</span><b>Scheduler</b></div>
+   <div className="schedulerBriefTitle"><h2 id="scheduler-brief-title">Group Scheduling App</h2><p>Turn availability into one confirmed, calendar-ready plan.</p></div>
+   <dl className="schedulerBriefMeta">
+    <div><dt>Owner</dt><dd>Neha Chinimilli</dd></div>
+    <div><dt>Primary users</dt><dd>MSU study groups and student organizations</dd></div>
+    <div><dt>Delivery</dt><dd>Deployed web app</dd></div>
+   </dl>
+  </header>
+  <div className="schedulerBriefBody">
+   <section className="schedulerBriefContext" aria-labelledby="scheduler-brief-context"><span>Context</span><div><h3 id="scheduler-brief-context">Problem statement</h3><p>Students could find overlap in a scheduling grid, then had to move to a group chat to decide on a time, place, and invite. Tentative availability was flattened into yes or no before the group could use it.</p></div></section>
+   <section className="schedulerBriefContext" aria-labelledby="scheduler-brief-goal"><span>Goal</span><div><h3 id="scheduler-brief-goal">Make one decision possible in one place.</h3><p>Help a group capture availability, choose a workable time and venue, and leave with one shared event without making the group’s final decision for them.</p></div></section>
+   <section className="schedulerBriefFlow" aria-labelledby="scheduler-brief-flow-title"><div className="schedulerBriefSectionHead"><span>Primary flow</span><h3 id="scheduler-brief-flow-title">Capture → resolve → confirm</h3></div><ol>
+    <li><i className="schedulerBriefMiniGrid" aria-hidden="true"><b/><b/><b/><b/><b/><b/><b/><b/><b/></i><div><b>Capture availability</b><span>Keep Available, Maybe, and Unavailable distinct.</span></div></li>
+    <li><i className="schedulerBriefMiniRank" aria-hidden="true"><b/><b/><b/></i><div><b>Resolve the overlap</b><span>Rank workable times; the group chooses.</span></div></li>
+    <li><i className="schedulerBriefMiniTicket" aria-hidden="true"><b>16</b><span/></i><div><b>Confirm one event</b><span>Carry time, place, people, and notes forward.</span></div></li>
+   </ol></section>
+   <section className="schedulerBriefRequirements" aria-labelledby="scheduler-brief-requirements"><div className="schedulerBriefSectionHead"><span>Requirements</span><h3 id="scheduler-brief-requirements">What the first release needed to do</h3></div><ol>
+    <li><b>Preserve uncertainty</b><span>Let each participant mark a time as Available, Maybe, or Unavailable.</span></li>
+    <li><b>Recommend; do not decide</b><span>Rank workable times by availability and conflicts, then leave the selection with the group.</span></li>
+    <li><b>Carry the decision forward</b><span>Keep venue voting, participant status, notes, and calendar setup on the same event record.</span></li>
+   </ol></section>
+   <div className="schedulerBriefFooter">
+    <section><span>Research input</span><p>Seven one-on-one interviews with student organizers and live task walkthroughs.</p></section>
+    <section><span>Out of scope</span><p>Automatically selecting a time or replacing the group’s judgment with a scheduling algorithm.</p></section>
+    <section><span>Success criteria</span><p>A group can reach a confirmed event, and participants can express “maybe” without it being treated as yes.</p></section>
+   </div>
+  </div>
+ </section>}
+
+function SchedulerCase(){return <div className="schedulerStory"><SchedulerBrief/><LifecycleRoad stages={schedulerStages} vehicle="calendar"/>
   <section className="schedulerDemo"><SchedulerDemo/></section>
   <section id="sc-discover" className="schedulerProblemStage scStage"><div><h2>A heatmap did not finish the plan.</h2><p>Students could mark when they were free, but tentative availability was flattened into yes or no. Even after finding overlap, the group still had to choose a time, place, and next step somewhere else.</p></div><SchedulerFlatten/></section>
   <CaseSection title="What I learned from seven student interviews" className="schedulerResearchSection scStage" id="sc-research"><div className="schedulerResearchDesk"><aside className="schedulerInterviewIndex"><strong>7 students</strong><span>One-on-one conversations</span><span>Live task walkthroughs</span><SchedulerPeople/></aside><div className="schedulerNotebook"><div className="schedulerSessionNotes"><article><svg viewBox="0 0 64 40" aria-hidden="true"><circle cx="12" cy="20" r="9" fill="#b9d7c7"/><circle cx="32" cy="20" r="9"/><path d="M32 11a9 9 0 0 1 0 18z" fill="#e7d9ad"/><circle cx="52" cy="20" r="9"/></svg><b>Students wanted a way to say “maybe.”</b><p>Tentative availability was useful information, but the binary grid erased it.</p><span>Seen during availability entry</span></article><article><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M4 4h10v10H4zM18 4h10v10H18zM32 4h10v10H32zM4 18h10v10H4zM18 18h10v10H18zM32 18h10v10H32z"/><path d="M50 14a5 5 0 1 1 7 4.6c-1.3.6-2 1.6-2 3V24M55 30v.5"/></svg><b>The heatmap did not finish the task.</b><p>Groups opened another chat to interpret the overlap, choose a room, and confirm the plan.</p><span>Seen after comparing schedules</span></article><article><svg viewBox="0 0 64 40" aria-hidden="true"><rect x="4" y="8" width="16" height="22" rx="3"/><rect x="26" y="4" width="14" height="14" rx="3" transform="rotate(12 33 11)"/><rect x="44" y="18" width="16" height="16" rx="3" transform="rotate(-10 52 26)"/><path d="M22 20l3-2M41 20l3 2" strokeDasharray="2 3"/></svg><b>Event details split across tools.</b><p>Time, venue, participant status, and notes separated as soon as the group left the grid.</p><span>Seen during follow-through</span></article></div><footer><i aria-hidden="true">→</i><strong>Keep Available, Maybe, and Unavailable separate, then recommend a time and carry that choice into venue and calendar setup.</strong></footer></div></div></CaseSection>
-  <section className="schedulerBriefSection scStage" id="sc-brief" aria-labelledby="scheduler-brief-title">
-   <header><span>Product brief · v1</span><h2 id="scheduler-brief-title">Turn availability into a plan the group can act on.</h2><p>I used this brief to keep the build focused on the student problem the interviews exposed, instead of stopping at a better scheduling grid.</p></header>
-   <dl className="schedulerBriefGrid">
-    <div><dt>Primary users</dt><dd>Students organizing study groups and campus organization meetings.</dd></div>
-    <div><dt>Job to be done</dt><dd>Find a time, settle the details, and give everyone one calendar-ready event.</dd></div>
-    <div><dt>Core requirement</dt><dd>Keep Available, Maybe, and Unavailable distinct so tentative information is useful instead of lost.</dd></div>
-    <div><dt>Experience scope</dt><dd>Shared availability, a recommended time, venue voting, participant status, notes, and calendar setup.</dd></div>
-    <div><dt>Product guardrail</dt><dd>Recommend a workable option, but leave the final choice with the group.</dd></div>
-    <div><dt>Measures next</dt><dd>Track how often a group reaches a confirmed event and test whether people can express tentative availability without confusion.</dd></div>
-   </dl>
-  </section>
   <CaseSection title="From availability to a confirmed event" className="schedulerDecisionSection scStage" id="sc-design"><SchedulerDecisionDemo/></CaseSection>
   <CaseSection title="Everything When2meet left to the group chat" className="schedulerCompareSection scStage" id="sc-compare"><SchedulerCompare/></CaseSection>
   <section id="sc-build" className="schedulerBuild scStage"><header><h2>One event, kept in sync.</h2><p>Every change to the time, place, or who is going reaches everyone’s screen live. The deployed product supports real group use; the portfolio demo above uses local state to show the same interaction model.</p></header><SchedulerSync/></section>
