@@ -303,13 +303,13 @@ export default function CommuteModelLab(){
         </div>
       </div>
 
+      <div className="mlabEqRow">
       <div className="mlabEq" role="img" aria-label={one
         ? `Leaving at ${clock(cand.leave)} by ${route.name}: ${route.legs.map((l, i) => `${l.name} ${one.parts[i].toFixed(1)} minutes`).join(', ')}${one.delay ? `, plus ${one.delay.toFixed(0)} minutes lost` : ''}, arriving ${clock(one.arrival)}`
         : 'The arrival equation'}>
         <div className="mlabTerm is-seed">
           <em>leave</em>
           <b>{clock(cand.leave)}</b>
-          <i aria-hidden="true"/>
           <small>candidate<cite>alarm + learned routine</cite></small>
         </div>
         {route.legs.map((l, i) => {
@@ -331,7 +331,6 @@ export default function CommuteModelLab(){
           <div className="mlabTerm is-delay isLit">
             <em>{route.disrupt.label}</em>
             <b>{one.delay.toFixed(0)}<u>min</u></b>
-            <i aria-hidden="true"/>
             <small>{Math.round(route.disrupt.p * 10)} mornings in 10<cite>{route.disrupt.src}</cite></small>
           </div>
         </>}
@@ -339,10 +338,10 @@ export default function CommuteModelLab(){
         <div className={`mlabTerm is-out${one && revealed > route.legs.length ? ' isLit' : ''}${one && one.late ? ' is-late' : ''}`}>
           <em>walk in at</em>
           <b>{one && revealed > route.legs.length ? clock(one.arrival) : '—'}</b>
-          <i aria-hidden="true"/>
           <small>{one && revealed > route.legs.length ? (one.late ? 'missed 9:00' : 'made it') : 'deadline 9:00'}</small>
         </div>
-        <button type="button" className="mlabGhostBtn mlabDrawBtn" onClick={() => sampleOne()}>Draw another ↻</button>
+      </div>
+      <button type="button" className="mlabGhostBtn mlabDrawBtn" onClick={() => sampleOne()}>Draw another ↻</button>
       </div>
     </section>
 

@@ -25,26 +25,27 @@
 .mlabGhostBtn:hover{background:color-mix(in srgb,var(--ml-accent) 18%,transparent)}
 
 /* ── the equation ─────────────────────────────────────────────── */
-.mlabEq{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 8px}
-.mlabOp{align-self:center;padding-bottom:16px;font-size:18px;font-weight:400;color:color-mix(in srgb,var(--ml-ink) 40%,transparent)}
+.mlabEqRow{display:flex;align-items:center;gap:20px}
+.mlabEq{flex:1 1 auto;display:flex;flex-wrap:wrap;align-items:stretch;gap:10px 8px}
+.mlabOp{align-self:center;font-size:18px;font-weight:400;color:color-mix(in srgb,var(--ml-ink) 40%,transparent)}
 .mlabOp.is-eq{font-size:22px;color:var(--ml-accent)}
 
-.mlabTerm{position:relative;display:grid;gap:5px;min-width:112px;padding:11px 14px 10px;border-radius:12px;background:color-mix(in srgb,var(--ml-accent) 5%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ml-accent) 14%,transparent);transition:background .35s ease,box-shadow .35s ease}
+.mlabTerm{position:relative;display:grid;grid-template-rows:auto auto auto 1fr;gap:6px;min-width:126px;padding:12px 15px 11px;border-radius:12px;background:color-mix(in srgb,var(--ml-accent) 5%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ml-accent) 14%,transparent);transition:background .35s ease,box-shadow .35s ease}
 .mlabTerm em{font-style:normal;font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ml-muted)}
 .mlabTerm b{display:flex;align-items:baseline;gap:4px;font-family:var(--font-mono,ui-monospace,SFMono-Regular,Menlo,monospace);font-size:22px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--ml-ink) 45%,transparent);transition:color .3s ease}
 .mlabTerm b u{text-decoration:none;font-size:11px;font-weight:500;color:var(--ml-muted)}
-.mlabTerm small{font-size:10.5px;font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--ml-muted) 80%,transparent)}
+.mlabTerm small{align-self:end;font-size:10.5px;font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--ml-muted) 80%,transparent)}
 .mlabTerm>i{display:block;height:3px;border-radius:2px;background:color-mix(in srgb,var(--ml-accent) 16%,transparent)}
 .mlabTerm>i s{position:relative;display:block;width:7px;height:7px;margin:-2px 0 0;border-radius:50%;background:var(--ml-accent);opacity:0;translate:-50% 0;left:var(--at,50%);transition:left .45s cubic-bezier(.2,.7,.2,1),opacity .3s ease}
 .mlabTerm.isLit{background:color-mix(in srgb,var(--ml-accent) 11%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ml-accent) 30%,transparent)}
 .mlabTerm.isLit b{color:var(--ml-ink)}
 .mlabTerm.isLit>i s{opacity:1}
 
-.mlabTerm.is-seed{background:transparent;box-shadow:inset 0 0 0 1px var(--ml-rule)}
+.mlabTerm.is-seed{grid-template-rows:auto auto 1fr;background:transparent;box-shadow:inset 0 0 0 1px var(--ml-rule)}
 .mlabTerm.is-seed b{color:var(--ml-ink)}
-.mlabTerm.is-delay{background:color-mix(in srgb,var(--ml-late) 12%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ml-late) 35%,transparent)}
+.mlabTerm.is-delay{grid-template-rows:auto auto 1fr;background:color-mix(in srgb,var(--ml-late) 12%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ml-late) 35%,transparent)}
 .mlabTerm.is-delay em,.mlabTerm.is-delay b{color:var(--ml-late)}
-.mlabTerm.is-out{min-width:142px;background:transparent;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--ml-accent) 30%,transparent)}
+.mlabTerm.is-out{grid-template-rows:auto auto 1fr;min-width:150px;background:transparent;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--ml-accent) 30%,transparent)}
 .mlabTerm.is-out.isLit{background:var(--ml-accent);box-shadow:none}
 .mlabTerm.is-out.isLit em,.mlabTerm.is-out.isLit small{color:color-mix(in srgb,#fff 78%,transparent)}
 .mlabTerm.is-out.isLit b{color:#fff;font-size:26px}
@@ -60,11 +61,11 @@
 .mlabRunCount{display:flex;align-items:center;gap:14px;margin:0 0 20px;font-size:12.5px;letter-spacing:.04em;color:var(--ml-muted)}
 .mlabRunCount b{font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-variant-numeric:tabular-nums;font-size:14px;color:var(--ml-ink)}
 
-.mlabRoutes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 44px}
-.mlabRoute{display:grid;align-content:start;gap:16px;padding:22px 0 0;border-top:2px solid color-mix(in srgb,var(--ml-accent) 22%,transparent)}
-.mlabRoute+.mlabRoute{padding-left:44px;border-left:1px solid var(--ml-rule);margin-left:-44px}
+.mlabRoutes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0}
+.mlabRoute{display:grid;grid-template-rows:auto auto 1fr auto;gap:18px;padding:22px 34px 0 0;border-top:2px solid color-mix(in srgb,var(--ml-accent) 22%,transparent)}
+.mlabRoute+.mlabRoute{padding:22px 0 0 34px;border-left:1px solid var(--ml-rule)}
 .mlabRoute.isBinding{border-top-color:var(--ml-accent)}
-.mlabRouteHead{display:flex;align-items:flex-end;justify-content:space-between;gap:18px}
+.mlabRouteHead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;min-height:76px}
 .mlabRouteId{display:grid;gap:8px}
 .mlabRouteId b{font-size:17px;font-weight:600;letter-spacing:-.015em}
 .mlabRouteId em{display:block;font-style:normal;font-size:12px;line-height:1.4;color:var(--ml-muted)}
@@ -74,8 +75,8 @@
 
 /* ── chart + readout ──/* ── chart + readout ──────────────────────────────────────────── */
 
-.mlabChart{display:grid;gap:10px;align-content:end}
-.mlabBars{position:relative;display:flex;align-items:flex-end;gap:1px;height:164px;padding-bottom:1px;border-bottom:1px solid var(--ml-rule)}
+.mlabChart{display:grid;gap:9px;align-content:end}
+.mlabBars{position:relative;display:flex;align-items:flex-end;gap:1px;height:168px;padding-bottom:1px;border-bottom:1px solid var(--ml-rule);border-top:1px solid color-mix(in srgb,var(--ml-accent) 10%,transparent)}
 .mlabBars i{flex:1 1 0;height:var(--h,0%);min-height:0;border-radius:2px 2px 0 0;background:color-mix(in srgb,var(--ml-accent) 62%,transparent);transition:height .18s ease}
 .mlabBars i.is-late{background:color-mix(in srgb,var(--ml-late) 62%,transparent)}
 .mlabCut{position:absolute;top:-4px;bottom:0;left:var(--x);width:1px;background:repeating-linear-gradient(var(--ml-ink) 0 4px,transparent 4px 8px);opacity:.55}
@@ -88,11 +89,11 @@
 .mlabPct span{font-size:13px;color:var(--ml-muted)}
 .mlabPct.is-safe strong{color:var(--ml-accent)}
 .mlabPct.is-bad strong{color:var(--ml-late)}
-.mlabFacts{display:grid;gap:6px;margin:0;padding-top:12px;border-top:1px solid var(--ml-rule)}
+.mlabFacts{align-self:end;display:grid;gap:7px;margin:0;padding-top:13px;border-top:1px solid var(--ml-rule)}
 .mlabFacts>div{display:flex;justify-content:space-between;gap:12px}
 .mlabFacts dt{font-size:12.5px;color:var(--ml-muted)}
 .mlabFacts dd{margin:0;font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-size:13px;font-variant-numeric:tabular-nums;color:var(--ml-ink)}
-.mlabVerdict{margin:0;font-size:13.5px;line-height:1.5}
+.mlabVerdict{align-self:end;margin:0;min-height:40px;font-size:13.5px;line-height:1.5}
 .mlabVerdict.is-safe{color:var(--ml-accent)}
 .mlabVerdict.is-bad{color:var(--ml-late)}
 
@@ -101,7 +102,7 @@
 
 /* provenance under each term */
 .mlabTerm cite{display:block;margin-top:2px;font-style:normal;font-size:9.5px;letter-spacing:.02em;line-height:1.3;color:color-mix(in srgb,var(--ml-muted) 72%,transparent)}
-.mlabDrawBtn{align-self:flex-end;margin-bottom:14px}
+.mlabDrawBtn{flex:0 0 auto;align-self:center}
 
 .mlabHandoff{margin:22px 0 0;max-width:62ch;font-family:var(--font-serif);font-size:15px;line-height:1.6;color:var(--ml-muted)}
 
@@ -132,7 +133,8 @@
 
 @media(max-width:860px){
  .mlabRoutes{grid-template-columns:minmax(0,1fr);gap:0}
- .mlabRoute+.mlabRoute{margin-left:0;padding-left:0;border-left:0;margin-top:26px}
+ .mlabRoute{padding-right:0}
+ .mlabRoute+.mlabRoute{padding-left:0;border-left:0;margin-top:26px}
  .mlabStepHead{flex-wrap:wrap}
  .mlabAnswer{grid-template-columns:minmax(0,1fr)}
  .mlabOption{border-left:0;border-top:1px solid var(--ml-rule)}
