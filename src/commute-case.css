@@ -811,35 +811,43 @@
 @media(max-width:900px){.cmEvidencePair .cmVariance{padding:8px 0 0!important}.cmEvidencePair .cmUpdateMechanism{padding:28px 0 0!important;border-left:0!important;border-top:1px solid #2b274426!important}}
 
 /* Where the uncertainty actually lives, grouped by what the product can do
-   about it: the feed already covers the transit legs, so the only way to shrink
-   the big one is to measure it. That grouping is the point of the chart. */
-.cmSpread{margin-top:48px;padding:36px 0;border-top:1px solid #2b274429;border-bottom:1px solid #2b274429}
-.cmSpread>header{max-width:62ch;margin-bottom:30px}
+   about it: a feed already covers the transit legs, so the only way to shrink
+   the big one is to measure it. The grouping plus one shared bar scale is the
+   argument; the copy only names it. */
+.cmSpread{margin-top:48px;padding:40px 0 34px;border-top:1px solid #2b274429;border-bottom:1px solid #2b274429}
+.cmSpread>header{max-width:60ch;margin-bottom:34px}
 .cmSpread>header h3{margin:0;color:var(--cm-ink);font-size:clamp(24px,2.8vw,34px);font-weight:550;line-height:1.16;letter-spacing:-.025em}
 .cmSpread>header p{margin:12px 0 0;font-family:var(--font-serif);font-size:15px;line-height:1.6;color:var(--cm-muted)}
-.cmSpreadGroups{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:0 46px;align-items:start}
-.cmSpreadGroup{display:grid;align-content:start;gap:12px}
-.cmSpreadGroup+.cmSpreadGroup{padding-left:46px;margin-left:-46px;border-left:1px solid #2b274420}
-.cmSpreadCap{margin:0;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cm-muted)}
-.cmSpreadGroup.is-mine .cmSpreadCap{color:var(--rose)}
+
+.cmSpreadGroups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 48px;align-items:stretch}
+.cmSpreadGroup{display:grid;grid-template-rows:auto auto 1fr;gap:14px;align-content:start}
+.cmSpreadGroup+.cmSpreadGroup{padding-left:48px;margin-left:-48px;border-left:1px solid #2b274420}
+.cmSpreadCap{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:0;padding-bottom:10px;border-bottom:1px solid #2b274420;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cm-muted)}
+.cmSpreadCap em{flex:0 0 auto;font-style:normal;letter-spacing:.1em;color:color-mix(in srgb,var(--cm-muted) 70%,transparent)}
+.cmSpreadGroup.is-mine .cmSpreadCap{color:var(--rose);border-bottom-color:color-mix(in srgb,var(--rose) 30%,transparent)}
+
 .cmSpread ol{margin:0;padding:0;list-style:none}
-.cmSpread li{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(70px,1.5fr) 64px;gap:14px;align-items:center;padding:10px 0;border-top:1px solid #2b274412}
+.cmSpread li{display:grid;grid-template-columns:minmax(0,1fr) 168px 62px;gap:16px;align-items:center;padding:13px 0;border-top:1px solid #2b274412}
 .cmSpread li:first-child{border-top:0}
-.cmSpread li span{font-size:12.5px;line-height:1.3;color:var(--cm-ink)}
-.cmSpread li cite{display:block;margin-top:2px;font-style:normal;font-size:9.5px;line-height:1.3;color:var(--cm-muted)}
-.cmSpread li b{font-size:12px;font-variant-numeric:tabular-nums;text-align:right;color:var(--cm-muted)}
-.cmSpread li i{height:6px;border-radius:3px;background:#2b274410}
-.cmSpread li i u{display:block;width:0;height:100%;border-radius:3px;background:var(--sage);transition:width .55s ease calc(var(--i) * 90ms)}
+.cmSpread li span{display:grid;gap:2px;min-width:0}
+.cmSpread li span b{font-size:13.5px;font-weight:600;line-height:1.25;color:var(--cm-ink)}
+.cmSpread li cite{font-style:normal;font-size:10px;line-height:1.35;color:var(--cm-muted)}
+.cmSpread li i{height:7px;border-radius:4px;background:#2b274410}
+.cmSpread li i u{display:block;width:0;height:100%;border-radius:4px;background:var(--sage);transition:width .6s ease calc(var(--i) * 90ms)}
 .cmSpread.isIn li i u{width:var(--w)}
-.cmSpread li.is-focus span,.cmSpread li.is-focus b{font-weight:700;color:var(--rose)}
+.cmSpread li strong{display:flex;align-items:baseline;justify-content:flex-end;gap:3px;font-size:19px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em;color:var(--cm-ink)}
+.cmSpread li strong small{font-size:10px;font-weight:500;color:var(--cm-muted)}
+.cmSpread li.is-focus span b,.cmSpread li.is-focus strong{color:var(--rose)}
+.cmSpread li.is-focus strong{font-size:26px}
 .cmSpread li.is-focus i u{background:var(--rose)}
-.cmSpreadNote{font-size:12.5px;line-height:1.5;color:var(--cm-muted)}
+
+.cmSpreadNote{align-self:end;margin:0;font-size:12.5px;line-height:1.55;color:var(--cm-muted)}
 .cmSpreadGroup.is-mine .cmSpreadNote{color:var(--cm-ink)}
-.cmSpreadLoop{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:30px 0 0;padding-top:20px;border-top:1px solid #2b274420}
+.cmSpreadLoop{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:32px 0 0;padding-top:22px;border-top:1px solid #2b274420}
 .cmSpreadLoop b{font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--sage)}
 .cmSpreadLoop i{font-style:normal;font-size:12px;color:var(--cm-muted)}
 @media(max-width:760px){
- .cmSpreadGroups{grid-template-columns:1fr;gap:26px}
- .cmSpreadGroup+.cmSpreadGroup{margin-left:0;padding-left:0;border-left:0;padding-top:22px;border-top:1px solid #2b274420}
- .cmSpread li{grid-template-columns:minmax(110px,1fr) minmax(60px,1fr) 58px;gap:10px}
+ .cmSpreadGroups{grid-template-columns:1fr;gap:28px}
+ .cmSpreadGroup+.cmSpreadGroup{margin-left:0;padding-left:0;border-left:0;padding-top:24px;border-top:1px solid #2b274420}
+ .cmSpread li{grid-template-columns:minmax(0,1fr) 96px 56px;gap:10px}
 }

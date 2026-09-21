@@ -133,30 +133,33 @@ function UpdateMechanism(){
 function ModelLearningSummary(){
  const [ref,seen]=useInView<HTMLElement>();
  const max=Math.max(...legs.map(l=>l.w));
- const half=(w:number)=>Number.isInteger(w/2)?w/2:(w/2).toFixed(1);
- // Grouped by what the product can actually do about each one: the feed already
- // knows the transit legs, so the only way to shrink the big one is to learn it.
+ // Grouped by what the product can actually do about each one: a feed already
+ // covers the transit legs, so the only way to shrink the big one is to measure
+ // it. Every row shows the same thing — the observed range and how wide it is —
+ // on one shared scale, so the comparison is the visual.
  const feed=legs.filter(l=>l.k!=='routine');
  const mine=legs.filter(l=>l.k==='routine');
  const row=(l:typeof legs[number],i:number,focus=false)=>
   <li key={l.k} className={focus?'is-focus':''} style={{'--i':i,'--w':`${l.w/max*100}%`} as React.CSSProperties}>
-   <span>{l.name}<cite>{l.src}</cite></span><i><u/></i><b>±{half(l.w)} min</b>
+   <span><b>{l.name}</b><cite>{l.lo}–{l.hi} min · {l.src}</cite></span>
+   <i><u/></i>
+   <strong>{l.w}<small>min</small></strong>
   </li>;
  return <section ref={ref} className={`cmSpread${seen?' isIn':''}`} aria-labelledby="cm-model-learning-title">
   <header>
    <h3 id="cm-model-learning-title">The biggest unknown was me, not the trains.</h3>
-   <p>Every leg of the trip swings by a few minutes. My getting-ready time swings by 28. A better transit feed could not have found that, so the product had to learn it.</p>
+   <p>Every leg of the trip swings by a few minutes. My getting-ready time swings by 28. A better transit feed could not have found that, so the product had to measure it.</p>
   </header>
   <div className="cmSpreadGroups">
    <div className="cmSpreadGroup">
-    <p className="cmSpreadCap">A live feed already knows these</p>
+    <p className="cmSpreadCap">A live feed already knows these<em>swing</em></p>
     <ol>{feed.map((l,i)=>row(l,i))}</ol>
-    <span className="cmSpreadNote">Buying better data changes these by minutes.</span>
+    <p className="cmSpreadNote">Paying for better transit data moves these by a minute or two.</p>
    </div>
    <div className="cmSpreadGroup is-mine">
-    <p className="cmSpreadCap">Only my own mornings know this</p>
+    <p className="cmSpreadCap">Only my own mornings know this<em>swing</em></p>
     <ol>{mine.map((l,i)=>row(l,i,true))}</ol>
-    <span className="cmSpreadNote">So Commute measures it every morning — AlarmKit says when I dismissed the alarm, a departure geofence says when I actually left — instead of assuming 48 minutes.</span>
+    <p className="cmSpreadNote">Four times the swing of any transit leg — so Commute measures it instead of assuming 48 minutes. AlarmKit reports the dismissal, a departure geofence reports the exit, and the gap between them becomes tomorrow&rsquo;s range.</p>
    </div>
   </div>
   <p className="cmSpreadLoop"><b>Dismiss alarm</b><i aria-hidden="true">→</i><b>leave home</b><i aria-hidden="true">→</i><b>tomorrow&rsquo;s range narrows</b></p>

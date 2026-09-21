@@ -50,6 +50,12 @@
 .mlabTerm.is-out.isLit b{color:#fff;font-size:26px}
 .mlabTerm.is-out.is-late.isLit{background:var(--ml-late)}
 
+/* segmented pickers: route for the single morning, departure for the loop */
+.mlabPicker{display:inline-flex;flex-wrap:nowrap;align-self:center;gap:3px;padding:3px;border-radius:999px;background:color-mix(in srgb,var(--ml-accent) 8%,transparent);box-shadow:inset 0 0 0 1px var(--ml-rule)}
+.mlabPicker button{flex:0 0 auto;padding:7px 13px;border:0;border-radius:999px;background:transparent;color:var(--ml-muted);font:inherit;font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;cursor:pointer;transition:background .2s ease,color .2s ease}
+.mlabPicker button:hover{color:var(--ml-ink)}
+.mlabPicker button[aria-pressed="true"]{background:var(--ml-accent);color:#fff}
+
 /* ── the run: both routes, each with its own vehicle ─────────── */
 .mlabRunCount{display:flex;align-items:center;gap:14px;margin:0 0 20px;font-size:12.5px;letter-spacing:.04em;color:var(--ml-muted)}
 .mlabRunCount b{font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-variant-numeric:tabular-nums;font-size:14px;color:var(--ml-ink)}
