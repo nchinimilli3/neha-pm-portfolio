@@ -12,15 +12,15 @@ function useLive<T extends Element>(threshold = .35) {
  return [ref, inView] as const;
 }
 
-const meant = [['yes', 'maybe', 'no', 'yes'], ['maybe', 'yes', 'yes', 'no'], ['no', 'maybe', 'yes', 'maybe']];
+const meant = [['yes', 'maybe', 'none', 'yes'], ['maybe', 'yes', 'yes', 'none'], ['none', 'maybe', 'yes', 'maybe']];
 const icons: Record<string, React.ReactNode> = {
  yes: <path d="M5 10.5l3.2 3.2L15 6.8"/>,
  maybe: <path d="M7.3 7.4a2.8 2.8 0 1 1 3.9 2.6c-.8.4-1.2 1-1.2 1.9v.6M10 15.2v.3"/>,
- no: <path d="M6.5 6.5l7 7M13.5 6.5l-7 7"/>,
 };
 
-// The problem: students answer with Available, Maybe, and No, but a heatmap only keeps "free or not",
-// and even the overlap leaves the group with questions the grid can't answer.
+// The problem: students answer free, maybe, or nothing at all, but a heatmap keeps only "free or not".
+// A blank already says "can't make it", so it survives the flattening honestly; Maybe is the answer
+// that dies, and even the overlap leaves the group with questions the grid can't answer.
 export function SchedulerFlatten() {
  const [ref, inView] = useLive<HTMLDivElement>();
  const [kept, setKept] = useState(false);
@@ -34,11 +34,11 @@ export function SchedulerFlatten() {
    <button type="button" aria-pressed={!kept} onClick={() => setKept(false)}>What students meant</button>
    <button type="button" aria-pressed={kept} onClick={() => setKept(true)}>What a heatmap keeps</button>
   </div>
-  <div className="scFlatGrid" role="img" aria-label={kept ? 'Only free or not free remains; every Maybe is gone' : 'Available, Maybe, and No answers across four days'}>
+  <div className="scFlatGrid" role="img" aria-label={kept ? 'Only free or not free remains; every Maybe is gone' : 'Available and Maybe answers across four days; a blank slot means booked'}>
    <span/>{['Tue', 'Wed', 'Thu', 'Fri'].map(d => <b key={d}>{d}</b>)}
-   {['10:00', '10:30', '11:00'].map((t, r) => <React.Fragment key={t}><small>{t}</small>{meant[r].map((v, c) => <i key={c} className={`scCell s-${v}`} style={{'--d': `${(r * 4 + c) * 40}ms`} as React.CSSProperties}><svg viewBox="0 0 20 20" aria-hidden="true">{icons[v]}</svg></i>)}</React.Fragment>)}
+   {['10:00', '10:30', '11:00'].map((t, r) => <React.Fragment key={t}><small>{t}</small>{meant[r].map((v, c) => <i key={c} className={`scCell s-${v}`} style={{'--d': `${(r * 4 + c) * 40}ms`} as React.CSSProperties}>{icons[v] && <svg viewBox="0 0 20 20" aria-hidden="true">{icons[v]}</svg>}</i>)}</React.Fragment>)}
   </div>
-  <div className="scFlatLegend" aria-hidden="true"><span className="s-yes"><i/>Available</span><span className="s-maybe"><i/>Maybe</span><span className="s-no"><i/>No</span></div>
+  <div className="scFlatLegend" aria-hidden="true"><span className="s-yes"><i/>Available</span><span className="s-maybe"><i/>Maybe</span><em>Blank means booked</em></div>
   <ul className="scFlatQuestions" aria-label="Questions left after finding overlap">
    {['Which slot do we pick?', 'Where do we meet?', 'Who sends the invite?'].map((q, i) => <li key={q} style={{'--q': i} as React.CSSProperties}>{q}</li>)}
   </ul>
@@ -108,18 +108,33 @@ export function SchedulerSync() {
 // Live demo: paint your availability, flip to the group heatmap, and watch the best time update.
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 const TIMES = ['9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00'];
-type Mark = '' | 'yes' | 'maybe' | 'no';
-const MODES: [Exclude<Mark, ''>, string][] = [['yes', 'Available'], ['maybe', 'Maybe'], ['no', 'Unavailable']];
+// Blank already means "can't make it", the way an opt-in grid works, so the product
+// never asks anyone to mark unavailability. Maybe is the only answer a grid cannot hold.
+type Mark = '' | 'yes' | 'maybe';
+const MODES: [Exclude<Mark, ''>, string][] = [['yes', 'Available'], ['maybe', 'Maybe']];
 // Maya and Alex's answers per slot, row by row.
 const OTHERS = [[1, 0, 1, 1, 0], [1, 1, 1, 0, 1], [0, 1, 1, 2, 1], [1, 2, 1, 1, 0], [0, 2, 1, 0, 1], [1, 1, 0, 1, 0], [0, 0, 1, 0, 1]].flat();
-const OTHER_NO = [[1, 1, 0, 0, 2], [0, 0, 1, 1, 0], [1, 0, 0, 0, 0], [0, 0, 1, 0, 1], [2, 0, 0, 1, 0], [0, 0, 1, 0, 1], [1, 2, 0, 1, 0]].flat();
-const seedMarks = (): Mark[] => { const m: Mark[] = Array(35).fill(''); m[0] = 'yes'; m[7] = 'yes'; m[13] = 'no'; m[16] = 'yes'; m[21] = 'maybe'; m[24] = 'maybe'; return m; };
+// Maya and Alex's tentative slots. A maybe is its own answer here: it never fills in for a yes,
+// it only breaks a tie between times that are otherwise equally free.
+const OTHER_MAYBE = [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 1, 1, 0, 0], [0, 0, 0, 1, 0], [0, 0, 1, 0, 0], [0, 1, 0, 0, 0], [0, 0, 0, 0, 0]].flat();
+// A sample connected week. A calendar knows when you are busy; the grid needs when you are free,
+// so importing marks every unbooked slot available and leaves the booked ones blank with their
+// meeting name attached, which is exactly why that slot is empty.
+const CALENDAR_BUSY: Record<number, string> = {
+ 1: 'MKT 327', 3: 'MKT 327', 6: 'MKT 327', 8: 'MKT 327',
+ 10: 'CSE 477 lecture', 12: 'CSE 477 lecture', 14: 'CSE 477 lecture',
+ 15: 'CSE 477 lecture', 17: 'CSE 477 lecture', 19: 'CSE 477 lecture',
+ 32: 'Advising appointment',
+};
+const BUSY_COUNT = Object.keys(CALENDAR_BUSY).length;
+const seedMarks = (): Mark[] => { const m: Mark[] = Array(35).fill(''); m[0] = 'yes'; m[7] = 'yes'; m[16] = 'yes'; m[21] = 'maybe'; m[24] = 'maybe'; return m; };
 
 export function SchedulerDemo() {
  const [marks, setMarks] = useState<Mark[]>(seedMarks);
  const [notes, setNotes] = useState<Record<number, string>>({13: 'Class until 10:30'});
  const [mode, setMode] = useState<Exclude<Mark, ''>>('yes');
  const [heat, setHeat] = useState(false);
+ const [synced, setSynced] = useState(false);
  const [venues, setVenues] = useState([{name: 'Minskoff Pavilion', votes: 1}, {name: 'MSU Library', votes: 1}]);
  const [myVenue, setMyVenue] = useState('Minskoff Pavilion');
  const [newVenue, setNewVenue] = useState('');
@@ -134,9 +149,12 @@ export function SchedulerDemo() {
  useEffect(() => { const c = chatRef.current; if (c) c.scrollTop = c.scrollHeight; }, [chat]);
 
  const yes = (i: number) => OTHERS[i] + (marks[i] === 'yes' ? 1 : 0);
- const no = (i: number) => OTHER_NO[i] + (marks[i] === 'no' ? 1 : 0);
+ const maybe = (i: number) => OTHER_MAYBE[i] + (marks[i] === 'maybe' ? 1 : 0);
+ // Firm availability decides the ranking; maybes only separate times that tie on it,
+ // so a tentative slot can outrank an empty one without ever outranking a free one.
+ const beats = (a: number, b: number) => yes(a) !== yes(b) ? yes(a) > yes(b) : maybe(a) > maybe(b);
  let best = 0;
- for (let i = 1; i < 35; i++) if (yes(i) > yes(best) || (yes(i) === yes(best) && no(i) < no(best))) best = i;
+ for (let i = 1; i < 35; i++) if (beats(i, best)) best = i;
  const bestDay = DAYS[best % 5], bestRow = Math.floor(best / 5);
  const bestEnd = TIMES[bestRow + 1] ?? '12:30';
  const tally = venues.map(v => ({...v, total: v.votes + (myVenue === v.name ? 1 : 0)}));
@@ -154,13 +172,20 @@ export function SchedulerDemo() {
   if (heat || (e.pointerType === 'mouse' && e.button !== 0)) return;
   e.preventDefault(); drag.current = marks[i] === mode ? '' : mode; paint(i);
  };
+ const connectCalendar = () => {
+  if (synced) { setSynced(false); setMarks(seedMarks()); setNotes({13: 'Class until 10:30'}); flash('Calendar disconnected'); return; }
+  setHeat(false); setSynced(true);
+  setMarks(Array.from({length: 35}, (_, i) => CALENDAR_BUSY[i] ? '' : 'yes'));
+  setNotes({...CALENDAR_BUSY});
+  flash(`Sample calendar week imported · ${BUSY_COUNT} booked hours left blank`);
+ };
  const fills: [string, (i: number) => boolean, string][] = [
   ['All free', () => true, 'Marked every slot available'],
   ['9–10:30', i => i < 20, 'Marked 9:00–10:30 available'],
   ['11–12', i => i >= 20, 'Marked 11:00–12:00 available'],
   ['Clear', () => false, 'Cleared your availability'],
  ];
- const fill = ([, pick, msg]: typeof fills[number]) => { setHeat(false); setMarks(Array.from({length: 35}, (_, i) => pick(i) ? 'yes' : '')); flash(msg); };
+ const fill = ([, pick, msg]: typeof fills[number]) => { setHeat(false); setSynced(false); setMarks(Array.from({length: 35}, (_, i) => pick(i) ? 'yes' : '')); flash(msg); };
  const link = `${location.origin}${location.pathname}#/projects/scheduler`;
  const when = `${bestDay} ${TIMES[bestRow]}–${bestEnd}`;
  const shares: [string, string, string][] = [
@@ -191,13 +216,13 @@ export function SchedulerDemo() {
       <button type="button" aria-pressed={heat} onClick={() => setHeat(true)}>Group heatmap</button>
      </div>
      {heat
-      ? <div className="sxScale" aria-hidden="true"><span>0</span>{[0, 1, 2, 3].map(n => <i key={n} className={`sxH${n}`}/>)}<span>3 free</span></div>
+      ? <div className="sxScale" aria-hidden="true"><span>0</span>{[0, 1, 2, 3].map(n => <i key={n} className={`sxH${n}`}/>)}<span>3 free</span><i className="sxH1 sxMaybeMark"/><span>maybe</span></div>
       : <div className="sxModes" role="group" aria-label="Paint as">{MODES.map(([k, label]) => <button key={k} type="button" className={`m-${k}`} aria-pressed={mode === k} onClick={() => setMode(k)}><i/>{label}</button>)}</div>}
     </div>
 
     <div className="sxBest" aria-live="polite">
      <span className="sxBestIcon" aria-hidden="true"><svg viewBox="0 0 20 20">{icons.yes}</svg></span>
-     <div><strong key={best}>{bestDay} · {TIMES[bestRow]}–{bestEnd}</strong><p>Best time · {yes(best)} of 3 available{no(best) ? ` · ${no(best)} conflict${no(best) > 1 ? 's' : ''}` : ' · no conflicts'}</p></div>
+     <div><strong key={best}>{bestDay} · {TIMES[bestRow]}–{bestEnd}</strong><p>Best time · {yes(best)} of 3 available{maybe(best) ? ` · ${maybe(best)} maybe` : ''}</p></div>
      <button type="button" className="sxPrimary" onClick={exportIcs}>Add to calendar</button>
     </div>
 
@@ -207,8 +232,8 @@ export function SchedulerDemo() {
       <small>{t}</small>
       {DAYS.map((d, c) => { const i = r * 5 + c, mk = marks[i];
        return <button key={d} type="button" data-slot={i}
-        className={`sxCell ${heat ? `sxH${yes(i)}` : `m-${mk || 'empty'}`} ${i === best ? 'isBest' : ''} ${notes[i] ? 'sxNote' : ''}`}
-        aria-label={`${d} ${t}: ${heat ? `${yes(i)} of 3 available` : mk ? MODES.find(x => x[0] === mk)![1] : 'not set'}${notes[i] ? `, note: ${notes[i]}` : ''}`}
+        className={`sxCell ${heat ? `sxH${yes(i)}${maybe(i) ? ' sxMaybeMark' : ''}` : `m-${mk || 'empty'}`} ${i === best ? 'isBest' : ''} ${notes[i] ? 'sxNote' : ''}`}
+        aria-label={`${d} ${t}: ${heat ? `${yes(i)} of 3 available${maybe(i) ? `, ${maybe(i)} maybe` : ''}` : mk ? MODES.find(x => x[0] === mk)![1] : 'not set'}${notes[i] ? `, note: ${notes[i]}` : ''}`}
         title={notes[i] || undefined}
         onPointerDown={e => down(i, e)}
         onContextMenu={e => { e.preventDefault(); setNotes(n => { const x = {...n}; if (x[i]) delete x[i]; else x[i] = 'Class / hold'; return x; }); flash(notes[i] ? 'Note removed' : 'Note added'); }}
@@ -219,8 +244,18 @@ export function SchedulerDemo() {
     </div>
 
     <div className="sxFoot">
-     <span className="sxQuick">Quick fill{fills.map(f => <button key={f[0]} type="button" onClick={() => fill(f)}>{f[0]}</button>)}</span>
-     <span>{heat ? 'Darker means more people are free' : 'Drag to paint · right-click for a note'}</span>
+     <span className="sxQuick">
+      <button type="button" className={`sxCalSync ${synced ? 'isOn' : ''}`} aria-pressed={synced} onClick={connectCalendar}>
+       <span className="sxCalMarks" aria-hidden="true">
+        <img src="tool-logos/outlook.svg" alt="" width="17" height="17" loading="lazy" decoding="async"/>
+        <img src="tool-logos/google-calendar.svg" alt="" width="17" height="17" loading="lazy" decoding="async"/>
+       </span>
+       {synced ? 'Calendar connected' : 'Import from calendar'}
+      </button>
+      <span className="sxOr">or</span>
+      <b>Quick fill</b>{fills.map(f => <button key={f[0]} type="button" onClick={() => fill(f)}>{f[0]}</button>)}
+     </span>
+     <span>{heat ? 'Darker means more people are free · a corner marks a maybe' : synced ? 'A dot is a meeting from your calendar · drag to change anything' : 'Drag to paint · leave a slot blank if you can’t make it'}</span>
     </div>
    </div>
 

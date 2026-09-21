@@ -1,0 +1,237 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="400" viewBox="0 0 1280 400" role="img" aria-labelledby="t d">
+  <title id="t">AC Transit Line NL Transbay bus</title>
+  <desc id="d">Side view of an AC Transit Transbay coach in the green and white livery with passengers aboard, signed NL Transbay, on a transparent background.</desc>
+  <defs>
+    <clipPath id="bodyClip"><path d="M110 58h1026c32 0 58 26 58 58v170c0 11-9 20-20 20H110c-11 0-20-9-20-20V78c0-11 9-20 20-20Z"/></clipPath>
+    <clipPath id="p0"><rect x="124.0" y="92" width="107.6" height="96" rx="4"/></clipPath>
+    <clipPath id="p1"><rect x="243.6" y="92" width="107.6" height="96" rx="4"/></clipPath>
+    <clipPath id="p2"><rect x="363.2" y="92" width="107.6" height="96" rx="4"/></clipPath>
+    <clipPath id="p3"><rect x="482.9" y="92" width="107.6" height="96" rx="4"/></clipPath>
+    <clipPath id="p4"><rect x="602.5" y="92" width="107.6" height="96" rx="4"/></clipPath>
+    <clipPath id="p5"><rect x="722.1" y="92" width="107.6" height="96" rx="4"/></clipPath>
+    <clipPath id="p6"><rect x="841.8" y="92" width="107.6" height="96" rx="4"/></clipPath>
+    <clipPath id="p7"><rect x="961.4" y="92" width="107.6" height="96" rx="4"/></clipPath>
+    <linearGradient id="grn" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b7a5b"/>
+      <stop offset=".18" stop-color="#0a6e51"/>
+      <stop offset=".75" stop-color="#076347"/>
+      <stop offset="1" stop-color="#05503b"/>
+    </linearGradient>
+    <linearGradient id="wht" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset=".55" stop-color="#f4f7f6"/>
+      <stop offset="1" stop-color="#d7dedb"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cfe2e6" stop-opacity=".26"/>
+      <stop offset=".34" stop-color="#9fb4b8" stop-opacity=".04"/>
+      <stop offset="1" stop-color="#000000" stop-opacity=".46"/>
+    </linearGradient>
+    <linearGradient id="ws" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#18201e"/>
+      <stop offset=".5" stop-color="#2e3d3c"/>
+      <stop offset="1" stop-color="#8fa1a0"/>
+    </linearGradient>
+    <linearGradient id="topLit" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="botShade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000000" stop-opacity=".46"/>
+    </linearGradient>
+    <radialGradient id="rim" cx=".35" cy=".28" r=".85">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset=".45" stop-color="#ccd6d9"/>
+      <stop offset="1" stop-color="#6d7d84"/>
+    </radialGradient>
+    <radialGradient id="rim2" cx=".38" cy=".3" r=".8">
+      <stop offset="0" stop-color="#fdfefe"/>
+      <stop offset=".6" stop-color="#b9c5c9"/>
+      <stop offset="1" stop-color="#7c8c92"/>
+    </radialGradient>
+  </defs>
+
+  <!-- vehicle only: every pixel outside the body outline is transparent -->
+  <g stroke="#072219" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M110 58h1026c32 0 58 26 58 58v170c0 11-9 20-20 20H110c-11 0-20-9-20-20V78c0-11 9-20 20-20Z" fill="url(#grn)" stroke-width="6"/>
+
+    <g clip-path="url(#bodyClip)" stroke="none">
+      <rect x="90" y="58" width="1100" height="26" fill="url(#topLit)"/>
+      <rect x="90" y="206" width="1100" height="5" fill="#a6192e"/>
+      <rect x="90" y="211" width="1100" height="55" fill="url(#wht)"/>
+      <rect x="90" y="266" width="1100" height="40" fill="#05553e"/>
+      <rect x="90" y="284" width="1100" height="22" fill="url(#botShade)"/>
+      <rect x="90" y="269" width="36" height="37" fill="#28332f"/>
+      <rect x="1148" y="269" width="42" height="37" fill="#28332f"/>
+      <path d="M186 206v100" stroke="#000" stroke-width="2" opacity=".12"/>
+      <path d="M295 306a59 59 0 0 1 118 0z" fill="#0b1210"/>
+      <path d="M937 306a59 59 0 0 1 118 0z" fill="#0b1210"/>
+      <path d="M295 306a59 59 0 0 1 118 0" fill="none" stroke="#04150f" stroke-width="5"/>
+      <path d="M937 306a59 59 0 0 1 118 0" fill="none" stroke="#04150f" stroke-width="5"/>
+    </g>
+
+    <!-- side windows: interior, passengers, then glass -->
+    <g stroke="none">
+      <g clip-path="url(#p0)">
+        <rect x="124.0" y="92" width="107.6" height="96" fill="#262e2c"/>
+        <rect x="124.0" y="150" width="107.6" height="38" fill="#303b40"/>
+        <rect x="130.0" y="144" width="43.1" height="44" rx="6" fill="#404d55"/>
+        <rect x="182.1" y="144" width="43.1" height="44" rx="6" fill="#404d55"/>
+        <path d="M145.6 188c0-14 7-22 15-22s15 8 15 22z" fill="#0e1214" opacity=".95"/>
+        <circle cx="160.6" cy="136" r="10.5" fill="#111618" opacity=".95"/>
+        <rect x="124.0" y="92" width="107.6" height="96" fill="url(#sheen)"/>
+        <path d="M114.0 188L180.0 92h17.2L143.4 188z" fill="#ffffff" opacity=".075"/>
+      </g>
+      <rect x="124.0" y="92" width="107.6" height="96" rx="4" fill="none" stroke="#0f2b22" stroke-width="5"/>
+      <rect x="124.0" y="92" width="107.6" height="96" rx="4" fill="none" stroke="#7d8b85" stroke-width="2" opacity=".55"/>
+      <path d="M128.0 113h99.6" stroke="#93a09a" stroke-width="2.5" opacity=".5" fill="none"/>
+      <g clip-path="url(#p1)">
+        <rect x="243.6" y="92" width="107.6" height="96" fill="#262e2c"/>
+        <rect x="243.6" y="150" width="107.6" height="38" fill="#303b40"/>
+        <rect x="249.6" y="144" width="43.1" height="44" rx="6" fill="#404d55"/>
+        <rect x="301.7" y="144" width="43.1" height="44" rx="6" fill="#404d55"/>
+        <path d="M260.9 188c0-14 7-22 15-22s15 8 15 22z" fill="#0e1214" opacity=".95"/>
+        <circle cx="275.9" cy="136" r="10.5" fill="#111618" opacity=".95"/>
+        <path d="M301.8 188c0-14 7-22 15-22s15 8 15 22z" fill="#0e1214" opacity=".95"/>
+        <circle cx="316.8" cy="136" r="10.5" fill="#111618" opacity=".95"/>
+        <rect x="243.6" y="92" width="107.6" height="96" fill="url(#sheen)"/>
+        <path d="M233.6 188L299.6 92h17.2L263.0 188z" fill="#ffffff" opacity=".04"/>
+      </g>
+      <rect x="243.6" y="92" width="107.6" height="96" rx="4" fill="none" stroke="#0f2b22" stroke-width="5"/>
+      <rect x="243.6" y="92" width="107.6" height="96" rx="4" fill="none" stroke="#7d8b85" stroke-width="2" opacity=".55"/>
+      <path d="M247.6 113h99.6" stroke="#93a09a" stroke-width="2.5" opacity=".5" fill="none"/>
+      <g clip-path="url(#p2)">
+        <rect x="363.2" y="92" width="107.6" height="96" fill="#262e2c"/>
+        <rect x="363.2" y="150" width="107.6" height="38" fill="#303b40"/>
+        <rect x="369.2" y="144" width="43.1" height="44" rx="6" fill="#404d55"/>
+        <rect x="421.4" y="144" width="43.1" height="44" rx="6" fill="#404d55"/>
+        <rect x="363.2" y="92" width="107.6" height="96" fill="url(#sheen)"/>
+        <path d="M353.2 188L419.2 92h17.2L382.6 188z" fill="#ffffff" opacity=".065"/>
+      </g>
+      <rect x="363.2" y="92" width="107.6" height="96" rx="4" fill="none" stroke="#0f2b22" stroke-width="5"/>
+      <rect x="363.2" y="92" width="107.6" height="96" rx="4" fill="none" stroke="#7d8b85" stroke-width="2" opacity=".55"/>
+      <path d="M367.2 113h99.6" stroke="#93a09a" stroke-width="2.5" opacity=".5" fill="none"/>
+      <g clip-path="url(#p3)">
+        <rect x="482.9" y="92" width="107.6" height="96" fill="#262e2c"/>
+        <rect x="482.9" y="150" width="107.6" height="38" fill="#303b40"/>
+        <rect x="488.9" y="144" width="43.1" height="44" rx="6" fill="#404d55"/>
+        <rect x="541.0" y="144" width="43.1" height="44" rx="6" fill="#404d55"/>
+        <path d="M513.1 188c0-14 7-22 15-22s15 8 15 22z" fill="#0e1214" opacity=".95"/>
+        <circle cx="528.1" cy="136" r="10.5" fill="#111618" opacity=".95"/>
+        <rect x="482.9" y="92" width="107.6" height="96" fill="url(#sheen)"/>
+        <path d="M472.9 188L538.8 92h17.2L502.2 188z" fill="#ffffff" opacity=".03"/>
+      </g>
+      <rect x="482.9" y="92" width="107.6" height="96" rx="4" fill="none" stroke="#0f2b22" stroke-width="5"/>
+      <rect x="482.9" y="92" width="107.6" height="96" rx="4" fill="none" stroke="#7d8b85" stroke-width="2" opacity=".55"/>
+      <path d="M486.9 113h99.6" stroke="#93a09a" stroke-width="2.5" opacity=".5" fill="none"/>
+      <g clip-path="url(#p4)">
+        <rect x="602.5" y="92" width="107.6" height="96" fill="#262e2c"/>
+        <rect x="602.5" y="150" width="107.6" height="38" fill="#303b40"/>
+        <rect x="608.5" y="144" width="43.1" height="44" rx="6" fill="#404d55"/>
+        <rect x="660.6" y="144" width="43.1" height="44" rx="6" fill="#404d55"/>
+        <path d="M617.6 188c0-14 7-22 15-22s15 8 15 22z" fill="#0e1214" opacity=".95"/>
+        <circle cx="632.6" cy="136" r="10.5" fill="#111618" opacity=".95"/>
+        <path d="M658.5 188c0-14 7-22 15-22s15 8 15 22z" fill="#0e1214" opacity=".95"/>
+        <circle cx="673.5" cy="136" r="10.5" fill="#111618" opacity=".95"/>
+        <rect x="602.5" y="92" width="107.6" height="96" fill="url(#sheen)"/>
+        <path d="M592.5 188L658.5 92h17.2L621.9 188z" fill="#ffffff" opacity=".08"/>
+      </g>
+      <rect x="602.5" y="92" width="107.6" height="96" rx="4" fill="none" stroke="#0f2b22" stroke-width="5"/>
+      <rect x="602.5" y="92" width="107.6" height="96" rx="4" fill="none" stroke="#7d8b85" stroke-width="2" opacity=".55"/>
+      <path d="M606.5 113h99.6" stroke="#93a09a" stroke-width="2.5" opacity=".5" fill="none"/>
+      <g clip-path="url(#p5)">
+        <rect x="722.1" y="92" width="107.6" height="96" fill="#262e2c"/>
+        <rect x="722.1" y="150" width="107.6" height="38" fill="#303b40"/>
+        <rect x="728.1" y="144" width="43.1" height="44" rx="6" fill="#404d55"/>
+        <rect x="780.2" y="144" width="43.1" height="44" rx="6" fill="#404d55"/>
+        <rect x="722.1" y="92" width="107.6" height="96" fill="url(#sheen)"/>
+        <path d="M712.1 188L778.1 92h17.2L741.5 188z" fill="#ffffff" opacity=".045"/>
+      </g>
+      <rect x="722.1" y="92" width="107.6" height="96" rx="4" fill="none" stroke="#0f2b22" stroke-width="5"/>
+      <rect x="722.1" y="92" width="107.6" height="96" rx="4" fill="none" stroke="#7d8b85" stroke-width="2" opacity=".55"/>
+      <path d="M726.1 113h99.6" stroke="#93a09a" stroke-width="2.5" opacity=".5" fill="none"/>
+      <g clip-path="url(#p6)">
+        <rect x="841.8" y="92" width="107.6" height="96" fill="#262e2c"/>
+        <rect x="841.8" y="150" width="107.6" height="38" fill="#303b40"/>
+        <rect x="847.8" y="144" width="43.1" height="44" rx="6" fill="#404d55"/>
+        <rect x="899.9" y="144" width="43.1" height="44" rx="6" fill="#404d55"/>
+        <path d="M867.6 188c0-14 7-22 15-22s15 8 15 22z" fill="#0e1214" opacity=".95"/>
+        <circle cx="882.6" cy="136" r="10.5" fill="#111618" opacity=".95"/>
+        <rect x="841.8" y="92" width="107.6" height="96" fill="url(#sheen)"/>
+        <path d="M831.8 188L897.7 92h17.2L861.1 188z" fill="#ffffff" opacity=".055"/>
+      </g>
+      <rect x="841.8" y="92" width="107.6" height="96" rx="4" fill="none" stroke="#0f2b22" stroke-width="5"/>
+      <rect x="841.8" y="92" width="107.6" height="96" rx="4" fill="none" stroke="#7d8b85" stroke-width="2" opacity=".55"/>
+      <path d="M845.8 113h99.6" stroke="#93a09a" stroke-width="2.5" opacity=".5" fill="none"/>
+      <g clip-path="url(#p7)">
+        <rect x="961.4" y="92" width="107.6" height="96" fill="#262e2c"/>
+        <rect x="961.4" y="150" width="107.6" height="38" fill="#303b40"/>
+        <rect x="967.4" y="144" width="43.1" height="44" rx="6" fill="#404d55"/>
+        <rect x="1019.5" y="144" width="43.1" height="44" rx="6" fill="#404d55"/>
+        <path d="M981.9 188c0-14 7-22 15-22s15 8 15 22z" fill="#0e1214" opacity=".95"/>
+        <circle cx="996.9" cy="136" r="10.5" fill="#111618" opacity=".95"/>
+        <path d="M1021.7 188c0-14 7-22 15-22s15 8 15 22z" fill="#0e1214" opacity=".95"/>
+        <circle cx="1036.7" cy="136" r="10.5" fill="#111618" opacity=".95"/>
+        <rect x="961.4" y="92" width="107.6" height="96" fill="url(#sheen)"/>
+        <path d="M951.4 188L1017.3 92h17.2L980.7 188z" fill="#ffffff" opacity=".035"/>
+      </g>
+      <rect x="961.4" y="92" width="107.6" height="96" rx="4" fill="none" stroke="#0f2b22" stroke-width="5"/>
+      <rect x="961.4" y="92" width="107.6" height="96" rx="4" fill="none" stroke="#7d8b85" stroke-width="2" opacity=".55"/>
+      <path d="M965.4 113h99.6" stroke="#93a09a" stroke-width="2.5" opacity=".5" fill="none"/>
+    </g>
+
+    <!-- front door and raked windshield -->
+    <rect x="1077" y="92" width="71" height="174" rx="3" fill="#232b29" stroke="#eef3f1" stroke-width="4"/>
+    <rect x="1082" y="97" width="61" height="102" fill="url(#sheen)" stroke="none"/>
+    <path d="M1112 94v170M1079 164h67" stroke="#8698a0" stroke-width="2.5" fill="none" opacity=".85"/>
+    <path d="M1154 92h14c24 0 44 20 44 44v52h-58z" fill="url(#ws)" stroke="#eef3f1" stroke-width="4"/>
+
+    <!-- letterboard branding -->
+    <path d="M182 78c8-6 18-7 26-3-6 5-17 7-26 3Z" fill="#dff0e6" stroke="none"/>
+    <text x="216" y="84" fill="#ffffff" stroke="none" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" letter-spacing="1">6101</text>
+    <text x="266" y="84" fill="#e8f4ee" stroke="none" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="400" letter-spacing="2.4">BUILT LOCALLY</text>
+    <text x="676" y="84" fill="#ffffff" stroke="none" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="400" letter-spacing="2.6">AC TRANSIT TRANSBAY</text>
+
+    <!-- amber side destination sign -->
+    <rect x="940" y="60" width="132" height="30" rx="3" fill="#0b0f10" stroke="#0b0f10" stroke-width="2"/>
+    <text x="950" y="82" fill="#f2b22e" stroke="none" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" letter-spacing=".8">NL</text>
+    <text x="978" y="82" fill="#f2b22e" stroke="none" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing=".8">TRANSBAY</text>
+
+    <!-- AC Transit mark -->
+    <g stroke="none">
+      <path d="M798 250c14 3 30 3 47-1 30-7 60-22 87-45-22 26-51 45-84 55-18 5-35 6-50-2 0-3 0-5 0-7Z" fill="#0a6a4d"/>
+      <text x="828" y="251" fill="#0a6a4d" font-family="Arial, Helvetica, sans-serif" font-style="italic" font-size="32" font-weight="700" letter-spacing="-1.5">AC</text>
+      <text x="880" y="254" fill="#0a6a4d" font-family="Arial, Helvetica, sans-serif" font-style="italic" font-size="12.5" font-weight="700" letter-spacing=".3">TRANSIT</text>
+    </g>
+
+    <!-- marker lamps, vents, mirror -->
+    <g stroke="none">
+      <rect x="252" y="228" width="24" height="10" rx="3" fill="#e87722"/>
+      <rect x="690" y="228" width="24" height="10" rx="3" fill="#e87722"/>
+      <rect x="1096" y="228" width="26" height="10" rx="3" fill="#e87722"/>
+      <rect x="112" y="226" width="20" height="10" rx="3" fill="#c1332f"/>
+    </g>
+    <path d="M112 132h22M112 146h22" stroke="#bcd8cb" stroke-width="4"/>
+    <path d="M1188 112h22" fill="none" stroke="#1d2b27" stroke-width="6"/>
+    <rect x="1204" y="106" width="16" height="54" rx="5" fill="#222e2b" stroke="#0e1a17" stroke-width="3"/>
+
+    <!-- wheels -->
+    <g>
+      <circle cx="354" cy="255" r="51" fill="#1a2225" stroke="#0c1315" stroke-width="6"/>
+      <circle cx="354" cy="255" r="45" fill="none" stroke="#2b3538" stroke-width="5"/>
+      <circle cx="354" cy="255" r="30" fill="url(#rim)" stroke="#54656c" stroke-width="3"/>
+      <circle cx="354" cy="255" r="22" fill="url(#rim2)" stroke="#8f9ea4" stroke-width="1.5"/>
+      <circle cx="354.0" cy="241.5" r="2.8" fill="#8d9ba1"/><circle cx="366.8" cy="250.8" r="2.8" fill="#8d9ba1"/><circle cx="361.9" cy="265.9" r="2.8" fill="#8d9ba1"/><circle cx="346.1" cy="265.9" r="2.8" fill="#8d9ba1"/><circle cx="341.2" cy="250.8" r="2.8" fill="#8d9ba1"/>
+      <circle cx="354" cy="255" r="7.5" fill="#46565a" stroke="#dfe7e7" stroke-width="2.5"/>
+      <circle cx="996" cy="255" r="51" fill="#1a2225" stroke="#0c1315" stroke-width="6"/>
+      <circle cx="996" cy="255" r="45" fill="none" stroke="#2b3538" stroke-width="5"/>
+      <circle cx="996" cy="255" r="30" fill="url(#rim)" stroke="#54656c" stroke-width="3"/>
+      <circle cx="996" cy="255" r="22" fill="url(#rim2)" stroke="#8f9ea4" stroke-width="1.5"/>
+      <circle cx="996.0" cy="241.5" r="2.8" fill="#8d9ba1"/><circle cx="1008.8" cy="250.8" r="2.8" fill="#8d9ba1"/><circle cx="1003.9" cy="265.9" r="2.8" fill="#8d9ba1"/><circle cx="988.1" cy="265.9" r="2.8" fill="#8d9ba1"/><circle cx="983.2" cy="250.8" r="2.8" fill="#8d9ba1"/>
+      <circle cx="996" cy="255" r="7.5" fill="#46565a" stroke="#dfe7e7" stroke-width="2.5"/>
+    </g>
+
+    <path d="M110 58h1026c32 0 58 26 58 58v170c0 11-9 20-20 20H110c-11 0-20-9-20-20V78c0-11 9-20 20-20Z" fill="none" stroke-width="6"/>
+  </g>
+</svg>

@@ -141,11 +141,11 @@ body{font-size:18px!important}
 .homePage>.auraField .bloom2{animation-duration:22s!important}.homePage>.auraField .bloom3{animation-duration:26s!important}.homePage>.auraField .bloom4{animation-duration:20s!important}.homePage>.auraField .bloom5{animation-duration:24s!important}.homePage>.auraField .bloom6{animation-duration:28s!important}.homePage>.auraField .bloom7{animation-duration:21s!important}
 @media (prefers-reduced-motion:reduce){.homePage>.auraField .auraBloom{animation:none!important}}
 
-/* Type: Poppins headings, PT Serif for longer paragraphs, Inter for nav, labels and short UI text */
-.homePage h1{font-family:Poppins,sans-serif!important;font-weight:500!important;letter-spacing:-.035em!important;white-space:nowrap;max-width:none!important;font-size:clamp(28px,7.4vw,96px)!important}
-.homePage h2{font-family:Poppins,sans-serif!important;font-weight:400!important;letter-spacing:-.03em!important}
-.homePage h3{font-family:Poppins,sans-serif!important;font-weight:600!important;letter-spacing:-.015em!important}
-.homePage .projectCardBody>p,.homePage .expStory p,.homePage .smallBuild p,.homePage .aboutCopy p{font-family:"PT Serif",Georgia,serif!important}
+/* Type: the tokens in case-typography.css — Poppins titles, PT Serif prose, Inter for UI. */
+.homePage h1{font-family:var(--font-display)!important;font-weight:500!important;letter-spacing:-.035em!important;white-space:nowrap;max-width:none!important;font-size:clamp(28px,7.4vw,96px)!important}
+.homePage h2{font-family:var(--font-display)!important;font-weight:400!important;letter-spacing:-.03em!important}
+.homePage h3{font-family:var(--font-display)!important;font-weight:600!important;letter-spacing:-.015em!important}
+.homePage .projectCardBody>p,.homePage .expStory p,.homePage .smallBuild p,.homePage .aboutCopy p{font-family:var(--font-serif)!important}
 /* Warm espresso ink to match the peach/coral aura */
 .homePage{color:#22160F!important}
 .homePage h1,.homePage h2,.homePage h3{color:#22160F!important}
@@ -327,4 +327,45 @@ body{font-size:18px!important}
  font-size:14px!important;line-height:1.5!important;color:#5a4a42!important;
  margin:7px 0 0!important;display:-webkit-box!important;overflow:hidden!important;
  -webkit-box-orient:vertical!important;-webkit-line-clamp:3!important
+}
+
+/* Homepage overview: both six-project sets read as complete two-row stories
+   in a standard desktop viewport. */
+@media(min-width:1051px){
+ .homePage .v28Projects{padding-top:46px!important;padding-bottom:58px!important}
+ .homePage :is(.v28Projects,.v28Experience,.educationSection,.v28Fun)>.sectionTitle{width:calc(100% - 64px)!important;margin-inline:auto!important;margin-bottom:28px!important}
+ .homePage :is(.v28Projects,.v28Experience,.educationSection,.v28Fun)>.sectionTitle h2,
+ .homePage .aboutCopy h2{font-size:clamp(42px,4.5vw,58px)!important;line-height:1.02!important;letter-spacing:-.045em!important;font-weight:500!important}
+ .homePage .v28Experience .experienceAccordion,.homePage .educationSection .educationRows{width:calc(100% - 36px)!important;margin-inline:auto!important}
+ .homePage .v28Experience .experienceSummary>div:nth-child(2){width:100%!important;max-width:none!important}
+ .homePage .v28Experience .experienceSummary p{width:100%!important;max-width:none!important;text-align:left!important}
+ .homePage .balancedProjectGrid{display:grid!important;width:calc(100% - 64px)!important;margin-inline:auto!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;column-gap:28px!important;row-gap:36px!important}
+ .homePage .balancedProjectGrid .projectCardReveal,.homePage .balancedProjectGrid .projectCardReveal.featured{grid-column:auto!important}
+ .homePage .balancedProjectGrid .projectCardAction,.homePage .balancedProjectGrid .projectCardReveal.featured .projectCardAction{display:block!important}
+ .homePage .balancedProjectGrid .projectCardMedia,.homePage .balancedProjectGrid .projectCardReveal.featured .projectCardMedia{width:100%!important;height:auto!important;min-height:0!important;aspect-ratio:1.98/1!important}
+ .homePage .balancedProjectGrid .projectCardBody,.homePage .balancedProjectGrid .projectCardReveal.featured .projectCardBody{display:block!important;padding:13px 2px 0!important}
+ .homePage .balancedProjectGrid .projectCardTop{margin-bottom:2px!important}
+ .homePage .balancedProjectGrid .projectCardTop span{font-size:11px!important;min-height:14px!important}
+ .homePage .balancedProjectGrid .projectCard h3{margin:5px 0 8px!important;font-size:clamp(24px,2.1vw,30px)!important;line-height:1.02!important}
+ .homePage .balancedProjectGrid .projectCardBody>p{display:block!important;overflow:visible!important;margin:0!important;font-size:14px!important;line-height:1.5!important;max-width:none!important}
+ .homePage .balancedProjectGrid .projectTextLink{display:none!important}
+
+ .homePage .v28Fun{padding-top:46px!important;padding-bottom:64px!important}
+ .homePage .v28Fun .funBuildGrid{width:calc(100% - 64px)!important;margin-inline:auto!important;column-gap:28px!important;row-gap:38px!important}
+ .homePage .v28Fun .funBuildGrid>.moreBuildCard:nth-child(-n+2){width:100%!important;max-width:500px!important;padding-inline:18px!important}
+ .homePage .v28Fun .funBuildGrid>.moreBuildCard:nth-child(1){justify-self:end!important}
+ .homePage .v28Fun .funBuildGrid>.moreBuildCard:nth-child(2){justify-self:start!important}
+ .homePage .v28Fun .funBuildGrid>.moreBuildCard:nth-child(-n+2) .moreBuildVisual{aspect-ratio:16/9!important}
+ .homePage .v28Fun .funBuildGrid>.moreBuildCard:nth-child(n+3) .moreBuildVisual,
+ .homePage .v28Fun .funBuildGrid>.smallBuild .techVisual{aspect-ratio:16/9!important}
+ .homePage .v28Fun .moreBuildCopy{padding:13px 2px 0!important}
+ .homePage .v28Fun .funBuildGrid .moreBuildCopy>span:first-child{font-size:11px!important;min-height:14px!important}
+ .homePage .v28Fun .funBuildGrid .moreBuildCopy h3{margin:5px 0 7px!important;font-size:21px!important;line-height:1.05!important}
+ .homePage .v28Fun .funBuildGrid .moreBuildBlurb,
+ .homePage .v28Fun .funBuildGrid>.smallBuild p{display:block!important;overflow:visible!important;margin:6px 0 0!important;font-size:13px!important;line-height:1.48!important;-webkit-line-clamp:unset!important}
+ .homePage .balancedProjectGrid .projectCardBody>p,
+ .homePage .v28Fun .funBuildGrid .moreBuildBlurb,
+ .homePage .v28Fun .funBuildGrid>.smallBuild p{font-family:var(--font-serif)!important;font-weight:400!important}
+ .homePage .v28Fun .funBuildGrid .projectTextLink{display:none!important}
+ .homePage .v28Fun .funBuildGrid>.smallBuild h3{margin:9px 0 3px!important;font-size:18px!important;line-height:1.08!important}
 }

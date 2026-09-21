@@ -4,6 +4,7 @@ import './styles.css';
 import './estee.css';
 import EsteeCompact from './EsteeCompact';
 import FCVFCase from './FCVFCase';
+import { SurveyDemo } from './FCVFResearch';
 import { KohlerAssembly, KohlerBoxOpen, KohlerDelivery, KohlerExceptions, KohlerOrderHold, KohlerPrinciples, KohlerRoles } from './KohlerVisuals';
 import { AccentureBoundary, AccentureEvidenceFunnel, AccentureStagger, AccentureToolRelay } from './AccentureVisuals';
 import AboutFilmCamera from './AboutFilmCamera';
@@ -25,6 +26,7 @@ import './case-auras.css';
 import './case-typography.css';
 import CommuteBARTStory from './CommuteBARTStory';
 import CommuteCase from './CommuteCase';
+import { CommutePhoneDemo, useMorning } from './CommuteSurfaces';
 import { CaseAnswer, CausalChain, CountUp, DecisionMoment, Tradeoff } from './CaseDecision';
 import { CarBand } from './CarArt';
 import './case-hero.css';
@@ -102,15 +104,15 @@ const projects = [
     id:'commute',
     title:'Commute',
     company:'Independent app · iOS',
-    summary:'Works backward from where I need to be to decide when I should wake up, when I should leave, and which Bay Area route is actually worth taking today. It replaced the four apps I was checking every morning, and I still use it every weekday.',
-    blurb:'Works backward from where I need to be to when I need to get up. Replaced the four apps I checked every morning.',
+    summary:'Personal iOS app that learns my routine and simulates each reachable departure to pick the latest wake time that guarantees arrival on time. Built and validated across 10 weeks.',
+    blurb:'Learns my routine, simulates 1,000 mornings per departure, and chooses the latest wake time that still clears the arrival target.',
     media:'commute'
   },
   {
     id:'fcvf',
     title:'Customer Value Framework',
     company:'Ford Motor Company',
-    preview:'Turned an Excel-based customer-value assessment into a web app, then used four user interviews to raise feedback volume 25%.',
+    preview:'Moved a customer-value assessment from Excel to the web, then used four interviews to raise feedback volume 25%.',
     summary:'Turned an Excel-based customer-value assessment into a web application for Ford teams, then used four user interviews to change the interaction model, not just the interface. Removing the live score and paginating the assessment raised feedback volume 25%.',
     media:'fcvf'
   },
@@ -118,7 +120,7 @@ const projects = [
     id:'accenture',
     title:'AI Lab GTM Enablement',
     company:'Accenture · Frontier AI lab',
-    preview:'Go-to-market enablement for a frontier AI lab: 21 live requests, a 10-tab automation contract, and an 8x usage gap between teams.',
+    preview:'Supported 21 live AI-lab requests and turned repeated judgment calls into a 10-tab automation contract.',
     summary:'Go-to-market enablement for a frontier AI lab: I supported 21 live requests matching trainers to customer engagements, and wrote the judgment calls being remade by hand into a 10-tab automation contract. One match passed every automated check and still landed at 10:30 PM the trainer’s time, which is why the automation stops at a human gate.',
     media:'accenture'
   },
@@ -126,7 +128,7 @@ const projects = [
     id:'kohler',
     title:'Ship Anywhere',
     company:'Kohler Co. · MSU CSE 498',
-    preview:'An export-preparation assistant that cut processing time 42% and took first-pass document accuracy from 71% to 94%.',
+    preview:'Built an export assistant that cut processing time 42% and raised first-pass accuracy from 71% to 94%.',
     summary:'Designed and built an export-preparation assistant that uses an order’s SKU and destination to identify the documents, checks, and review steps needed before shipment. Delivered to Kohler with 42% less processing time and first-pass document accuracy up from 71% to 94%.',
     media:'kohler'
   },
@@ -134,15 +136,15 @@ const projects = [
     id:'scheduler',
     title:'Group Scheduling App',
     company:'Live web product · CSE 477',
-    summary:'A deployed campus scheduling product for real group use that keeps Available, Maybe, and Unavailable as three separate answers, because seven student interviews all landed on the same complaint: tentative kept getting flattened into yes or no. It recommends the best time and carries that choice through to a venue vote and a calendar event.',
-    blurb:'A deployed scheduling product that keeps “maybe” as its own answer, then carries the winning time into a venue vote and calendar event.',
+    summary:'The assignment was one line: build When2meet. I treated a clone as the floor, not the finish, because seven student interviews all landed on the same complaint: the grid stops working right where the decision starts. This version keeps “maybe” as its own answer, ranks the times itself instead of leaving a heatmap to be read, and carries the winning slot into a venue poll, a chat, and a calendar event without leaving the window. Two study groups ran a semester of meetings on it.',
+    blurb:'Keeps “maybe”, ranks the best time, and carries the choice into a venue poll, chat, and calendar event.',
     media:'scheduler'
   },
   {
     id:'finsimple',
     title:'Previous Estimates',
     company:'Ford Credit · FinSimple',
-    preview:'Returning customers lost estimates they had built. I owned the feature that brought them back, with 6% fewer write failures per estimate.',
+    preview:'Brought saved estimates back for returning customers, with 6% fewer write failures per estimate.',
     summary:'Returning Ford Credit customers had no way back to a vehicle estimate they’d already built, so they started over. I owned Previous Estimates from requirements to production, integrating Salesforce APIs with Adobe Experience Manager, and it shipped into the live customer flow: 6% fewer Salesforce write failures per submitted estimate, and 15% less calendar time per story than the team’s prior average.',
     media:'finsimple'
   },
@@ -150,7 +152,7 @@ const projects = [
     id:'marketExpansion',
     title:'Market Expansion Scorecard',
     company:'Consumer services client · Spectrum Consulting Group',
-    preview:'A weighted scorecard that let a franchise client compare three markets on the same four criteria, and rerun it on any market.',
+    preview:'Built a reusable scorecard to compare three markets on the same four criteria.',
     summary:'A consumer services client wanted a new franchise location and had no shared way to compare markets. I built the weighted scorecard and rubric that scored three of them against the same four criteria, and the client kept it as something it can rerun on any market.',
     media:'marketExpansion'
   },
@@ -166,15 +168,15 @@ const projects = [
     id:'estee',
     title:'Double Wear Foundation',
     company:'Estée Lauder × Kode With Klossy',
-    preview:'A Double Wear site that answers “will this work for me?” before the shopper buys. Top 5 in the Kode With Klossy × Estée Lauder challenge.',
-    summary:'Designed and built a Double Wear site that answers the shopper’s real question, “will this work for me?”, before handing them off to retailers to buy. It finished top 5 in the Kode With Klossy × Estée Lauder challenge, and I presented the concept to Estée Lauder C-suite leadership.',
+    preview:'Turned a promotional brief into a product decision tool. Top 5 in the Estée Lauder challenge.',
+    summary:'The brief was a promotional website for Double Wear. Every brand page I looked at — Estée Lauder’s own, Sephora, Ulta — leads with the product shot and leaves fit to the shopper, so I built the promotion as a decision: answer “will this work for me?” first, then hand off to eight retailers to buy. It finished top 5 in the Kode With Klossy × Estée Lauder challenge, and I presented the concept to Estée Lauder C-suite leadership.',
     media:'estee'
   },
   {
     id:'bookclub',
     title:'Bookclub',
     company:'Independent product · live web app',
-    summary:'My reading group was running everything through one loud group chat. I built and shipped a private book-club app for choosing the next book, tracking who’s how far in, discussing without spoilers, and planning meetings, and the club uses it now.',
+    summary:'Choosing the next book, tracking who’s how far in, discussing without spoilers, and planning meetings were scattered across apps for my reading group. I built and shipped a private book-club app that keeps all of it in one place, and the club uses it now.',
     blurb:'A private app for my reading group: pick the book, track progress, talk without spoilers. Live, and in use.',
     media:'bookclub'
   }
@@ -196,48 +198,6 @@ function PhotoLaptopMockup({src,alt,scene='front'}){
 }
 function FCVFVisual(){
   return <PhotoLaptopMockup src="project-media/ford-after.webp" alt="Ford Customer Value Framework web application" scene="front"/>
-}
-function FinSimpleVisual(){
-  return <PhotoLaptopMockup src="project-media/finsimple-live.png" alt="FinSimple Previous Estimates experience" scene="overhead"/>
-}
-
-const days=['Mon','Tue','Wed','Thu','Fri'];
-const times=['9:00','9:30','10:00','10:30','11:00','11:30','12:00'];
-const initialLevels=[0,1,2,0,1,1,2,3,1,0,0,1,2,3,2,1,0,1,2,2,0,0,1,2,3,2,1,0,1,1,2,0,0,1,2];
-
-function SchedulerPreview(){
-  const overlap=[1,2,3,1,0,2,3,3,2,1,1,2,3,2,1,0,1,2,3,2,1,2,2,3,1];
-  return <div className="schedulerPreview">
-    <div className="previewBar"><div><strong>Design Sync</strong><span>3 participants · Sep 15-19</span></div><span className="liveDot">Live</span></div>
-    <div className="previewModes" aria-label="Availability states"><span className="modeAvailable">Available</span><span className="modeMaybe">Maybe</span><span className="modeUnavailable">Unavailable</span></div>
-    <div className="previewTabs"><span>Group availability</span><strong>Best time · Tue 10:30</strong></div>
-    <div className="previewCalendarHead"><span></span>{days.map(d=><span key={d}>{d}</span>)}</div>
-    <div className="previewCalendar">{times.slice(0,5).map((t,r)=><React.Fragment key={t}><span>{t}</span>{days.map((d,c)=><i key={d} className={`overlap overlap-${overlap[r*5+c]} ${r===3&&c===1?'bestCell':''}`}/>)}</React.Fragment>)}</div>
-    <div className="previewFooter"><div className="previewLegend"><span><i className="legendLow"/>Fewer available</span><span><i className="legendHigh"/>Best overlap</span></div><span className="venueHint">Venue vote · Minskoff Pavilion</span></div>
-  </div>
-}
-function MiniScheduler(){
-  const [view,setView]=useState('mine');
-  const [mode,setMode]=useState('available');
-  const [cells,setCells]=useState(()=>initialLevels.map((n,i)=>({
-    status:n===1?'available':n===2?'maybe':n===3?'unavailable':'',
-    available:[1,2,3,0,2][i%5]
-  })));
-  const quickFill=(type)=>setCells(prev=>prev.map((cell,i)=>{
-    const row=Math.floor(i/5);
-    if(type==='all') return {...cell,status:'available'};
-    if(type==='evenings') return {...cell,status:row>=5?'available':''};
-    if(type==='clear') return {...cell,status:''};
-    return {...cell,status:row<=5?'available':''};
-  }));
-  return <div className="miniScheduler">
-    <div className="miniEventHeader"><div><strong>Design Sync</strong><span>Sep 15-19 · Minskoff Pavilion</span></div><span>3 participants</span></div>
-    <div className="miniQuick"><span>Quick fill</span><button onClick={()=>quickFill('all')}>Free all</button><button onClick={()=>quickFill('weekdays')}>Weekdays 9-5</button><button onClick={()=>quickFill('evenings')}>Evenings</button></div>
-    <div className="miniView"><div><button className={view==='mine'?'active':''} onClick={()=>setView('mine')}>My Availability</button><button className={view==='heatmap'?'active':''} onClick={()=>setView('heatmap')}>Group Heatmap</button></div>{view==='mine'&&<div className="miniModes">{['available','maybe','unavailable'].map(m=><button key={m} className={mode===m?'active':''} onClick={()=>setMode(m)}>{m}</button>)}</div>}</div>
-    <div className="calendarHead"><span></span>{days.map(d=><span key={d}>{d}</span>)}</div>
-    <div className="calendarGrid">{times.map((t,r)=><React.Fragment key={t}><span className="timeLabel">{t}</span>{days.map((d,c)=>{const i=r*5+c;const cell=cells[i];const cls=view==='heatmap'?`heat heat-${Math.min(3,cell.available)}`:`status-${cell.status||'empty'}`;return <button key={d} aria-label={`${d} ${t}`} className={`slot ${cls}`} onClick={()=>view==='mine'&&setCells(a=>a.map((x,j)=>j===i?{...x,status:x.status===mode?'':mode}:x))}/>})}</React.Fragment>)}</div>
-    <div className="miniFooter"><span>Best time: Tue 10:30</span><span>Venue voting · Event chat · Notes</span></div>
-  </div>
 }
 function MiniChat(){
   const [messages,setMessages]=useState([
@@ -645,7 +605,16 @@ const toolLogoMap={
   docker:{name:'Docker',mark:'DK',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/docker.svg','https://cdn.simpleicons.org/docker/2496ED']},
   python:{name:'Python',mark:'PY',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/python.svg','https://cdn.simpleicons.org/python/3776AB']},
   swift:{name:'Swift',mark:'Swift',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/swift.svg','https://cdn.simpleicons.org/swift/F05138']},
-  appleplatforms:{name:'Apple frameworks: SwiftUI, HealthKit, Core Location, MapKit, EventKit, WeatherKit, AlarmKit',mark:'Apple',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/apple.svg']},
+  swiftui:{name:'SwiftUI',mark:'Swift',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/swift.svg']},
+  swiftdata:{name:'SwiftData',mark:'Swift',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/swift.svg']},
+  activitykit:{name:'ActivityKit',mark:'Activity',urls:['tool-logos/activitykit.svg']},
+  widgetkit:{name:'WidgetKit',mark:'Widget',urls:['tool-logos/widgetkit.svg']},
+  eventkit:{name:'EventKit',mark:'Event',urls:['tool-logos/eventkit.svg']},
+  healthkit:{name:'HealthKit',mark:'Health',urls:['tool-logos/healthkit.svg']},
+  corelocation:{name:'Core Location',mark:'Location',urls:['tool-logos/corelocation.svg']},
+  weatherkit:{name:'WeatherKit',mark:'Weather',urls:['tool-logos/weatherkit-monochrome.svg']},
+  notifications:{name:'UserNotifications',mark:'Notifications',urls:['tool-logos/notifications.svg']},
+  alarmkit:{name:'AlarmKit',mark:'Alarm',urls:['tool-logos/alarmkit.svg']},
   gtfs:{name:'GTFS-Realtime / 511 transit data',mark:'511',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/google.svg']},
   googlemaps:{name:'Google Maps Platform / Routes',mark:'Maps',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/googlemaps.svg','https://cdn.simpleicons.org/googlemaps/4285F4']},
   gmail:{name:'Gmail integration',mark:'Gmail',urls:['https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/gmail.svg','https://cdn.simpleicons.org/gmail/EA4335']},
@@ -671,7 +640,7 @@ const toolSets={
   scheduler:['python','flask','mysql','socketio','html','css','javascript','docker','googlecloud','github'],
   chat:['javascript','html','css','socketio','github'],
   estee:['html','css','javascript','figma','github'],
-  commute:['swift','appleplatforms','googlemaps','gtfs','figma','react','typescript','vite','github'],
+  commute:['swift','swiftui','swiftdata','activitykit','widgetkit','eventkit','healthkit','corelocation','weatherkit','notifications','alarmkit','googlemaps','gtfs','python','typescript','node','figma','github'],
   bookclub:['react','typescript','vite','figma','cloudflarepages','cloudflare','d1','r2','googlecalendar','nyt','googlebooks','openlibrary','openai','googlevision','github'],
   marketExpansion:['excel','powerpoint']
 };
@@ -734,56 +703,57 @@ function useCaseReveal(id:string){
    owned in the "What I owned" row. */
 const caseAnswers={
   commute:{
-  problem:'I had two plausible ways to reach the office by 9:00: a direct 35-minute bus that comes every 30 minutes and can be early, late, or missing; or BART, with a 19-minute walk to the station, an 11-minute ride, and a 7-minute walk to the office.',
-  owned:'I defined the product, designed the recommendation model, and built and shipped it myself. I still use it every weekday.',
-  call:'Choose the route most likely to get me there—and set the wake-up time for it.',
+  problem:'Google Maps could plan a trip, but it could not tell me when to wake up or keep that answer current as traffic and transit changed. The direct bus was faster on paper; BART was often safer because another train came every five to six minutes.',
+  owned:'I defined the product, built the SwiftUI app and monitoring service, designed the prediction model, and tested it across 40 to 50 weekday mornings.',
+  call:'Pick the latest wake-up time that still gets me there on time on a bad morning.',
   callHref:'#cm-decide',
-  evidence:'BART comes every 5–6 minutes, so a missed train is recoverable. Missing a bus that comes every 30 minutes can cost the morning. The model evaluates the next departure, walking time, live disruptions, and each route’s arrival range before I leave home.',
-  result:'Built for myself and used every weekday. It selects the plan, leave time, and wake-up time without me doing the research; I can choose whether alarm changes happen automatically or ask first.'
+  evidence:'The model samples 1,000 possible mornings from my routine history and live walking, waiting, traffic, and transit ranges. It rejects departures that risk missing 9:00 and recalculates when live conditions change.',
+  result:'Used every weekday for 10 weeks. It replaced repeated map checks with one wake time, one route, and a notification only when the plan needed to change.'
  },
  marketExpansion:{
   problem:'Graze Craze wanted a new franchise location and stronger Michigan branches, with no shared way to compare candidate markets.',
   owned:'I built the interactive Excel scorecard and scoring rubric. The market research and branch-growth recommendations were developed with the consulting team.',
-  call:'One point is not a decision.',
+  call:'Recommend both top markets, because one point apart is a tie.',
   callHref:'#gz-analyze',
   evidence:'Four weighted criteria across three markets: Northville 123, Ann Arbor 122, Traverse City 101.',
   result:'The team pursued properties in both top markets instead of ranking them, and the client kept a scorecard it can rerun on any market.'
  },
  bookclub:{
-  problem:'My reading group ran everything through one noisy group chat: picking the next book, reading at different speeds, and discussing it.',
+  problem:'My reading group had nowhere shared to pick the next book, see who was how far in, or talk about it without spoilers.',
   owned:'I defined the product, designed the experience, built the frontend and backend, and deployed it for my reading group.',
-  call:'Rank the nominees instead of running a poll.',
+  call:'Pick the book, see everyone’s progress, and keep notes and questions in one app.',
   callHref:'#bc-build',
-  evidence:'The live app is now in use with my club. Next: five user interviews and moderated usability tests to identify what to improve before building more.',
+  evidence:'In a chat thread, the club’s decisions and questions scroll away, and nobody can see who is actually keeping up. A club only meets if that state stays visible in one place. The live app is now in use with my club; next are five user interviews and moderated usability tests before I build more.',
   result:'Taken from concept to launch as a full-stack React and Cloudflare product, now used by an invite-only club of active readers.'
  },
  scheduler:{
-  problem:'Tentative availability got flattened to yes or no, and even after finding overlap, the group still picked a time, place, and next step somewhere else.',
+  problem:'The CSE 477 brief was one line: build When2meet. Cloning it would have met the assignment and shipped a grid that flattens tentative availability to yes or no, then leaves the group to pick a time, place, and next step somewhere else.',
   owned:'I led product definition, research with seven students, interaction design, full-stack development, and deployment.',
-  call:'Keep “maybe” as its own answer.',
+  call:'Let people mark “maybe,” not just yes or no.',
   callHref:'#sc-research',
   evidence:'Seven one-on-one student interviews with live task walkthroughs.',
-  result:'A deployed product carries one group record from availability through to a recommended time, venue vote, and calendar event.'
+  result:'Two study groups ran their meetings on it for a semester, carrying one group record from availability through to a recommended time, venue vote, and calendar event.'
  },
  chat:{
   problem:'The CSE 477 brief was open-ended: build a real-time chat room with messages and join and leave events. A generic chat app would meet it, but there would be no clear bar for “good.”',
   owned:'I chose the direction, defined the scope, and built it solo in HTML, CSS, JavaScript, and Socket.IO.',
-  call:'Recreate iMessage, and treat typing and reactions as state, not messages.',
+  call:'Typing and reactions are temporary state, not messages in the history.',
   evidence:'Everyone who would use it already knew iMessage, so their expectations became my spec: any detail that felt off would be noticed immediately.',
   result:'Typing expires instead of becoming chat history, and a Tapback updates the existing message rather than adding a second one.'
  },
  estee:{
-  problem:'Online, there is no tester. Shoppers have to judge finish, coverage, and shade from a screen, and most brand pages answer with a catalog instead of helping them decide.',
-  owned:'In the Kode With Klossy × Estée Lauder challenge, I shaped the product concept, designed the UX/UI, and built the frontend.',
-  call:'Help the shopper decide. Let retailers handle the sale.',
-  evidence:'The challenge brief, how people actually shop for foundation (try, compare, then buy where they already shop), and Estée Lauder’s own brand system.',
-  result:'Presented the concept to Estée Lauder C-suite leadership.',
+  problem:'The brief was to build a promotional website for Double Wear. A promotional page shows the product; online there is no tester, so the shopper is still left to judge finish, coverage, and shade from a picture and decide alone.',
+  owned:'A one-week solo build for the Kode With Klossy × Estée Lauder challenge: I shaped the product concept, designed the UX/UI, and built the frontend.',
+  call:'Help the shopper pick their shade instead of just showing the product.',
+  callHref:'#el-scope',
+  evidence:'Estée Lauder’s own pages next to Sephora and Ulta: all image-led, the product shot as the focal point, and the fit question left to the shopper. Plus how I shop for foundation myself.',
+  result:'Top 5 finalist, and I presented the concept to Estée Lauder C-suite leadership.',
   stat:{value:'Top 5',label:'finalist in the challenge'}
  },
  fcvf:{
   problem:'Ford teams trusted the Customer Value Framework, but it lived in one long Excel workbook whose score moved while people were still answering.',
   owned:'Software engineering intern on a 10-person team. I led four user interviews, shaped the interaction model, and built frontend and backend features.',
-  call:'I removed the live score.',
+  call:'Hide the score until the assessment is submitted.',
   callHref:'#fv-decide',
   evidence:'Four moderated interviews comparing the one-page build against a multi-page prototype.',
   result:'Shipped a paginated assessment that holds the score until submission.',
@@ -792,7 +762,7 @@ const caseAnswers={
  accenture:{
   problem:'A frontier AI lab’s enablement requests crossed three tools before a trainer was booked, and the same judgment calls were remade by hand every time.',
   owned:'I supported 21 live requests, documented the trainer-matching and scheduling rules, built an early Codex-based request prototype, and turned learner and market research into recommendations.',
-  call:'A free slot is not a yes.',
+  call:'Send uncertain trainer matches to a person instead of booking them automatically.',
   callHref:'#ax-test',
   evidence:'A trainer match passed every rule and still landed at 10:30 PM in the trainer’s time zone. A coordinator would have rejected it instantly.',
   result:'Uncertain matches stop at a human gate. I shipped a 10-tab data contract, a prototype that applies it, and recommendations backed by 3,862 user responses.',
@@ -801,7 +771,7 @@ const caseAnswers={
  kohler:{
   problem:'A Kohler product can be in stock and still not be ready to export: each destination needs its own spec sheets, labels, warranties and translations.',
   owned:'On a five-person team, I defined the product, designed the workflow and interface, and contributed to the React/Node build, Azure orchestration, and human-review flow.',
-  call:'We centered the product on the export order, not the product record.',
+  call:'Build the tool around the export order, not the product catalog.',
   callHref:'#kx-define',
   evidence:'How an order actually gets held up today, and the exception cases where a person has to decide rather than a rule.',
   result:'Delivered to Kohler: the order workspace, destination rules, agent-drafted packet, and human review gate.',
@@ -810,7 +780,8 @@ const caseAnswers={
  finsimple:{
   problem:'FinSimple is where Ford Credit customers build a financing estimate for a vehicle. Returning customers had no way back to an estimate they had already built, so they started over.',
   owned:'I owned requirements, AEM component work, API integration, testing, and coordination across the teams needed to ship my feature.',
-  call:'Nobody owned the release sequence, so I traced it myself.',
+  call:'Map the five-team release sequence myself, because nobody owned it.',
+  callLabel:'How I got it shipped',
   callHref:'#fs-launch',
   evidence:'A live product with existing customers, shared AEM components, Salesforce data contracts, and a release train spanning five teams.',
   result:'Previous Estimates shipped into the customer-facing flow with 6% fewer Salesforce write failures per submitted estimate, and I owned it in production.',
@@ -832,15 +803,45 @@ function useCaseCanvas(id:string){
  },[id]);
 }
 
+function CaseSkimDemo({id}:{id:string}){
+ const morning=useMorning();
+ if(id==='commute')return <section className="caseSkimDemo caseSkimCommute" aria-label="Try the Commute product"><header><h2>Try the product</h2></header><div className="cmDemoStage"><CommutePhoneDemo m={morning} app={<CommuteAppDemo/>}/></div></section>;
+ if(id==='scheduler')return <section className="caseSkimDemo schedulerDemo" aria-label="Try the scheduler"><header><h2>Try the product</h2></header><SchedulerDemo/></section>;
+ if(id==='chat')return <section className="caseSkimDemo" aria-label="Try the chat product"><header><h2>Try the product</h2></header><ChatSandbox/></section>;
+ if(id==='kohler')return <section className="caseSkimDemo kohlerProductStage" aria-label="Try the export workflow"><header><h2>Try the product</h2></header><KohlerProductSurface compact/></section>;
+ if(id==='marketExpansion')return <section className="caseSkimDemo" aria-label="Explore the market comparison"><header><h2>Try the scorecard</h2></header><GrazeLocations/></section>;
+ if(id==='fcvf')return <section className="caseSkimDemo" aria-label="Try the assessment decision"><header><h2>Try the key decision</h2></header><SurveyDemo/></section>;
+ if(id==='accenture')return <section className="caseSkimDemo" aria-label="Try the request workflow"><header><h2>Try the workflow</h2></header><AccentureRequestRelay/></section>;
+ if(id==='estee')return <section className="caseSkimDemo" aria-label="Try the product discovery experience"><header><h2>Try the product</h2></header><EsteeCompact/></section>;
+ if(id==='bookclub')return <section className="caseSkimDemo" aria-label="See the live Bookclub product"><header><h2>See the product</h2></header><BookclubEditorialHero/></section>;
+ if(id==='finsimple')return <section className="caseSkimDemo" aria-label="See the released FinSimple feature"><header><h2>See the shipped feature</h2></header><ProjectVisual type="finsimple"/></section>;
+ return null;
+}
+
 function CaseStudy({id,onBack}){
  useCaseReveal(id);
  useCaseCanvas(id);
  const p=projects.find(x=>x.id===id);
  const [lightbox,setLightbox]=useState(null);
+ const [readingMode,setReadingMode]=useState<'skim'|'deep'>(()=>{
+  try{return localStorage.getItem('case-reading-mode')==='deep'?'deep':'skim'}catch{return 'skim'}
+ });
+ useEffect(()=>{try{localStorage.setItem('case-reading-mode',readingMode)}catch{}},[readingMode]);
  if(!p)return null;
  const openClickedImage=(e)=>{const img=e.target instanceof HTMLImageElement?e.target:null;if(!img||img.closest('.caseCompanyBar')||img.closest('.toolLogoSection')||img.closest('[data-no-lightbox]')||img.closest('.kohlerStory')||img.closest('.caseHeroLogoWrap')||img.classList.contains('companyLogo'))return;setLightbox({src:img.currentSrc||img.src,alt:img.alt||'Project image'})};
- return <main className={`casePage case-${id}`} onClick={openClickedImage}><AuraField tone={id}/><button className="backBtn" onClick={onBack}>← Selected work</button><section className="caseLead"><header className="caseHeader"><CaseCompanyBar id={id} fallback={p.company}/><h1>{p.title}</h1><div className="caseIntro">{p.summary}</div>{id==='bookclub'&&<a className="bookclubLiveLink" href={BOOKCLUB_LIVE_URL} target="_blank" rel="noreferrer" aria-label="Open the live Bookclub app in a new tab">Open live app ↗</a>}</header><div className="caseHeroMedia casePreviewHero"><ProjectVisual type={p.media}/></div>{metrics[id]&&<MetricStrip items={metrics[id]}/>}<ToolLogoStrip id={id}/></section>
+ const openDeepSection=(e)=>{
+  openClickedImage(e);
+  if(readingMode!=='skim')return;
+  const anchor=(e.target as HTMLElement).closest('a[href^="#"]') as HTMLAnchorElement|null;
+  const href=anchor?.getAttribute('href');
+  if(!href||href==='#')return;
+  e.preventDefault();setReadingMode('deep');
+  window.setTimeout(()=>document.querySelector(href)?.scrollIntoView({behavior:'smooth',block:'start'}),50);
+ };
+ return <main className={`casePage case-${id} ${readingMode==='skim'?'isSkim':'isDeep'}`} onClick={openDeepSection}><AuraField tone={id}/><div className="caseReadingBar"><button className="backBtn" onClick={onBack}>← Selected work</button><div className="caseReadingControl"><span className="caseReadingLabel">Read this case</span><div className="caseReadingToggle" role="group" aria-label="Case study reading depth"><button type="button" aria-pressed={readingMode==='skim'} onClick={()=>setReadingMode('skim')}><b>Skim</b></button><button type="button" aria-pressed={readingMode==='deep'} onClick={()=>setReadingMode('deep')}><b>In depth</b></button></div></div></div><section className="caseLead"><header className="caseHeader"><CaseCompanyBar id={id} fallback={p.company}/><h1>{p.title}</h1><div className="caseIntro">{p.summary}</div>{id==='bookclub'&&<a className="bookclubLiveLink" href={BOOKCLUB_LIVE_URL} target="_blank" rel="noreferrer" aria-label="Open the live Bookclub app in a new tab">Open live app ↗</a>}</header><div className="caseHeroMedia casePreviewHero"><ProjectVisual type={p.media}/></div>{metrics[id]&&<MetricStrip items={metrics[id]}/>}<ToolLogoStrip id={id}/></section>
  {caseAnswers[id]&&<CaseAnswer key={id} {...caseAnswers[id]}/>}
+ {readingMode==='skim'&&<><CaseSkimDemo id={id}/><div className="caseSkimFinish"><button type="button" onClick={()=>setReadingMode('deep')}>Read the in-depth case ↓</button></div></>}
+ {readingMode==='deep'&&<>
  {id==='fcvf'&&<CarBand car="shelby" label="Shelby GT500 illustration that drives as you scroll"/>}
  {id==='finsimple'&&<CarBand car="mache" label="Mustang Mach-E illustration that drives as you scroll"/>}
  {id==='commute'&&<CommuteCase demo={<CommuteAppDemo/>}/>}
@@ -848,15 +849,13 @@ function CaseStudy({id,onBack}){
  {id==='accenture'&&<AccentureCase/>}
  {id==='kohler'&&<KohlerCase/>}
  {id==='scheduler'&&<SchedulerCase/>}
- {id==='finsimpleLegacy'&&<><CaseSection title="Users"><p>Ford Credit customers moving through a financing/account workflow were the primary users; the feature also had to fit the internal systems and teams operating the downstream data flow.</p></CaseSection><CaseSection title="The user problem"><p>Returning customers needed a straightforward way to revisit earlier vehicle estimates while continuing the financing journey. Previous Estimates had to make that history useful without forcing customers to recreate an estimate or learn a separate workflow.</p></CaseSection><CaseSection title="Shipping into a system that already existed"><p>FinSimple was already a deployed financial product with existing customers, shared libraries, data dependencies, and production environments. As the sole intern embedded on the team, I had to fit the feature into the experience customers already knew while respecting the AEM, Salesforce, API, QA, and release constraints behind it.</p></CaseSection><CaseSection title="Previous Estimates"><p>I owned requirements, UI/component development, integration, testing, and coordination across the teams involved in shipping the feature. The feature progressed from synthetic data to an AEM component and then into the customer-facing flow, giving customers one place to review previous estimates and take the next action from the existing product.</p><div className="progression"><ExpandableImage onExpand={setLightbox} src="project-media/finsimple-dummy.png" alt="Dummy data stage" label="Dummy data"/><ExpandableImage onExpand={setLightbox} src="project-media/finsimple-aem.png" alt="AEM component stage" label="AEM component"/><ExpandableImage onExpand={setLightbox} src="project-media/finsimple-live.png" alt="Finished FinSimple stage" label="Customer-facing flow"/></div></CaseSection><CaseSection title="Customer + system flow" className="finsimpleFlowSection"><div className="finsimpleSystemFlow" aria-label="Customer action moving through four layers into Salesforce"><div className="systemDepthLabel" aria-hidden="true"><span>Customer-facing</span><i></i><span>System of record</span></div><div className="systemFlowTrack"><article><header><span>01</span><small>INTENT</small></header><h3>Customer</h3><p>Starts a financing or account workflow.</p></article><i aria-hidden="true">↘</i><article><header><span>02</span><small>INTERFACE</small></header><h3>Web experience</h3><p>Collects and displays information.</p></article><i aria-hidden="true">↘</i><article><header><span>03</span><small>SERVICE</small></header><h3>API layer</h3><p>Moves customer and contract data.</p></article><i aria-hidden="true">↘</i><article><header><span>04</span><small>RECORD</small></header><h3>Salesforce</h3><p>Creates and populates the downstream record.</p></article></div><div className="systemFlowPayload"><span>customer context</span><b>travels forward</b><span>durable record</span></div></div></CaseSection><CaseSection title="What shipped"><div className="finalArtifact"><ExpandableImage onExpand={setLightbox} src="project-media/finsimple-live.png" alt="Finished FinSimple Previous Estimates feature" label="Final experience"/><p>A customer-facing Previous Estimates experience shipped inside the existing enterprise product, preserving the platform’s workflow while making past estimates easier to revisit and act on.</p></div></CaseSection></>}
- {id==='chatLegacy'&&<><section className="sandboxSection"><ChatSandbox/></section><CaseSection title="The assignment"><p>For CSE 477, the base assignment was to build a real-time chat room where multiple users could exchange messages and see when someone entered or left. I wanted the result to feel like a product I already understood instead of a generic class demo, so I recreated iMessage on the web.</p></CaseSection><CaseSection title="What I added"><p>I treated the assignment requirements as the starting state. Beyond messages and join/leave presence, I added typing state and Tapback reactions, then paid attention to the smaller interaction rules that make iMessage feel familiar: bubble alignment, temporary states, reaction placement, and keeping the same message state synchronized across clients.</p><div className="factGrid"><Fact title="Messages">Socket.IO broadcasts new messages so every client in the room sees the same conversation.</Fact><Fact title="Presence">Join and leave events update the room without pretending those events are normal messages.</Fact><Fact title="Typing">Typing is temporary state with a timeout, so it disappears instead of becoming persisted chat history.</Fact><Fact title="Tapbacks">Double-clicking opens a reaction picker; the selected reaction updates the existing message state rather than adding a second message.</Fact></div></CaseSection><CaseSection title="Build"><p>I built the interface with HTML, CSS, and JavaScript and used Socket.IO for real-time room events. The interesting part was learning the design logic behind a familiar product and then turning those states into code, not just making blue and gray message bubbles that looked like iMessage.</p></CaseSection></>}
- {id==='esteeLegacy'&&<><CaseSection title="Users"><p>Online beauty shoppers exploring Double Wear who need enough product context and confidence to decide whether the line is right for them, then a simple path to purchase.</p></CaseSection><CaseSection title="The challenge"><p>For the Kode With Klossy x Estée Lauder challenge, I worked on the product concept, UX/UI, and frontend for a Double Wear discovery experience. I treated it as more than a storefront. The goal was to make product research feel like part of the Estée Lauder brand experience, then carry that interest all the way to purchase.</p></CaseSection><CaseSection title="Product direction"><div className="factGrid"><Fact title="Feel immediately on-brand">I kept the experience elegant and minimal, using familiar Estée Lauder colors, typography, imagery, and navigation patterns so the site felt connected to the brand.</Fact><Fact title="Give shoppers a reason to keep exploring">An interactive question and concise benefit content turned product education into something more active than a static catalog page.</Fact><Fact title="Put the research in one place">The experience brought Double Wear benefits, product-line context, brand story, and purchase options into one guided flow.</Fact><Fact title="Make the next step easy">The purchase experience linked shoppers to eight established retailers instead of making them restart the search elsewhere.</Fact></div></CaseSection><CaseSection title="The journey I designed"><div className="esteeJourney"><div><span>01</span><strong>Draw the shopper in</strong><p>Lead with recognizable Double Wear imagery and a familiar brand shell.</p></div><div><span>02</span><strong>Invite interaction</strong><p>Use a question and benefit-led content to make discovery feel personal and scannable.</p></div><div><span>03</span><strong>Build product understanding</strong><p>Show the broader Double Wear line, key benefits, and brand context without turning the page into a dense product database.</p></div><div><span>04</span><strong>Close the loop</strong><p>Move from exploration to purchase through direct retailer options.</p></div></div></CaseSection><CaseSection title="What I made"><p>I built the experience around large product imagery, a benefits carousel, product exploration, and a purchase page while keeping the visual system cohesive across screens.</p><EsteeVisual/></CaseSection><CaseSection title="Responsive design"><p>The site was image-heavy, so responsive behavior became a real implementation problem rather than a final polish step. I reused responsive patterns across the visual elements and adjusted the layouts so the product story still held together as the viewport got smaller.</p></CaseSection><CaseSection title="Outcome"><p>The project finished as a Top 5 challenge finalist, and I presented the concept to Estée Lauder C-suite leadership.</p></CaseSection></>}
  {id==='finsimple'&&<FinSimpleCase setLightbox={setLightbox}/>}
  {id==='chat'&&<ChatCase/>}
  {id==='estee'&&<EsteeCase/>}
  {id==='bookclub'&&<BookclubCase/>}
  {id==='marketExpansion'&&<MarketExpansionCase/>}
- {id!=='commute'&&!['fcvf','chat','estee','bookclub','marketExpansion','finsimple','scheduler','accenture'].includes(id)&&<CaseDecisionNotes id={id}/>}<ImageLightbox image={lightbox} onClose={()=>setLightbox(null)}/></main>
+ {id!=='commute'&&!['fcvf','chat','estee','bookclub','marketExpansion','finsimple','scheduler','accenture'].includes(id)&&<CaseDecisionNotes id={id}/>}</>}
+ <ImageLightbox image={lightbox} onClose={()=>setLightbox(null)}/></main>
 }
 
 function CaseSection({title,children,className='',id=undefined}:{title:any,children:any,className?:string,id?:string}){return <section id={id} className={`caseSection ${className}`}><h2>{title}</h2><div className="caseSectionBody">{children}</div></section>}
@@ -897,9 +896,9 @@ const schedulerStages=[
 /* When2meet set the bar: every student I interviewed already used it. Each row is a step
    it hands back to the group chat, and the feature I built to keep it in one window. */
 const scCompareRows=[
- {label:'Availability',them:'Free or busy. Nothing in between.',mine:'Available, Maybe and Unavailable stay three separate answers.',
+ {label:'Availability',them:'Free or busy. Nothing in between.',mine:'Maybe is its own answer: it can break a tie between times, but it never counts as a yes.',
   icon:<><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M7 12h3M13.5 12h3.5" strokeLinecap="round"/><circle cx="11.5" cy="12" r="1.2" fill="currentColor" stroke="none"/></>},
- {label:'Filling it in',them:'Click every cell, one by one, every time.',mine:'Quick fill paints a whole block at once, or connect Google Calendar and your busy hours drop in already marked.',
+ {label:'Filling it in',them:'Click every cell, one by one, every time.',mine:'Connect Outlook or Google Calendar and your booked hours arrive already blocked out. Don’t want to link a calendar? Quick fill paints a whole block in one click. Either way, nobody clicks 35 cells.',
   icon:<><rect x="3" y="4.5" width="18" height="15.5" rx="2.5"/><path d="M3 9h18M8 2.5v4M16 2.5v4" strokeLinecap="round"/><path d="M9 14.5l2.2 2.2L15.5 12" strokeLinecap="round" strokeLinejoin="round"/></>},
  {label:'Picking a time',them:'You read the heatmap and argue it out.',mine:'Ranked times, each with who it works for and who it costs.',
   icon:<><path d="M4 20V13M10 20V8.5M16 20v-5M22 20V4.5" strokeLinecap="round"/></>},
@@ -916,7 +915,7 @@ const scCompareRows=[
 ];
 function SchedulerCompare(){
  return <div className="scCompareWrap">
-  <p className="scCompareIntro">Every student I interviewed already used When2meet, so it set the bar. The grid is genuinely good at one step, collecting availability, and then hands the rest back to the group chat. Each thing it handed back became something I built.</p>
+  <p className="scCompareIntro">The assignment was one line: build When2meet. Copying it would have been a finished grade and an unfinished product — it is genuinely good at one step, collecting availability, and hands everything after it back to the group chat. Every row below is something it handed back, and what I decided to do instead.</p>
   <div className="scCompare">
    <div className="scCompareHead"><span/><span className="scCompareThem">When2meet</span><span className="scCompareMine">This app</span></div>
    {scCompareRows.map(row=><div className="scCompareRow" key={row.label}>
@@ -930,43 +929,42 @@ function SchedulerCompare(){
 }
 
 function SchedulerBrief(){return <section className="schedulerBriefSection scStage" id="sc-brief" aria-labelledby="scheduler-brief-title">
-  <header className="schedulerBriefMasthead">
-   <div className="schedulerBriefKicker"><span>Product requirements document</span><b>Scheduler</b></div>
-   <div className="schedulerBriefTitle"><h2 id="scheduler-brief-title">Group Scheduling App</h2><p>Turn availability into one confirmed, calendar-ready plan.</p></div>
-   <dl className="schedulerBriefMeta">
-    <div><dt>Owner</dt><dd>Neha Chinimilli</dd></div>
-    <div><dt>Primary users</dt><dd>MSU study groups and student organizations</dd></div>
-    <div><dt>Delivery</dt><dd>Deployed web app</dd></div>
-   </dl>
-  </header>
-  <div className="schedulerBriefBody">
-   <section className="schedulerBriefContext" aria-labelledby="scheduler-brief-context"><span>Context</span><div><h3 id="scheduler-brief-context">Problem statement</h3><p>Students could find overlap in a scheduling grid, then had to move to a group chat to decide on a time, place, and invite. Tentative availability was flattened into yes or no before the group could use it.</p></div></section>
-   <section className="schedulerBriefContext" aria-labelledby="scheduler-brief-goal"><span>Goal</span><div><h3 id="scheduler-brief-goal">Make one decision possible in one place.</h3><p>Help a group capture availability, choose a workable time and venue, and leave with one shared event without making the group’s final decision for them.</p></div></section>
-   <section className="schedulerBriefFlow" aria-labelledby="scheduler-brief-flow-title"><div className="schedulerBriefSectionHead"><span>Primary flow</span><h3 id="scheduler-brief-flow-title">Capture → resolve → confirm</h3></div><ol>
-    <li><i className="schedulerBriefMiniGrid" aria-hidden="true"><b/><b/><b/><b/><b/><b/><b/><b/><b/></i><div><b>Capture availability</b><span>Keep Available, Maybe, and Unavailable distinct.</span></div></li>
-    <li><i className="schedulerBriefMiniRank" aria-hidden="true"><b/><b/><b/></i><div><b>Resolve the overlap</b><span>Rank workable times; the group chooses.</span></div></li>
-    <li><i className="schedulerBriefMiniTicket" aria-hidden="true"><b>16</b><span/></i><div><b>Confirm one event</b><span>Carry time, place, people, and notes forward.</span></div></li>
-   </ol></section>
-   <section className="schedulerBriefRequirements" aria-labelledby="scheduler-brief-requirements"><div className="schedulerBriefSectionHead"><span>Requirements</span><h3 id="scheduler-brief-requirements">What the first release needed to do</h3></div><ol>
-    <li><b>Preserve uncertainty</b><span>Let each participant mark a time as Available, Maybe, or Unavailable.</span></li>
-    <li><b>Recommend; do not decide</b><span>Rank workable times by availability and conflicts, then leave the selection with the group.</span></li>
-    <li><b>Carry the decision forward</b><span>Keep venue voting, participant status, notes, and calendar setup on the same event record.</span></li>
-   </ol></section>
-   <div className="schedulerBriefFooter">
-    <section><span>Research input</span><p>Seven one-on-one interviews with student organizers and live task walkthroughs.</p></section>
-    <section><span>Out of scope</span><p>Automatically selecting a time or replacing the group’s judgment with a scheduling algorithm.</p></section>
-    <section><span>Success criteria</span><p>A group can reach a confirmed event, and participants can express “maybe” without it being treated as yes.</p></section>
+  <h2 id="scheduler-brief-title">The brief before the build</h2>
+  <article className="schedulerBriefWindow" aria-label="Product requirements document">
+   <div className="schedulerBriefChrome" aria-hidden="true"><span className="schedulerBriefDots"><i/><i/><i/></span><b>Scheduler PRD — Google Docs</b></div>
+   <div className="schedulerBriefBar" aria-hidden="true">
+    <i className="schedulerBriefFileIcon"/>
+    <div><b>Scheduler PRD</b><span>File · Edit · View · Insert · Format · Tools</span></div>
+    <em>Share</em>
    </div>
-  </div>
+   <div className="schedulerBriefToolbar" aria-hidden="true"><i/><i/><i/><i/><i/><i/></div>
+   <div className="schedulerBriefPage">
+    <header><h3>Group Scheduling App — PRD</h3><p>Neha Chinimilli · CSE 477 brief: “build When2meet” · MSU study groups</p></header>
+    <h4>Goal</h4>
+    <p>Let a group capture availability, choose a time and venue, and leave with one shared event — without making the decision for them.</p>
+    <h4>Requirements</h4>
+    <ol>
+     <li><b>Make entry cost nothing.</b> Import a calendar or paint a block; nobody fills 35 cells by hand.</li>
+     <li><b>Preserve uncertainty.</b> Blank already means no; Maybe is the one answer a grid can’t hold.</li>
+     <li><b>Rank the times, don’t decide them.</b> The software reads the overlap so the group doesn’t; the group still picks.</li>
+     <li><b>Carry the decision forward.</b> Venue votes, status, notes, and calendar on one record.</li>
+    </ol>
+    <h4>Out of scope</h4>
+    <p>Auto-selecting a time, or replacing the group’s judgment with an algorithm.</p>
+    <h4>Success criteria</h4>
+    <p>A group reaches a confirmed event, and “maybe” is never read as yes.</p>
+   </div>
+  </article>
  </section>}
 
-function SchedulerCase(){return <div className="schedulerStory"><SchedulerBrief/><LifecycleRoad stages={schedulerStages} vehicle="calendar"/>
+function SchedulerCase(){return <div className="schedulerStory"><LifecycleRoad stages={schedulerStages} vehicle="calendar"/>
   <section className="schedulerDemo"><SchedulerDemo/></section>
-  <section id="sc-discover" className="schedulerProblemStage scStage"><div><h2>A heatmap did not finish the plan.</h2><p>Students could mark when they were free, but tentative availability was flattened into yes or no. Even after finding overlap, the group still had to choose a time, place, and next step somewhere else.</p></div><SchedulerFlatten/></section>
-  <CaseSection title="What I learned from seven student interviews" className="schedulerResearchSection scStage" id="sc-research"><div className="schedulerResearchDesk"><aside className="schedulerInterviewIndex"><strong>7 students</strong><span>One-on-one conversations</span><span>Live task walkthroughs</span><SchedulerPeople/></aside><div className="schedulerNotebook"><div className="schedulerSessionNotes"><article><svg viewBox="0 0 64 40" aria-hidden="true"><circle cx="12" cy="20" r="9" fill="#b9d7c7"/><circle cx="32" cy="20" r="9"/><path d="M32 11a9 9 0 0 1 0 18z" fill="#e7d9ad"/><circle cx="52" cy="20" r="9"/></svg><b>Students wanted a way to say “maybe.”</b><p>Tentative availability was useful information, but the binary grid erased it.</p><span>Seen during availability entry</span></article><article><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M4 4h10v10H4zM18 4h10v10H18zM32 4h10v10H32zM4 18h10v10H4zM18 18h10v10H18zM32 18h10v10H32z"/><path d="M50 14a5 5 0 1 1 7 4.6c-1.3.6-2 1.6-2 3V24M55 30v.5"/></svg><b>The heatmap did not finish the task.</b><p>Groups opened another chat to interpret the overlap, choose a room, and confirm the plan.</p><span>Seen after comparing schedules</span></article><article><svg viewBox="0 0 64 40" aria-hidden="true"><rect x="4" y="8" width="16" height="22" rx="3"/><rect x="26" y="4" width="14" height="14" rx="3" transform="rotate(12 33 11)"/><rect x="44" y="18" width="16" height="16" rx="3" transform="rotate(-10 52 26)"/><path d="M22 20l3-2M41 20l3 2" strokeDasharray="2 3"/></svg><b>Event details split across tools.</b><p>Time, venue, participant status, and notes separated as soon as the group left the grid.</p><span>Seen during follow-through</span></article></div><footer><i aria-hidden="true">→</i><strong>Keep Available, Maybe, and Unavailable separate, then recommend a time and carry that choice into venue and calendar setup.</strong></footer></div></div></CaseSection>
+  <section id="sc-discover" className="schedulerProblemStage scStage"><div><h2>A heatmap did not finish the plan.</h2><p>Students could mark when they were free, but tentative availability was flattened into yes or no. Then the grid handed the rest back: read the shading yourself, work out which slot costs the fewest people, and settle the time, the place, and the invite somewhere else. Ranking a heatmap is a job the software can do.</p></div><SchedulerFlatten/></section>
+  <CaseSection title="What I learned from seven student interviews" className="schedulerResearchSection scStage" id="sc-research"><div className="schedulerResearchDesk"><aside className="schedulerInterviewIndex"><strong>7 students</strong><span>One-on-one conversations</span><span>Live task walkthroughs</span><SchedulerPeople/></aside><div className="schedulerNotebook"><div className="schedulerSessionNotes"><article><svg viewBox="0 0 64 40" aria-hidden="true"><circle cx="12" cy="20" r="9" fill="#b9d7c7"/><circle cx="32" cy="20" r="9"/><path d="M32 11a9 9 0 0 1 0 18z" fill="#e7d9ad"/><circle cx="52" cy="20" r="9"/></svg><b>Students wanted a way to say “maybe.”</b><p>Tentative availability was useful information, but the binary grid erased it.</p><span>Seen during availability entry</span></article><article><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M4 4h10v10H4zM18 4h10v10H18zM32 4h10v10H32zM4 18h10v10H4zM18 18h10v10H18zM32 18h10v10H32z"/><path d="M50 14a5 5 0 1 1 7 4.6c-1.3.6-2 1.6-2 3V24M55 30v.5"/></svg><b>The heatmap did not finish the task.</b><p>Groups opened another chat to interpret the overlap, choose a room, and confirm the plan.</p><span>Seen after comparing schedules</span></article><article><svg viewBox="0 0 64 40" aria-hidden="true"><rect x="4" y="8" width="16" height="22" rx="3"/><rect x="26" y="4" width="14" height="14" rx="3" transform="rotate(12 33 11)"/><rect x="44" y="18" width="16" height="16" rx="3" transform="rotate(-10 52 26)"/><path d="M22 20l3-2M41 20l3 2" strokeDasharray="2 3"/></svg><b>Event details split across tools.</b><p>Time, venue, participant status, and notes separated as soon as the group left the grid.</p><span>Seen during follow-through</span></article></div><footer><i aria-hidden="true">→</i><strong>Keep Maybe as its own answer, then recommend a time and carry that choice into venue and calendar setup.</strong></footer></div></div></CaseSection>
+  <SchedulerBrief/>
   <CaseSection title="From availability to a confirmed event" className="schedulerDecisionSection scStage" id="sc-design"><SchedulerDecisionDemo/></CaseSection>
   <CaseSection title="Everything When2meet left to the group chat" className="schedulerCompareSection scStage" id="sc-compare"><SchedulerCompare/></CaseSection>
-  <section id="sc-build" className="schedulerBuild scStage"><header><h2>One event, kept in sync.</h2><p>Every change to the time, place, or who is going reaches everyone’s screen live. The deployed product supports real group use; the portfolio demo above uses local state to show the same interaction model.</p></header><SchedulerSync/></section>
+  <section id="sc-build" className="schedulerBuild scStage"><header><h2>One event, kept in sync.</h2></header><SchedulerSync/></section>
  </div>}
 
 const chatStages=[
@@ -1019,11 +1017,11 @@ function EsteeCase(){
  return <div className="elEditorial"><LifecycleRoad stages={esteeStages} vehicle="bottle"/>
   <section className="elVanity elStage" id="el-discover">
    <div className="elMirrorScene isVanity"><div className="elVanityFrame">{Array.from({length:14},(_,i)=><i key={i} className="elBulb" style={{'--i':i} as React.CSSProperties}/>)}<div className="elMirrorGlass"><div className="elReflection"/><p>Will this foundation<br/> <em>work for me?</em></p><span>The shopper question</span></div></div><div className="elVanityTable"/></div>
-   <div className="elProblem"><h2>Foundation is the hardest thing to buy without trying it on.</h2><p>At a counter, a shopper swatches a shade, feels the finish, and asks someone who knows. Online, the page has to do all of that work. When it does not, people guess or leave.</p><p>I focused the experience on the job the shopper is already trying to do: build enough confidence in fit, finish, coverage, and shade to decide whether Double Wear is for them. That meant leading with their question instead of a product grid, then moving them toward a confident yes or no.</p></div>
+   <div className="elProblem"><h2>Foundation is the hardest thing to buy without trying it on.</h2><p>At a counter, a shopper swatches a shade, feels the finish, and asks someone who knows. Online, the page has to do all of that work. When it does not, people guess or leave.</p><p>I went through Estée Lauder’s own pages alongside Sephora and Ulta, and they answer the same way: the product shot is the focal point, the copy is underneath it, and the shopper is left to work out fit on their own. That is a good promotional page and a poor answer to the only question I had when buying foundation myself.</p><p>So I read the brief as a job rather than a page type: build enough confidence in fit, finish, coverage, and shade to decide whether Double Wear is for them. That meant leading with their question instead of a product grid, then moving them toward a confident yes or no.</p></div>
   </section>
-  <section className="elInvitation elStage" id="el-design"><header><h2>Start with a question the shopper can answer.</h2><p>Instead of opening on a product grid, the site asks what the shopper wants from a foundation. It’s an easy first step, and it turns browsing into a conversation about their needs, the way a good counter consultant starts. The look stays unmistakably Estée Lauder so the question feels like it comes from the brand.</p></header><figure><img src={assetUrl('project-media/el-shop.webp')} alt="Original Double Wear screen asking what the shopper looks for in a foundation" loading="lazy"/><figcaption>The original opening screen. Familiar Double Wear imagery earns recognition; the question gives the shopper an easy first move.</figcaption></figure></section>
-  <section className="elProof"><header><h2>One benefit at a time.</h2><p>Double Wear has a lot to say about finish, coverage, and wear. Stacked on one page, that becomes a wall of copy nobody finishes. I split it into a carousel so each benefit gets its own moment and the shopper sets the pace, reading only what matters to their decision.</p></header><figure><img src={assetUrl('project-media/el-benefits.webp')} alt="Original benefits carousel showing finish, buildable coverage, and wear information" loading="lazy"/><figcaption>Actual project screen · Product benefits carousel</figcaption></figure></section>
-  <section className="elPurchase elStage" id="el-scope"><div className="elRetail"><h2>Know where the product ends.</h2><p>Rebuilding checkout would have meant inventory, payments, and accounts: real work that helps no one decide. Shoppers also already have a favorite place to buy beauty. So I spent my time on discovery and linked out to eight established retailers, letting people finish the purchase where they already trust.</p><figure><img src={assetUrl('project-media/el-shades.webp')} alt="Original purchase page showing foundation imagery and retailer links including Estée Lauder, Sephora, Ulta, and Nordstrom" loading="lazy"/><figcaption>Original retailer page with product and shade context.</figcaption></figure></div><aside className="elScope" ref={el=>{if(!el||el.dataset.io)return;el.dataset.io='1';const io=new IntersectionObserver(([e])=>{if(e.isIntersecting){el.classList.add('isIn');io.disconnect()}},{threshold:.3});io.observe(el)}} aria-label="Scope decisions: kept brand scale, imagery, and shade context; simplified dense product details into scannable benefits; handed checkout to eight established retailers"><h3>Where I drew the line</h3><div className="elBottleScene"><svg className="elBottle" viewBox="0 0 200 320" aria-hidden="true"><defs><linearGradient id="elCap" x1="0" x2="1"><stop offset="0" stopColor="#7d5a26"/><stop offset=".22" stopColor="#c9a25d"/><stop offset=".42" stopColor="#f3dfae"/><stop offset=".6" stopColor="#c19a55"/><stop offset="1" stopColor="#6f4f20"/></linearGradient><linearGradient id="elCapTop" x1="0" x2="1"><stop offset="0" stopColor="#a8823f"/><stop offset=".5" stopColor="#f6e6bd"/><stop offset="1" stopColor="#8e6a30"/></linearGradient><linearGradient id="elGlass" x1="0" x2="1"><stop offset="0" stopColor="#fff" stopOpacity=".95"/><stop offset=".12" stopColor="#f4efe8" stopOpacity=".6"/><stop offset=".85" stopColor="#efe8de" stopOpacity=".55"/><stop offset="1" stopColor="#d9cfc0" stopOpacity=".95"/></linearGradient><linearGradient id="elKeepFill" x1="0" x2="1"><stop offset="0" stopColor="#4a2a17"/><stop offset=".5" stopColor="#6e412a"/><stop offset="1" stopColor="#3f2313"/></linearGradient><linearGradient id="elSimplifyFill" x1="0" x2="1"><stop offset="0" stopColor="#7a4b2e"/><stop offset=".5" stopColor="#9a6441"/><stop offset="1" stopColor="#6c4128"/></linearGradient><radialGradient id="elShadow"><stop offset="0" stopColor="#3b2a1a" stopOpacity=".28"/><stop offset="1" stopColor="#3b2a1a" stopOpacity="0"/></radialGradient><clipPath id="elInside"><path d="M44 112q0-10 10-10h92q10 0 10 10v176q0 8-8 8H52q-8 0-8-8z"/></clipPath></defs><ellipse cx="100" cy="312" rx="86" ry="8" fill="url(#elShadow)"/><rect x="66" y="6" width="68" height="62" rx="4" fill="url(#elCap)"/><rect x="66" y="6" width="68" height="7" rx="3" fill="url(#elCapTop)"/>{[74,82,90,98,106,114,122].map(x=><path key={x} d={`M${x} 14v50`} stroke="#5b3f14" strokeOpacity=".22" strokeWidth="1.2"/>)}<path d="M72 14v50" stroke="#fff" strokeOpacity=".5" strokeWidth="2"/><rect x="78" y="68" width="44" height="14" fill="#6f4f20"/><rect x="78" y="68" width="44" height="3" fill="#3e2a0e" fillOpacity=".5"/><path d="M26 108q0-26 26-26h96q26 0 26 26v186q0 20-20 20H46q-20 0-20-20z" fill="url(#elGlass)" stroke="#cbbba2" strokeWidth="1.6"/><g clipPath="url(#elInside)"><g className="elFill"><rect x="40" y="150" width="120" height="70" fill="url(#elSimplifyFill)"/><rect x="40" y="220" width="120" height="80" fill="url(#elKeepFill)"/><path d="M40 150q30-6 60 0t60 0v4q-30 6-60 0t-60 0z" fill="#b07a54"/></g></g><path d="M44 112q0-10 10-10h92q10 0 10 10v176q0 8-8 8H52q-8 0-8-8z" fill="none" stroke="#fff" strokeOpacity=".35" strokeWidth="1.2"/><path d="M34 118v160" stroke="#fff" strokeOpacity=".75" strokeWidth="5" strokeLinecap="round"/><path d="M166 124v120" stroke="#fff" strokeOpacity=".35" strokeWidth="2" strokeLinecap="round"/><text x="100" y="124" textAnchor="middle" className="elBottleBrand">ESTĒE LAUDER</text><text x="100" y="140" textAnchor="middle" className="elBottleName">Double Wear</text></svg><ol className="elScopeNotes"><li className="is-handoff"><b>Handed off</b><span>Checkout stays with 8 established retailers</span><span className="elBags" aria-hidden="true">{Array.from({length:8},(_,i)=><svg key={i} viewBox="0 0 24 28"><path d="M8.5 9V6.5a3.5 3.5 0 0 1 7 0V9" className="elBagHandle"/><path d="M3.5 9h17l-1.2 16.2a1.5 1.5 0 0 1-1.5 1.3H6.2a1.5 1.5 0 0 1-1.5-1.3z" className="elBagBody"/><path d="M3.5 9h17l-.3 3.4H3.8z" className="elBagFold"/><circle cx="8.5" cy="12" r=".9" className="elBagEyelet"/><circle cx="15.5" cy="12" r=".9" className="elBagEyelet"/></svg>)}</span></li><li className="is-simplify"><b>Simplified</b><span>Dense product details became scannable benefits</span></li><li className="is-keep"><b>Kept</b><span>Brand scale, product imagery, and shade context</span></li></ol></div></aside></section>
+  <section className="elInvitation elStage" id="el-design"><header><h2>Start with a question the shopper can answer.</h2></header><figure><img src={assetUrl('project-media/el-shop.webp')} alt="Original Double Wear screen asking what the shopper looks for in a foundation" loading="lazy"/><figcaption>The original opening screen. Familiar Double Wear imagery earns recognition; the question gives the shopper an easy first move.</figcaption></figure></section>
+  <section className="elProof"><header><h2>One benefit at a time.</h2></header><figure><img src={assetUrl('project-media/el-benefits.webp')} alt="Original benefits carousel showing finish, buildable coverage, and wear information" loading="lazy"/><figcaption>Actual project screen · Product benefits carousel</figcaption></figure></section>
+  <section className="elPurchase elStage" id="el-scope"><div className="elRetail"><h2>Know where the product ends.</h2><p>Nothing in the brief stopped me adding a cart, and a week was enough to fake one. I decided against it: rebuilding checkout would have meant inventory, payments, and accounts, real work that helps nobody decide, and shoppers already have a favorite place to buy beauty. So I spent the week on discovery and linked out to eight established retailers, letting people finish the purchase where they already trust.</p><figure><img src={assetUrl('project-media/el-shades.webp')} alt="Original purchase page showing foundation imagery and retailer links including Estée Lauder, Sephora, Ulta, and Nordstrom" loading="lazy"/><figcaption>Original retailer page with product and shade context.</figcaption></figure></div><aside className="elScope" ref={el=>{if(!el||el.dataset.io)return;el.dataset.io='1';const io=new IntersectionObserver(([e])=>{if(e.isIntersecting){el.classList.add('isIn');io.disconnect()}},{threshold:.3});io.observe(el)}} aria-label="Scope decisions: kept brand scale, imagery, and shade context; simplified dense product details into scannable benefits; handed checkout to eight established retailers"><h3>Where I drew the line</h3><div className="elBottleScene"><svg className="elBottle" viewBox="0 0 200 320" aria-hidden="true"><defs><linearGradient id="elCap" x1="0" x2="1"><stop offset="0" stopColor="#7d5a26"/><stop offset=".22" stopColor="#c9a25d"/><stop offset=".42" stopColor="#f3dfae"/><stop offset=".6" stopColor="#c19a55"/><stop offset="1" stopColor="#6f4f20"/></linearGradient><linearGradient id="elCapTop" x1="0" x2="1"><stop offset="0" stopColor="#a8823f"/><stop offset=".5" stopColor="#f6e6bd"/><stop offset="1" stopColor="#8e6a30"/></linearGradient><linearGradient id="elGlass" x1="0" x2="1"><stop offset="0" stopColor="#fff" stopOpacity=".95"/><stop offset=".12" stopColor="#f4efe8" stopOpacity=".6"/><stop offset=".85" stopColor="#efe8de" stopOpacity=".55"/><stop offset="1" stopColor="#d9cfc0" stopOpacity=".95"/></linearGradient><linearGradient id="elKeepFill" x1="0" x2="1"><stop offset="0" stopColor="#4a2a17"/><stop offset=".5" stopColor="#6e412a"/><stop offset="1" stopColor="#3f2313"/></linearGradient><linearGradient id="elSimplifyFill" x1="0" x2="1"><stop offset="0" stopColor="#7a4b2e"/><stop offset=".5" stopColor="#9a6441"/><stop offset="1" stopColor="#6c4128"/></linearGradient><radialGradient id="elShadow"><stop offset="0" stopColor="#3b2a1a" stopOpacity=".28"/><stop offset="1" stopColor="#3b2a1a" stopOpacity="0"/></radialGradient><clipPath id="elInside"><path d="M44 112q0-10 10-10h92q10 0 10 10v176q0 8-8 8H52q-8 0-8-8z"/></clipPath></defs><ellipse cx="100" cy="312" rx="86" ry="8" fill="url(#elShadow)"/><rect x="66" y="6" width="68" height="62" rx="4" fill="url(#elCap)"/><rect x="66" y="6" width="68" height="7" rx="3" fill="url(#elCapTop)"/>{[74,82,90,98,106,114,122].map(x=><path key={x} d={`M${x} 14v50`} stroke="#5b3f14" strokeOpacity=".22" strokeWidth="1.2"/>)}<path d="M72 14v50" stroke="#fff" strokeOpacity=".5" strokeWidth="2"/><rect x="78" y="68" width="44" height="14" fill="#6f4f20"/><rect x="78" y="68" width="44" height="3" fill="#3e2a0e" fillOpacity=".5"/><path d="M26 108q0-26 26-26h96q26 0 26 26v186q0 20-20 20H46q-20 0-20-20z" fill="url(#elGlass)" stroke="#cbbba2" strokeWidth="1.6"/><g clipPath="url(#elInside)"><g className="elFill"><rect x="40" y="150" width="120" height="70" fill="url(#elSimplifyFill)"/><rect x="40" y="220" width="120" height="80" fill="url(#elKeepFill)"/><path d="M40 150q30-6 60 0t60 0v4q-30 6-60 0t-60 0z" fill="#b07a54"/></g></g><path d="M44 112q0-10 10-10h92q10 0 10 10v176q0 8-8 8H52q-8 0-8-8z" fill="none" stroke="#fff" strokeOpacity=".35" strokeWidth="1.2"/><path d="M34 118v160" stroke="#fff" strokeOpacity=".75" strokeWidth="5" strokeLinecap="round"/><path d="M166 124v120" stroke="#fff" strokeOpacity=".35" strokeWidth="2" strokeLinecap="round"/><text x="100" y="124" textAnchor="middle" className="elBottleBrand">ESTĒE LAUDER</text><text x="100" y="140" textAnchor="middle" className="elBottleName">Double Wear</text></svg><ol className="elScopeNotes"><li className="is-handoff"><b>Handed off</b><span>Checkout stays with 8 established retailers</span><span className="elBags" aria-hidden="true">{Array.from({length:8},(_,i)=><svg key={i} viewBox="0 0 24 28"><path d="M8.5 9V6.5a3.5 3.5 0 0 1 7 0V9" className="elBagHandle"/><path d="M3.5 9h17l-1.2 16.2a1.5 1.5 0 0 1-1.5 1.3H6.2a1.5 1.5 0 0 1-1.5-1.3z" className="elBagBody"/><path d="M3.5 9h17l-.3 3.4H3.8z" className="elBagFold"/><circle cx="8.5" cy="12" r=".9" className="elBagEyelet"/><circle cx="15.5" cy="12" r=".9" className="elBagEyelet"/></svg>)}</span></li><li className="is-simplify"><b>Simplified</b><span>Dense product details became scannable benefits</span></li><li className="is-keep"><b>Kept</b><span>Brand scale, product imagery, and shade context</span></li></ol></div></aside></section>
   <section className="elResponsive elStage" id="el-build"><header><div><h2>An image-led site has to survive a phone.</h2></div><div><p>This product sells through imagery: bottles, textures, shades. Crop it badly on a small screen and the shade context disappears, so responsive layout was a core problem, not polish. I reused a small set of responsive patterns so images scaled intact and the story kept its order as the screen narrowed.</p><p className="elSmall">Toggle the width to see the original capture scale.</p></div></header><div className="elSizeToggle" role="group" aria-label="Compare image presentation widths"><button aria-pressed={!compact} onClick={()=>setCompact(false)}>Wide canvas</button><button aria-pressed={compact} onClick={()=>setCompact(true)}>Narrow canvas</button></div><div className={`elViewport ${compact?'elViewportCompact':''}`}><img src={assetUrl('project-media/el-home.webp')} alt="Original Double Wear homepage, scaled without cropping" loading="lazy"/></div><p className="elViewportCaption">The original imagery stays intact as the available width changes.</p></section>
   <section className="elFinal elStage" id="el-present"><div className="elCompactScene"><EsteeCompact/></div><EsteeOutcome/></section>
  </div>
@@ -1036,7 +1034,8 @@ const accentureStages=[
  {id:'ax-discover',name:'Discover',did:'Supported 21 live requests'},
  {id:'ax-define',name:'Define',did:'Write the rules down'},
  {id:'ax-build',name:'Build',did:'Prototype in Codex'},
- {id:'ax-test',name:'Test',did:'Find where rules break'}
+ {id:'ax-test',name:'Test',did:'Find where rules break'},
+ {id:'ax-recommend',name:'Recommend',did:'Five ideas, each with a 90-day test'}
 ];
 function AccentureCase(){return <div className="accentureStory"><AccentureStagger/><LifecycleRoad stages={accentureStages} vehicle="cablecar"/>
   <section className="axChapter accentureRelayStage axStage" id="ax-discover"><header><h2>How one request moved <em>through the process.</em></h2><p>At Accenture in San Francisco, I supported intake, trainer matching, and scheduling for an AI lab client. Every request crossed three tools before a trainer was booked for a training session.</p></header><AccentureRequestRelay/></section>
@@ -1104,7 +1103,7 @@ function KohlerCase(){
 function BookclubCase(){return <BookclubEditorial/>;}
 
 function BookclubCaseLegacy(){return <>
-  <CaseSection title="The problem"><p>A book club’s hardest work happens between meetings. The next title sits across text threads, polls, and search tabs; readers move at different speeds; discussion risks spoilers; and meeting details disappear into the chat history.</p><p>I designed and built Bookclub for a private reading group so that choosing, reading, discussing, and meeting could work as one continuous product loop.</p></CaseSection>
+  <CaseSection title="The problem"><p>A book club’s hardest work happens between meetings. The next title sits across text threads, polls, and search tabs; readers move at different speeds; discussion risks spoilers; and meeting details are hard to find again later.</p><p>I designed and built Bookclub for a private reading group so that choosing, reading, discussing, and meeting could work as one continuous product loop.</p></CaseSection>
   <CaseSection title="The product loop"><div className="bookclubLoop"><article><header><span>01</span><div><strong>Choose together</strong><small>Reduce decision friction</small></div></header><div className="bookclubLoopSteps"><span>Create or join</span><b>→</b><span>Nominate</span><b>→</b><span>Rank</span></div><p>Private membership and ranked preference turn scattered suggestions into one group decision.</p></article><article><header><span>02</span><div><strong>Read together</strong><small>Support different paces</small></div></header><div className="bookclubLoopSteps"><span>Track</span><b>→</b><span>Discuss</span></div><p>Progress, checkpoints, and spoiler boundaries keep the group connected without forcing one speed.</p></article><article><header><span>03</span><div><strong>Keep the club moving</strong><small>Close and restart the loop</small></div></header><div className="bookclubLoopSteps"><span>Meet</span><b>→</b><span>Rate</span><b>→</b><span>Repeat</span></div><p>Meeting coordination and the shared shelf carry momentum into the next pick.</p></article></div></CaseSection>
   <CaseSection title="Product decisions"><div className="bookclubDecisionGrid">{[
     ['01 · Trust','Private by default','Invite-only clubs protect the intimacy of an existing group.','Tradeoff: growth is member-led, not feed-led.'],
@@ -1316,18 +1315,18 @@ function Home({openCase}){
               </div>
               </div>
               <h3>Spartan Touchdown</h3>
-              <p>MSU CSE 335 team project in C++ with wxWidgets: player movement, collisions, enemies, scoring and level state, integrated and tested together.</p>
+              <p>C++ team game with player movement, collisions, enemies, scoring, and shared level state.</p>
               </article><article className="smallBuild">
                 <div className="techVisual fluids">
                   <img src="project-media/stable-fluids.png" alt="Stable Fluids simulation"/>
                   </div>
                   <h3>Stable Fluids</h3>
-                  <p>MSU CSE 472 graphics project in C++: a 2D Stable Fluids simulation using the Stam method, with interactive emitters and obstacles in real time.</p>
+                  <p>Interactive 2D fluid simulation in C++ using the Stam method, with live emitters and obstacles.</p>
                   </article>
                   </div>
                   </section>
   <section id="about" className="section aboutSection">
-    <div className="aboutPhoto"><AboutFilmCamera photos={aboutFilmPhotos} open={filmOpen} index={filmIndex} onClose={()=>setFilmOpen(false)} onChange={setFilmIndex}/></div><div className="aboutCopy"><h2>About me</h2><p>I’m Neha. I’m finishing <strong>two degrees at Michigan State in Computer Science and Supply Chain Management</strong>, which mostly means I notice how systems work, and which parts people are still doing by hand because nobody got around to fixing them. I’m a <span className="creativeWord" tabIndex={0} aria-label="creative">{"creative".split("").map((c,i)=><span key={i} aria-hidden="true" style={{"--i":i} as React.CSSProperties}>{c}</span>)}<svg className="creativeLine" viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path d="M3 9 C 18 3, 30 13, 46 7 S 74 3, 88 8 S 108 12, 117 5"/></svg><svg className="creativeWash" viewBox="-130 -70 260 140" aria-hidden="true">
+    <div className="aboutPhoto"><AboutFilmCamera photos={aboutFilmPhotos} open={filmOpen} index={filmIndex} onClose={()=>setFilmOpen(false)} onChange={setFilmIndex}/></div><div className="aboutCopy"><h2>About me</h2><p>I’m Neha, finishing <strong>two degrees at Michigan State in Computer Science and Supply Chain Management</strong>. I’m drawn to work where I can understand why a system is hard to use, decide what should change, and help ship a better version. I’m a <span className="creativeWord" tabIndex={0} aria-label="creative">{"creative".split("").map((c,i)=><span key={i} aria-hidden="true" style={{"--i":i} as React.CSSProperties}>{c}</span>)}<svg className="creativeLine" viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path d="M3 9 C 18 3, 30 13, 46 7 S 74 3, 88 8 S 108 12, 117 5"/></svg><svg className="creativeWash" viewBox="-130 -70 260 140" aria-hidden="true">
  <defs>
   <filter id="wcBleed" x="-30%" y="-30%" width="160%" height="160%">
    <feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="3" seed="7" result="n"/>
@@ -1343,7 +1342,7 @@ function Home({openCase}){
   {[[-70,-8,34,'wcRose'],[-22,-30,28,'wcPeach'],[34,-22,32,'wcCoral'],[78,6,26,'wcGold'],[-40,26,24,'wcPeach'],[22,30,27,'wcRose'],[-98,14,15,'wcCoral'],[100,-28,13,'wcRose']].map(([x,y,r,f],i)=><circle key={i} className="wcPool" cx={x} cy={y} r={r} fill={`url(#${f})`} style={{"--k":i} as React.CSSProperties}/>)}
   {[[-112,-34,2.6,'#d9587e'],[-86,-48,1.6,'#e8844f'],[112,32,2.2,'#d9604f'],[92,48,1.4,'#e0a13a'],[-60,50,1.8,'#d9587e'],[58,-50,2,'#e8844f'],[124,-6,1.3,'#d9587e'],[-124,40,1.2,'#e0a13a']].map(([x,y,r,c],i)=><circle key={'d'+i} className="wcDrop" cx={x} cy={y} r={r} fill={c as string} style={{"--k":i} as React.CSSProperties}/>)}
  </g>
-</svg></span> at heart, so if I’m going to fix something I want it to look good while I’m at it, not just work. I built and shipped customer-facing software at Ford and Ford Credit, then went to the business side at Accenture and Spectrum, where the question is which problems are even worth doing. Product is the part that needs both, so that’s where I’m going full time.</p><p>Honestly, I’ve been doing a version of this since high school. I keep rebuilding the same alarm: find the latest I can get up and still make it on time. It started as a script that just checked Google Maps drive time. When I moved to the Bay for the summer I added my morning routine, live transit, traffic and walking time, and it turned into the <a className="aboutInlineLink" href="#/projects/commute">Commute iOS app</a> above. I’ve never been good at leaving a problem half-fixed.</p><p className="hobbyLine">Outside of work, I’m usually trying a new coffee shop<span className="coffeeCup" aria-hidden="true"><svg viewBox="0 0 24 24"><path className="steam s1" d="M9.5 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/><path className="steam s2" d="M13 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/><path className="cupLine" d="M5 11h13v3.5A5.5 5.5 0 0 1 12.5 20h-2A5.5 5.5 0 0 1 5 14.5z"/><path className="cupLine" d="M18 12.2h.9a2.2 2.2 0 0 1 0 4.4h-1.3"/><path className="cupLine" d="M4 22h15"/></svg></span>, traveling, <HobbyPopover variant="shelf" label="reading" title="On my shelf" items={["A Thousand Splendid Suns","When Breath Becomes Air","The Year of Magical Thinking","Sharp Objects"]}/>, keeping up with <HobbyPopover variant="tv" label="reality TV" title="Always on rotation" items={["Modern Family","Vanderpump Rules","Summer House","the newest Real Housewives season"]}/>, baking, hiking, painting, or taking <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>{setFilmOpen(true);setFilmIndex(0)}} aria-expanded={filmOpen}>film photos</button><span className="filmPhotoHint" role="tooltip">click to see my photos</span></span>.</p><div className="aboutActions"><BookRecForm/></div></div></section>
+</svg></span> at heart, so I care about how a product feels, not only whether it works. I’ve built customer-facing software at Ford and Ford Credit and worked on product and business problems at Accenture and Spectrum. That mix is why I’m pursuing product management.</p><p className="hobbyLine">Outside of work, I’m usually trying a new coffee shop<span className="coffeeCup" aria-hidden="true"><svg viewBox="0 0 24 24"><path className="steam s1" d="M9.5 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/><path className="steam s2" d="M13 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/><path className="cupLine" d="M5 11h13v3.5A5.5 5.5 0 0 1 12.5 20h-2A5.5 5.5 0 0 1 5 14.5z"/><path className="cupLine" d="M18 12.2h.9a2.2 2.2 0 0 1 0 4.4h-1.3"/><path className="cupLine" d="M4 22h15"/></svg></span>, traveling, <HobbyPopover variant="shelf" label="reading" title="On my shelf" items={["A Thousand Splendid Suns","When Breath Becomes Air","The Year of Magical Thinking","Sharp Objects"]}/>, keeping up with <HobbyPopover variant="tv" label="reality TV" title="Always on rotation" items={["Modern Family","Vanderpump Rules","Summer House","the newest Real Housewives season"]}/>, baking, hiking, painting, or taking <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>{setFilmOpen(true);setFilmIndex(0)}} aria-expanded={filmOpen}>film photos</button><span className="filmPhotoHint" role="tooltip">click to see my photos</span></span>.</p><div className="aboutActions"><BookRecForm/></div></div></section>
  </main><footer className="siteFooter"><span>© 2026 Neha Chinimilli</span><nav aria-label="Footer"><a href="mailto:chinimi2@msu.edu">Email</a><a className="linkedinLink" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Visit Neha Chinimilli on LinkedIn (opens in a new tab)"><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M19.5 3h-15A1.5 1.5 0 0 0 3 4.5v15A1.5 1.5 0 0 0 4.5 21h15a1.5 1.5 0 0 0 1.5-1.5v-15A1.5 1.5 0 0 0 19.5 3ZM8.25 18.25H5.75v-8h2.5v8ZM7 9.15a1.45 1.45 0 1 1 0-2.9 1.45 1.45 0 0 1 0 2.9Zm11.25 9.1h-2.5v-3.9c0-.93-.02-2.12-1.29-2.12-1.3 0-1.5 1.01-1.5 2.05v3.97h-2.5v-8h2.4v1.09h.04c.33-.64 1.15-1.32 2.37-1.32 2.54 0 3.01 1.67 3.01 3.84v4.39Z"/></svg><span>LinkedIn</span><span aria-hidden="true">↗</span></a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></nav></footer>
  </>
 }

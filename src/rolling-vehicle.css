@@ -1,0 +1,28 @@
+/* Motion for a photographic/vector vehicle: the wheels turn, the body rides on its suspension,
+   and speed streaks trail it only while it is actually moving. */
+.rvVehicle{position:relative;display:block;width:100%;line-height:0;filter:drop-shadow(0 12px 9px rgba(43,39,68,.16));transition:transform .6s cubic-bezier(.2,.8,.2,1),opacity .4s ease,filter .4s ease}
+.rvBody{display:block;width:100%;height:auto}
+.rvWheel{position:absolute;aspect-ratio:1;border-radius:50%;background-repeat:no-repeat;transform:rotate(0deg)}
+
+/* Contact shadow that travels with the vehicle. */
+.rvVehicle:after{content:'';position:absolute;left:5%;right:5%;bottom:-5px;height:11px;border-radius:50%;background:radial-gradient(closest-side,rgba(20,26,24,.3),transparent);filter:blur(3px);z-index:-1;transition:opacity .4s ease}
+
+/* Speed streaks behind the vehicle, only while it moves. */
+.rvVehicle:before{content:'';position:absolute;right:100%;top:18%;width:26%;height:58%;background:repeating-linear-gradient(180deg,rgba(90,105,120,.26) 0 2px,transparent 2px 12px);-webkit-mask-image:linear-gradient(90deg,transparent,#000);mask-image:linear-gradient(90deg,transparent,#000);opacity:0;transition:opacity .45s ease;pointer-events:none}
+
+.rvVehicle.isMoving:before{opacity:.85}
+.rvVehicle.isMoving .rvWheel{animation:rvSpin .62s linear infinite}
+.rvVehicle.isMoving .rvBody{animation:rvRide 1.05s ease-in-out infinite}
+
+/* Dead in the water: the wheels stop, the body settles and drains of colour. */
+.rvVehicle.isStalled{opacity:.34;filter:grayscale(.85) drop-shadow(0 6px 6px rgba(43,39,68,.12));transform:translateX(-6%) rotate(-1.2deg)}
+.rvVehicle.isStalled:after{opacity:.35}
+
+@keyframes rvSpin{to{transform:rotate(360deg)}}
+@keyframes rvRide{0%,100%{transform:translateY(0)}28%{transform:translateY(-1.1px)}62%{transform:translateY(.7px)}}
+
+@media(prefers-reduced-motion:reduce){
+ .rvVehicle,.rvVehicle.isStalled{transition:none;transform:none}
+ .rvVehicle.isMoving .rvWheel,.rvVehicle.isMoving .rvBody{animation:none}
+ .rvVehicle:before{display:none}
+}

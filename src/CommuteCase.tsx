@@ -1,17 +1,34 @@
 import React, {useState, useEffect, useRef} from 'react';
 import './commute-case.css';
 import CommuteBARTStory from './CommuteBARTStory';
+import RollingVehicle from './RollingVehicle';
 import LifecycleRoad from './LifecycleRoad';
 import { DecisionMoment, Tradeoff } from './CaseDecision';
-import { CommutePhoneDemo, CommuteSurfaces, useMorning } from './CommuteSurfaces';
+import { CommutePhoneDemo, useMorning } from './CommuteSurfaces';
+import CommuteModelLab from './CommuteModelLab';
 
 
+/* A forecast can be accurate and still produce bad mornings, so the scoreboard tracks the
+   decisions the app made, not only the numbers it predicted. */
 const measures=[
  {label:'Arrival error',desc:'Predicted vs. actual walk-in time'},
- {label:'Unused buffer',desc:'Minutes spent waiting instead of sleeping'},
- {label:'Prediction error',desc:'Routine, walk, and ride, per route'},
- {label:'Interruptions',desc:'Normal mornings that needed me. Target: 0'},
- {label:'App opens',desc:'Mornings I had to unlock to know what to do. Target: 0'}
+ {label:'On-time rate',desc:'How often I actually made 9:00'},
+ {label:'Calibration',desc:'Whether "90% likely" happens about 90% of the time'},
+ {label:'Unnecessary early minutes',desc:'Sleep given up that the morning turned out not to need'},
+ {label:'Missed sleep',desc:'Mornings I could safely have woken later'},
+ {label:'Helpful switches',desc:'Route changes that actually protected the arrival'},
+ {label:'Interruptions',desc:'Normal mornings that needed me. Target: 0'}
+];
+
+/* Seven things that separate risk-aware planning from a confident guess. */
+const robustness=[
+ {n:'01',t:'Range, not point',d:'0 to 4 min normal. 8 to 12 when struggling.'},
+ {n:'02',t:'Learn your routine',d:'Personal history > transit feed.'},
+ {n:'03',t:'Each leg separate',d:'Routine + walk + wait + ride + final walk. One delay doesn\'t break the rest.'},
+ {n:'04',t:'Correlate conditions',d:'Rain hits everything together.'},
+ {n:'05',t:'Conservative bound',d:'Worst-case must still hit 9:00.'},
+ {n:'06',t:'Replan at checkpoints',d:'Before alarm, after wake, before leave, when live feed updates.'},
+ {n:'07',t:'Measure what matters',d:'On-time rate. Unnecessary early time. Was this route switch real.'}
 ];
 
 /* Reveal-on-scroll used by the diagrams below. Honors reduced motion by
@@ -41,8 +58,8 @@ function RouteRisk(){
  const arc=(from:number,to:number,r:number)=>{const [x1,y1]=pt(from,r),[x2,y2]=pt(to,r);return `M${x1} ${y1}A${r} ${r} 0 ${to-from>30?1:0} 1 ${x2} ${y2}`};
  const R=38;
  const routes=[
-  {name:'BART',from:48,to:53,tone:'ok',range:'arrives 8:48–8:53',note:'Always on time'},
-  {name:'NL bus',from:42,to:64,tone:'risk',range:'arrives 8:42–9:04',note:'Late 1 in 3 mornings'}
+ {name:'BART',from:48,to:53,tone:'ok',range:'arrives 8:48 to 8:53',note:'Narrow observed range'},
+  {name:'NL bus',from:42,to:64,tone:'risk',range:'arrives 8:42 to 9:04',note:'Wider observed range'}
  ];
  return <div className={`cmClocks${seen?' isIn':''}`} ref={ref}>
   {routes.map(r=><div key={r.name} className={`cmClock is-${r.tone}`} role="img" aria-label={`${r.name} ${r.range}. ${r.note}.`}>
@@ -63,19 +80,155 @@ function RouteRisk(){
  </div>;
 }
 
-/* The product is not choosing the shortest-looking ride. It plans the entire
-   morning from a fixed arrival deadline, including whether a missed departure
-   can be recovered before the office. */
-function RouteDecisionModel(){
- const routes=[
-  {name:'BART',legs:'19 min walk · 11 min train · 7 min walk',frequency:'Every 5–6 min',note:'A missed train is recoverable',tone:'train'},
-  {name:'NL bus',legs:'35 min direct to the office',frequency:'Every 30 min',note:'An early, late, or missing bus can cost the morning',tone:'bus'}
+/* Where the uncertainty actually lives. The simulation work above is aimed at
+   transit, but transit is the narrow term — the phone can see a train and
+   cannot see whether I went back for my keys. Saying so is what justifies
+   learning a personal routine instead of buying a better feed. */
+const legs=[
+ {k:'routine',name:'Morning routine',typ:'48 min',lo:34,hi:62,w:28,tone:'wide',src:'AlarmKit dismissal → departure geofence'},
+ {k:'walk',name:'Walk to the station',typ:'19 min',lo:16,hi:23,w:7,tone:'ok',src:'HealthKit pace · Google Routes'},
+ {k:'wait',name:'Platform wait',typ:'0 to 6 min',lo:0,hi:6,w:6,tone:'ok',src:'511 GTFS-Realtime'},
+ {k:'ride',name:'The ride',typ:'11 min',lo:11,hi:23,w:12,tone:'mid',src:'511 live BART'},
+ {k:'final',name:'Final walk',typ:'7 min',lo:6,hi:9,w:3,tone:'ok',src:'HealthKit pace · Google Routes'}
+];
+function VarianceLegs(){
+ const [ref,seen]=useInView<HTMLDivElement>();
+ const max=Math.max(...legs.map(l=>l.w));
+ return <section ref={ref} className={`cmVariance${seen?' isIn':''}`} aria-labelledby="cm-var-title">
+  <header>
+   <h3 id="cm-var-title">This finding changed what the product learned.</h3>
+   <p>My getting-ready time varied by 28 minutes, more than any transit step. So Commute learns my routine from past mornings instead of treating it as a fixed 48-minute block.</p>
+  </header>
+  <ol>
+   {legs.map((l,i)=><li key={l.k} className={`is-${l.tone}`} style={{'--i':i,'--w':`${l.w/max*100}%`} as React.CSSProperties}>
+    <div className="cmVarHead"><b>{l.name}</b><em>{l.typ}</em></div>
+    <div className="cmVarBar" role="img" aria-label={`${l.name} spans ${l.lo} to ${l.hi} minutes, a spread of ${l.w} minutes`}><i/><span>±{Number.isInteger(l.w/2)?l.w/2:(l.w/2).toFixed(1)} min</span></div>
+   </li>)}
+  </ol>
+  <p className="cmVarianceDecision"><b>Product change:</b> replace the fixed routine estimate with a personal range that updates after each completed morning.</p>
+ </section>;
+}
+
+function UpdateMechanism(){
+ const [ref,seen]=useInView<HTMLElement>();
+ const updates=[
+  {day:'1',pred:'48 min',actual:'52 min',alarm:'7:18'},
+  {day:'2',pred:'49 to 51',actual:'51 min',alarm:'7:17'},
+  {day:'3',pred:'50 to 52',actual:'50 min',alarm:'7:16'},
+  {day:'4',pred:'49 to 52',actual:'47 min',alarm:'7:16'},
+  {day:'5',pred:'48 to 51',actual:'49 min',alarm:'7:17'},
+  {day:'6',pred:'48 to 51',actual:'48 min',alarm:'7:17'},
+  {day:'7',pred:'47 to 50',actual:'46 min',alarm:'7:18'},
+  {day:'8',pred:'47 to 50',actual:'48 min',alarm:'7:18'}
  ];
- return <div className="cmDecisionModel" aria-label="How Commute chooses between BART and the NL bus">
-  <header><span>Route decision</span><strong>9:00 AM arrival is the constraint.</strong><p>For every route, the app works backward from the calendar deadline and computes a reliable leave and wake-up time.</p></header>
-  <div className="cmRouteOptions">{routes.map(route=><article key={route.name} className={`is-${route.tone}`}><div className="cmRouteMark" aria-hidden="true">{route.tone==='train'?'B':'N'}</div><div><b>{route.name}</b><span>{route.legs}</span></div><aside><strong>{route.frequency}</strong><span>{route.note}</span></aside></article>)}</div>
-  <footer><span>Decision rule</span><p>Pick the latest wake-up time that still clears the arrival deadline at the chosen reliability level. Include the next departure, access walk, live service status, and a buffer based on that route’s typical variance.</p><b>Then recheck until I leave.</b></footer>
+ return <section ref={ref} className={`cmUpdateMechanism${seen?' isIn':''}`} aria-labelledby="cm-update-title">
+  <header><h3 id="cm-update-title">Each completed morning improves the next alarm.</h3><p>AlarmKit records when I dismiss the alarm; a departure geofence records when I leave home. That elapsed time becomes the actual routine, which can move tomorrow’s alarm earlier or later. I can correct a bad reading.</p></header>
+  <table className="cmUpdateTable">
+   <thead><tr><th>Morning</th><th>Routine estimate</th><th>Actual</th><th>Next alarm</th></tr></thead>
+   <tbody>{updates.map((u,i)=><tr key={i} style={{'--day':i} as React.CSSProperties}><td>{u.day}</td><td>{u.pred}</td><td>{u.actual}</td><td>{u.alarm}</td></tr>)}</tbody>
+  </table>
+ </section>;
+}
+
+function ModelLearningSummary(){
+ const [ref,seen]=useInView<HTMLElement>();
+ const max=Math.max(...legs.map(l=>l.w));
+ const half=(w:number)=>Number.isInteger(w/2)?w/2:(w/2).toFixed(1);
+ // Grouped by what the product can actually do about each one: the feed already
+ // knows the transit legs, so the only way to shrink the big one is to learn it.
+ const feed=legs.filter(l=>l.k!=='routine');
+ const mine=legs.filter(l=>l.k==='routine');
+ const row=(l:typeof legs[number],i:number,focus=false)=>
+  <li key={l.k} className={focus?'is-focus':''} style={{'--i':i,'--w':`${l.w/max*100}%`} as React.CSSProperties}>
+   <span>{l.name}<cite>{l.src}</cite></span><i><u/></i><b>±{half(l.w)} min</b>
+  </li>;
+ return <section ref={ref} className={`cmSpread${seen?' isIn':''}`} aria-labelledby="cm-model-learning-title">
+  <header>
+   <h3 id="cm-model-learning-title">The biggest unknown was me, not the trains.</h3>
+   <p>Every leg of the trip swings by a few minutes. My getting-ready time swings by 28. A better transit feed could not have found that, so the product had to learn it.</p>
+  </header>
+  <div className="cmSpreadGroups">
+   <div className="cmSpreadGroup">
+    <p className="cmSpreadCap">A live feed already knows these</p>
+    <ol>{feed.map((l,i)=>row(l,i))}</ol>
+    <span className="cmSpreadNote">Buying better data changes these by minutes.</span>
+   </div>
+   <div className="cmSpreadGroup is-mine">
+    <p className="cmSpreadCap">Only my own mornings know this</p>
+    <ol>{mine.map((l,i)=>row(l,i,true))}</ol>
+    <span className="cmSpreadNote">So Commute measures it every morning — AlarmKit says when I dismissed the alarm, a departure geofence says when I actually left — instead of assuming 48 minutes.</span>
+   </div>
+  </div>
+  <p className="cmSpreadLoop"><b>Dismiss alarm</b><i aria-hidden="true">→</i><b>leave home</b><i aria-hidden="true">→</i><b>tomorrow&rsquo;s range narrows</b></p>
+ </section>;
+}
+
+
+/* The algorithm is deliberately shown as a decision system rather than a
+   black-box score: create reachable plans, simulate the uncertainty in each
+   leg, enforce the reliability constraint, then keep monitoring the winner. */
+function ReliabilityEngine(){
+ const [ref,seen]=useInView<HTMLDivElement>();
+ return <div ref={ref} className={`cmEngine${seen?' isRunning':''}`} aria-label="Commute reliability algorithm">
+  <CommuteModelLab/>
+  <ModelLearningSummary/>
  </div>;
+}
+
+// The real AC Transit NL coach and the real BART car, both driving. The NL bus is the selected
+// plan, so it is the one rolling; when the feed drops it stalls and BART takes over the motion.
+const BUS_SRC=`${import.meta.env.BASE_URL}project-media/ac-transit-nl-transbay-bus.svg`;
+const BART_SRC=`${import.meta.env.BASE_URL}project-media/bart-train.webp`;
+
+function NLBusGraphic({failed}:{failed:boolean}){
+ return <div className="cmTransitVehicle cmNLVehicle">
+  <RollingVehicle
+   src={BUS_SRC} w={1280} h={400} moving={!failed} stalled={failed}
+   wheels={[{cx:354,cy:255,r:54},{cx:996,cy:255,r:54}]}
+   alt="AC Transit Line NL Transbay bus in the green and white livery, signed NL Transbay"/>
+  {failed&&<svg className="cmTransitFailure" viewBox="0 0 320 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+    <path d="M130 52h60"/><text x="160" y="90">5 min late</text>
+  </svg>}
+ </div>;
+}
+
+function BARTMiniGraphic({live}:{live:boolean}){
+ return <div className="cmTransitVehicle cmBARTVehicle">
+  <RollingVehicle
+   src={BART_SRC} w={2172} h={418} moving={live}
+   wheels={[171,465,1724,2009].map(cx=>({cx,cy:375,r:44}))}
+   alt="BART Fleet of the Future train car with blue wrapped ends and the BART logo"/>
+ </div>;
+}
+
+function DisruptionReplay(){
+ return <div className="cmReplay cmReplayRule">
+  <header><strong>Choose NL first. Keep BART ready.</strong><p>A live check near departure decides whether the faster bus is still safe.</p></header>
+  <div className="cmReplayTrack">
+   <div className="cmReplayRoute cmReplayBus"><NLBusGraphic failed={false}/><div><b>NL bus</b><span>Take it while the live arrival stays safe</span></div></div>
+   <div className="cmReplayHandoff" aria-hidden="true"><span>IF 5 MIN LATE</span><i>→</i></div>
+   <div className="cmReplayRoute cmReplayBart"><BARTMiniGraphic live={false}/><div><b>BART</b><span>Switch here and still arrive by 8:53</span></div></div>
+  </div>
+  <p>The alarm is already set. This check changes only the route and leave countdown.</p>
+ </div>;
+}
+
+function LearningRun(){
+ const [ref,seen]=useInView<HTMLDivElement>();
+ const weeks=Array.from({length:10},(_,i)=>i+1);
+ return <section className="cmLearning cmStage" id="cm-learn">
+  <header><h2>The 10-week test answered one product question: did the alarms improve?</h2><p>Each weekday created a fair comparison between what Commute predicted before I left and what actually happened. The result updated only the next morning, showing whether personalization was helping rather than simply replaying known outcomes.</p></header>
+  <div ref={ref} className={`cmWeekRun${seen?' isRunning':''}`} aria-label="Ten-week learning run across 40 to 50 weekday mornings">
+   <div className="cmWeekLabels"><span>Week 1</span><b>40 to 50 weekday mornings</b><span>Week 10</span></div>
+   <div className="cmWeekTrack">{weeks.map(week=><div key={week}>{Array.from({length:5},(_,day)=><i key={day} style={{'--morning':(week-1)*5+day} as React.CSSProperties}/>)}</div>)}</div>
+   <div className="cmWeekLegend"><span><i/>prediction locked</span><span><i/>actual morning observed</span><span><i/>next prediction updated</span></div>
+  </div>
+  <div className="cmLearningLoop" aria-label="How one morning improves the next">
+   <div><small>Monday, before leaving</small><b>Predict 8:53</b><span>Lock the alarm and arrival estimate</span></div><i>→</i>
+   <div><small>Monday, after arriving</small><b>Actual 8:57</b><span>The routine took four minutes longer</span></div><i>→</i>
+   <div><small>Tuesday</small><b>Wake 4 min earlier</b><span>Use the new routine range in the next prediction</span></div>
+  </div>
+ </section>;
 }
 
 function FreshnessDiagram(){
@@ -165,32 +318,73 @@ const I={
 };
 const Ico=({k}:{k:keyof typeof I})=><svg viewBox="0 0 24 24" aria-hidden="true">{I[k]}</svg>;
 function MorningItinerary(){
- const [ref,inView]=useLive<HTMLDivElement>();
  const [delayed,setDelayed]=useState(false);
- const [touched,setTouched]=useState(false);
- useEffect(()=>{
-  if(touched||!inView||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-  const id=window.setInterval(()=>setDelayed(d=>!d),3200);
-  return ()=>window.clearInterval(id);
- },[inView,touched]);
- const d=delayed?10:0;
+ const shift=delayed?6:0;
  const steps=[
-  {k:'wake',t:7*60+30-d,title:'Wake up',sub:'48 min morning routine',inputs:[['history','Commute history'],['alarm','AlarmKit']]},
-  {k:'leave',t:8*60+18-d,title:'Leave home',sub:'19 min walk to BART',inputs:[['health','HealthKit'],['routes','Google Routes'],['weather','WeatherKit'],['location','Location']]},
-  {k:'ride',t:8*60+37-d,title:'Board BART',sub:delayed?'21 min ride · 10 min delay':'11 min ride · trains every 5–6 min',inputs:[['transit','511 live BART + bus'],['traffic','511 traffic']]},
-  {k:'arrive',t:9*60,title:'Office',sub:'7 min walk · arrival is fixed',inputs:[['calendar','Calendar']]}
+  {k:'wake',t:7*60+30-shift,old:7*60+30,title:'Wake up',sub:'48 min morning routine',inputs:[['history','Commute history'],['alarm','AlarmKit']]},
+  {k:'leave',t:8*60+18-shift,old:8*60+18,title:'Leave home',sub:'19 min walk to BART',inputs:[['health','HealthKit'],['routes','Google Routes'],['weather','WeatherKit'],['location','Location']]},
+  {k:'ride',t:8*60+37-shift,old:8*60+37,title:delayed?'Take the earlier BART':'Board BART',sub:delayed?'8:31 train still arrives on the bad-morning case':'11 min ride · trains every 5 to 6 min',inputs:[['transit','511 live BART + bus'],['traffic','511 traffic']]},
+  {k:'arrive',t:9*60,old:9*60,title:'Office',sub:delayed?'Arrives by 9:00 across the outcomes I accept':'7 min walk · arrival is fixed',inputs:[['calendar','Calendar']]}
  ];
- return <div ref={ref} className={`cmItin${delayed?' isDelayed':''}`}>
+ return <div className={`cmItin${delayed?' isDelayed':''}`}>
   <ol>{steps.map((st,i)=><li key={st.k} className={`is-${st.k}`} style={{'--i':i} as React.CSSProperties}>
-   <span className="cmItinTime"><b>{clock(st.t)}</b>{delayed&&st.k!=='arrive'&&<s>{clock(st.t+d)}</s>}</span>
+   <span className="cmItinTime"><b>{clock(st.t)}</b>{delayed&&st.k!=='arrive'&&<s>{clock(st.old)}</s>}</span>
    <span className="cmItinDot" aria-hidden="true"/>
    <div className="cmItinBody">
     <strong>{st.title}</strong><span>{st.sub}</span>
     <ul>{st.inputs.map(([icon,name])=><li key={name}><Ico k={icon as keyof typeof I}/>{name}</li>)}</ul>
    </div>
   </li>)}</ol>
-  <button type="button" className="cmItinToggle" aria-pressed={delayed} onClick={()=>{setTouched(true);setDelayed(v=>!v)}}><i aria-hidden="true"/>{delayed?'10 min BART delay on':'Simulate a 10 min BART delay'}</button>
+  {delayed&&<div className="cmLateUpdate cmForecastUpdate" aria-live="polite"><b>7:10 check</b><div><strong>Real-time BART conditions make the 8:37 train too risky.</strong><span>Because this update arrives before the 7:30 alarm, Commute can ask AlarmKit to move it to 7:24 and switch the plan to the 8:31 train. Updates after the alarm rings only change the leave time or route. They cannot change the past alarm.</span></div></div>}
+  <button type="button" className="cmItinToggle" aria-pressed={delayed} onClick={()=>setDelayed(v=>!v)}><i aria-hidden="true"/>{delayed?'Reset the morning':'Simulate a 7:10 BART update'}</button>
  </div>;
+}
+
+/* The gap the alarm cannot close. Moving a wake-up time is the easy lever;
+   the minutes that actually make me late are the ones between the alarm and
+   the door, and no forecast reaches them. So the plan has to be checked
+   against my real pace while the routine is still running, early enough that
+   a small action is still enough. Late detection is the same as no detection. */
+const slips=[
+ {k:'ok',at:'7:52',behind:0,leave:'8:18',arrive:'8:53',
+  head:'On pace. Nothing to say.',
+  body:'Twenty-two minutes into a forty-eight minute routine, roughly where I should be. The plan holds, so Commute stays quiet — the Live Activity just keeps counting down to 8:18.',
+  act:'No interruption'},
+ {k:'warn',at:'7:52',behind:9,leave:'8:27',arrive:'9:04',
+  head:'Nine minutes behind, with room to fix it.',
+  body:'At this pace I leave at 8:27 and walk in at 9:04. But it is still 7:52, so nine minutes is recoverable: the 8:31 train clears 9:00 if I am out the door by 8:24. One instruction, while there is still runway to follow it.',
+  act:'Out the door by 8:24 · take the 8:31'},
+ {k:'late',at:'8:14',behind:9,leave:'8:27',arrive:'9:06',
+  head:'The same nine minutes, now unfixable.',
+  body:'Identical slip, twenty-two minutes later, and nothing is left to spend it from. Walking faster saves two minutes and the next train is the one I am already on track for. The bar has been missed and pretending otherwise just costs me the chance to warn anyone.',
+  act:'You will arrive 9:06 · message the 9:00 now'}
+];
+function RoutineSlip(){
+ const [i,setI]=useState(1);
+ const s=slips[i];
+ return <section className={`cmSlip is-${s.k}`} aria-labelledby="cm-slip-title">
+  <header>
+   <h3 id="cm-slip-title">A wake-up time is a plan. Getting out of bed is not.</h3>
+   <p>Even with the right alarm, I can still leave late. Commute checks my pace once, early enough to offer a useful recovery.</p>
+  </header>
+  <div className="cmSlipPick" role="group" aria-label="Choose a morning">
+   {slips.map((st,n)=><button key={st.k} type="button" aria-pressed={i===n} onClick={()=>setI(n)}>
+    <b>{st.behind?`${st.behind} min behind`:'On pace'}</b><span>checked {st.at}</span>
+   </button>)}
+  </div>
+  <div className="cmSlipBody">
+   <div className="cmSlipRail" role="img" aria-label={`Checked at ${s.at}. Projected departure ${s.leave}, projected arrival ${s.arrive}.`}>
+    {[{l:'Woke',v:'7:30'},{l:'Checked',v:s.at},{l:'Leaves',v:s.leave},{l:'Arrives',v:s.arrive}].map((n,x)=>
+     <div key={n.l} className={x===3?'is-end':''} style={{'--n':x} as React.CSSProperties}><i aria-hidden="true"/><small>{n.l}</small><b>{n.v}</b></div>)}
+   </div>
+   <div className="cmSlipRead">
+    <strong>{s.head}</strong>
+    <p>{s.body}</p>
+    <p className="cmSlipAct"><span>What it says</span><b>{s.act}</b></p>
+   </div>
+  </div>
+  <footer><p><b>The point:</b> nine minutes late at 7:52 can still be fixed. The same delay at 8:14 can only be reported.</p></footer>
+ </section>;
 }
 
 /* Notify only when the plan changes: small shifts are absorbed silently, one real change gets through. */
@@ -217,11 +411,11 @@ function LockScreen(){
 }
 
 const commuteStages=[
- {id:'cm-discover',name:'Discover',did:'Four apps, one question'},
- {id:'cm-design',name:'Design',did:'Plan backward from 9:00'},
- {id:'cm-decide',name:'Decide',did:'Rules for 7 a.m.'},
- {id:'cm-surface',name:'Surface',did:'Lock Screen, Island, widget'},
- {id:'cm-ship',name:'Ship',did:'Daily alarm, next, metrics'}
+ {id:'cm-discover',name:'Discover',did:'Why another commute app?'},
+ {id:'cm-algorithm',name:'Model',did:'How does it choose?'},
+ {id:'cm-decide',name:'Decide',did:'What if traffic delays the bus?'},
+ {id:'cm-learn',name:'Validate',did:'Did it learn without cheating?'},
+ {id:'cm-ship',name:'Ship',did:'What did I actually build?'}
 ];
 export default function CommuteCase({demo}:{demo:React.ReactNode}){
  // One morning, shared by the demo phone and the surfaces section.
@@ -235,8 +429,8 @@ export default function CommuteCase({demo}:{demo:React.ReactNode}){
 
   <section className="cmProblem cmStage" id="cm-discover">
    <div className="cmProblemCopy">
-    <h2>Four apps. <em>One question.</em></h2>
-    <p>Every weekday I checked four apps and did the math in my head. Maps plans the trip, not the morning, and none of them answered the real question.</p>
+    <h2>When do I wake up?</h2>
+    <p>Maps doesn't answer. It plans trips. This plans mornings.</p>
    </div>
    <PlatformBoard/>
    <div className="cmDemoStage">
@@ -244,70 +438,42 @@ export default function CommuteCase({demo}:{demo:React.ReactNode}){
    </div>
   </section>
 
-  <section className="cmPlanBack cmStage" id="cm-design">
-   <div className="cmPlanCopy">
-    <h2>Plan backward <em>from 9:00.</em></h2>
-    <p>Arrival is fixed. Eight live inputs each adjust one step of the morning, and a delay moves the alarm earlier instead of making me late.</p>
-   </div>
-   <MorningItinerary/>
+  <section className="cmAlgorithm cmStage" id="cm-algorithm">
+   <ReliabilityEngine/>
   </section>
 
-  <section className="cmRules cmStage" id="cm-decide">
-   <DecisionMoment
-    statement={<>Plan the whole morning,<br/>not the fastest ride.</>}
-    sub="A 35-minute direct bus can still be the worse commute when it only comes every 30 minutes."
-    because={<p>The real decision is not bus versus train. It is which complete route can still get me to the office by 9:00 if the live feed is wrong, the bus is early, or the next departure is missed.</p>}
-    tradeoff={<Tradeoff pairs={[
-     ['The shortest scheduled ride','The route with a recoverable missed departure'],
-     ['A fixed alarm and manual research','A wake time calculated from live service and route variance'],
-     ['Interrupting on every update','A notification only when the chosen plan breaks']
-    ]}/>}
-    result={<p>One route decision and one wake-up plan instead of four apps. The app can auto-adjust the alarm or ask first, based on the setting I choose.</p>}
-   >
-   <RouteDecisionModel/>
-   <p className="cmRulesLabel">The three rules behind it</p>
-   <div className="cmRuleGrid">
-    <div className="cmRule"><h3>A faster route can be the riskier one.</h3><p>Missing a train that runs every 6 minutes costs little. Missing a bus that runs every 30 costs the morning.</p><RouteRisk/></div>
-    <div className="cmRule"><h3>Old data counts for less.</h3><FreshnessDiagram/></div>
-    <div className="cmRule"><h3>Only interrupt when the plan changes.</h3><p>If a delay doesn’t move the wake time, leave time, or route, it stays silent.</p><LockScreen/></div>
-   </div>
-   </DecisionMoment>
-  </section>
-
-  <section className="cmSurface cmStage" id="cm-surface">
-   <header className="cmSurfaceHead">
-    <h2>The best version <em>is the one I never open.</em></h2>
-    <p>Everything the model knows fits in one glance, so I shipped it to where my eyes already are at 7 a.m.: a Live Activity on the Lock Screen, a countdown in the Dynamic Island, and a Home Screen widget. The app is still there for editing a routine. The morning itself runs without it.</p>
+  <section className="cmDecision cmStage" id="cm-decide">
+   <header className="cmSectionIntro">
+    <h2>Commute checks the selected route again before I leave.</h2>
+    <p>The direct bus starts as the faster plan. If its live arrival slips past the safe range, BART becomes the backup.</p>
    </header>
-   <CommuteSurfaces m={m}/>
+   <DisruptionReplay/>
   </section>
+
+  <LearningRun/>
 
   <section className="cmClose cmStage" id="cm-ship">
    <div className="cmCloseCopy">
-    <h2>Four apps. <em>One alarm.</em></h2>
-    
+    <h2>What shipped, what I measured, and what comes next.</h2>
+
     <ol className="cmScopeStops" aria-label="Scope">
-     <li className="is-shipped"><i/><div><b>Shipped</b><span>Lock Screen Live Activity, Dynamic Island, Home Screen widget, calendar, routine, walking speed, live transit and traffic, native alarms</span></div></li>
-     <li className="is-next"><i/><div><b>Next stop</b><span>Recurring commutes, more cities, reliability learning</span></div></li>
-     <li className="is-cut"><i/><div><b>Not in service</b><span>Social features, generic trip planning, dashboards</span></div></li>
+     <li className="is-shipped"><i/><div><b>Shipped</b><span>Routine learning · route picking · live replanning · lock screen widget</span></div></li>
+     <li className="is-next"><i/><div><b>Next</b><span>Cold-start priors · more cities · templates</span></div></li>
+     <li className="is-cut"><i/><div><b>Not built</b><span>Navigation · social · booking · dashboards</span></div></li>
     </ol>
    </div>
    <div className="cmScale">
-    <header>
-     <span className="cmScaleKicker">If this were Google Maps</span>
-     <h3>What changes at scale</h3>
-     <p>For me, one route and a few weeks of history are enough. For millions of commuters, three things break first.</p>
-    </header>
+    <header><h3>What the next version still needs.</h3></header>
     <ol>
-     <li><i>01</i><b>Cold start</b><p>A new user has no history, so reliability comes from aggregate data on the same line, stop, and time of day, then personalizes as their own trips accumulate.</p></li>
-     <li><i>02</i><b>Uneven data</b><p>Many cities have no realtime feed. Fall back to scheduled times, widen the buffer, and say so.</p></li>
-     <li><i>03</i><b>Trust</b><p>An alarm that moves on its own loses trust fast. Keep approve-before-change, and guard missed arrivals against minutes of sleep saved.</p></li>
+     <li><b>Cold start:</b> No history first two weeks. Need route-level priors.</li>
+     <li><b>Uneven data:</b> Many cities lack realtime feeds. Widen buffer.</li>
+     <li><b>One miss:</b> Show why you were late. Don't quietly replan.</li>
     </ol>
    </div>
    <div className="cmTicket">
     <div className="cmTicketStub" aria-hidden="true"><span>Commute</span><i className="cmBarcode"/></div>
     <div className="cmTicketMain">
-     <header><strong>How I’d know it’s wrong</strong><span>Valid every weekday</span></header>
+     <header><strong>What I measured during the 10-week test</strong></header>
      <dl>{measures.map(m=><div key={m.label}><dt>{m.label}</dt><dd>{m.desc}</dd></div>)}</dl>
      <footer><span>Wake 7:18</span><i aria-hidden="true">→</i><span>Arrive 9:00</span></footer>
     </div>

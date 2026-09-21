@@ -1,0 +1,139 @@
+/* The model lab: a simulation the reader can watch run, rather than a diagram
+   of one. Everything sits on the page background; only the terminal and the
+   chart get a frame, because those two are meant to read as instruments. */
+
+.mlab{
+ --ml-ink:var(--cd-ink,#232a27);
+ --ml-muted:var(--cd-muted,#4d5551);
+ --ml-accent:var(--case-accent,#2f6b4f);
+ --ml-rule:color-mix(in srgb,var(--ml-accent) 22%,transparent);
+ --ml-late:#b4503c;
+ width:min(1120px,100%);margin:0 auto;color:var(--ml-ink);
+}
+
+.mlabHead h2{margin:0 0 14px;font-size:clamp(30px,4vw,52px);line-height:1.04;letter-spacing:-.035em;font-weight:500;text-wrap:balance}
+.mlabHead p{margin:0;max-width:60ch;font-family:var(--font-serif);font-size:17px;line-height:1.6;color:var(--ml-muted)}
+
+.mlabStep{margin-top:54px}
+.mlabStepHead{display:flex;align-items:flex-start;gap:16px;margin-bottom:26px}
+.mlabStepHead>b{display:grid;place-items:center;flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:color-mix(in srgb,var(--ml-accent) 12%,transparent);box-shadow:inset 0 0 0 1px var(--ml-rule);font-size:13px;font-weight:600;color:var(--ml-accent)}
+.mlabStepHead>div{flex:1 1 auto;display:grid;gap:4px;padding-top:3px}
+.mlabStepHead strong{font-size:18px;font-weight:600;letter-spacing:-.015em}
+.mlabStepHead span{max-width:62ch;font-size:15px;line-height:1.55;color:var(--ml-muted)}
+
+.mlabGhostBtn{flex:0 0 auto;align-self:center;padding:7px 14px;border:0;border-radius:999px;background:color-mix(in srgb,var(--ml-accent) 10%,transparent);box-shadow:inset 0 0 0 1px var(--ml-rule);color:var(--ml-accent);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:background .2s ease}
+.mlabGhostBtn:hover{background:color-mix(in srgb,var(--ml-accent) 18%,transparent)}
+
+/* ── the equation ─────────────────────────────────────────────── */
+.mlabEq{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 8px}
+.mlabOp{align-self:center;padding-bottom:16px;font-size:18px;font-weight:400;color:color-mix(in srgb,var(--ml-ink) 40%,transparent)}
+.mlabOp.is-eq{font-size:22px;color:var(--ml-accent)}
+
+.mlabTerm{position:relative;display:grid;gap:5px;min-width:112px;padding:11px 14px 10px;border-radius:12px;background:color-mix(in srgb,var(--ml-accent) 5%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ml-accent) 14%,transparent);transition:background .35s ease,box-shadow .35s ease}
+.mlabTerm em{font-style:normal;font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ml-muted)}
+.mlabTerm b{display:flex;align-items:baseline;gap:4px;font-family:var(--font-mono,ui-monospace,SFMono-Regular,Menlo,monospace);font-size:22px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--ml-ink) 45%,transparent);transition:color .3s ease}
+.mlabTerm b u{text-decoration:none;font-size:11px;font-weight:500;color:var(--ml-muted)}
+.mlabTerm small{font-size:10.5px;font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--ml-muted) 80%,transparent)}
+.mlabTerm>i{display:block;height:3px;border-radius:2px;background:color-mix(in srgb,var(--ml-accent) 16%,transparent)}
+.mlabTerm>i s{position:relative;display:block;width:7px;height:7px;margin:-2px 0 0;border-radius:50%;background:var(--ml-accent);opacity:0;translate:-50% 0;left:var(--at,50%);transition:left .45s cubic-bezier(.2,.7,.2,1),opacity .3s ease}
+.mlabTerm.isLit{background:color-mix(in srgb,var(--ml-accent) 11%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ml-accent) 30%,transparent)}
+.mlabTerm.isLit b{color:var(--ml-ink)}
+.mlabTerm.isLit>i s{opacity:1}
+
+.mlabTerm.is-seed{background:transparent;box-shadow:inset 0 0 0 1px var(--ml-rule)}
+.mlabTerm.is-seed b{color:var(--ml-ink)}
+.mlabTerm.is-delay{background:color-mix(in srgb,var(--ml-late) 12%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ml-late) 35%,transparent)}
+.mlabTerm.is-delay em,.mlabTerm.is-delay b{color:var(--ml-late)}
+.mlabTerm.is-out{min-width:142px;background:transparent;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--ml-accent) 30%,transparent)}
+.mlabTerm.is-out.isLit{background:var(--ml-accent);box-shadow:none}
+.mlabTerm.is-out.isLit em,.mlabTerm.is-out.isLit small{color:color-mix(in srgb,#fff 78%,transparent)}
+.mlabTerm.is-out.isLit b{color:#fff;font-size:26px}
+.mlabTerm.is-out.is-late.isLit{background:var(--ml-late)}
+
+/* ── the run: both routes, each with its own vehicle ─────────── */
+.mlabRunCount{display:flex;align-items:center;gap:14px;margin:0 0 20px;font-size:12.5px;letter-spacing:.04em;color:var(--ml-muted)}
+.mlabRunCount b{font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-variant-numeric:tabular-nums;font-size:14px;color:var(--ml-ink)}
+
+.mlabRoutes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 44px}
+.mlabRoute{display:grid;align-content:start;gap:16px;padding:22px 0 0;border-top:2px solid color-mix(in srgb,var(--ml-accent) 22%,transparent)}
+.mlabRoute+.mlabRoute{padding-left:44px;border-left:1px solid var(--ml-rule);margin-left:-44px}
+.mlabRoute.isBinding{border-top-color:var(--ml-accent)}
+.mlabRouteHead{display:flex;align-items:flex-end;justify-content:space-between;gap:18px}
+.mlabRouteId{display:grid;gap:8px}
+.mlabRouteId b{font-size:17px;font-weight:600;letter-spacing:-.015em}
+.mlabRouteId em{display:block;font-style:normal;font-size:12px;line-height:1.4;color:var(--ml-muted)}
+.mlabRouteArt{display:block;width:124px}
+.mlabRouteArt .rvVehicle{width:124px}
+.is-nl .mlabRouteArt,.is-nl .mlabRouteArt .rvVehicle{width:104px}
+
+/* ── chart + readout ──/* ── chart + readout ──────────────────────────────────────────── */
+
+.mlabChart{display:grid;gap:10px;align-content:end}
+.mlabBars{position:relative;display:flex;align-items:flex-end;gap:1px;height:164px;padding-bottom:1px;border-bottom:1px solid var(--ml-rule)}
+.mlabBars i{flex:1 1 0;height:var(--h,0%);min-height:0;border-radius:2px 2px 0 0;background:color-mix(in srgb,var(--ml-accent) 62%,transparent);transition:height .18s ease}
+.mlabBars i.is-late{background:color-mix(in srgb,var(--ml-late) 62%,transparent)}
+.mlabCut{position:absolute;top:-4px;bottom:0;left:var(--x);width:1px;background:repeating-linear-gradient(var(--ml-ink) 0 4px,transparent 4px 8px);opacity:.55}
+.mlabCut b{position:absolute;top:-6px;left:6px;font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ml-ink);white-space:nowrap}
+.mlabAxis{display:flex;justify-content:space-between;font-size:11px;font-variant-numeric:tabular-nums;color:var(--ml-muted)}
+
+.mlabPct{display:grid;gap:2px;text-align:right}
+.mlabPct strong{display:flex;align-items:baseline;justify-content:flex-end;font-size:clamp(34px,3.6vw,46px);line-height:1;letter-spacing:-.045em;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ml-ink);transition:color .3s ease}
+.mlabPct u{text-decoration:none;font-size:.42em;font-weight:500;margin-left:2px}
+.mlabPct span{font-size:13px;color:var(--ml-muted)}
+.mlabPct.is-safe strong{color:var(--ml-accent)}
+.mlabPct.is-bad strong{color:var(--ml-late)}
+.mlabFacts{display:grid;gap:6px;margin:0;padding-top:12px;border-top:1px solid var(--ml-rule)}
+.mlabFacts>div{display:flex;justify-content:space-between;gap:12px}
+.mlabFacts dt{font-size:12.5px;color:var(--ml-muted)}
+.mlabFacts dd{margin:0;font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-size:13px;font-variant-numeric:tabular-nums;color:var(--ml-ink)}
+.mlabVerdict{margin:0;font-size:13.5px;line-height:1.5}
+.mlabVerdict.is-safe{color:var(--ml-accent)}
+.mlabVerdict.is-bad{color:var(--ml-late)}
+
+/* the bus run is drawn in the warmer tone the case already uses for it */
+.mlabRoute.is-nl{--ml-accent:#8a6a2f}
+
+/* provenance under each term */
+.mlabTerm cite{display:block;margin-top:2px;font-style:normal;font-size:9.5px;letter-spacing:.02em;line-height:1.3;color:color-mix(in srgb,var(--ml-muted) 72%,transparent)}
+.mlabDrawBtn{align-self:flex-end;margin-bottom:14px}
+
+.mlabHandoff{margin:22px 0 0;max-width:62ch;font-family:var(--font-serif);font-size:15px;line-height:1.6;color:var(--ml-muted)}
+
+/* ── terminal ─────────────────────────────────────────────────── */
+.mlabTerminal{display:grid;gap:3px;margin:26px 0 0;padding:16px 18px;border-radius:12px;background:#151a18;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);overflow-x:auto}
+.mlabTerminal code{display:block;font-family:var(--font-mono,ui-monospace,SFMono-Regular,Menlo,monospace);font-size:12.5px;line-height:1.75;white-space:pre;color:#9fb4a8}
+.mlabTerminal code:first-child{color:#e8f0ea}
+
+/* ── the answer ───────────────────────────────────────────────── */
+.mlabAnswer{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--ml-rule);border-bottom:1px solid var(--ml-rule)}
+.mlabOption{display:grid;gap:4px;padding:18px 20px;border-left:1px solid var(--ml-rule)}
+.mlabOption:first-child{border-left:0}
+.mlabOption b{font-size:26px;font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.mlabOption span{font-size:13px;color:var(--ml-muted);font-variant-numeric:tabular-nums}
+.mlabOption em{font-style:normal;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ml-muted)}
+.mlabOption.is-out b,.mlabOption.is-out span{color:color-mix(in srgb,var(--ml-ink) 40%,transparent)}
+.mlabOption.is-out em{color:var(--ml-late)}
+.mlabOption.is-pick{background:color-mix(in srgb,var(--ml-accent) 9%,transparent)}
+.mlabOption.is-pick b{color:var(--ml-accent)}
+.mlabOption.is-pick em{color:var(--ml-accent)}
+
+.mlabMath{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px 16px;margin:28px 0 0;font-size:20px;font-weight:500;letter-spacing:-.02em}
+.mlabMath span,.mlabMath strong{display:grid;gap:2px}
+.mlabMath small{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ml-muted)}
+.mlabMath i{font-style:normal;color:color-mix(in srgb,var(--ml-ink) 40%,transparent)}
+.mlabMath strong{font-size:clamp(30px,3.4vw,44px);font-weight:600;letter-spacing:-.03em;color:var(--ml-accent)}
+.mlabMath strong small{color:var(--ml-accent)}
+
+@media(max-width:860px){
+ .mlabRoutes{grid-template-columns:minmax(0,1fr);gap:0}
+ .mlabRoute+.mlabRoute{margin-left:0;padding-left:0;border-left:0;margin-top:26px}
+ .mlabStepHead{flex-wrap:wrap}
+ .mlabAnswer{grid-template-columns:minmax(0,1fr)}
+ .mlabOption{border-left:0;border-top:1px solid var(--ml-rule)}
+ .mlabOption:first-child{border-top:0}
+ .mlabBars{height:150px}
+}
+
+@media(prefers-reduced-motion:reduce){
+ .mlabBars i,.mlabRail i,.mlabTrain,.mlabTerm,.mlabTerm>i s{transition:none}
+}

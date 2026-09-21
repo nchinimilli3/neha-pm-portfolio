@@ -187,7 +187,7 @@
 }
 /* Commute: the lifecycle traveler is the same BART car as the case study, with the same gentle ride */
 .lcRoad[data-traveler=train] .lcCar{width:104px;top:4px}
-.lcBartImg{display:block;width:104px;height:auto;filter:drop-shadow(0 3px 2px rgba(10,20,30,.28));-webkit-user-drag:none;user-select:none}
+.lcBartImg{display:block;width:104px;filter:drop-shadow(0 3px 2px rgba(10,20,30,.28));-webkit-user-drag:none;user-select:none}.lcBartImg:before,.lcBartImg:after{display:none}.lcBartImg .rvBody{animation:none!important}
 .lcRoad.isMoving[data-traveler=train] .lcBartImg{animation:lcBartRide .22s ease-in-out infinite alternate}
 @keyframes lcBartRide{from{transform:translateY(0)}to{transform:translateY(-.8px)}}
 @media(prefers-reduced-motion:reduce){.lcBartImg{animation:none!important}}

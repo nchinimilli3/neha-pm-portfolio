@@ -38,14 +38,15 @@ export function useMorning() {
  }, [playing]);
 
  // Only a delay that breaks the plan moves anything: take the earlier train.
- const changed = delay === 6;
- const shift = changed ? 6 : 0;
- const wake = WAKE - shift, leave = LEAVE - shift, board = BOARD - shift;
+ const changed = delay === 2;
+ const route = changed ? 'BART' : 'NL bus';
+ const leaveShift = changed ? 6 : 0;
+ const wake = WAKE, leave = LEAVE - leaveShift, board = BOARD - leaveShift;
  const phase: Phase = t < wake ? 'asleep' : t < leave ? 'ready' : t < board ? 'walking' : t < ARRIVE ? 'train' : 'arrived';
  const pct = (a: number, b: number) => Math.max(0, Math.min(100, ((t - a) / (b - a)) * 100));
 
  const live: { icon: GlyphKind; title: string; sub: string; big: string; progress: number } | null =
-  phase === 'ready' ? { icon: 'walk', title: `Leave in ${leave - t} min`, sub: 'BART · 19th St → Embarcadero', big: clock(leave), progress: pct(wake, leave) }
+  phase === 'ready' ? { icon: 'walk', title: `Leave in ${leave - t} min`, sub: `${route} · Oakland → San Francisco`, big: clock(leave), progress: pct(wake, leave) }
   : phase === 'walking' ? { icon: 'walk', title: `Train in ${board - t} min`, sub: '10 min walk to 19th St', big: clock(board), progress: pct(leave, board) }
   : phase === 'train' ? { icon: 'train', title: 'On BART', sub: `Arrive ${clock(ARRIVE)} · ${DEADLINE - ARRIVE} min early`, big: clock(ARRIVE), progress: pct(board, ARRIVE) }
   : null;
@@ -57,13 +58,13 @@ export function useMorning() {
 
  const notice = changed && (phase === 'asleep' || phase === 'ready')
   ? phase === 'asleep'
-   ? { title: `Move your alarm to ${clock(wake)}?`, body: 'BART is running 6 min late. Tap to take the 8:08 instead.' }
-   : { title: `Leave at ${clock(leave)}`, body: '6 min earlier than planned. The 8:08 still lands you by 8:53.' }
+   ? { title: `Switch to BART`, body: 'The live NL check changed after the alarm. Your wake time stays the same.' }
+   : { title: `Leave at ${clock(leave)} for BART`, body: 'The NL bus is five minutes late and its arrival range now crosses 9:00.' }
   : null;
 
- const status = changed ? 'Plan changed · BART +6' : delay === 2 ? 'BART +2 · plan holds' : 'On plan';
+ const status = changed ? 'Switch to BART' : 'NL on time';
 
- return { t, setT, delay, setDelay, playing, setPlaying, changed, wake, leave, board, phase, live, island, notice, status, arrive: ARRIVE, deadline: DEADLINE };
+ return { t, setT, delay, setDelay, playing, setPlaying, changed, route, wake, leave, board, phase, live, island, notice, status, arrive: ARRIVE, deadline: DEADLINE };
 }
 export type Morning = ReturnType<typeof useMorning>;
 
@@ -120,8 +121,8 @@ export function MorningControls({ m, compact = false }: { m: Morning; compact?: 
    <span>{clock(m.t)}</span>
    <input type="range" min={MORNING_START} max={MORNING_END} value={m.t} onChange={e => { m.setPlaying(false); m.setT(+e.target.value); }} aria-label="Time of morning"/>
   </label>
-  <div className="csDelay" role="group" aria-label="Simulate a BART delay">
-   {([0, 2, 6] as Delay[]).map(d => <button type="button" key={d} aria-pressed={m.delay === d} onClick={() => m.setDelay(d)}>{d === 0 ? 'On time' : `BART +${d}`}</button>)}
+  <div className="csDelay" role="group" aria-label="Choose the live NL bus update and see which route Commute selects">
+   {([0, 2] as Delay[]).map(d => <button type="button" key={d} aria-pressed={m.delay === d} onClick={() => {m.setPlaying(false);m.setT(Math.max(m.t,470));m.setDelay(d)}}>{d === 0 ? 'NL on time → take NL' : 'NL 5 min late → take BART'}</button>)}
   </div>
  </div>;
 }
@@ -155,7 +156,16 @@ export function CommutePhoneDemo({ m, app }: { m: Morning; app: React.ReactNode 
 
 /* The surfaces the morning ships to, beyond the Lock Screen. */
 export function CommuteSurfaces({ m }: { m: Morning }) {
+ const nlRange = m.delay === 0 ? '8:42 to 8:54' : '8:47 to 9:02';
  return <div className="csSurfaces">
+  <div className={`csSurfaceNotice${m.notice?' isVisible':''}`} role="status" aria-live="polite">
+   <span className="csAppIcon" aria-hidden="true"/>
+   <span className="csDecisionBody">
+    <b>Commute <em>live route check</em></b>
+    <strong>{m.changed ? 'Take BART instead' : 'Take the NL bus'}</strong>
+    <small>{m.changed ? `NL now arrives ${nlRange}. Leave at ${clock(m.leave)} for BART and still arrive by 8:53.` : 'Live traffic confirms the NL bus is faster today and still arrives before 9:00.'}</small>
+   </span>
+  </div>
   <div className="csSurfaceRow">
    <figure className="csSurface">
     <div className="csIslandWide">
@@ -172,7 +182,7 @@ export function CommuteSurfaces({ m }: { m: Morning }) {
      <dl>
       <div><dt>Wake</dt><dd>{clock(m.wake)}</dd></div>
       <div><dt>Leave</dt><dd>{clock(m.leave)}</dd></div>
-      <div><dt>Take</dt><dd>BART</dd></div>
+      <div><dt>Take</dt><dd>{m.route}</dd></div>
      </dl>
      <p>Arrive {clock(m.arrive)} · Salesforce Tower</p>
     </div>
@@ -183,9 +193,9 @@ export function CommuteSurfaces({ m }: { m: Morning }) {
   <MorningControls m={m}/>
 
   <ol className="csRules">
-   <li className={m.delay === 2 ? 'isOn' : ''}><b>Silence is the default.</b><span>BART +2 doesn&rsquo;t move the plan, so nothing buzzes. Try it.</span></li>
-   <li className={m.changed ? 'isOn' : ''}><b>One interruption, when it matters.</b><span>BART +6 moves the plan, so you get exactly one notification.</span></li>
-   <li className={m.phase !== 'asleep' ? 'isOn' : ''}><b>Answer before unlock.</b><span>Every surface shows the next thing to do, not a map.</span></li>
+   <li className={!m.changed ? 'isOn' : ''}><b>NL is on time</b><span>The bus is faster today, so Commute keeps NL and the phone stays quiet.</span></li>
+   <li className={m.changed ? 'isOn' : ''}><b>NL is five minutes late</b><span>The arrival range now crosses 9:00, so Commute switches the live plan to BART.</span></li>
+   <li className={m.phase !== 'asleep' ? 'isOn' : ''}><b>The message explains the decision</b><span>It combines the live transit update with the learned routine estimate and gives the next action.</span></li>
   </ol>
  </div>;
 }

@@ -110,7 +110,7 @@ function ValidationPlan(){
 }
 
 const bookclubStages=[
-  {id:'bc-discover',name:'Discover',did:'The group chat problem'},
+  {id:'bc-discover',name:'Discover',did:'The coordination problem'},
   {id:'bc-build',name:'Build',did:'Three product bets'},
   {id:'bc-validate',name:'Validate',did:'5 interviews, then tests'}
 ];
@@ -120,7 +120,7 @@ export function BookclubEditorial(){
     <section className="bcProblem bcStage" id="bc-discover">
       <div className="bcProblemCopy">
         <h2>The hard part of a book club<br/><em>happens between meetings.</em></h2>
-        <p>My reading group is busy adults coordinating from their phones. Choosing the next book, reading at different speeds, and showing up with something to say all happened in one noisy group chat.</p>
+        <p>My reading group is busy adults coordinating from their phones. Choosing the next book, reading at different speeds, and showing up with something to say each happened somewhere different, and none of it stayed put.</p>
         <ul className="bcJobs">
           <li className="job-Choose"><b>Choose</b>a book the whole group wants</li>
           <li className="job-Keeppace"><b>Keep pace</b>without spoiling anyone</li>
@@ -138,7 +138,7 @@ export function BookclubEditorial(){
         tradeoff={<Tradeoff pairs={[
           ['One-tap polls where the loudest favourite wins','A few more taps for a pick the whole group accepts']
         ]}/>}
-        result={<p>Private membership plus ranked preference turns scattered group-chat suggestions into one decision the club can live with. AI helps with search and passage scanning; members make every choice.</p>}
+        result={<p>Private membership plus ranked preference turns scattered suggestions into one decision the club can live with. AI helps with search and passage scanning; members make every choice.</p>}
       >
         <figure className="bcBetPhone bcLeadBet"><BookclubDevice screen={bets[0].screen} label={bets[0].label}/></figure>
       </DecisionMoment>

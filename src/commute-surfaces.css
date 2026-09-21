@@ -73,6 +73,39 @@
 
 /* ---- the surfaces section ---- */
 .csSurfaces{display:grid;justify-items:center;gap:30px}
+.csRouteCompare{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:20px;align-items:center;width:100%;padding-bottom:8px}
+.csRouteCompare article{display:grid;gap:5px;padding:18px 0;border-top:3px solid rgba(43,39,68,.16);transition:border-color .3s,opacity .3s}
+.csRouteCompare article.isSelected{border-top-color:var(--cs-accent)}
+.csRouteCompare article.isRejected{border-top-color:#bd5c72;opacity:.66}
+.csRouteCompare header{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.csRouteCompare header b{font:700 17px/1.2 var(--cs-sf);color:var(--cs-ink)}
+.csRouteCompare header span{font:600 11px/1.2 var(--cs-sf);color:var(--cs-accent)}
+.csRouteCompare article.isRejected header span{color:#bd5c72}
+.csRouteCompare article>strong{font:700 25px/1.15 var(--cs-sf);color:var(--cs-ink);font-variant-numeric:tabular-nums}
+.csRouteCompare article>small{font:600 10px/1.2 var(--cs-sf);letter-spacing:.05em;text-transform:uppercase;color:#8a869a}
+.csRouteCompare article>p{margin:5px 0 0;font:400 13px/1.45 var(--cs-sf);color:#6b6880}
+.csTradeoff{display:grid;justify-items:center;gap:4px;color:#8a869a}
+.csTradeoff span{font:600 9px/1.2 var(--cs-sf);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.csTradeoff i{font:500 24px/1 var(--cs-sf);font-style:normal}
+.csSurfaceNotice{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;align-items:start;width:min(100%,620px);padding:16px 18px;border:1px solid rgba(43,39,68,.1);border-radius:20px;background:rgba(255,255,255,.72);box-shadow:0 16px 34px -22px rgba(43,39,68,.55);color:var(--cs-ink);transition:background .3s,box-shadow .3s,transform .3s}
+.csSurfaceNotice.isVisible{background:linear-gradient(145deg,#383451,#242136);box-shadow:0 16px 38px -18px rgba(43,39,68,.75);color:#fff;transform:translateY(-2px)}
+.csSurfaceNotice>.csAppIcon{width:34px;height:34px;border-radius:9px}
+.csSurfaceNotice>span:last-child{display:grid;gap:2px;min-width:0;text-align:left}
+.csSurfaceNotice b{display:flex;justify-content:space-between;font:650 10px/1.3 var(--cs-sf);letter-spacing:.04em;text-transform:uppercase;color:var(--cs-accent)}
+.csSurfaceNotice.isVisible b{color:#a8d6c7}
+.csSurfaceNotice b em{font-style:normal;font-weight:500;text-transform:none}
+.csSurfaceNotice strong{font:650 14px/1.25 var(--cs-sf)}
+.csSurfaceNotice small{font:400 12px/1.4 var(--cs-sf);color:#6b6880}
+.csSurfaceNotice.isVisible small{color:rgba(255,255,255,.7)}
+.csDecisionRoutes{display:grid!important;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}
+.csDecisionRoutes>span{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;padding:9px 10px;border:1px solid rgba(43,39,68,.12);border-radius:12px;background:rgba(255,255,255,.42);opacity:.62}
+.csSurfaceNotice.isVisible .csDecisionRoutes>span{border-color:rgba(255,255,255,.14);background:rgba(255,255,255,.06)}
+.csDecisionRoutes>span.isChosen{border-color:var(--cs-accent);box-shadow:inset 3px 0 0 var(--cs-accent);opacity:1}
+.csSurfaceNotice.isVisible .csDecisionRoutes>span.isChosen{border-color:#8fe3c6;box-shadow:inset 3px 0 0 #8fe3c6}
+.csDecisionRoutes>span.isRejected{opacity:.42;text-decoration:line-through;text-decoration-color:#bd5c72}
+.csDecisionRoutes i{grid-row:1/3;align-self:center;font:700 10px/1 var(--cs-sf);font-style:normal;color:var(--cs-accent)}
+.csDecisionRoutes b{font:700 13px/1.2 var(--cs-sf);letter-spacing:0;text-transform:none;color:inherit}
+.csDecisionRoutes small{font:500 10px/1.2 var(--cs-sf)}
 .csSurfaceRow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:34px;width:100%;align-items:center}
 .csSurface{display:grid;justify-items:center;gap:14px;margin:0}
 .csSurface figcaption{display:block!important;font:500 13px/1.4 var(--cs-sf);color:#6b6880;text-align:center}
@@ -106,5 +139,7 @@
 @keyframes csDrop{from{opacity:0;transform:translateY(-14px) scale(.96)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.csIsland,.csLiveBar i,.csLiveBar em{transition:none}.csNotice{animation:none}}
 @media(max-width:860px){
- .csSurfaceRow,.csRules{grid-template-columns:1fr}
+ .csSurfaceRow,.csRules,.csRouteCompare{grid-template-columns:1fr}
+ .csTradeoff i{transform:rotate(90deg)}
 }
+@media(max-width:560px){.csDecisionRoutes{grid-template-columns:1fr}.csDelay{display:grid;width:100%}.csDelay button{width:100%}}

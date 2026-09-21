@@ -10,14 +10,15 @@
 .scCell svg{width:22px;height:22px;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;transition:opacity .35s,transform .35s;transition-delay:var(--d)}
 .scCell.s-yes{background:var(--yes-bg);box-shadow:inset 0 0 0 1.5px #3f8a6c40}.scCell.s-yes svg{stroke:var(--yes)}
 .scCell.s-maybe{background:repeating-linear-gradient(135deg,var(--maybe-bg) 0 5px,#faf1d4 5px 10px);box-shadow:inset 0 0 0 1.5px #a8801f40}.scCell.s-maybe svg{stroke:var(--maybe)}
-.scCell.s-no{background:var(--no-bg);box-shadow:inset 0 0 0 1.5px #b0574d40}.scCell.s-no svg{stroke:var(--no)}
-.scFlat.isKept .scCell.s-maybe,.scFlat.isKept .scCell.s-no{background:#eef0ec;box-shadow:inset 0 0 0 1.5px #1f2b2712}
-.scFlat.isKept .scCell.s-maybe svg,.scFlat.isKept .scCell.s-no svg{opacity:0;transform:scale(.4)}
+.scCell.s-none{background:#eef0ec;box-shadow:inset 0 0 0 1.5px #1f2b2712}
+.scFlat.isKept .scCell.s-maybe{background:#eef0ec;box-shadow:inset 0 0 0 1.5px #1f2b2712}
+.scFlat.isKept .scCell.s-maybe svg{opacity:0;transform:scale(.4)}
 .scFlat.isKept .scCell.s-yes{background:#285b4c}.scFlat.isKept .scCell.s-yes svg{stroke:#fff}
 .scFlatLegend{display:flex;gap:18px;font-size:13px;color:#56685f;transition:opacity .4s}
 .scFlatLegend span{display:flex;align-items:center;gap:6px}
+.scFlatLegend em{font-style:normal;color:#7b8a83}
 .scFlatLegend i{width:14px;height:14px;border-radius:4px}
-.scFlatLegend .s-yes i{background:#d6ebdf;box-shadow:inset 0 0 0 1.5px #3f8a6c66}.scFlatLegend .s-maybe i{background:#f4e6bd;box-shadow:inset 0 0 0 1.5px #a8801f66}.scFlatLegend .s-no i{background:#f1d6d1;box-shadow:inset 0 0 0 1.5px #b0574d66}
+.scFlatLegend .s-yes i{background:#d6ebdf;box-shadow:inset 0 0 0 1.5px #3f8a6c66}.scFlatLegend .s-maybe i{background:#f4e6bd;box-shadow:inset 0 0 0 1.5px #a8801f66}
 .scFlat.isKept .scFlatLegend{opacity:.25}
 .scFlatQuestions{display:flex;flex-wrap:wrap;gap:8px 18px;min-height:28px;margin:0;padding:0;list-style:none}
 .scFlatQuestions li{position:relative;padding-left:22px;font:italic 16px/1.4 Georgia,serif;color:#8a5a2f;opacity:0;translate:0 8px;transition:opacity .45s,translate .45s;transition-delay:calc(.7s + var(--q) * .35s)}
@@ -67,7 +68,6 @@
 .sxModes i{width:12px;height:12px;border-radius:4px}
 .sxModes .m-yes i{background:var(--yes-bg);box-shadow:inset 0 0 0 1.5px var(--yes)}
 .sxModes .m-maybe i{background:repeating-linear-gradient(135deg,var(--maybe-bg) 0 3px,#faf1d4 3px 6px);box-shadow:inset 0 0 0 1.5px var(--maybe)}
-.sxModes .m-no i{background:var(--no-bg);box-shadow:inset 0 0 0 1.5px var(--no)}
 .sxModes button[aria-pressed=true]{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--green),0 1px 3px #1f2b271f}
 .sxScale{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--muted)}
 .sxScale span{margin:0 4px}.sxScale i{width:22px;height:12px;border-radius:3px}
@@ -88,15 +88,29 @@
 .sxCell svg{width:18px;height:18px;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;animation:sxPop .22s ease}
 .sxCell.m-yes{background:var(--yes-bg);box-shadow:inset 0 0 0 1.5px #3f8a6c40}.sxCell.m-yes svg{stroke:var(--yes)}
 .sxCell.m-maybe{background:repeating-linear-gradient(135deg,var(--maybe-bg) 0 5px,#faf1d4 5px 10px);box-shadow:inset 0 0 0 1.5px #a8801f40}.sxCell.m-maybe svg{stroke:var(--maybe)}
-.sxCell.m-no{background:var(--no-bg);box-shadow:inset 0 0 0 1.5px #b0574d40}.sxCell.m-no svg{stroke:var(--no)}
 .sxCell.isBest{box-shadow:inset 0 0 0 1.5px #3f8a6c40,0 0 0 2px #fdfcf9,0 0 0 4px var(--green)}
 .sxCell.sxNote:after{content:'';position:absolute;top:5px;right:5px;width:6px;height:6px;border-radius:50%;background:#8a5a2f}
 .sxH0{background:#f2f3ef}.sxH1{background:#cfe3d7}.sxH2{background:#7fb39a}.sxH3{background:#285b4c}
 .sxCell[class*=sxH]{cursor:default}
+/* In the group view a maybe keeps its own mark: a tentative corner on the cell, never a darker fill. */
+.sxCell.sxMaybeMark:before,.sxScale i.sxMaybeMark:before{content:'';position:absolute;left:0;bottom:0;border-bottom:9px solid var(--maybe);border-right:9px solid transparent;border-bottom-left-radius:9px}
+.sxCell.sxH2.sxMaybeMark:before,.sxCell.sxH3.sxMaybeMark:before{border-bottom-color:#f0d493}
+.sxScale i.sxMaybeMark{position:relative}
+.sxScale i.sxMaybeMark:before{border-bottom-width:7px;border-right-width:7px;border-bottom-left-radius:3px}
 .sxCount{font-size:13px;font-weight:700;color:#3f6b5b;font-variant-numeric:tabular-nums}
 .sxCell.sxH0 .sxCount{color:#a4aea8}.sxCell.sxH2 .sxCount,.sxCell.sxH3 .sxCount{color:#fff}
 .sxFoot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 12px;margin-top:14px;font-size:12px;color:var(--muted)}
 .sxQuick{display:flex;flex-wrap:wrap;align-items:center;gap:2px;white-space:nowrap}
+/* Two ways to fill the grid, offered as equals: import a calendar, or paint a block by hand. */
+.sxQuick b{margin-right:4px;font-weight:600;color:var(--muted)}
+.sxOr{margin:0 8px 0 6px;color:#aab3ae}
+.sxCalSync{display:inline-flex;align-items:center;gap:7px;padding:5px 11px 5px 8px;border:0;border-radius:14px;background:#fff;font-size:12px;font-weight:600;color:#0f6cbd;box-shadow:inset 0 0 0 1px #0f6cbd33;transition:background .2s,box-shadow .2s}
+.sxCalMarks{display:inline-flex;align-items:center}
+.sxCalMarks img{display:block;width:17px;height:17px;object-fit:contain}
+.sxCalMarks img+img{margin-left:5px}
+.sxCalSync:hover{background:#f2f8fd}
+.sxCalSync.isOn{background:#e8f2fb;box-shadow:inset 0 0 0 1.5px #0f6cbd66}
+.sxCalSync.isOn:after{content:'✓';font-size:11px}
 .sxQuick button{padding:5px 9px;border:0;border-radius:14px;background:none;font-size:12px;font-weight:600;color:var(--green);transition:background .2s}
 .sxQuick button:first-child{margin-left:4px}
 .sxQuick button:hover{background:#285b4c12}

@@ -37,7 +37,7 @@
 .casePage .cdAnswerRule{flex:1 1 auto;height:1px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--cd-accent) 42%,transparent));transform-origin:right}
 .casePage .cdAnswerHead .cdAnswerRule:last-child{background:linear-gradient(90deg,color-mix(in srgb,var(--cd-accent) 42%,transparent),transparent);transform-origin:left}
 
-.casePage .cdAnswerBody{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:0 72px;align-items:start}
+.casePage .cdAnswerBody{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);gap:0 64px;align-items:center}
 
 /* Medallions: tinted discs, a solid accent one for the call. */
 .casePage .cdMedal{position:relative;z-index:1;display:grid;place-items:center;flex:0 0 auto;width:40px;height:40px;border-radius:50%;background:color-mix(in srgb,var(--cd-accent) 11%,var(--case-bg,#fff));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--cd-accent) 24%,transparent)}
@@ -51,26 +51,26 @@
 @keyframes cdBreathe{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--cd-accent) 38%,transparent)}70%,100%{box-shadow:0 0 0 14px transparent}}
 
 /* Right: the call, after the problem and evidence. */
-.casePage .cdCall{display:grid;gap:0;align-content:start}
+.casePage .cdCall{display:grid;gap:0;align-content:center;padding-left:64px;border-left:1px solid var(--cd-rule)}
 .casePage .cdCallLabel{display:flex;align-items:center;gap:14px;margin:0 0 20px;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--cd-accent)}
-.casePage .cdCallStatement{margin:0;max-width:16ch;font-size:clamp(32px,3.9vw,54px);line-height:1.06;letter-spacing:-.04em;font-weight:500;color:var(--cd-ink);text-wrap:balance}
+.casePage .cdCallStatement{margin:0;max-width:24ch;font-size:clamp(23px,2.3vw,32px);line-height:1.2;letter-spacing:-.04em;font-weight:500;color:var(--cd-ink);text-wrap:balance}
 .casePage .cdCallStatement a{text-decoration:none;color:inherit;background-image:linear-gradient(var(--cd-accent),var(--cd-accent));background-size:100% 2px;background-repeat:no-repeat;background-position:0 100%;padding-bottom:4px;transition:color .2s}
 .casePage .cdCallStatement a:hover{color:var(--cd-accent)}
 .casePage .cdCallStatement a i{display:inline-block;font-style:normal;font-size:.42em;margin-left:.1em;vertical-align:.35em;color:var(--cd-accent);transition:translate .25s}
 .casePage .cdCallStatement a:hover i{translate:0 4px}
 .casePage .cdWord{display:inline-block;white-space:pre}
 
-.casePage .cdRole{display:flex;gap:12px;align-items:flex-start;margin:34px 0 0;padding-top:20px;max-width:46ch;border-top:1px solid var(--cd-rule);font-size:15px;line-height:1.55;color:var(--cd-muted)}
+.casePage .cdRole{display:flex;gap:12px;align-items:flex-start;margin:28px 0 0;padding-top:20px;max-width:40ch;border-top:1px solid var(--cd-rule);font-size:15px;line-height:1.55;color:var(--cd-muted)}
 .casePage .cdRole b{display:block;margin-bottom:3px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cd-muted)}
 .casePage .cdRoleIcon svg{display:block;width:20px;height:20px;margin-top:1px;fill:none;stroke:var(--cd-muted);stroke-width:1.8;stroke-linecap:round}
 
 /* Left: the timeline. The spine runs through the medallion centres. */
-.casePage .cdTimeline{position:relative;list-style:none;margin:0;padding:0;display:grid;gap:30px}
+.casePage .cdTimeline{position:relative;list-style:none;margin:0;padding:0;display:grid;gap:34px}
 .casePage .cdTimeline:before{content:'';position:absolute;left:19.5px;top:22px;bottom:22px;width:1.5px;background:linear-gradient(color-mix(in srgb,var(--cd-accent) 36%,transparent),var(--cd-accent));transform-origin:top}
 .casePage .cdRow{display:grid;grid-template-columns:40px minmax(0,1fr);gap:20px;align-items:start}
 .casePage .cdRowText{display:grid;gap:6px;padding-top:2px}
 .casePage .cdRowText>b{font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cd-muted)}
-.casePage .cdRowText p{margin:0;max-width:52ch;font-size:16px;line-height:1.55;color:var(--cd-ink)}
+.casePage .cdRowText p{margin:0;max-width:46ch;font-size:16px;line-height:1.55;color:var(--cd-ink)}
 .casePage .cdRow-result .cdMedal{background:var(--cd-accent);box-shadow:none}
 .casePage .cdRow-result .cdMedal svg{stroke:#fff;stroke-width:2.4}
 .casePage .cdRow-result .cdRowText>b{color:var(--cd-accent)}
@@ -114,6 +114,7 @@
  .casePage .cdAnswerHead{margin-bottom:28px}
  .casePage .cdAnswerHead .cdAnswerRule:first-child{display:none}
  .casePage .cdAnswerBody{grid-template-columns:minmax(0,1fr);gap:36px}
+ .casePage .cdCall{padding-left:0;border-left:0;border-top:1px solid var(--cd-rule);padding-top:32px}
  .casePage .cdCallStatement{max-width:none}
  .casePage .cdRole{margin-top:24px}
 }

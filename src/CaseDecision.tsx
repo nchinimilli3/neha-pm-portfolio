@@ -16,7 +16,7 @@ type Node = React.ReactNode;
 
 /* The five answers a reviewer should have before deciding to keep scrolling.
    Read in the order it should be understood: the problem and evidence come
-   first, then the call it led to. "The call" is the only link: it jumps to
+   first, then the decision it led to. "The product decision" is the only link: it jumps to
    the DecisionMoment. */
 
 const icons = {
@@ -59,6 +59,7 @@ export function CaseAnswer({
   problem,
   owned,
   call,
+  callLabel = 'The product decision',
   callHref,
   evidence,
   result,
@@ -67,6 +68,9 @@ export function CaseAnswer({
   problem: Node;
   owned: Node;
   call: Node;
+  /* FinSimple's headline was an execution call, not a product one, so that case
+     renames this row rather than overclaiming. */
+  callLabel?: string;
   callHref?: string;
   evidence: Node;
   result: Node;
@@ -96,7 +100,7 @@ export function CaseAnswer({
 
   const rows: {key: keyof typeof icons; label: string; body: Node}[] = [
     {key: 'problem', label: 'The problem', body: <p>{problem}</p>},
-    {key: 'evidence', label: 'Because of', body: <p>{evidence}</p>},
+    {key: 'evidence', label: 'Because', body: <p>{evidence}</p>},
     {key: 'result', label: 'What happened', body: <>
       {stat && <p className="cdStat"><strong><CountUp value={stat.value} run={phase === 'in'}/></strong><span>{stat.label}</span></p>}
       <p>{result}</p>
@@ -114,12 +118,12 @@ export function CaseAnswer({
       <ol className="cdTimeline">
         {rows.map((row, i) => <li key={row.key} className={`cdRow cdRow-${row.key}`} style={{'--r': i} as React.CSSProperties}>
           <span className="cdMedal" aria-hidden="true">{icons[row.key]}</span>
-          <div className="cdRowText"><b>{row.label}</b>{row.body}</div>
+          <div className="cdRowText">{row.body}</div>
         </li>)}
       </ol>
 
       <div className="cdCall">
-        <p className="cdCallLabel"><span className="cdMedal cdMedalCall" aria-hidden="true">{icons.call}</span>The call</p>
+        <p className="cdCallLabel"><span className="cdMedal cdMedalCall" aria-hidden="true">{icons.call}</span>{callLabel}</p>
         {/* --n lets the underline and arrow wait until the last word has landed. */}
         <p className="cdCallStatement" style={{'--n': split ? split.length : 1} as React.CSSProperties}>
           {callHref ? <a href={callHref} onClick={e => {
