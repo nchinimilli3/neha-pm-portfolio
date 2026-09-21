@@ -124,13 +124,20 @@ const binOf = (arrival: number) => Math.min(BIN_N - 1, Math.max(0, Math.floor(ar
    sits on the same baseline. They are the labels — the words under them are
    only there for a screen reader and a first read. */
 const GLYPH: Record<string, React.ReactNode> = {
-  home: <><path d="M6 22 24 8l18 14"/><path d="M11 20v14h26V20"/><path d="M20 34v-8h8v8"/></>,
-  stop: <><path d="M24 34V12"/><path d="M14 8h20v12H14z"/><path d="M16 34h16"/><circle cx="24" cy="14" r="2.4"/></>,
-  station: <><path d="M8 34h32"/><path d="M12 34V18l12-8 12 8v16"/><path d="M19 34V24h10v10"/></>,
-  bridge: <><path d="M4 32h40"/><path d="M12 32V10M36 32V10"/><path d="M12 12C18 22 30 22 36 12"/><path d="M12 12 4 24M36 12l8 12"/><path d="M18 32v-6M24 32v-8M30 32v-6"/></>,
-  tunnel: <><path d="M6 34V22a18 18 0 0 1 36 0v12"/><path d="M16 34V24a8 8 0 0 1 16 0v10"/></>,
-  tower: <><path d="M24 4l9 14v16H15V18z"/><path d="M15 34h18"/><path d="M20 20h8M20 26h8"/></>,
-  walk: <><circle cx="24" cy="10" r="3.2"/><path d="M24 14v10l-5 10M24 24l5 10M17 19l7-4 7 4"/></>
+  /* An Oakland two-story with the stoop it actually has. */
+  home: <><path d="M4 21 24 6l20 15"/><path d="M13 17V9h4v5"/><path d="M9 20v15h30V20"/><path d="M20 35v-8h8v8"/><path d="M13 23h5v5h-5zM30 23h5v5h-5z"/><path d="M3 35h42"/></>,
+  /* AC Transit stop: shelter, bench, and the route blade on its pole. */
+  stop: <><path d="M34 35V9"/><path d="M34 6h12v8H34z"/><path d="M37 10h6"/><path d="M4 15h24v3H4z"/><path d="M6 18v17M26 18v17"/><path d="M6 27h20"/><path d="M3 35h42"/></>,
+  /* A BART entrance: stairs down from the sidewalk, handrail, and the pylon. */
+  station: <><path d="M3 35h10v-4h5v-4h5v-4h5v-4h9"/><path d="M37 19h8"/><path d="M4 31 25 19"/><path d="M9 32v-4M15 28v-4M21 24v-4"/><path d="M40 19V8"/><path d="M34 3h12v7H34z"/><path d="M37 6.5h6"/></>,
+  /* The west span: two braced towers, the main cable sagging between them. */
+  bridge: <><path d="M2 27h44"/><path d="M11 27V7M17 27V7M11 7h6M11 13h6M11 20h6"/><path d="M31 27V7M37 27V7M31 7h6M31 13h6M31 20h6"/><path d="M2 21C5 21 8 7 11 7"/><path d="M17 7c3 0 4 11 7 11s4-11 7-11"/><path d="M37 7c3 0 6 14 9 14"/><path d="M20 11v16M24 18v9M28 11v16"/></>,
+  /* The Transbay Tube: the bay above, the segmented tube and a train below. */
+  tunnel: <><path d="M2 13h44"/><path d="M5 8c2-2.5 4 2.5 6 0M19 8c2-2.5 4 2.5 6 0M33 8c2-2.5 4 2.5 6 0"/><path d="M2 23h44M2 34h44"/><path d="M15 23v11M27 23v11M39 23v11"/><path d="M5 26h9a2 2 0 0 1 2 2v3H5z"/><path d="M2 37h44"/></>,
+  /* Salesforce Tower, tapering to its rounded crown, with downtown beside it. */
+  tower: <><path d="M17 35 19 13a5 5 0 0 1 10 0l2 22"/><path d="M18.4 28h11.2M18.8 22h10.4M19.2 16h9.6"/><path d="M4 35V23h9v12M35 35V26h9v9"/><path d="M2 35h44"/></>,
+  /* Crossing the last three blocks on foot. */
+  walk: <><circle cx="22" cy="6" r="3.2"/><path d="M22 10v9"/><path d="M22 19l-5 10M22 19l5 10"/><path d="M16 14l6 2 6-4"/><path d="M3 35h7M15 35h7M27 35h7M39 35h6"/></>
 };
 
 function Glyph({name, label}: {name: string; label: string}){

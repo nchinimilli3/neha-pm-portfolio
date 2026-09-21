@@ -130,6 +130,50 @@ function UpdateMechanism(){
  </section>;
 }
 
+/* The routine, drawn the way the phone actually experiences it: two timestamps
+   it can read and a stretch between them it cannot see into. That gap is the
+   argument for measuring the block instead of modelling its parts — and it is
+   why the biggest number in the case is the one no transit feed could supply. */
+function RoutineBlock(){
+ const [ref,seen]=useInView<HTMLDivElement>();
+ const inside=[
+  {x:216,l:'out of bed',d:'M-16 9V-3M-16 4h32v5M-16 1h12M-13 1v-5h9v5'},
+  {x:312,l:'shower',    d:'M0 -15v8M-9 -7h18a9 9 0 0 0-18 0M-5 1v5M0 2v6M5 1v5'},
+  {x:408,l:'coffee',    d:'M-8 -4h13v8a6.5 6.5 0 0 1-13 0zM5 -2h3a4 4 0 0 1 0 8H5M-3 -9c0-3 3-3 3-6M3 -9c0-3 3-3 3-6'},
+  {x:504,l:'keys, door',d:'M-3 0h14M8 0v5M12 0v4'}
+ ];
+ return <div ref={ref} className={`cmRoutine${seen?' isIn':''}`}>
+  <svg viewBox="0 0 720 160" role="img"
+   aria-label="AlarmKit records the alarm dismissed at 7:18 and a departure geofence records the exit at 8:06. Everything in between — getting out of bed, showering, coffee, keys and the door — is invisible to the phone. The gap between the two timestamps ran 34 to 62 minutes across the test, typically 48.">
+
+   <path className="cmRtRail" d="M84 52h84M552 52h84"/>
+   <rect className="cmRtBand" x="168" y="12" width="384" height="80" rx="14"/>
+
+   {inside.map(g=><g key={g.l} className="cmRtIn" transform={`translate(${g.x} 52)`}>
+    <path d={g.d}/>{g.l==='keys, door'&&<circle cx="-8" cy="0" r="5"/>}
+   </g>)}
+   <text className="cmRtCap" x="360" y="84">no sensor reaches in here</text>
+
+   <g className="cmRtEnd" transform="translate(84 52)">
+    <circle r="15"/><path d="M0 -8v8l6 4"/><path d="M-11 -11-15 -15M11 -11 15 -15"/>
+   </g>
+   <text className="cmRtTime" x="84" y="86">7:18</text>
+   <text className="cmRtSrc" x="84" y="100">alarm dismissed · AlarmKit</text>
+
+   <g className="cmRtEnd" transform="translate(636 52)">
+    <path d="M-10 15V-13h20v28"/><circle cx="5" cy="2" r="2"/>
+    <path className="cmRtFence" d="M-19 12a22 22 0 0 1 0-24M19 12a22 22 0 0 0 0-24"/>
+   </g>
+   <text className="cmRtTime" x="636" y="86">8:06</text>
+   <text className="cmRtSrc" x="636" y="100">left home · departure geofence</text>
+
+   <path className="cmRtBrace" d="M84 116v8h552v-8"/>
+   <text className="cmRtSpan" x="360" y="146">34 to 62 min measured · 48 typical · the gap itself is the estimate</text>
+  </svg>
+  <p className="cmSpreadLoop"><b>Dismiss alarm</b><i aria-hidden="true">&rarr;</i><b>leave home</b><i aria-hidden="true">&rarr;</i><b>tomorrow&rsquo;s range narrows</b></p>
+ </div>;
+}
+
 function ModelLearningSummary(){
  const [ref,seen]=useInView<HTMLElement>();
  const max=Math.max(...legs.map(l=>l.w));
@@ -162,7 +206,7 @@ function ModelLearningSummary(){
     <p className="cmSpreadNote">Four times the swing of any transit leg — so Commute measures it instead of assuming 48 minutes. AlarmKit reports the dismissal, a departure geofence reports the exit, and the gap between them becomes tomorrow&rsquo;s range.</p>
    </div>
   </div>
-  <p className="cmSpreadLoop"><b>Dismiss alarm</b><i aria-hidden="true">→</i><b>leave home</b><i aria-hidden="true">→</i><b>tomorrow&rsquo;s range narrows</b></p>
+  <RoutineBlock/>
  </section>;
 }
 
