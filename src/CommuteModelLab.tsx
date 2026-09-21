@@ -120,6 +120,82 @@ function runSim(route: Route, leave: number, seed: number): RunResult {
 const BIN_LO = 8 * 60 + 36, BIN_HI = 9 * 60 + 12, BIN_N = BIN_HI - BIN_LO;
 const binOf = (arrival: number) => Math.min(BIN_N - 1, Math.max(0, Math.floor(arrival) - BIN_LO));
 
+/* Landmark glyphs: line art at a common 48x40 box so every marker on the strip
+   sits on the same baseline. They are the labels — the words under them are
+   only there for a screen reader and a first read. */
+const GLYPH: Record<string, React.ReactNode> = {
+  home: <><path d="M6 22 24 8l18 14"/><path d="M11 20v14h26V20"/><path d="M20 34v-8h8v8"/></>,
+  stop: <><path d="M24 34V12"/><path d="M14 8h20v12H14z"/><path d="M16 34h16"/><circle cx="24" cy="14" r="2.4"/></>,
+  station: <><path d="M8 34h32"/><path d="M12 34V18l12-8 12 8v16"/><path d="M19 34V24h10v10"/></>,
+  bridge: <><path d="M4 32h40"/><path d="M12 32V10M36 32V10"/><path d="M12 12C18 22 30 22 36 12"/><path d="M12 12 4 24M36 12l8 12"/><path d="M18 32v-6M24 32v-8M30 32v-6"/></>,
+  tunnel: <><path d="M6 34V22a18 18 0 0 1 36 0v12"/><path d="M16 34V24a8 8 0 0 1 16 0v10"/></>,
+  tower: <><path d="M24 4l9 14v16H15V18z"/><path d="M15 34h18"/><path d="M20 20h8M20 26h8"/></>,
+  walk: <><circle cx="24" cy="10" r="3.2"/><path d="M24 14v10l-5 10M24 24l5 10M17 19l7-4 7 4"/></>
+};
+
+function Glyph({name, label}: {name: string; label: string}){
+  return <svg className="mlabGlyph" viewBox="0 0 48 40" role="img" aria-label={label}>{GLYPH[name]}</svg>;
+}
+
+/* The arrival equation, drawn to scale: every leg is as wide as the minutes it
+   drew, so the picture and the arithmetic are the same object. */
+function JourneyStrip({route, leave, one, revealed}: {
+  route: Route; leave: number; one: Sample | null; revealed: number;
+}){
+  const parts = one ? one.parts : route.legs.map(l => (l.lo + l.hi) / 2);
+  const delay = one && revealed > route.legs.length ? one.delay : 0;
+  const total = parts.reduce((a, b) => a + b, 0) + delay;
+  const arrival = leave + total;
+  const landed = !!one && revealed > route.legs.length;
+  const marks = route.k === 'nl'
+    ? [{g: 'home', l: 'Home'}, {g: 'stop', l: 'NL stop'}, {g: 'bridge', l: 'Bay Bridge'}, {g: 'walk', l: 'Downtown'}, {g: 'tower', l: 'The office'}]
+    : [{g: 'home', l: 'Home'}, {g: 'station', l: 'BART station'}, {g: 'tunnel', l: 'Transbay Tube'}, {g: 'walk', l: 'Downtown'}, {g: 'tower', l: 'The office'}];
+
+  return <div className={`mlabJourney${landed ? ' isLanded' : ''}${one && one.late ? ' is-late' : ''}`}
+    role="img"
+    aria-label={one
+      ? `Leaving at ${clock(leave)} by ${route.name}: ${route.legs.map((l, i) => `${l.name} ${one.parts[i].toFixed(1)} minutes`).join(', ')}${one.delay ? `, plus ${one.delay.toFixed(0)} minutes lost to ${route.disrupt.label}` : ''}, arriving ${clock(arrival)}`
+      : 'The arrival equation, drawn to scale'}>
+
+    <div className="mlabTrip">
+      <div className="mlabStop is-start">
+        <Glyph name={marks[0].g} label={marks[0].l}/>
+        <b>{clock(leave)}</b>
+        <em>leave home</em>
+      </div>
+
+      {route.legs.map((l, i) => {
+        const lit = revealed > i;
+        const at = ((parts[i] - l.lo) / (l.hi - l.lo)) * 100;
+        return <React.Fragment key={l.k}>
+          <div className={`mlabLeg is-${l.k}${lit ? ' isLit' : ''}`} style={{'--m': parts[i]} as React.CSSProperties}>
+            <span className="mlabLegVal">{lit ? parts[i].toFixed(1) : '·'}<u>{lit ? 'min' : ''}</u></span>
+            <span className="mlabLegBar"><i style={{'--at': `${Math.max(0, Math.min(100, at))}%`} as React.CSSProperties}/></span>
+            <span className="mlabLegName">{l.name}</span>
+            <span className="mlabLegSrc">{l.lo}–{l.hi} min · {l.src}</span>
+          </div>
+          {i < route.legs.length - 1 && <div className="mlabStop">
+            <Glyph name={marks[i + 1].g} label={marks[i + 1].l}/>
+          </div>}
+        </React.Fragment>;
+      })}
+
+      {delay > 0 && <div className="mlabLeg is-delay isLit" style={{'--m': delay} as React.CSSProperties}>
+        <span className="mlabLegVal">+{delay.toFixed(0)}<u>min</u></span>
+        <span className="mlabLegBar"><i/></span>
+        <span className="mlabLegName">{route.disrupt.label}</span>
+        <span className="mlabLegSrc">{Math.round(route.disrupt.p * 10)} mornings in 10 · {route.disrupt.src}</span>
+      </div>}
+
+      <div className={`mlabStop is-end${landed ? ' isLanded' : ''}`}>
+        <Glyph name="tower" label="The office"/>
+        <b>{landed ? clock(arrival) : '—'}</b>
+        <em>{landed ? (one!.late ? 'missed 9:00' : 'made it') : 'deadline 9:00'}</em>
+      </div>
+    </div>
+  </div>;
+}
+
 /* One route's run: its vehicle crossing as the mornings pile up, the arrivals
    stacking into a distribution, and the verdict the constraint produces. */
 function RouteRun({route, leave, seed, drawn, binding}: {
@@ -304,44 +380,8 @@ export default function CommuteModelLab(){
       </div>
 
       <div className="mlabEqRow">
-      <div className="mlabEq" role="img" aria-label={one
-        ? `Leaving at ${clock(cand.leave)} by ${route.name}: ${route.legs.map((l, i) => `${l.name} ${one.parts[i].toFixed(1)} minutes`).join(', ')}${one.delay ? `, plus ${one.delay.toFixed(0)} minutes lost` : ''}, arriving ${clock(one.arrival)}`
-        : 'The arrival equation'}>
-        <div className="mlabTerm is-seed">
-          <em>leave</em>
-          <b>{clock(cand.leave)}</b>
-          <small>candidate<cite>alarm + learned routine</cite></small>
-        </div>
-        {route.legs.map((l, i) => {
-          const v = eqParts[i];
-          const at = ((v - l.lo) / (l.hi - l.lo)) * 100;
-          const lit = revealed > i;
-          return <React.Fragment key={l.k}>
-            <span className="mlabOp" aria-hidden="true">+</span>
-            <div className={`mlabTerm${lit ? ' isLit' : ''}`}>
-              <em>{l.name}</em>
-              <b>{lit ? v.toFixed(1) : l.short}<u>{lit ? 'min' : ''}</u></b>
-              <i aria-hidden="true"><s style={{'--at': `${Math.max(0, Math.min(100, at))}%`} as React.CSSProperties}/></i>
-              <small>{l.lo}–{l.hi}<cite>{l.src}</cite></small>
-            </div>
-          </React.Fragment>;
-        })}
-        {one && one.delay > 0 && revealed > route.legs.length && <>
-          <span className="mlabOp" aria-hidden="true">+</span>
-          <div className="mlabTerm is-delay isLit">
-            <em>{route.disrupt.label}</em>
-            <b>{one.delay.toFixed(0)}<u>min</u></b>
-            <small>{Math.round(route.disrupt.p * 10)} mornings in 10<cite>{route.disrupt.src}</cite></small>
-          </div>
-        </>}
-        <span className="mlabOp is-eq" aria-hidden="true">=</span>
-        <div className={`mlabTerm is-out${one && revealed > route.legs.length ? ' isLit' : ''}${one && one.late ? ' is-late' : ''}`}>
-          <em>walk in at</em>
-          <b>{one && revealed > route.legs.length ? clock(one.arrival) : '—'}</b>
-          <small>{one && revealed > route.legs.length ? (one.late ? 'missed 9:00' : 'made it') : 'deadline 9:00'}</small>
-        </div>
-      </div>
-      <button type="button" className="mlabGhostBtn mlabDrawBtn" onClick={() => sampleOne()}>Draw another ↻</button>
+        <JourneyStrip route={route} leave={cand.leave} one={one} revealed={revealed}/>
+        <button type="button" className="mlabGhostBtn mlabDrawBtn" onClick={() => sampleOne()}>Draw another ↻</button>
       </div>
     </section>
 

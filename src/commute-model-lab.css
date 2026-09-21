@@ -24,35 +24,46 @@
 .mlabGhostBtn{flex:0 0 auto;align-self:center;padding:7px 14px;border:0;border-radius:999px;background:color-mix(in srgb,var(--ml-accent) 10%,transparent);box-shadow:inset 0 0 0 1px var(--ml-rule);color:var(--ml-accent);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:background .2s ease}
 .mlabGhostBtn:hover{background:color-mix(in srgb,var(--ml-accent) 18%,transparent)}
 
-/* ── the equation ─────────────────────────────────────────────── */
-.mlabEqRow{display:flex;align-items:center;gap:20px}
-.mlabEq{flex:1 1 auto;display:flex;flex-wrap:wrap;align-items:stretch;gap:10px 8px}
-.mlabOp{align-self:center;font-size:18px;font-weight:400;color:color-mix(in srgb,var(--ml-ink) 40%,transparent)}
-.mlabOp.is-eq{font-size:22px;color:var(--ml-accent)}
+/* ── the journey, drawn to scale ──────────────────────────────── */
+/* Four bands, shared by every column, so the numbers, the rail, the names and
+   the provenance each sit on one line across the whole strip. */
+.mlabEqRow{display:flex;flex-wrap:wrap;align-items:flex-start;gap:18px 24px}
+.mlabJourney{flex:1 1 560px;min-width:0}
+.mlabTrip{position:relative;display:flex;align-items:stretch;width:100%}
+.mlabTrip:before{content:'';position:absolute;left:0;right:0;top:42px;height:1px;background:color-mix(in srgb,var(--ml-ink) 12%,transparent)}
 
-.mlabTerm{position:relative;display:grid;grid-template-rows:auto auto auto 1fr;gap:6px;min-width:126px;padding:12px 15px 11px;border-radius:12px;background:color-mix(in srgb,var(--ml-accent) 5%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ml-accent) 14%,transparent);transition:background .35s ease,box-shadow .35s ease}
-.mlabTerm em{font-style:normal;font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ml-muted)}
-.mlabTerm b{display:flex;align-items:baseline;gap:4px;font-family:var(--font-mono,ui-monospace,SFMono-Regular,Menlo,monospace);font-size:22px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--ml-ink) 45%,transparent);transition:color .3s ease}
-.mlabTerm b u{text-decoration:none;font-size:11px;font-weight:500;color:var(--ml-muted)}
-.mlabTerm small{align-self:end;font-size:10.5px;font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--ml-muted) 80%,transparent)}
-.mlabTerm>i{display:block;height:3px;border-radius:2px;background:color-mix(in srgb,var(--ml-accent) 16%,transparent)}
-.mlabTerm>i s{position:relative;display:block;width:7px;height:7px;margin:-2px 0 0;border-radius:50%;background:var(--ml-accent);opacity:0;translate:-50% 0;left:var(--at,50%);transition:left .45s cubic-bezier(.2,.7,.2,1),opacity .3s ease}
-.mlabTerm.isLit{background:color-mix(in srgb,var(--ml-accent) 11%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ml-accent) 30%,transparent)}
-.mlabTerm.isLit b{color:var(--ml-ink)}
-.mlabTerm.isLit>i s{opacity:1}
+.mlabLeg,.mlabStop{display:grid;grid-template-rows:22px 40px auto auto;justify-items:center;align-items:center;gap:0}
+.mlabStop{position:relative;z-index:1;flex:0 0 auto;padding:0 7px}
+.mlabLeg{position:relative;flex:var(--m,1) 1 0;min-width:46px;padding:0 3px}
 
-.mlabTerm.is-seed{grid-template-rows:auto auto 1fr;background:transparent;box-shadow:inset 0 0 0 1px var(--ml-rule)}
-.mlabTerm.is-seed b{color:var(--ml-ink)}
-.mlabTerm.is-delay{grid-template-rows:auto auto 1fr;background:color-mix(in srgb,var(--ml-late) 12%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ml-late) 35%,transparent)}
-.mlabTerm.is-delay em,.mlabTerm.is-delay b{color:var(--ml-late)}
-.mlabTerm.is-out{grid-template-rows:auto auto 1fr;min-width:150px;background:transparent;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--ml-accent) 30%,transparent)}
-.mlabTerm.is-out.isLit{background:var(--ml-accent);box-shadow:none}
-.mlabTerm.is-out.isLit em,.mlabTerm.is-out.isLit small{color:color-mix(in srgb,#fff 78%,transparent)}
-.mlabTerm.is-out.isLit b{color:#fff;font-size:26px}
-.mlabTerm.is-out.is-late.isLit{background:var(--ml-late)}
+.mlabGlyph{grid-row:2;display:block;width:40px;height:34px;fill:none;stroke:color-mix(in srgb,var(--ml-ink) 50%,transparent);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;background:var(--case-bg,#fff)}
+.mlabStop.is-start .mlabGlyph,.mlabStop.is-end .mlabGlyph{stroke:var(--ml-accent)}
+.mlabStop.is-end .mlabGlyph{stroke:color-mix(in srgb,var(--ml-accent) 40%,transparent);transition:stroke .4s ease}
+.mlabStop.is-end.isLanded .mlabGlyph{stroke:var(--ml-accent);stroke-width:1.9}
+.mlabStop b{grid-row:3;font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ml-ink);white-space:nowrap}
+.mlabStop em{grid-row:4;font-style:normal;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ml-muted);white-space:nowrap}
+.mlabStop.is-end b{color:color-mix(in srgb,var(--ml-ink) 35%,transparent);transition:color .4s ease}
+.mlabStop.is-end.isLanded b{color:var(--ml-accent)}
+.mlabJourney.is-late .mlabStop.is-end.isLanded b{color:var(--ml-late)}
+.mlabJourney.is-late .mlabStop.is-end.isLanded .mlabGlyph{stroke:var(--ml-late)}
+
+.mlabLegVal{grid-row:1;display:flex;align-items:baseline;gap:3px;font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--ml-ink) 34%,transparent);transition:color .3s ease}
+.mlabLegVal u{text-decoration:none;font-size:9px;font-weight:500;color:var(--ml-muted)}
+.mlabLeg.isLit .mlabLegVal{color:var(--ml-ink)}
+.mlabLegBar{grid-row:2;position:relative;display:block;width:100%;height:6px;border-radius:3px;background:color-mix(in srgb,var(--ml-accent) 14%,transparent)}
+.mlabLeg.isLit .mlabLegBar{background:color-mix(in srgb,var(--ml-accent) 32%,transparent)}
+.mlabLegBar i{position:absolute;top:50%;left:var(--at,50%);width:9px;height:9px;border-radius:50%;background:var(--ml-accent);translate:-50% -50%;opacity:0;transition:left .5s cubic-bezier(.2,.7,.2,1),opacity .3s ease}
+.mlabLeg.isLit .mlabLegBar i{opacity:1}
+.mlabLegName{grid-row:3;padding-top:6px;font-size:11.5px;line-height:1.25;text-align:center;color:var(--ml-ink)}
+.mlabLegSrc{grid-row:4;font-size:9px;line-height:1.35;text-align:center;color:color-mix(in srgb,var(--ml-muted) 72%,transparent)}
+.mlabLeg.is-delay .mlabLegBar{background:repeating-linear-gradient(115deg,color-mix(in srgb,var(--ml-late) 60%,transparent) 0 5px,transparent 5px 9px);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ml-late) 32%,transparent)}
+.mlabLeg.is-delay .mlabLegVal,.mlabLeg.is-delay .mlabLegName{color:var(--ml-late)}
+.mlabLeg.is-delay .mlabLegBar i{display:none}
+
+.mlabDrawBtn{flex:0 0 auto;align-self:center}
 
 /* segmented pickers: route for the single morning, departure for the loop */
-.mlabPicker{display:inline-flex;flex-wrap:nowrap;align-self:center;gap:3px;padding:3px;border-radius:999px;background:color-mix(in srgb,var(--ml-accent) 8%,transparent);box-shadow:inset 0 0 0 1px var(--ml-rule)}
+.mlabPicker{display:inline-flex;flex:0 0 auto;flex-wrap:nowrap;align-self:center;width:max-content;max-width:100%;gap:3px;padding:3px;border-radius:999px;background:color-mix(in srgb,var(--ml-accent) 8%,transparent);box-shadow:inset 0 0 0 1px var(--ml-rule)}
 .mlabPicker button{flex:0 0 auto;padding:7px 13px;border:0;border-radius:999px;background:transparent;color:var(--ml-muted);font:inherit;font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;cursor:pointer;transition:background .2s ease,color .2s ease}
 .mlabPicker button:hover{color:var(--ml-ink)}
 .mlabPicker button[aria-pressed="true"]{background:var(--ml-accent);color:#fff}
