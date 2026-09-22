@@ -7,7 +7,7 @@ import './commute-model-lab.css';
    saying it runs 1,000 times, and three pre-baked bars. This runs it instead.
    Every number on screen is produced by the sampler below, in the browser, from
    the leg ranges observed across the 10-week test, and both routes are simulated
-   every morning — the bus is only worth planning around if the train it falls
+   every morning. The bus is only worth planning around if the train it falls
    back to still makes 9:00. Seeds are fixed per departure so the case reads the
    same for every visitor. */
 
@@ -139,7 +139,7 @@ function JourneyStrip({route, leave, one, revealed}: {
 
     <p className={`mlabRisk${landed ? ' isVisible' : ''}`}>
       <b>{Math.round(route.disrupt.p * 10)} morning{Math.round(route.disrupt.p * 10) === 1 ? '' : 's'} in 10</b>
-      {route.disrupt.label} · watched with {route.disrupt.src}
+      {route.disrupt.label}
     </p>
 
     <div className="mlabTrip">
@@ -157,7 +157,7 @@ function JourneyStrip({route, leave, one, revealed}: {
           <Landmark name={l.art} label={l.name}/>
           <span className="mlabLegBar"><i style={{'--at': `${Math.max(0, Math.min(100, at))}%`} as React.CSSProperties}/></span>
           <span className="mlabLegName">{l.name}</span>
-          <span className="mlabLegSrc"><b>{l.lo}–{l.hi} min</b>{l.feed}</span>
+          <span className="mlabLegSrc"><b>{l.lo}–{l.hi} min</b></span>
         </div>;
       })}
 
@@ -169,7 +169,7 @@ function JourneyStrip({route, leave, one, revealed}: {
 
       <div className={`mlabStop is-end${landed ? ' isLanded' : ''}`}>
         <Landmark name="tower" label="The office"/>
-        <b>{landed ? clock(arrival) : '—'}</b>
+        <b>{landed ? clock(arrival) : '·'}</b>
         <em>{landed ? (one!.late ? 'missed 9:00' : 'made it') : 'deadline 9:00'}</em>
       </div>
     </div>
@@ -208,7 +208,7 @@ function RouteRun({route, leave, seed, drawn, binding, revealIndex}: {
         <span className="mlabRouteArt" style={{'--p': `${(drawn / N) * 100}%`} as React.CSSProperties}>
           <RollingVehicle {...route.vehicle} moving={!done}/>
         </span>
-        <div><b>{route.name}</b><em>{route.role}</em></div>
+        <div><b>{route.name}</b></div>
       </div>
       <div className={`mlabPct${done ? (safe ? ' is-safe' : ' is-bad') : ''}`}>
         <strong>{pct}<u>%</u></strong>
@@ -233,11 +233,6 @@ function RouteRun({route, leave, seed, drawn, binding, revealIndex}: {
       <div><dt>9 in 10 by</dt><dd>{clock(result.p90)}</dd></div>
     </dl>
 
-    <p className={`mlabVerdict${safe ? ' is-safe' : ' is-bad'}`}>
-      {binding
-        ? safe ? 'Clears 90%, so this departure is allowed.' : 'Below 90%, so this departure is thrown out.'
-        : safe ? 'Also clears 90%, and lands earlier, so this is the one to ride.' : 'Below 90% on its own.'}
-    </p>
   </div>;
 }
 
@@ -316,9 +311,9 @@ export default function CommuteModelLab(){
 
   return <div ref={hostRef} className={`mlab${armed ? ' isArmed' : ''}`}>
     <header className="mlabHead">
-      <span>Parts 01 and 02 · Routine and the Monte Carlo model</span>
+      <span>Parts 01 and 02</span>
       <h2>How Commute chooses the alarm each morning.</h2>
-      <p>Commute tests each reachable departure across the ranges I observed, keeps only the plans whose fallback clears a 90% on-time threshold, and chooses the latest one. The run below is one inspectable example—not a claim that the same result generalizes beyond my commute.</p>
+      <p>The latest departure whose fallback still clears 90%. One inspectable run, from my own commute.</p>
     </header>
 
     {/* ── 1. one morning ─────────────────────────────────────────── */}
@@ -327,7 +322,6 @@ export default function CommuteModelLab(){
         <b>1</b>
         <div>
           <strong>Build one possible morning</strong>
-          <span>Draw one value for each leg, add them in sequence, and check the resulting arrival against 9:00.</span>
         </div>
         <div className="mlabStepTools">
           <div className="mlabPicker" role="group" aria-label="Route to sample">
@@ -346,7 +340,6 @@ export default function CommuteModelLab(){
         <b>2</b>
         <div>
           <strong>Test the plan and its fallback</strong>
-          <span>The bus is usually quicker; BART recovers more gracefully because another train follows in five to six minutes. The fallback has to clear the same 90% rule before the bus plan is allowed.</span>
         </div>
         <div className="mlabStepTools">
           <div className="mlabPicker" role="group" aria-label="Candidate departure time">
@@ -377,13 +370,12 @@ export default function CommuteModelLab(){
         <b>3</b>
         <div>
           <strong>Choose the latest qualifying departure</strong>
-          <span>The product UI does not ask someone to interpret probability. The model collapses the tradeoff into one alarm and keeps monitoring the plan.</span>
         </div>
       </div>
 
       {/* The search, not a beauty contest: walk later until the fallback
           breaks, then take the one before. Rows in time order with the margin
-          over the 90% rule in its own column — the margin going +5, +1, -27 is
+          over the 90% rule in its own column. The margin going +5, +1, -27 is
           why 8:18 dies, and taking +1 over +5 is the "sleep, not safety margin"
           decision shown rather than asserted. */}
       <table className="mlabSearch">
@@ -406,9 +398,9 @@ export default function CommuteModelLab(){
               <td>{Math.round(nl.onTime * 100)}%</td>
               <td className="mlabKeyCol">{train}%</td>
               <td className="mlabMargin">{margin > 0 ? `+${margin}` : margin}</td>
-              <td>{latest ? 'The last departure the fallback survives.'
-                   : ok ? 'Safe, and six minutes of sleep left on the table.'
-                        : 'The fallback misses 9:00 too often.'}</td>
+              <td>{latest ? 'Last one the fallback survives.'
+                   : ok ? 'Safe, six minutes of sleep lost.'
+                        : 'Fallback misses 9:00.'}</td>
             </tr>;
           })}
         </tbody>
@@ -419,7 +411,7 @@ export default function CommuteModelLab(){
       {/* Each call gets the number from the table that proves it, so the
           three read as evidence pulled off the rows above rather than three
           paragraphs parked underneath them. */}
-      <p className="mlabDecisionNote"><b>Product call</b> Use the last departure whose fallback still qualifies. The extra margin at 8:06 is sleep already paid for; 8:18 fails the rule.</p>
+      <p className="mlabDecisionNote"><b>Product call</b> Take the last departure the fallback survives. Margin above 90% is sleep paid for.</p>
 
     </section>
   </div>;
