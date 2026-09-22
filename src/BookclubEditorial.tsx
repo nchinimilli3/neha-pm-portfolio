@@ -134,7 +134,7 @@ export function BookclubEditorial(){
       <DecisionMoment
         statement={<>Rank the nominees.<br/>Don’t run a poll.</>}
         sub="Three product bets shape this app. This is the one that decides whether the club survives its own book choice."
-        because={<p>A one-tap poll rewards whoever answers first and loudest. In a group of busy adults reading one book at a time, a pick that only half the club wanted is the thing that quietly ends a book club — so the choosing step is worth more friction than any other.</p>}
+        because={<p>A one-tap poll rewards whoever answers first and loudest. In a group of busy adults reading one book at a time, a pick that only half the club wanted is the thing that quietly ends a book club, so the choosing step is worth more friction than any other.</p>}
         tradeoff={<Tradeoff pairs={[
           ['One-tap polls where the loudest favourite wins','A few more taps for a pick the whole group accepts']
         ]}/>}

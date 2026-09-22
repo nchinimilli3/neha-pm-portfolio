@@ -158,7 +158,7 @@ export default function FinSimpleCase({setLightbox}){
     ['My own data shape','Salesforce contracts the record already had to match'],
     ['Shipping on my own schedule','A release train that made five teams a dependency']
    ]}/>}
-   result={<p>One customer action travels through the web experience, the AEM component, the API layer, and into Salesforce as a durable record — inside the product customers already used, shipped with 6% fewer Salesforce write failures per submitted estimate.</p>}
+   result={<p>One customer action travels through the web experience, the AEM component, the API layer, and into Salesforce as a durable record, inside the product customers already used, shipped with 6% fewer Salesforce write failures per submitted estimate.</p>}
   >
    <p className="cdEvidenceLabel">One simple action, four connected layers</p>
   {/* Exploded view of the platform: a saved estimate drops through each layer to the system of record. */}

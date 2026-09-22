@@ -381,7 +381,6 @@
 /* The model is one inspectable decision system, not a decorative simulation. */
 @keyframes cmConfidenceIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @media(max-width:760px){.cmModelFormula{display:block}.cmModelFormula span{display:block;margin-top:8px}.cmCandidateTest header{display:none}.cmCandidateTest>div{grid-template-columns:62px 1fr 44px}.cmCandidateTest>div em{grid-column:2}.cmModelChoice{grid-template-columns:1fr;gap:6px}.cmModelChoice i{transform:rotate(90deg);width:max-content}.cmModelLearning{grid-template-columns:1fr;gap:28px}.cmModelLearning li{grid-template-columns:116px 1fr 58px}}
-.case-commute .cdAnswerHead{display:none}
 
 /* The evidence reads like the commute itself: a route line beside a live
    station board{align-items:start;border-top:0;padding-top:0}

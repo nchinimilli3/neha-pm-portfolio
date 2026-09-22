@@ -1,0 +1,40 @@
+/* =========================================================
+   V44 — iPad and wide-monitor passes.
+   Both are scoped away from the desktop range (1201–1699px),
+   which is deliberately left exactly as it was.
+   ========================================================= */
+
+/* ---------- iPad landscape and the gap above the phone rules ----------
+   Below 851px the site already stacks. Between there and 1200px the
+   desktop column counts survive but the columns get too narrow to read,
+   so each of these drops one step. Art and device mockups are left alone:
+   they are drawn to a fixed aspect and shrink correctly. */
+@media(min-width:851px) and (max-width:1200px){
+  .cmPartsGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .kohlerWorkspaceGrid,.kohlerSurfaceBody{grid-template-columns:1fr!important}
+  .bcPlan{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .cdSupporting{grid-template-columns:1fr!important}
+  .expColumns{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .expMetricRow{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+
+  /* The portrait is absolutely positioned against the hero's right edge.
+     At desktop widths the text columns stop well short of it; in this range
+     they do not, and the tagline runs under the photo. Reserve the portrait's
+     column instead of narrowing each paragraph separately. */
+  .v28Hero .heroInner,.heroInner{padding-right:clamp(238px,25vw,300px)!important}
+  .heroThesis,.heroTagline{max-width:none!important}
+}
+
+/* ---------- wide monitors ----------
+   The page is capped at 1420px, which reads as a narrow column once the
+   display is wider than about 1700px. The cap grows; nothing else does,
+   so line lengths and type sizes stay where they were tuned. */
+@media(min-width:1700px){
+  .v28Hero .heroInner,.heroInner,.section,.siteFooter,.caseLead,.casePage{
+    width:min(1660px,calc(100% - 96px))!important;
+    max-width:1660px!important;
+  }
+  /* Keep the logo strip's left edge on the same line as the content above it
+     instead of letting it spread the full width of the display. */
+  .companyBanner{padding-inline:max(72px,calc((100% - 1660px)/2))!important}
+}

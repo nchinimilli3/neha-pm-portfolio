@@ -30,6 +30,7 @@ import { CommutePhoneDemo, useMorning } from './CommuteSurfaces';
 import { CaseAnswer, CausalChain, CountUp, DecisionMoment, Tradeoff } from './CaseDecision';
 import { CarBand } from './CarArt';
 import './case-hero.css';
+import './responsive-v44.css';
 
 const assetUrl=src=>{
   if(/^https?:\/\//.test(src))return src;
@@ -104,7 +105,7 @@ const projects = [
     id:'commute',
     title:'Commute',
     company:'Independent app · iOS',
-    summary:'Personal iOS app that learns my routine and simulates each reachable departure to pick the latest wake time that still clears my on-time threshold. Built and tested across 10 weeks.',
+    summary:'A personal iOS app that tells me the latest I can wake up and still get to work on time.',
     blurb:'Learns my routine, simulates 1,000 mornings per departure, and chooses the latest wake time that still clears the arrival target.',
     media:'commute'
   },
@@ -113,7 +114,7 @@ const projects = [
     title:'Customer Value Framework',
     company:'Ford Motor Company',
     preview:'Moved a customer-value assessment from Excel to the web, then used four interviews to raise feedback volume 25%.',
-    summary:'Turned an Excel-based customer-value assessment into a web application for Ford teams, then used four user interviews to change the interaction model, not just the interface. Removing the live score and paginating the assessment raised feedback volume 25%.',
+    summary:'A web version of the customer value assessment that Ford teams had been running in Excel.',
     media:'fcvf'
   },
   {
@@ -121,7 +122,7 @@ const projects = [
     title:'AI Lab GTM Enablement',
     company:'Accenture · Frontier AI lab',
     preview:'Supported 21 live AI-lab requests and turned repeated judgment calls into a 10-tab automation contract.',
-    summary:'Go-to-market enablement for a frontier AI lab: I supported 21 live requests matching trainers to customer engagements, and wrote the judgment calls being remade by hand into a 10-tab automation contract. One match passed every automated check and still landed at 10:30 PM the trainer’s time, which is why the automation stops at a human gate.',
+    summary:'Go to market enablement for an AI lab, matching trainers to customer training sessions.',
     media:'accenture'
   },
   {
@@ -129,14 +130,14 @@ const projects = [
     title:'Ship Anywhere',
     company:'Kohler Co. · MSU CSE 498',
     preview:'Built an export assistant that cut processing time 42% and raised first-pass accuracy from 71% to 94%.',
-    summary:'Designed and built an export-preparation assistant that uses an order’s SKU and destination to identify the documents, checks, and review steps needed before shipment. Delivered to Kohler with 42% less processing time and first-pass document accuracy up from 71% to 94%.',
+    summary:'An assistant that gets a Kohler order ready to ship to another country.',
     media:'kohler'
   },
   {
     id:'scheduler',
     title:'Group Scheduling App',
     company:'Live web product · CSE 477',
-    summary:'The assignment was one line: build When2meet. I treated a clone as the floor, not the finish, because seven student interviews all landed on the same complaint: the grid stops working right where the decision starts. This version keeps “maybe” as its own answer, ranks the times itself instead of leaving a heatmap to be read, and carries the winning slot into a venue poll, a chat, and a calendar event without leaving the window. Two study groups ran a semester of meetings on it.',
+    summary:'A group scheduling app for students, built from a one line assignment: build When2meet.',
     blurb:'Keeps “maybe”, ranks the best time, and carries the choice into a venue poll, chat, and calendar event.',
     media:'scheduler'
   },
@@ -145,7 +146,7 @@ const projects = [
     title:'Previous Estimates',
     company:'Ford Credit · FinSimple',
     preview:'Brought saved estimates back for returning customers, with 6% fewer write failures per estimate.',
-    summary:'Returning Ford Credit customers had no way back to a vehicle estimate they’d already built, so they started over. I owned Previous Estimates from requirements to production, integrating Salesforce APIs with Adobe Experience Manager, and it shipped into the live customer flow: 6% fewer Salesforce write failures per submitted estimate, and 15% less calendar time per story than the team’s prior average.',
+    summary:'A way for returning Ford Credit customers to get back to an estimate they already built.',
     media:'finsimple'
   },
   {
@@ -153,14 +154,14 @@ const projects = [
     title:'Market Expansion Scorecard',
     company:'Consumer services client · Spectrum Consulting Group',
     preview:'Built a reusable scorecard to compare three markets on the same four criteria.',
-    summary:'A consumer services client wanted a new franchise location and had no shared way to compare markets. I built the weighted scorecard and rubric that scored three of them against the same four criteria, and the client kept it as something it can rerun on any market.',
+    summary:'A scorecard that let a franchise client compare candidate markets the same way every time.',
     media:'marketExpansion'
   },
   {
     id:'chat',
     title:'iMessage Recreation on Web',
     company:'MSU · CSE 477',
-    summary:'An open-ended chat-room assignment became an iMessage recreation, because everyone who would use it already knew iMessage, and their expectations became my spec. Typing indicators expire instead of becoming chat history, and a Tapback updates the message instead of adding a second one.',
+    summary:'A real time chat room for a class assignment, built as an iMessage recreation.',
     blurb:'An iMessage recreation, because everyone already knew the spec. Typing expires; a Tapback edits the message.',
     media:'chat'
   },
@@ -169,14 +170,14 @@ const projects = [
     title:'Double Wear Foundation',
     company:'Estée Lauder × Kode With Klossy',
     preview:'Turned a promotional brief into a product decision tool. Top 5 in the Estée Lauder challenge.',
-    summary:'The brief was a promotional website for Double Wear. Every brand page I looked at — Estée Lauder’s own, Sephora, Ulta — leads with the product shot and leaves fit to the shopper, so I built the promotion as a decision: answer “will this work for me?” first, then hand off to eight retailers to buy. It finished top 5 in the Kode With Klossy × Estée Lauder challenge, and I presented the concept to Estée Lauder C-suite leadership.',
+    summary:'A one week build for the Kode With Klossy challenge: a Double Wear page that helps shoppers find their shade.',
     media:'estee'
   },
   {
     id:'bookclub',
     title:'Bookclub',
     company:'Independent product · live web app',
-    summary:'Choosing the next book, tracking who’s how far in, discussing without spoilers, and planning meetings were scattered across apps for my reading group. I built and shipped a private book-club app that keeps all of it in one place, and the club uses it now.',
+    summary:'A private app for my reading group, so picking books and tracking progress happen in one place.',
     blurb:'A private app for my reading group: pick the book, track progress, talk without spoilers. Live, and in use.',
     media:'bookclub'
   }
@@ -415,7 +416,7 @@ function KohlerProductSurface({compact=false}){
    <aside><span>PREPARATION</span>{['Overview','Requirements','Documents','Validation','Audit'].map((item,index)=><div className={index===0?'active':''} key={item}><b>{String(index+1).padStart(2,'0')}</b>{item}</div>)}</aside>
    <div className="kohlerSurfaceMain">
     <div className="kohlerWorkspaceHead"><div><span>ORDER SO-28471</span><strong>Export preparation for this order</strong></div><i>Workflow prototype</i></div>
-    {!compact&&<div className="kohlerMarketControl"><div className="kohlerMarketPrompt"><span>Try another destination</span><small>Choose a market to update the checklist and document <i aria-hidden="true">↓</i></small></div><div className="kohlerMarketTabs" role="group" aria-label="Choose a sample destination">{Object.entries(kohlerMarkets).map(([key,value])=><button type="button" className={key===market?'selected':''} onClick={()=>setMarket(key)} aria-pressed={key===market} key={key}>{value.label}</button>)}</div></div>}
+    <div className="kohlerMarketControl"><div className="kohlerMarketPrompt"><span>Try another destination</span><small>Choose a market to update the checklist and document <i aria-hidden="true">↓</i></small></div><div className="kohlerMarketTabs" role="group" aria-label="Choose a sample destination">{Object.entries(kohlerMarkets).map(([key,value])=><button type="button" className={key===market?'selected':''} onClick={()=>setMarket(key)} aria-pressed={key===market} key={key}>{value.label}</button>)}</div></div>
     <div className="kohlerFieldRail"><div><span>PRODUCT</span><strong>Purist single-handle faucet</strong></div><div><span>DESTINATION</span><strong>{detail.label}</strong></div><div><span>ORDER SOURCE</span><strong>SAP ECC</strong></div></div>
     <div className="kohlerWorkspaceGrid"><section className="kohlerRoute"><header><span>REQUIREMENT PACKET</span><b>{detail.readiness}% ready</b></header><div className="kohlerRouteLine"><i></i><strong>US</strong><em></em><strong>{market==='india'?'IN':market==='china'?'CN':'AE'}</strong></div><ul>{requirements.slice(0,compact?3:4).map((item,index)=><li key={item}><span>{index<2?'✓':index===2?'↻':'!'}</span><div><strong>{item}</strong><small>{index<2?'Validated against source':'Prepared for review'}</small></div></li>)}</ul></section><section className="kohlerDocument"><header><span>GENERATED DOCUMENT</span><b>{detail.page}</b></header><div className="kohlerPaper"><span>SPECIFICATION</span><strong>Purist® faucet</strong><i></i><small>{detail.language}</small><p>Regional contacts, warranty language, compliance notes, and approved product attributes assembled for the destination.</p></div><footer><span>Validation</span><strong>Human review required</strong></footer></section></div>
    </div>
@@ -707,7 +708,7 @@ const caseAnswers={
   owned:'I defined the product, built the SwiftUI app and monitoring service, designed the prediction model, and tested it across 40 to 50 weekday mornings.',
   call:'Recommend the latest wake-up time that still clears my on-time threshold.',
   callHref:'#cm-decide',
-  evidence:'To make that recommendation, Commute simulates 1,000 possible mornings for each reachable departure—using routine history plus live walking, wait, traffic, and transit ranges. It selects the latest plan that clears the on-time threshold, then rechecks it as live conditions change.',
+  evidence:'To make that recommendation, Commute simulates 1,000 possible mornings for each reachable departure, using routine history plus live walking, wait, traffic, and transit ranges. It selects the latest plan that clears the on-time threshold, then rechecks it as live conditions change.',
   result:'Used every weekday for 10 weeks. It replaced repeated map checks with one wake time, one route, and a notification only when the plan needed to change.'
  },
  marketExpansion:{
@@ -744,7 +745,7 @@ const caseAnswers={
  estee:{
   problem:'The brief was to build a promotional website for Double Wear. A promotional page shows the product; online there is no tester, so the shopper is still left to judge finish, coverage, and shade from a picture and decide alone.',
   owned:'A one-week solo build for the Kode With Klossy × Estée Lauder challenge: I shaped the product concept, designed the UX/UI, and built the frontend.',
-  call:'Help the shopper pick their shade instead of just showing the product.',
+  call:'Help the shopper pick their shade, then hand checkout to eight established retailers.',
   callHref:'#el-scope',
   evidence:'Estée Lauder’s own pages next to Sephora and Ulta: all image-led, the product shot as the focal point, and the fit question left to the shopper. Plus how I shop for foundation myself.',
   result:'Top 5 finalist, and I presented the concept to Estée Lauder C-suite leadership.',
@@ -774,7 +775,7 @@ const caseAnswers={
   call:'Build the tool around the export order, not the product catalog.',
   callHref:'#kx-define',
   evidence:'How an order actually gets held up today, and the exception cases where a person has to decide rather than a rule.',
-  result:'Delivered to Kohler: the order workspace, destination rules, agent-drafted packet, and human review gate.',
+  result:'Delivered to Kohler: an order workspace driven by the order SKU and destination, the destination rules, the agent-drafted packet, and a human review gate.',
   stat:{value:'42%',label:'less processing time, with first-pass accuracy up from 71% to 94%'}
  },
  finsimple:{
@@ -812,7 +813,9 @@ function CaseSkimDemo({id}:{id:string}){
  if(id==='marketExpansion')return <section className="caseSkimDemo" aria-label="Explore the market comparison"><header><h2>Try the scorecard</h2></header><GrazeLocations/></section>;
  if(id==='fcvf')return <section className="caseSkimDemo" aria-label="Try the assessment decision"><header><h2>Try the key decision</h2></header><SurveyDemo/></section>;
  if(id==='accenture')return <section className="caseSkimDemo" aria-label="Try the request workflow"><header><h2>Try the workflow</h2></header><AccentureRequestRelay/></section>;
- if(id==='estee')return <section className="caseSkimDemo" aria-label="Try the product discovery experience"><header><h2>Try the product</h2></header><EsteeCompact/></section>;
+ // No interaction to offer here: the deliverable was the released experience, so the skim
+ // view shows the actual screens rather than a decorative compact.
+ if(id==='estee')return <section className="caseSkimDemo esteeSkimShots" aria-label="See the released Double Wear experience"><header><h2>See the product</h2></header><EsteeVisual/></section>;
  if(id==='bookclub')return <section className="caseSkimDemo" aria-label="See the live Bookclub product"><header><h2>See the product</h2></header><BookclubEditorialHero/></section>;
  if(id==='finsimple')return <section className="caseSkimDemo" aria-label="See the released FinSimple feature"><header><h2>See the shipped feature</h2></header><ProjectVisual type="finsimple"/></section>;
  return null;
@@ -838,7 +841,7 @@ function CaseStudy({id,onBack}){
   e.preventDefault();setReadingMode('deep');
   window.setTimeout(()=>document.querySelector(href)?.scrollIntoView({behavior:'smooth',block:'start'}),50);
  };
- return <main className={`casePage case-${id} ${readingMode==='skim'?'isSkim':'isDeep'}`} onClick={openDeepSection}><AuraField tone={id}/><div className="caseReadingBar"><button className="backBtn" onClick={onBack}>← Selected work</button><div className="caseReadingControl"><span className="caseReadingLabel">Read this case</span><div className="caseReadingToggle" role="group" aria-label="Case study reading depth"><button type="button" aria-pressed={readingMode==='skim'} onClick={()=>setReadingMode('skim')}><b>Skim</b></button><button type="button" aria-pressed={readingMode==='deep'} onClick={()=>setReadingMode('deep')}><b>In depth</b></button></div></div></div><section className="caseLead"><header className="caseHeader"><CaseCompanyBar id={id} fallback={p.company}/><h1>{p.title}</h1><div className="caseIntro">{p.summary}</div>{id==='bookclub'&&<a className="bookclubLiveLink" href={BOOKCLUB_LIVE_URL} target="_blank" rel="noreferrer" aria-label="Open the live Bookclub app in a new tab">Open live app ↗</a>}</header><div className="caseHeroMedia casePreviewHero"><ProjectVisual type={p.media}/></div>{metrics[id]&&<MetricStrip items={metrics[id]}/>}<ToolLogoStrip id={id}/></section>
+ return <main className={`casePage case-${id} ${readingMode==='skim'?'isSkim':'isDeep'}`} onClick={openDeepSection}><AuraField tone={id}/><div className="caseReadingBar"><button className="backBtn" onClick={onBack}>← Selected work</button><div className="caseReadingControl"><div className="caseReadingToggle" role="group" aria-label="Case study reading depth"><button type="button" aria-pressed={readingMode==='skim'} onClick={()=>setReadingMode('skim')}><b>Skim</b></button><button type="button" aria-pressed={readingMode==='deep'} onClick={()=>setReadingMode('deep')}><b>In depth</b></button></div></div></div><section className="caseLead"><header className="caseHeader"><CaseCompanyBar id={id} fallback={p.company}/><h1>{p.title}</h1><div className="caseIntro">{p.summary}</div>{id==='bookclub'&&<a className="bookclubLiveLink" href={BOOKCLUB_LIVE_URL} target="_blank" rel="noreferrer" aria-label="Open the live Bookclub app in a new tab">Open live app ↗</a>}</header><div className="caseHeroMedia casePreviewHero"><ProjectVisual type={p.media}/></div>{metrics[id]&&<MetricStrip items={metrics[id]}/>}<ToolLogoStrip id={id}/></section>
  {caseAnswers[id]&&<CaseAnswer key={id} {...caseAnswers[id]}/>}
  {readingMode==='skim'&&<><CaseSkimDemo id={id}/><div className="caseSkimFinish"><button type="button" onClick={()=>setReadingMode('deep')}>Read the in-depth case ↓</button></div></>}
  {readingMode==='deep'&&<>
@@ -915,7 +918,7 @@ const scCompareRows=[
 ];
 function SchedulerCompare(){
  return <div className="scCompareWrap">
-  <p className="scCompareIntro">The assignment was one line: build When2meet. Copying it would have been a finished grade and an unfinished product — it is genuinely good at one step, collecting availability, and hands everything after it back to the group chat. Every row below is something it handed back, and what I decided to do instead.</p>
+  <p className="scCompareIntro">The assignment was one line: build When2meet. Copying it would have been a finished grade and an unfinished product. It is genuinely good at one step, collecting availability, and hands everything after it back to the group chat. Every row below is something it handed back, and what I decided to do instead.</p>
   <div className="scCompare">
    <div className="scCompareHead"><span/><span className="scCompareThem">When2meet</span><span className="scCompareMine">This app</span></div>
    {scCompareRows.map(row=><div className="scCompareRow" key={row.label}>
@@ -931,7 +934,7 @@ function SchedulerCompare(){
 function SchedulerBrief(){return <section className="schedulerBriefSection scStage" id="sc-brief" aria-labelledby="scheduler-brief-title">
   <h2 id="scheduler-brief-title">The brief before the build</h2>
   <article className="schedulerBriefWindow" aria-label="Product requirements document">
-   <div className="schedulerBriefChrome" aria-hidden="true"><span className="schedulerBriefDots"><i/><i/><i/></span><b>Scheduler PRD — Google Docs</b></div>
+   <div className="schedulerBriefChrome" aria-hidden="true"><span className="schedulerBriefDots"><i/><i/><i/></span><b>Scheduler PRD · Google Docs</b></div>
    <div className="schedulerBriefBar" aria-hidden="true">
     <i className="schedulerBriefFileIcon"/>
     <div><b>Scheduler PRD</b><span>File · Edit · View · Insert · Format · Tools</span></div>
@@ -939,9 +942,9 @@ function SchedulerBrief(){return <section className="schedulerBriefSection scSta
    </div>
    <div className="schedulerBriefToolbar" aria-hidden="true"><i/><i/><i/><i/><i/><i/></div>
    <div className="schedulerBriefPage">
-    <header><h3>Group Scheduling App — PRD</h3><p>Neha Chinimilli · CSE 477 brief: “build When2meet” · MSU study groups</p></header>
+    <header><h3>Group Scheduling App PRD</h3><p>Neha Chinimilli · CSE 477 brief: “build When2meet” · MSU study groups</p></header>
     <h4>Goal</h4>
-    <p>Let a group capture availability, choose a time and venue, and leave with one shared event — without making the decision for them.</p>
+    <p>Let a group capture availability, choose a time and venue, and leave with one shared event, without making the decision for them.</p>
     <h4>Requirements</h4>
     <ol>
      <li><b>Make entry cost nothing.</b> Import a calendar or paint a block; nobody fills 35 cells by hand.</li>
@@ -1048,7 +1051,7 @@ function AccentureCase(){return <div className="accentureStory"><AccentureStagge
    <DecisionMoment
     statement={<>A free slot<br/>is not a yes.</>}
     sub="Rules handle what repeats. Anything uncertain stops at a gate for a coordinator, and one late-night test case is what drew the line."
-    because={<p>A request cleared every automated check — expertise, capacity, availability — and still resolved to 10:30 PM in the trainer’s local time. The rules were matching on calendar data, not on whether a person would actually say yes at that hour.</p>}
+    because={<p>A request cleared every automated check for expertise, capacity, and availability, and still resolved to 10:30 PM in the trainer’s local time. The rules were matching on calendar data, not on whether a person would actually say yes at that hour.</p>}
     tradeoff={<Tradeoff pairs={[
      ['Requests that resolve end to end on their own','Every recommendation carries a reason a person can check'],
      ['A higher automation rate to report','Exceptions surface before a trainer ever sees them']
@@ -1079,7 +1082,7 @@ function KohlerCase(){
   <div className="kxStage" id="kx-define">
    <DecisionMoment
     statement={<>Center it on<br/>the order.</>}
-    because={<p>The product record says what the item is. It cannot say what this shipment, to this market, still needs. Every hold we looked at came from work that only became visible once an order already existed — by which point someone was searching across systems to rebuild it.</p>}
+    because={<p>The product record says what the item is. It cannot say what this shipment, to this market, still needs. Every hold we looked at came from work that only became visible once an order already existed, by which point someone was searching across systems to rebuild it.</p>}
     tradeoff={<Tradeoff pairs={[
      ['One canonical view of the product','A workspace that only makes sense once there is an order'],
      ['Preparing market material once, up front','Preparing it per destination, every time'],
@@ -1135,12 +1138,12 @@ function MarketExpansionCase(){return <div className="grazeStory"><LifecycleRoad
    <DecisionMoment
     statement={<>One point is<br/>not a decision.</>}
     sub="Northville scored 123. Ann Arbor scored 122. Traverse City scored 101."
-    because={<p>Every input into that score is an estimate — criticality weights, B2B and B2C opportunity counts, competitor coverage. A one-point gap sits well inside the model’s own margin of error. Ranking Northville first would have handed the client a precision the data could not support.</p>}
+    because={<p>Every input into that score is an estimate: criticality weights, B2B and B2C opportunity counts, competitor coverage. A one-point gap sits well inside the model’s own margin of error. Ranking Northville first would have handed the client a precision the data could not support.</p>}
     tradeoff={<Tradeoff pairs={[
      ['A single recommended site, cleanly ranked','Two markets to investigate, and the reason why'],
      ['Letting the model make the call','Saying out loud where the model stops being decisive']
     ]}/>}
-    result={<p>The team recommended investigating properties and owners in both top markets. The 101 is what the scorecard was genuinely decisive about — and the client kept a rubric it could rerun on any market.</p>}
+    result={<p>The team recommended investigating properties and owners in both top markets. The 101 is what the scorecard was genuinely decisive about, and the client kept a rubric it could rerun on any market.</p>}
    >
     <GrazeLocations/>
    </DecisionMoment>

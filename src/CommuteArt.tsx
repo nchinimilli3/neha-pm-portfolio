@@ -6,9 +6,9 @@ import React from 'react';
    gradient id exists exactly once on the page no matter how many markers
    render, and each landmark is used through <use href="#cmart-…">.
 
-   The subjects are the actual ones on the route — an Oakland bungalow, an AC
+   The subjects are the actual ones on the route: an Oakland bungalow, an AC
    Transit shelter, a BART entrance pylon, the west span of the Bay Bridge, the
-   Transbay Tube, and Salesforce Tower — because the strip is a map of one
+   Transbay Tube, and Salesforce Tower, because the strip is a map of one
    specific commute, not a generic trip. */
 
 const LAND = '0 0 96 67';   // landmarks: the scene, cropped to its ground line
@@ -276,8 +276,8 @@ export const CommuteArtDefs = () => <svg aria-hidden="true" focusable="false"
  </symbol>
 </svg>;
 
-/* A landmark on the journey strip. Each subject keeps its real proportions —
-   the bridge is long and low, the tower is tall and narrow — so the marker svg
+/* A landmark on the journey strip. Each subject keeps its real proportions,
+   the bridge is long and low, the tower is tall and narrow, so the marker svg
    takes the matching viewBox and the CSS bottom-aligns them all to one ground
    line. The label is the accessible name; the picture is what a reader uses. */
 const BOX: Record<string, string> = {bridge: '0 0 324 100', tower: '0 0 21 100', station: '0 0 206 100'};

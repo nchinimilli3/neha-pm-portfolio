@@ -1,7 +1,7 @@
 import React from 'react';
 import './accenture-v2.css';
 
-/* UI north star: OpenAI Canvas official launch — https://openai.com/index/introducing-canvas/ */
+/* UI north star: OpenAI Canvas official launch: https://openai.com/index/introducing-canvas/ */
 export default function AccentureOpsWorkbench(){
   return <div className="aiOpsWorkbench" role="img" aria-label="A realistic ChatGPT and Canvas workspace structuring an enablement request and flagging a working-hours conflict for human review">
     <header className="aiOpsBar"><span className="aiOpsDots" aria-hidden="true"><i/><i/><i/></span><b className="aiOpsOpenMark">◉</b><strong>ChatGPT</strong><span className="aiOpsModel">4o⌄</span><em>Share</em><b className="aiOpsAvatar">NC</b></header>

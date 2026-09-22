@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './scheduler-v2.css';
 
-/* Object north star: Papier Weekly Happenings planner — https://www.papier.com/us/weekly-happenings-454 */
-/* UI north star: Google Calendar official week view — https://storage.googleapis.com/support-kms-prod/qcBMpABlDvO6QwWeDsPZBBbiZe5ZSwEuYKaI */
+/* Object north star: Papier Weekly Happenings planner: https://www.papier.com/us/weekly-happenings-454 */
+/* UI north star: Google Calendar official week view: https://storage.googleapis.com/support-kms-prod/qcBMpABlDvO6QwWeDsPZBBbiZe5ZSwEuYKaI */
 
 /* The planner fills itself in the order a group would: answers land one by one, the best
    time is ringed once they are all in, and only then does the event get written. Blank is
-   an answer too — nobody marks unavailability, they just leave the square alone. */
+   an answer too. Nobody marks unavailability, they just leave the square alone. */
 const WEEK: [string, string[]][] = [
   ['10',    ['A', '?', '', 'A', '']],
   ['10:30', ['?', 'A*', 'A', '?', '']],
@@ -31,7 +31,7 @@ export default function SchedulerPlannerHero(){
   return <div ref={ref} className={`schPlannerHero ${live ? 'isLive' : ''}`} role="img" aria-label="A tactile weekly desk planner that turns tentative availability into a confirmed calendar event">
     <div className="schPlannerCover"><span>WEEKLY</span><b>HAPPENINGS</b></div>
     <div className="schPlannerPad">
-      <header><div><span>SEPTEMBER</span><strong>15 — 19</strong></div><em>Group project week</em></header>
+      <header><div><span>SEPTEMBER</span><strong>15–19</strong></div><em>Group project week</em></header>
       <div className="schPlannerGrid">
         <span/>{['MON','TUE','WED','THU','FRI'].map(d => <b key={d}>{d}</b>)}
         {WEEK.map(([time, cells]) => <React.Fragment key={time}>

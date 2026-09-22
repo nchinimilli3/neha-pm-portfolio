@@ -1,12 +1,27 @@
-import React from 'react';
+import React, {useState} from 'react';
 
+/* The three tools the request crossed. Picking a step brings that tool's screen
+   forward, so the relay can be followed one handoff at a time instead of read
+   as three panels at once. */
 export default function AccentureRequestRelay() {
+  const [active, setActive] = useState(0);
+  const stepProps = (index: number) => ({
+    role: 'button',
+    tabIndex: 0,
+    'aria-pressed': active === index,
+    onClick: () => setActive(index),
+    onKeyDown: (event: React.KeyboardEvent) => {
+      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setActive(index); }
+    }
+  });
   return (
     <div className="requestWalkthrough">
 
-      <div className="requestScreens">
-        <article className="requestStep">
-          <header>
+      <p className="requestStepHint">Pick a step to follow the request <i aria-hidden="true">↓</i></p>
+
+      <div className="requestScreens isStepped">
+        <article className={`requestStep${active === 0 ? ' isActive' : ''}`}>
+          <header {...stepProps(0)}>
             <b>1</b>
 
             <div>
@@ -54,8 +69,8 @@ export default function AccentureRequestRelay() {
           </div>
         </article>
 
-        <article className="requestStep">
-          <header>
+        <article className={`requestStep${active === 1 ? ' isActive' : ''}`}>
+          <header {...stepProps(1)}>
             <b>2</b>
 
             <div>
@@ -109,8 +124,8 @@ export default function AccentureRequestRelay() {
 
         </article>
 
-        <article className="requestStep">
-          <header>
+        <article className={`requestStep${active === 2 ? ' isActive' : ''}`}>
+          <header {...stepProps(2)}>
             <b>3</b>
 
             <div>
