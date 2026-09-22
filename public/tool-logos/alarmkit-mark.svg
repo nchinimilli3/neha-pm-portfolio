@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="AlarmKit">
+  <defs><linearGradient id="a" x1="10" y1="9" x2="39" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#FFB63F"/><stop offset="1" stop-color="#F36B31"/></linearGradient></defs>
+  <path d="m11 13-5 5M37 13l5 5" stroke="#E85F2D" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="24" cy="26" r="16" fill="url(#a)"/>
+  <circle cx="24" cy="26" r="11.5" fill="#fff"/>
+  <path d="M24 18v8l5 3" fill="none" stroke="#2B2B2E" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="24" cy="26" r="2" fill="#F36B31"/>
+  <path d="m14 39-2.5 3M34 39l2.5 3" stroke="#D95A2A" stroke-width="3" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="EventKit">
+  <defs><linearGradient id="a" x1="9" y1="7" x2="39" y2="42" gradientUnits="userSpaceOnUse"><stop stop-color="#FF6157"/><stop offset="1" stop-color="#DB2737"/></linearGradient></defs>
+  <rect x="6" y="7" width="36" height="35" rx="8" fill="#fff" stroke="#E2E4E8" stroke-width="2"/>
+  <path d="M6 15a8 8 0 0 1 8-8h20a8 8 0 0 1 8 8v5H6v-5Z" fill="url(#a)"/>
+  <path d="M15 5v6M33 5v6" stroke="#A51F2C" stroke-width="3" stroke-linecap="round"/>
+  <text x="24" y="35" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Arial,sans-serif" font-size="15" font-weight="700" fill="#24262A">12</text>
+</svg>

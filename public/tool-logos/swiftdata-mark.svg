@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="SwiftData">
+  <defs><linearGradient id="a" x1="9" y1="8" x2="39" y2="41" gradientUnits="userSpaceOnUse"><stop stop-color="#FF8D54"/><stop offset="1" stop-color="#E7414D"/></linearGradient></defs>
+  <ellipse cx="24" cy="11" rx="16" ry="6" fill="url(#a)"/>
+  <path d="M8 11v9c0 3.3 7.2 6 16 6s16-2.7 16-6v-9c0 3.3-7.2 6-16 6S8 14.3 8 11Z" fill="#F5664E"/>
+  <path d="M8 22v9c0 3.3 7.2 6 16 6s16-2.7 16-6v-9c0 3.3-7.2 6-16 6S8 25.3 8 22Z" fill="#E74651"/>
+  <path d="M8 33v4c0 3.3 7.2 6 16 6s16-2.7 16-6v-4c-3.6 3.1-9.5 4.6-16 4.6S11.6 36.1 8 33Z" fill="#C72F58"/>
+  <path d="M17 10.5c4.8 2.4 9.4 2.5 13.8.2-2.2.1-4.3-.7-6-2.2 1.5.3 3 .1 4.3-.6-3.8.3-7-1-9.7-4 .9 2.3 2.3 4.1 4 5.3-2-.6-3.7-1.7-5.2-3.2.7 1.8 1.7 3.3 3 4.3-1.4-.1-2.8-.5-4.2-1.1Z" fill="#fff"/>
+</svg>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="HealthKit">
+  <defs><linearGradient id="a" x1="10" y1="8" x2="39" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#FF6F91"/><stop offset="1" stop-color="#E92A4E"/></linearGradient></defs>
+  <path d="M24 41S7 31.2 7 18.3C7 11.8 12 7 18.1 7c3.3 0 5.2 1.4 5.9 3.2C24.7 8.4 26.6 7 29.9 7 36 7 41 11.8 41 18.3 41 31.2 24 41 24 41Z" fill="url(#a)"/>
+  <path d="M11.5 24h7l2.8-6.2 4.3 12 3.1-6H37" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
