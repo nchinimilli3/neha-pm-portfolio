@@ -2597,7 +2597,10 @@ input,select,button{accent-color:var(--color-focus)}
 
 /* ---------- project cards ---------- */
 .balancedProjectGrid,.funLeadGrid,.smallBuildGrid,.projectCardReveal,.projectCard,.projectCardAction,.projectCardMedia,.projectCardBody,.moreBuildCard,.moreBuildAction,.moreBuildVisual,.moreBuildCopy{min-width:0!important;max-width:100%!important}
-.projectCardAction,.moreBuildAction{width:100%!important;overflow:hidden!important}
+/* No clip here: the media inside each card already clips itself to its own
+   radius, and hiding overflow on the link shaves the left side bearing off the
+   first glyph of every wrapped line in the blurb. */
+.projectCardAction,.moreBuildAction{width:100%!important}
 .projectCardBody>p,.moreBuildCopy>p{max-width:none!important;width:100%!important;overflow-wrap:normal!important;word-break:normal!important}
 .projectCardTop{margin-bottom:8px!important}
 .projectCardTop span,.moreBuildCopy>span:first-child{
