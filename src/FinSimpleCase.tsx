@@ -149,7 +149,6 @@ export default function FinSimpleCase({setLightbox}){
 
  <section className="fsePlatform fseStage" id="fs-define">
   <DecisionMoment
-   kicker="The constraint"
    statement={<>It had to live inside<br/>a running platform.</>}
    sub="FinSimple was already deployed, with existing customers and a workflow they knew, so Previous Estimates had to fit the platform’s shared AEM components, Salesforce data contracts, and release environments."
    because={<p>A cleaner standalone Previous Estimates screen would have been faster to design and impossible to put in front of anyone, because the estimate history only means anything inside the financing journey it belongs to. Everything below is what working inside a live product actually cost.</p>}

@@ -782,7 +782,6 @@ const caseAnswers={
   problem:'FinSimple is where Ford Credit customers build a financing estimate for a vehicle. Returning customers had no way back to an estimate they had already built, so they started over.',
   owned:'I owned requirements, AEM component work, API integration, testing, and coordination across the teams needed to ship my feature.',
   call:'Map the five-team release sequence myself, because nobody owned it.',
-  callLabel:'How I got it shipped',
   callHref:'#fs-launch',
   evidence:'A live product with existing customers, shared AEM components, Salesforce data contracts, and a release train spanning five teams.',
   result:'Previous Estimates shipped into the customer-facing flow with 6% fewer Salesforce write failures per submitted estimate, and I owned it in production.',

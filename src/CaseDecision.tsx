@@ -59,7 +59,6 @@ export function CaseAnswer({
   problem,
   owned,
   call,
-  callLabel = 'The product decision',
   callHref,
   evidence,
   result,
@@ -68,9 +67,6 @@ export function CaseAnswer({
   problem: Node;
   owned: Node;
   call: Node;
-  /* FinSimple's headline was an execution call, not a product one, so that case
-     renames this row rather than overclaiming. */
-  callLabel?: string;
   callHref?: string;
   evidence: Node;
   result: Node;
@@ -98,22 +94,16 @@ export function CaseAnswer({
     ? split.map((w, i) => <span key={i} className="cdWord" style={{'--w': i} as React.CSSProperties}>{w} </span>)
     : call;
 
-  const rows: {key: keyof typeof icons; label: string; body: Node}[] = [
-    {key: 'problem', label: 'The problem', body: <p>{problem}</p>},
-    {key: 'evidence', label: 'Because', body: <p>{evidence}</p>},
-    {key: 'result', label: 'What happened', body: <>
+  const rows: {key: keyof typeof icons; body: Node}[] = [
+    {key: 'problem', body: <p>{problem}</p>},
+    {key: 'evidence', body: <p>{evidence}</p>},
+    {key: 'result', body: <>
       {stat && <p className="cdStat"><strong><CountUp value={stat.value} run={phase === 'in'}/></strong><span>{stat.label}</span></p>}
       <p>{result}</p>
     </>}
   ];
 
   return <section ref={ref} className={`cdAnswer${phase === 'static' ? '' : ' isArmed'}${phase === 'in' ? ' isIn' : ''}`} aria-label="The short version of this case study">
-    <header className="cdAnswerHead">
-      <span className="cdAnswerRule" aria-hidden="true"/>
-      <p className="cdAnswerKicker">The 20-second version</p>
-      <span className="cdAnswerRule" aria-hidden="true"/>
-    </header>
-
     <div className="cdAnswerBody">
       <ol className="cdTimeline">
         {rows.map((row, i) => <li key={row.key} className={`cdRow cdRow-${row.key}`} style={{'--r': i} as React.CSSProperties}>
@@ -123,7 +113,7 @@ export function CaseAnswer({
       </ol>
 
       <div className="cdCall">
-        <p className="cdCallLabel"><span className="cdMedal cdMedalCall" aria-hidden="true">{icons.call}</span>{callLabel}</p>
+        <p className="cdCallLabel"><span className="cdMedal cdMedalCall" aria-hidden="true">{icons.call}</span></p>
         {/* --n lets the underline and arrow wait until the last word has landed. */}
         <p className="cdCallStatement" style={{'--n': split ? split.length : 1} as React.CSSProperties}>
           {callHref ? <a href={callHref} onClick={e => {
@@ -134,7 +124,7 @@ export function CaseAnswer({
             target.scrollIntoView({behavior: 'smooth', block: 'start'});
           }}>{words}<i aria-hidden="true">↓</i></a> : words}
         </p>
-        <p className="cdRole"><span className="cdRoleIcon" aria-hidden="true">{icons.role}</span><span><b>What I owned</b>{owned}</span></p>
+        <p className="cdRole"><span className="cdRoleIcon" aria-hidden="true">{icons.role}</span><span>{owned}</span></p>
       </div>
 
     </div>
@@ -158,12 +148,11 @@ export function CausalChain({
 }
 
 /* The page's loudest element. `statement` is the decision in one sentence;
-   because / tradeoff / result say what caused it and what it cost. Evidence
+   because / tradeoff / result follow it in that order, unlabelled. Evidence
    that belongs to the decision goes in children so it reads as part of the
    moment rather than as the next section. */
 export function DecisionMoment({
   id,
-  kicker = 'The decision',
   statement,
   sub,
   because,
@@ -172,7 +161,6 @@ export function DecisionMoment({
   children
 }: {
   id?: string;
-  kicker?: string;
   statement: Node;
   sub?: Node;
   because: Node;
@@ -180,7 +168,7 @@ export function DecisionMoment({
   result: Node;
   children?: Node;
 }) {
-  // Reveal the block in reading order: statement, then Because → What it cost → So, then the evidence.
+  // Reveal the block in reading order: statement, then the three columns, then the evidence.
   const ref = React.useRef<HTMLElement>(null);
   const [shown, setShown] = React.useState(false);
   React.useEffect(() => {
@@ -192,13 +180,12 @@ export function DecisionMoment({
     return () => io.disconnect();
   }, []);
   return <section ref={ref} className={`cdMoment${shown ? ' isShown' : ''}`} id={id} aria-label="The consequential decision">
-    <p className="cdMomentKicker">{kicker}</p>
     <p className="cdStatement">{statement}</p>
     {sub && <p className="cdMomentSub">{sub}</p>}
     <div className="cdMomentGrid">
-      <div className="cdMomentCol"><b>Because</b><div>{because}</div></div>
-      <div className="cdMomentCol"><b>What it cost</b><div>{tradeoff}</div></div>
-      <div className="cdMomentCol"><b>So</b><div>{result}</div></div>
+      <div className="cdMomentCol"><div>{because}</div></div>
+      <div className="cdMomentCol"><div>{tradeoff}</div></div>
+      <div className="cdMomentCol"><div>{result}</div></div>
     </div>
     {children && <div className="cdMomentEvidence">{children}</div>}
   </section>;
