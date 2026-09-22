@@ -3,12 +3,12 @@
 .cmEditorial{--cm-ink:#2b2744;--cm-text:#4e4b5e;--cm-muted:#5a5865;--plum:#4a4170;--plum-soft:#8a82ad;--sage:#4f7a6c;--sage-soft:#8fb2a4;--blush:#e8d4dd;--mist:#dbe7e3;--stone:#ece9e3;--cream:#faf8f4;--rose:#b4607a;color:var(--cm-text)}
 /* Layout system: one 12-column grid (1180px, 32px gutters). Each section composes it differently so the
    story moves dense (lead) → quiet (train) → visual (demo) → analytical (plan) → immersive (rules) → result (close). */
-.cmEditorial{--cm-gap:32px}
+.cmEditorial{--cm-gap:32px;--cm-head-measure:22ch;--cm-lead-measure:58ch;--cm-lead-gap:18px;--cm-block-gap:42px}
 .cmEditorial>section{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--cm-gap);width:min(1180px,calc(100% - 64px));margin:0 auto;padding:0}
 .cmEditorial>section:last-child{padding-bottom:140px}
-.cmEditorial h2{margin:0;color:var(--cm-ink);font-family:inherit;font-weight:450;font-size:clamp(34px,4vw,56px);line-height:1.04;letter-spacing:-.042em}
+.cmEditorial h2{margin:0;color:var(--cm-ink);font-family:inherit;font-weight:450;font-size:clamp(34px,4vw,56px);line-height:1.04;letter-spacing:-.042em;text-wrap:balance}
 .cmEditorial h2 em{font-style:normal;font-weight:400;color:var(--sage)}
-.cmEditorial h3{margin:0 0 6px;color:var(--cm-ink);font-size:19px;font-weight:600;line-height:1.3}
+.cmEditorial h3{margin:0 0 6px;color:var(--cm-ink);font-size:19px;font-weight:600;line-height:1.3;text-wrap:balance}
 .cmEditorial p{margin:16px 0 0;font-size:17px;line-height:1.6;max-width:60ch}
 .cmEditorial header{margin-bottom:34px}
 .cmEditorial button:focus-visible{outline:3px solid var(--sage);outline-offset:4px}
@@ -19,29 +19,28 @@
    morning instead of putting prose inside interchangeable cards. */
 .cmSectionIntro{grid-column:1/-1;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--cm-gap);align-items:end;margin:0 0 58px;padding:0 0 34px;border-bottom:1px solid #2b274422}
 .cmSectionIntro>span{grid-column:1/-1;margin-bottom:13px;color:var(--sage);font-size:10px;font-weight:750;letter-spacing:.14em;text-transform:uppercase}
-.cmSectionIntro>h2{grid-column:1/8;max-width:15ch}
-.cmSectionIntro>p{grid-column:9/13;margin:0;max-width:42ch;color:var(--cm-muted);font-size:15px;line-height:1.62}
+.cmSectionIntro>h2{grid-column:1/8;max-width:var(--cm-head-measure)}
+.cmSectionIntro>p{grid-column:9/13;margin:0;max-width:var(--cm-lead-measure);color:var(--cm-muted)}
 
 .cmEditorial>.cmFrame,.cmEditorial>.cmDecision,.cmEditorial>.cmSurface{padding-top:150px}
-.cmFrameRail{grid-column:1/-1}
-.cmRouteChoice{grid-column:1/-1;display:grid;grid-template-columns:4fr 7fr;gap:70px;align-items:center;margin-top:76px;padding:48px 0;border-top:4px solid var(--cm-ink);border-bottom:1px solid #2b274422}
-.cmRouteChoice>div>span{display:block;margin-bottom:12px;color:var(--rose);font-size:10px;font-weight:750;letter-spacing:.13em;text-transform:uppercase}
-.cmRouteChoice h3{max-width:17ch;font-size:clamp(24px,3vw,38px);font-weight:500;letter-spacing:-.025em;line-height:1.12}
-.cmRouteChoice p{margin-top:15px;font-size:14px;line-height:1.6;color:var(--cm-muted)}
-.cmRouteChoice .cmClocks{margin:0}
 
 .cmDecision>.cmReplay,.cmDecision>.cmSlip{grid-column:1/-1}
 .cmDecision>.cmReplay{margin-top:0}
+/* Decide: one heading across the full measure, and no stacked rules. The
+   intro's border-bottom and the replay's border-top sat ~34px apart and read
+   as a double line. */
+.cmDecision>.cmSectionIntro{margin-bottom:var(--cm-block-gap);padding-bottom:0;border-bottom:0}
+.cmDecision>.cmSectionIntro>h2{grid-column:1/-1;max-width:var(--cm-head-measure)}
+.cmDecision>.cmSectionIntro>p{grid-column:1/8;margin-top:var(--cm-lead-gap);max-width:var(--cm-lead-measure)}
+.cmDecision>.cmReplay{border-top:0;padding-top:0}
+.cmDecision .cmReplayHandoff span{text-transform:none;letter-spacing:.01em;font-size:12px;font-weight:600}
 
-.cmEditorial>.cmSurface{width:100%;max-width:none;padding:150px max(32px,calc((100vw - 1180px)/2)) 130px;background:linear-gradient(165deg,#e5ece8 0%,#f4eee9 54%,#e8dce3 100%)}
 .cmSurface>.cmSectionIntro,.cmSurface>.csSurfaces{grid-column:1/-1;width:100%;max-width:1180px;margin-left:auto;margin-right:auto}
-.cmSurface>.csSurfaces{padding-top:8px}
 
 @media(max-width:900px){
  .cmSectionIntro{grid-template-columns:1fr;gap:14px}
  .cmSectionIntro>h2,.cmSectionIntro>p{grid-column:1;max-width:22ch}
  .cmSectionIntro>p{max-width:54ch}
- .cmRouteChoice{grid-template-columns:1fr;gap:34px}
 }
 
 /* Hero: the cover photograph */
@@ -52,8 +51,13 @@
 /* Visual: the live app is the primary artifact on the left; the problem and its platform sign answer it on the right */
 .cmEditorial>.cmProblem{align-items:center;padding-top:72px}
 .cmDemoStage{grid-column:1/6;grid-row:1;margin:0}
-.cmProblemCopy{grid-column:7/13;grid-row:1}
-.cmProblemCopy>p{max-width:46ch}
+/* The phone spans both rows, so the copy and the board used to sit at the top
+   of two tall rows with ~260px of dead space between them. Pulling the copy to
+   the foot of row 1 and the board to the head of row 2 makes them one block,
+   optically centred against the phone. */
+.cmProblemCopy{grid-column:7/13;grid-row:1;align-self:end}
+.cmProblem>.cmBoard{grid-column:7/13;grid-row:2;align-self:start}
+.cmProblemCopy>p{max-width:var(--cm-lead-measure);margin-top:var(--cm-lead-gap);color:var(--cm-muted)}
 .cmEditorial .cmDemoHint{margin:14px auto 0;text-align:center;font-size:14px;color:var(--cm-muted)}
 
 /* Platform sign (a physical LED board keeps its real colors) */
@@ -78,186 +82,67 @@
 
 /* Plan backward: the app's itinerary */
 /* Analytical: a split header over a full-width timeline read left to right, like a schedule */
-.cmEditorial>.cmPlanBack{padding-top:150px}
-.cmPlanCopy{grid-column:1/-1;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--cm-gap);align-items:end;margin-bottom:56px;padding-bottom:40px;border-bottom:1px solid #2b274419}
-.cmPlanCopy h2{grid-column:1/7}
-.cmEditorial .cmPlanCopy p{grid-column:8/13;margin:0}
-.cmItin{grid-column:1/-1}
-.cmItin ol{margin:0;padding:0;list-style:none}
-.cmItin>ol>li{position:relative;display:grid;grid-template-columns:92px 26px 1fr;column-gap:14px;padding-bottom:26px}
-.cmItin>ol>li:last-child{padding-bottom:0}
-.cmItin>ol>li:not(:last-child):after{content:'';position:absolute;left:118px;top:22px;bottom:-2px;width:3px;margin-left:-1.5px;border-radius:3px;background:linear-gradient(var(--sage-soft),var(--mist))}
-.cmItinTime{display:grid;justify-items:end;align-content:start}
-.cmItinTime b{font-size:22px;font-weight:600;line-height:1.1;letter-spacing:-.02em;color:var(--cm-ink);font-variant-numeric:tabular-nums;transition:color .3s}
-.cmItinTime s{font-size:12.5px;color:var(--cm-muted);text-decoration-color:var(--rose)}
-.cmItinDot{position:relative;z-index:1;width:18px;height:18px;margin:4px auto 0;border-radius:50%;background:var(--cream);box-shadow:inset 0 0 0 3.5px var(--sage)}
-.is-wake .cmItinDot{background:var(--plum);box-shadow:0 0 0 6px #4a417024}
-.is-wake .cmItinTime b{color:var(--plum)}
-.is-arrive .cmItinDot{background:var(--sage);box-shadow:none}
-.cmItinBody strong{display:block;font-size:17px;line-height:1.3;color:var(--cm-ink)}
-.cmItinBody>span{display:block;margin-top:2px;font-size:14px;color:var(--cm-muted);transition:color .3s}
-.cmItin.isDelayed .is-ride .cmItinBody>span{color:var(--rose);font-weight:600}
-.cmItin.isDelayed .cmItinTime b{color:var(--rose)}
-.cmItin.isDelayed .is-arrive .cmItinTime b{color:var(--cm-ink)}
-.cmItinBody ul{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0;padding:0;list-style:none}
-.cmItinBody ul li{display:inline-flex;align-items:center;gap:6px;padding:3px 0;margin-right:16px;font-size:12.5px;font-weight:550;color:#4e4b5e}
-.cmItinBody ul svg{width:14px;height:14px;fill:none;stroke:var(--sage);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 @media(min-width:1001px){
- .cmItin>ol{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:var(--cm-gap)}
- .cmItin>ol>li{grid-template-columns:1fr;grid-template-rows:46px auto 1fr;padding-bottom:0}
- .cmItinTime{justify-items:start}
- .cmItinDot{margin:10px 0 18px}
- .cmItin>ol>li:not(:last-child):after{left:9px;right:auto;top:65px;bottom:auto;width:calc(100% + var(--cm-gap));height:3px;margin:0;background:linear-gradient(90deg,var(--sage-soft),var(--mist))}
- .cmItinBody ul{flex-direction:column;align-items:flex-start}
  .cmEditorial .cmItinToggle{display:flex;width:max-content;margin:40px auto 0}
 }
-.cmItinToggle{display:inline-flex;align-items:center;gap:10px;margin:26px 0 0 106px;padding:9px 16px;border:0;border-radius:24px;background:var(--cm-ink);color:#fff;font:600 14px var(--case-font,inherit);cursor:pointer}
-.cmItinToggle i{position:relative;width:30px;height:18px;border-radius:10px;background:#ffffff40;transition:background .3s}
-.cmItinToggle i:after{content:'';position:absolute;left:2px;top:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .3s}
-.cmItinToggle[aria-pressed=true] i{background:var(--rose)}
-.cmItinToggle[aria-pressed=true] i:after{transform:translateX(12px)}
 
 /* Rules */
 /* Immersive: the title holds its place in a left rail while three rules unfold, each composed differently */
-.cmEditorial>.cmRules{align-items:start;padding-top:150px}
-.cmEditorial .cmRules>header{grid-column:1/5;grid-row:1;position:sticky;top:132px;margin:0}
-.cmRuleGrid{grid-column:6/13;grid-row:1;display:grid;gap:0}
-.cmRule{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));column-gap:var(--cm-gap);align-items:center}
-.cmRule+.cmRule{margin-top:72px;padding-top:72px;border-top:1px solid #2b274419}
-.cmEditorial .cmRule h3{align-self:end;font-size:24px;line-height:1.25;letter-spacing:-.015em}
-.cmEditorial .cmRule>p{align-self:start;margin:0;font-size:15px;line-height:1.55;color:var(--cm-muted)}
-.cmRule:nth-child(1)>h3,.cmRule:nth-child(1)>p{grid-column:1/4}
-.cmRule:nth-child(1)>h3{grid-row:1}.cmRule:nth-child(1)>p{grid-row:2}
-.cmRule:nth-child(1)>.cmClocks{grid-column:4/8;grid-row:1/3}
-.cmRule:nth-child(2)>h3{grid-column:1/6;margin-bottom:28px}
-.cmRule:nth-child(2)>.cmTrail{grid-column:1/7}
 .cmRule:nth-child(3)>.cmLock{grid-column:1/4;grid-row:1/3}
-.cmRule:nth-child(3)>h3,.cmRule:nth-child(3)>p{grid-column:4/8}
-.cmRule:nth-child(3)>h3{grid-row:1}.cmRule:nth-child(3)>p{grid-row:2}
 
 /* Clock dials */
-.cmClocks{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.cmClock{display:grid;justify-items:center}
-.cmClock svg{width:100%;max-width:168px;height:auto;overflow:visible}
-.cmClockRim{fill:#fff;filter:drop-shadow(0 10px 18px #2b274422)}
-.cmClockFace{fill:var(--cream);stroke:#2b27440f;stroke-width:1}
-.cmTickHour{stroke:#2b2744aa;stroke-width:1.8;stroke-linecap:round}
-.cmTickMin{stroke:#2b274433;stroke-width:.8}
-.cmClockTrack{fill:none;stroke:var(--stone);stroke-width:9}
-.cmClockWin,.cmClockLate{fill:none;stroke-width:9;stroke-linecap:round;stroke-dasharray:calc(var(--len) * 1px) 400px;stroke-dashoffset:calc(var(--len) * 1px);transition:stroke-dashoffset .9s ease}
-.cmClockWin{stroke:var(--sage)}
-.is-risk .cmClockWin{stroke:var(--plum-soft)}
-.cmClockLate{stroke:var(--rose);transition-delay:.8s}
-.cmClocks.isIn .cmClockWin,.cmClocks.isIn .cmClockLate{stroke-dashoffset:0}
-.cmClockPin{fill:var(--cm-ink)}
-.cmClockName{font:650 13px var(--case-font,inherit);fill:var(--cm-ink);text-anchor:middle}
-.cmClockRange{font:10.5px var(--case-font,inherit);fill:var(--cm-muted);text-anchor:middle}
-.cmClockNote{margin-top:10px;font-size:13px;font-weight:600;color:var(--sage)}
-.is-risk .cmClockNote{color:var(--rose)}
 .cmEditorial .cmClockKey{grid-column:1/-1;display:flex;justify-content:center;align-items:center;gap:8px;margin:4px 0 0;font-size:12.5px;color:var(--cm-muted)}
-.cmClockKey i{width:7px;height:7px;border-radius:50%;background:var(--cm-ink)}
 
 /* Algorithm: an editorial technical brief, kept in the page rather than a
    floating dashboard. */
 .cmEditorial>.cmAlgorithm{display:block;padding-top:150px}
 .cmEngine>header{display:grid;grid-template-columns:2fr 3fr;gap:18px var(--cm-gap);align-items:start;margin-bottom:42px;padding-bottom:34px;border-bottom:1px solid #2b274419}
 .cmEngine>header>span,.cmLearning>header>span,.cmProofBand>header span{grid-column:1/-1;color:var(--sage);font-size:11px;font-weight:750;letter-spacing:.13em;text-transform:uppercase}
-.cmEngine>header h2{grid-column:1;margin:0;font-size:clamp(38px,4.4vw,62px)}
+.cmEngine>header h2{grid-column:1;margin:0;max-width:var(--cm-head-measure)}
 .cmEngine>header p{grid-column:2;margin:4px 0 0;max-width:48ch;color:var(--cm-muted)}
-.cmEngineEquation{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 42px;padding:22px 0;border-bottom:1px solid #2b274419;font-variant-numeric:tabular-nums}
-.cmEngineEquation strong{margin-right:6px;color:var(--plum);font-size:25px}.cmEngineEquation span{padding:8px 13px;border-radius:24px;background:color-mix(in srgb,var(--sage) 10%,transparent);color:var(--cm-ink);font-size:14px;font-weight:650}.cmEngineEquation i{font-style:normal;color:var(--cm-muted)}
 .cmEngine>ol{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:0;padding:0;list-style:none;counter-reset:none}
 .cmEngine>ol li{display:grid;grid-template-columns:34px 1fr;gap:12px;padding:0 22px;border-left:1px solid #2b274419}.cmEngine>ol li:first-child{padding-left:0;border-left:0}.cmEngine>ol li>i{display:grid;width:30px;height:30px;place-items:center;border-radius:50%;background:var(--cm-ink);color:#fff;font-style:normal;font-size:10px;font-weight:700}.cmEngine>ol b{display:block;color:var(--cm-ink);font-size:15px}.cmEngine>ol p{margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--cm-muted)}
-.cmEngineRule{display:grid;grid-template-columns:auto 1fr auto 1.4fr;gap:10px 20px;align-items:end;margin:46px 0 0;padding:0 0 18px;border-bottom:4px solid var(--cm-ink);color:var(--cm-ink)}.cmEngineRule span{font-size:10px;font-weight:750;letter-spacing:.12em;text-transform:uppercase;color:var(--sage)}.cmEngineRule strong{font-size:clamp(18px,2.2vw,28px);font-weight:550;letter-spacing:-.02em}.cmEngineRule i{font-style:normal;font-size:12px;color:var(--cm-muted);text-align:center}
 
-.cmRobustGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px 44px;margin-top:52px}.cmRobustGrid article{position:relative;padding:18px 0 0 22px;border-top:1px solid #2b274429}.cmRobustGrid article:before{content:'';position:absolute;left:0;top:14px;width:8px;height:8px;border-radius:50%;background:var(--sage);box-shadow:0 0 0 5px #4f7a6c18}.cmRobustGrid b{color:var(--cm-ink);font-size:15px}.cmRobustGrid p{margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--cm-muted)}
-.cmEngineNote{max-width:none!important;margin-top:38px!important;padding:16px 0 0;border-top:1px solid #2b274419;color:var(--cm-muted);font-size:14px!important}.cmEngineNote b{color:var(--cm-ink)}
 
 /* The disruption is the proof of the product job: maintain the morning after
    the original route stops being viable. */
-.cmReplay{position:relative;margin:36px 0 50px;padding:28px 0;border-top:1px solid #2b274419;border-bottom:1px solid #2b274419}.cmReplay>header{display:grid;grid-template-columns:180px 1fr;gap:20px;margin:0 0 26px}.cmReplay>header span{color:var(--sage);font-size:10px;font-weight:750;letter-spacing:.12em;text-transform:uppercase}.cmReplay>header strong{color:var(--cm-ink);font-size:21px}.cmReplayTrack{position:relative;display:grid;grid-template-columns:1fr auto 1fr;gap:22px;align-items:center}.cmReplayTrack:before{content:'';position:absolute;left:16px;right:16px;top:50%;height:3px;background:linear-gradient(90deg,var(--rose),var(--sage));opacity:.25}.cmReplayTrack article{position:relative;z-index:1;display:grid;grid-template-columns:42px 1fr auto;gap:13px;align-items:center;padding:14px 0;background:var(--case-bg,#faf8f4);border-top:2px solid currentColor;border-bottom:1px solid #2b274419}.cmReplayTrack article>i{display:grid;width:38px;height:38px;place-items:center;border-radius:50%;background:var(--rose);color:#fff;font-style:normal;font-size:12px;font-weight:750}.cmReplayTrack .cmReplayBart>i{background:var(--sage)}.cmReplayTrack b,.cmReplayTrack span{display:block}.cmReplayTrack b{color:var(--cm-ink);font-size:16px}.cmReplayTrack span{margin-top:2px;color:var(--cm-muted);font-size:11.5px}.cmReplayTrack article>strong{font-size:11px;color:var(--plum)}.cmReplayArrow{position:relative;z-index:2;display:grid;width:36px;height:36px;place-items:center;border-radius:50%;background:var(--cm-ink);color:#fff;font-size:19px}.cmReplay.isFailed .cmReplayBus{opacity:.48}.cmReplay>p{margin:22px 0 0;max-width:70ch;font-size:14px;color:var(--cm-muted)}.cmReplay>button{margin-top:16px;padding:9px 14px;border:1px solid var(--plum);border-radius:22px;background:transparent;color:var(--plum);font:650 12px var(--case-font,inherit);cursor:pointer}.cmReplay>button:hover{background:var(--plum);color:#fff}
-.cmReplayRule>header{grid-template-columns:minmax(0,.8fr) minmax(280px,1fr);align-items:end}.cmReplayRule>header p{margin:0;max-width:48ch;color:var(--cm-muted);font-size:14px}.cmReplayRule .cmReplayHandoff span{white-space:nowrap}
+.cmReplay{position:relative;margin:36px 0 50px;padding:28px 0;border-top:1px solid #2b274419;border-bottom:1px solid #2b274419}.cmReplay>header{display:grid;grid-template-columns:180px 1fr;gap:20px;margin:0 0 26px}.cmReplay>header span{color:var(--sage);font-size:10px;font-weight:750;letter-spacing:.12em;text-transform:uppercase}.cmReplay>header strong{color:var(--cm-ink);font-size:21px}.cmReplayTrack{position:relative;display:grid;grid-template-columns:1fr auto 1fr;gap:22px;align-items:center}.cmReplayTrack:before{content:'';position:absolute;left:16px;right:16px;top:50%;height:3px;background:linear-gradient(90deg,var(--rose),var(--sage));opacity:.25}.cmReplayTrack article{position:relative;z-index:1;display:grid;grid-template-columns:42px 1fr auto;gap:13px;align-items:center;padding:14px 0;background:var(--case-bg,#faf8f4);border-top:2px solid currentColor;border-bottom:1px solid #2b274419}.cmReplayTrack article>i{display:grid;width:38px;height:38px;place-items:center;border-radius:50%;background:var(--rose);color:#fff;font-style:normal;font-size:12px;font-weight:750}.cmReplayTrack .cmReplayBart>i{background:var(--sage)}.cmReplayTrack b,.cmReplayTrack span{display:block}.cmReplayTrack b{color:var(--cm-ink);font-size:16px}.cmReplayTrack span{margin-top:2px;color:var(--cm-muted);font-size:11.5px}.cmReplayTrack article>strong{font-size:11px;color:var(--plum)}.cmReplayArrow{position:relative;z-index:2;display:grid;width:36px;height:36px;place-items:center;border-radius:50%;background:var(--cm-ink);color:#fff;font-size:19px}.cmReplay.isFailed .cmReplayBus{opacity:.48}.cmReplay>p{margin:22px 0 0;max-width:var(--cm-lead-measure);font-family:var(--font-serif);font-size:15px;line-height:1.6;color:var(--cm-muted)}.cmReplay>button{margin-top:16px;padding:9px 14px;border:1px solid var(--plum);border-radius:22px;background:transparent;color:var(--plum);font:650 12px var(--case-font,inherit);cursor:pointer}.cmReplay>button:hover{background:var(--plum);color:#fff}
+.cmReplayRule>header{grid-template-columns:150px minmax(0,1fr);align-items:baseline}.cmReplayRule .cmReplayHandoff span{white-space:nowrap}
 
 /* Learning and validation: one connected run, not a collection of metric
    cards. */
 .cmEditorial>.cmLearning{display:block;padding-top:150px}
 .cmLearning>header{display:grid;grid-template-columns:1fr 1fr;gap:12px var(--cm-gap);align-items:end;padding-bottom:34px;border-bottom:1px solid #2b274419}.cmLearning>header h2{grid-column:1}.cmLearning>header p{grid-column:2;margin:0;color:var(--cm-muted)}
-.cmLearningLoop{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto;gap:16px;align-items:center;margin:44px 0}.cmLearningLoop>div{display:grid;gap:4px;padding:18px 0;border-top:3px solid var(--sage)}.cmLearningLoop small{color:var(--cm-muted);font-size:10px;text-transform:uppercase;letter-spacing:.1em}.cmLearningLoop b{color:var(--cm-ink);font-size:22px}.cmLearningLoop span{color:var(--cm-muted);font-size:12px}.cmLearningLoop>i{font-style:normal;color:var(--rose);font-size:20px}
-.cmLearningEvidence{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 48px}.cmLearningEvidence article{display:grid;grid-template-columns:150px 1fr;gap:18px;padding:22px 0;border-top:1px solid #2b274419}.cmLearningEvidence b{color:var(--cm-ink);font-size:15px}.cmLearningEvidence p{margin:0;font-size:13px;color:var(--cm-muted)}
-.cmProofBand{margin-top:58px;padding:38px 0;border-top:4px solid var(--cm-ink);border-bottom:1px solid #2b274425}.cmProofBand>header{display:grid;grid-template-columns:180px 1fr;gap:20px;margin:0 0 32px}.cmProofBand>header span{grid-column:auto}.cmProofBand>header strong{color:var(--cm-ink);font-size:20px;line-height:1.35}.cmProofBand ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 48px;margin:0;padding:0;list-style:none;counter-reset:proof}.cmProofBand li{position:relative;padding:16px 0 0 42px;border-top:1px solid #2b274425;counter-increment:proof}.cmProofBand li:before{content:'0' counter(proof);position:absolute;left:0;top:14px;color:var(--sage);font-size:11px;font-weight:750;letter-spacing:.08em}.cmProofBand b{color:var(--cm-ink);font-size:14px}.cmProofBand p{margin:6px 0 0;font-size:12.5px;color:var(--cm-muted)}
-.cmLearningLimit{max-width:none!important;margin-top:30px!important;padding-left:18px;border-left:4px solid var(--rose);font-size:14px!important;color:var(--cm-muted)}.cmLearningLimit b{color:var(--cm-ink)}
 
 /* Location trail with the bus */
-.cmTrail svg{display:block;width:100%;height:auto;overflow:visible}
-.cmTrailRoad{stroke:#dcd8d1;stroke-width:20;stroke-linecap:round}
-.cmTrailLane{stroke:#fff;stroke-width:2;stroke-dasharray:8 9}
-.cmTrailPing{opacity:0;transform:translateY(6px);transition:opacity .5s,transform .5s;transition-delay:calc(.3s + var(--i) * .2s)}
-.cmTrail.isIn .cmTrailPing{opacity:1;transform:none}
-.cmPingHalo{fill:var(--plum-soft)}.cmPingCore{fill:var(--plum)}
-.cmPingPct{font:650 13px var(--case-font,inherit);fill:var(--cm-ink);text-anchor:middle}
-.cmPingAge{font:11.5px var(--case-font,inherit);fill:var(--cm-muted);text-anchor:middle}
-.cmBusBody{animation:cmBob 1.1s ease-in-out infinite}
 @keyframes cmBob{50%{transform:translateY(-1.5px)}}
-.cmBusShell{fill:var(--sage)}
-.cmBusSkirt{fill:#3d6155}
-.cmBusWin{fill:#eef5f2}
-.cmBusStripe{stroke:#ffffff8c;stroke-width:2}
-.cmBusLamp{fill:#fff3c4}
-.cmBusWheel{fill:#2b2744}.cmBusHub{fill:#d8d4e6}
-.cmBusSpeed{stroke:var(--sage-soft);stroke-width:2.4;stroke-linecap:round;animation:cmSpeed .9s linear infinite}
 @keyframes cmSpeed{0%{opacity:0;transform:translateX(6px)}40%{opacity:1}100%{opacity:0;transform:translateX(-8px)}}
 .cmEditorial .cmTrailKey{margin:6px 0 0;font-size:12.5px;text-align:center;color:var(--cm-muted)}
 
-/* Variance comparison and update table styling */
-.cmVariance>div{display:grid;grid-template-columns:1fr 1fr;gap:3em;margin-top:2em;padding-top:2em;border-top:1px solid #2b274419}
-.cmVariance>div>div{padding:14px 0}
-.cmVariance>div>div>strong{display:block;font-size:13px;font-weight:600;color:var(--cm-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
-.cmVariance>div>div>div{font-size:36px;font-weight:550;letter-spacing:-.01em;color:var(--plum)}
-
-.cmUpdateTable{width:100%;border-collapse:collapse;margin-top:1em;text-align:left}
-.cmUpdateTable thead{border-bottom:2px solid var(--cm-ink)}
-.cmUpdateTable th{padding:12px 0;font-size:13px;font-weight:650;color:var(--cm-ink);text-transform:uppercase;letter-spacing:.08em}
-.cmUpdateTable td{padding:13px 0;border-bottom:1px solid #2b274419;font-size:14px;color:var(--cm-text)}
-.cmUpdateTable td:last-child{font-weight:600;color:var(--plum)}
-
-.cmMetrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:2em;margin-top:2em;padding-top:2em;border-top:1px solid #2b274419}
-.cmMetrics>div{padding:14px 0}
-.cmMetrics>div>b{display:block;font-size:28px;font-weight:550;color:var(--plum);line-height:1.2}
-.cmMetrics>div>span{display:block;font-size:13px;color:var(--cm-muted);margin-top:4px}
 
 /* Lock screen in the app's blush and mist */
 .cmLock{position:relative;display:grid;justify-items:center;width:min(100%,300px);margin:0 auto;padding:28px 14px 22px;border:8px solid #1c1a24;border-radius:38px;background:radial-gradient(90% 60% at 20% 10%,#f1dde6 0,transparent 60%),radial-gradient(90% 70% at 90% 90%,#cfe2dc 0,transparent 60%),#e7e3ea;color:var(--cm-ink);box-shadow:0 24px 44px #2b274433}
 .cmLock:before{content:'';position:absolute;top:8px;left:50%;width:72px;height:20px;margin-left:-36px;border-radius:12px;background:#1c1a24}
 .cmEditorial .cmLockTime{margin:0;font-size:46px;font-weight:600;line-height:1;letter-spacing:-.03em;color:var(--plum)}
 .cmEditorial .cmLockDate{margin:2px 0 14px;font-size:13px;color:var(--cm-muted)}
-.cmLockStack{display:grid;gap:8px;width:100%}
 .cmLock .cmPing{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:center;padding:9px 11px;border-radius:16px;background:#ffffffb3;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:var(--cm-ink);opacity:0;transform:translateY(-8px) scale(.97);transition:opacity .35s,transform .4s}
 .cmLock .cmPing.isIn{opacity:1;transform:none}
 .cmLock .cmPing.isMuted.isIn{opacity:.5;transform:scale(.95)}
-.cmPingIcon{display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:var(--plum);color:#fff;font-size:13px;font-weight:700}
 .cmLock .cmPing strong{display:block;font-size:13px;line-height:1.25}.cmLock .cmPing small{display:block;font-size:11.5px;color:var(--cm-muted)}
 .cmLock .cmPing.isMuted strong{text-decoration:line-through;text-decoration-color:var(--rose)}
 .cmLock .cmPing.isLive{box-shadow:0 8px 20px #2b274420}
 
 /* Close: scope stops and the ticket */
 /* Result: one large closing line, then the ticket as the outcome with the scope route beside it */
-.cmEditorial>.cmClose{align-items:center;padding-top:170px}
+.cmEditorial>.cmClose{align-items:start;padding-top:170px}
 .cmCloseCopy{display:contents}
-.cmEditorial .cmClose h2{grid-column:1/-1;grid-row:1;margin-bottom:64px}
+.cmEditorial .cmClose h2{grid-column:1/-1;grid-row:1;max-width:var(--cm-head-measure);margin-bottom:64px}
 .cmClose .cmTicket{grid-column:1/8;grid-row:2}
-.cmBuildSystem{grid-column:1/-1;grid-row:3;display:grid;grid-template-columns:3fr 7fr;gap:24px 64px;margin-top:78px;padding-top:40px;border-top:1px solid #2b274419}
-.cmBuildSystem>header{margin:0}
-.cmBuildSystem>header h3{margin:8px 0 0}
-.cmBuildSystem>header p{margin:12px 0 0;font-size:15px;line-height:1.55;color:var(--cm-muted)}
-.cmBuildSystem>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px}
-.cmBuildSystem article b{display:block;margin-bottom:7px;color:var(--cm-ink);font-size:15px}
-.cmBuildSystem article p{margin:0;font-size:13.5px;line-height:1.55;color:var(--cm-muted)}
-.cmBuildSystem>footer{grid-column:2;padding-top:16px;border-top:1px solid #2b274419;font-size:12.5px;color:var(--cm-muted)}
-.cmClose .cmScopeStops{grid-column:9/13;grid-row:2}
+.cmClose .cmScopeStops{grid-column:9/13;grid-row:2;padding-top:26px}
 .cmScale{grid-column:1/-1;grid-row:3;display:grid;grid-template-columns:4fr 8fr;gap:var(--cm-gap);margin-top:92px;padding:34px 0 0;border-top:4px solid var(--cm-ink)}
 .cmScale>header{margin:0}
 .cmScale>header span{display:block;margin-bottom:10px;color:var(--rose);font-size:10px;font-weight:750;letter-spacing:.13em;text-transform:uppercase}
-.cmScale>header h3{max-width:15ch;font-size:clamp(22px,2.7vw,34px);font-weight:500;letter-spacing:-.02em;line-height:1.16}
+.cmScale>header h3{max-width:var(--cm-head-measure);margin-bottom:0}
 .cmScale>ol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px;margin:0;padding:0;list-style:none}
 .cmScale li{padding-top:14px;border-top:1px solid #2b274429;color:var(--cm-muted);font-size:14px;line-height:1.58}
 .cmScale li b{display:block;margin-bottom:7px;color:var(--cm-ink);font-size:16px}
@@ -272,7 +157,7 @@
 .cmScopeStops .is-cut i:after{content:'';position:absolute;inset:7px;background:linear-gradient(45deg,transparent 43%,var(--rose) 43% 57%,transparent 57%),linear-gradient(-45deg,transparent 43%,var(--rose) 43% 57%,transparent 57%)}
 .cmScopeStops b{display:block;font-size:16px;color:var(--cm-ink)}
 .cmScopeStops .is-cut b{color:var(--cm-muted)}
-.cmScopeStops span{display:block;font-size:14px;line-height:1.45;color:var(--cm-muted)}
+.cmScopeStops span{display:block;max-width:34ch;font-size:14px;line-height:1.45;color:var(--cm-muted);text-wrap:pretty}
 .cmTicket{position:relative;display:grid;grid-template-columns:74px 1fr;filter:drop-shadow(0 22px 30px #2b274429);transform:rotate(-2.5deg)}
 .cmTicketStub{position:relative;display:grid;justify-items:center;align-content:space-between;padding:18px 0;border-radius:14px 0 0 14px;background:var(--plum);color:#fff;-webkit-mask:radial-gradient(circle at 100% 0,transparent 10px,#000 10.5px) top/100% 51% no-repeat,radial-gradient(circle at 100% 100%,transparent 10px,#000 10.5px) bottom/100% 51% no-repeat;mask:radial-gradient(circle at 100% 0,transparent 10px,#000 10.5px) top/100% 51% no-repeat,radial-gradient(circle at 100% 100%,transparent 10px,#000 10.5px) bottom/100% 51% no-repeat}
 .cmTicketStub span{writing-mode:vertical-rl;rotate:180deg;font-size:15px;font-weight:650;letter-spacing:.02em}
@@ -283,7 +168,7 @@
 .cmTicketMain header span{padding:3px 9px;border-radius:12px;background:var(--sage);color:#fff;font-size:11.5px;font-weight:600;white-space:nowrap}
 .cmTicketMain dl{display:grid;grid-template-columns:1fr 1fr;gap:16px 22px;margin:18px 0}
 .cmTicketMain dt{font-size:14.5px;font-weight:650;color:var(--cm-ink)}
-.cmTicketMain dd{margin:3px 0 0;font-size:13px;line-height:1.4;color:var(--cm-muted)}
+.cmTicketMain dd{margin:3px 0 0;font-size:13px;line-height:1.4;color:var(--cm-muted);text-wrap:pretty}
 .cmTicketMain footer{display:flex;align-items:center;gap:10px;padding-top:12px;border-top:1px solid #2b27441a;font-size:13px;font-weight:600;color:var(--plum)}
 .cmTicketMain footer i{flex:1;height:2px;background:repeating-linear-gradient(90deg,var(--sage-soft) 0 6px,transparent 6px 10px);font-size:0}
 
@@ -292,29 +177,17 @@
  .cmEditorial>section>*,.cmPlanCopy>*,.cmEditorial .cmClose h2,.cmClose .cmTicket,.cmClose .cmScopeStops{grid-column:1/-1!important;grid-row:auto!important}
  .cmEditorial>.cmProblem,.cmEditorial>.cmPlanBack,.cmEditorial>.cmAlgorithm,.cmEditorial>.cmRules,.cmEditorial>.cmLearning,.cmEditorial>.cmClose{padding-top:96px}
  .cmProblemCopy{order:-1}
- .cmPlanCopy{grid-template-columns:1fr;row-gap:16px;margin-bottom:34px;padding-bottom:28px}
- .cmEditorial .cmRules>header{position:static}
- .cmRule{grid-template-columns:1fr;row-gap:14px}
- .cmRule>*{grid-column:1/-1!important;grid-row:auto!important}
- .cmRule+.cmRule{margin-top:48px;padding-top:48px}
  .cmEditorial .cmClose h2{margin-bottom:0}
- .cmTrail,.cmClocks{max-width:460px}
  .cmEngine>ol{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}.cmEngine>ol li:nth-child(3){padding-left:0;border-left:0}
- .cmBuildSystem{grid-template-columns:1fr}.cmBuildSystem>div{grid-template-columns:repeat(3,minmax(0,1fr))}.cmBuildSystem>footer{grid-column:1}
  .cmScale{grid-template-columns:1fr;margin-top:56px}
 }
 @media(max-width:700px){
  .cmEditorial>section{width:calc(100% - 36px)}
- .cmItin>ol>li{grid-template-columns:64px 22px 1fr;column-gap:10px}
- .cmItin>ol>li:not(:last-child):after{left:85px}
- .cmItinTime b{font-size:17px}
- .cmItinToggle{margin-left:0}
  .cmTicketMain dl{grid-template-columns:1fr}
  .cmTicket{transform:none}
  .cmScale>ol{grid-template-columns:1fr;gap:18px}
 
  .cmEditorial .cmBoardRow{grid-template-columns:54px 1fr auto;font-size:13px}
- .cmEngine>header,.cmLearning>header{grid-template-columns:1fr}.cmEngine>header h2,.cmEngine>header p,.cmLearning>header h2,.cmLearning>header p{grid-column:1}.cmEngine>ol{grid-template-columns:1fr}.cmEngine>ol li,.cmEngine>ol li:first-child,.cmEngine>ol li:nth-child(3){padding:16px 0;border-left:0;border-top:1px solid #2b274419}.cmEngineRule{grid-template-columns:1fr;gap:7px}.cmEngineRule i{text-align:left}.cmRobustGrid{grid-template-columns:1fr 1fr}.cmReplay>header{grid-template-columns:1fr;gap:7px}.cmReplayTrack{grid-template-columns:1fr}.cmReplayTrack:before{left:50%;right:auto;top:16px;bottom:16px;width:3px;height:auto}.cmReplayArrow{transform:rotate(90deg);justify-self:center}.cmReplayTrack article{grid-template-columns:38px 1fr}.cmReplayTrack article>strong{grid-column:2}.cmLearningLoop{grid-template-columns:1fr}.cmLearningLoop>i{transform:rotate(90deg);justify-self:center}.cmLearningEvidence,.cmProofBand ol{grid-template-columns:1fr}.cmLearningEvidence article{grid-template-columns:1fr;gap:5px}.cmProofBand{padding:28px 0}.cmProofBand>header{grid-template-columns:1fr}.cmBuildSystem>div{grid-template-columns:1fr}
 }
 @media(prefers-reduced-motion:reduce){.cmBoardRow,.cmClockWin,.cmClockLate,.cmTrailPing,.cmLock .cmPing,.cmItinToggle i:after{transition:none}.cmBoardAsk.isFlash,.cmBusBody,.cmBusSpeed,.cmScopeStops .is-next i{animation:none}.cmClockWin,.cmClockLate{stroke-dashoffset:0}.cmTrailPing{opacity:1;transform:none}}
 
@@ -333,7 +206,7 @@
    answers, the one question, Commute's single answer. */
 /* Compact: the phone runs down the left beside both rows, so the section is
    one screen tall instead of three stacked blocks. */
-.cmEditorial .cmProblem{grid-template-rows:auto auto;row-gap:30px;align-items:start}
+.cmEditorial .cmProblem{grid-template-rows:auto auto;row-gap:var(--cm-block-gap);align-items:start}
 /* The demo column stretches (never shrink-to-fit): the phone sizes itself as a
    percentage of its column, so a centred, content-sized column collapsed it to
    an unusable ~190px. The phone is pinned to a real device width instead. */
@@ -371,20 +244,33 @@
 .cmEditorial .cmProblem .cmBoardFace>.cmBoardAsk span{font-size:28px}
 .cmEditorial .cmProblem .cmBoardFace>.cmBoardAnswer p{font-size:20px;white-space:nowrap}
 
+/* Product map: the heading spans the case width already, but the list must
+   span it too. Without an explicit placement, CSS grid drops the list into a
+   single 1/12th column and turns its copy into a very tall stray-text column. */
+.cmParts>.cmPartsGrid{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:0;padding:0;list-style:none;border-top:1px solid #2b274429;border-bottom:1px solid #2b274429}
+.cmPartsGrid>li{display:grid;align-content:start;gap:12px;min-width:0;padding:24px 24px 28px;border-left:1px solid #2b274419}
+.cmPartsGrid>li:first-child{padding-left:0;border-left:0}
+.cmPartsGrid>li:last-child{padding-right:0}
+.cmPartsGrid>li>i{font-style:normal;font-size:11px;font-weight:750;letter-spacing:.12em;color:var(--sage)}
+.cmPartsGrid>li>b{color:var(--cm-ink);font-size:18px;line-height:1.22}
+.cmPartsGrid>li>span{color:var(--cm-muted);font-size:14px;line-height:1.55;overflow-wrap:anywhere}
+@media(max-width:900px){
+ .cmParts>.cmPartsGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .cmPartsGrid>li:nth-child(odd){padding-left:0;border-left:0}
+ .cmPartsGrid>li:nth-child(n+3){border-top:1px solid #2b274419}
+}
+@media(max-width:600px){
+ .cmParts>.cmPartsGrid{grid-template-columns:1fr}
+ .cmPartsGrid>li,.cmPartsGrid>li:nth-child(odd){padding:20px 0;border-left:0}
+ .cmPartsGrid>li+li{border-top:1px solid #2b274419}
+}
+
 /* Surfaces stage: a centred header over the synced surfaces. The section is a
    12-column grid like the rest of the case, so both children span it. */
-.cmEditorial .cmSurface{row-gap:40px;padding-top:110px}
-.cmEditorial .cmSurface>*{grid-column:1/-1}
-.cmSurfaceHead{display:grid;justify-items:center;gap:16px;text-align:center}
-.cmSurfaceHead h2{margin:0;max-width:18ch}
-.cmSurfaceHead p{margin:0;max-width:62ch;font-size:17px;line-height:1.65;color:var(--cm-muted,#6b6880)}
 
 /* Rules: all three side by side; the third drops the phone frame and keeps just the notifications */
 @media(min-width:901px){
  .cmEditorial .cmRules .cdMomentEvidence .cmRuleGrid{display:grid;grid-template-columns:1.15fr 1.15fr .9fr;column-gap:48px}
- .cmRuleGrid>.cmRule{grid-template-columns:1fr!important;row-gap:12px;align-content:start;align-self:stretch;margin-top:0!important;padding-top:0!important;border-top:0!important}
- .cmRuleGrid>.cmRule>*{grid-column:1/-1!important;grid-row:auto!important;margin-bottom:0}
- .cmRuleGrid>.cmRule+.cmRule{padding-left:48px!important;margin-left:-24px;border-left:1px solid #2b274419}
  .cmRuleGrid>.cmRule:nth-child(3)>.cmLock{order:3;margin-top:8px}
 }
 .cmRuleGrid .cmLock{width:100%;max-width:300px;margin:0;padding:0;border:0;border-radius:0;background:none;box-shadow:none;justify-items:stretch}
@@ -393,53 +279,13 @@
 .cmRuleGrid .cmLock .cmPing.isLive{box-shadow:0 10px 24px #2b274426}
 
 /* Freshness: a quiet line, fading pings, and a Muni bus (silver body, red band). */
-.cmTrailLine{stroke:#d9d5ce;stroke-width:1.5;stroke-linecap:round}
-.cmTrailPath{stroke:#b3272d;stroke-opacity:.35;stroke-width:1.5;stroke-dasharray:2 5;stroke-linecap:round}
-.cmPingDot{fill:#b3272d}
-.cmMuniShell{fill:#eef0f2;stroke:#aeb4ba;stroke-width:.8}
-.cmMuniBand{fill:#c8102e}
-.cmMuniSkirt{fill:#5b6168}
-.cmMuniWin{fill:#2d3640}
-.cmMuniSign{fill:#1b1f24}
-.cmMuniShell{fill:#b7b9bd;stroke:none}
-.cmMuniBand{fill:#b3283a}
-.cmMuniRear{fill:#c23a5c}
-.cmMuniWin{fill:#557f5f;stroke:#fff;stroke-width:1.3}
-.cmMuniMull{stroke:#fff;stroke-width:1}
-.cmMuniLogo{font:800 4.2px var(--case-font,sans-serif);fill:#b3283a;letter-spacing:.08em;text-anchor:middle}
-.cmMuniBumper{fill:#1d1f22}
-.cmBusWheel{fill:#1d1f22}.cmBusHub{fill:#6d7075;stroke:#1d1f22;stroke-width:.8;stroke-dasharray:1.2 .8}
 /* Muni "worm" wordmark: one red line doubled with a white core for the striped look. */
-.cmMuniLogo path{fill:none;stroke-linecap:butt}
-.cmWormOut{stroke:#b3283a;stroke-width:2.6}
-.cmWormIn{stroke:#b7b9bd;stroke-width:.9}
-.cmWormOut{stroke:#c8202f;stroke-width:3}
-.cmWormIn{stroke:#fff;stroke-width:1.9}
-.cmWormCore{fill:none;stroke:#c8202f;stroke-width:.7}
 .bartBody{-webkit-user-select:none;user-select:none;-webkit-user-drag:none}
 
 /* Animated model, drawn directly on the page instead of inside a panel. */
-.cmMathStage{position:relative;margin:20px 0 44px;padding:28px 0 34px;border-top:1px solid #2b274419;border-bottom:1px solid #2b274419;overflow:hidden}
-.cmMathStage:after{content:'';position:absolute;right:-9%;bottom:-95px;width:390px;height:220px;border-radius:50%;background:radial-gradient(circle,#8fb2a428,transparent 68%);pointer-events:none}
-.cmMathStage .cmEngineEquation{position:relative;z-index:1;margin:0 0 30px;padding:0;border:0}
-.cmMathStage .cmEngineEquation span{position:relative;padding:7px 3px 12px;border-radius:0;background:none;overflow:hidden}
-.cmEngineEquation span u{position:absolute;left:0;right:0;bottom:2px;height:3px;background:var(--sage-soft);transform:scaleX(0);transform-origin:left;transition:transform .55s ease calc(var(--term) * .1s)}
 .cmEngine.isRunning .cmEngineEquation span u{transform:scaleX(1)}
-.cmSimFlow{position:relative;display:grid;grid-template-columns:140px 1fr 76px;gap:22px;align-items:center;min-height:148px}
-.cmSimFlow:before{content:'';position:absolute;left:140px;right:63px;top:50%;height:1px;background:linear-gradient(90deg,#4f7a6c33,#4a417066)}
-.cmSimSource{display:grid;align-content:center;width:118px;height:118px;border:1px solid #4f7a6c66;border-radius:50%;text-align:center;color:var(--cm-ink)}
-.cmSimSource b,.cmSimSource span{display:block}.cmSimSource b{font-size:14px}.cmSimSource span{font-size:10px;color:var(--cm-muted)}
-.cmSimField{position:relative;height:140px}
-.cmSimField i{position:absolute;left:0;top:var(--y);width:7px;height:7px;border-radius:50%;background:var(--sage);opacity:.15;transform:scale(.45);transition:left 1.8s cubic-bezier(.2,.7,.2,1) calc(var(--dot) * 28ms),transform .5s ease calc(var(--dot) * 28ms),opacity .35s ease calc(var(--dot) * 28ms)}
 .cmEngine.isRunning .cmSimField i{left:var(--x);transform:scale(1);opacity:.68}
-.cmSimField:after{content:'possible arrivals';position:absolute;left:0;bottom:-2px;color:var(--cm-muted);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
-.cmDeadline{position:relative;z-index:1;display:grid;align-content:center;height:140px;padding-left:15px;border-left:3px solid var(--rose);color:var(--cm-ink)}
-.cmDeadline span{font-size:25px;font-weight:650}.cmDeadline b{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--rose)}
-.cmSimCaption{position:relative;z-index:1;margin:5px 0 0 162px!important;font-size:12px!important;color:var(--cm-muted)}
 .cmEngine>ol li{padding-top:15px;border-top:1px solid #2b274419;border-left:0}.cmEngine>ol li+li{margin-left:22px}.cmEngine>ol li>i{border:1px solid var(--cm-ink);background:transparent;color:var(--cm-ink)}
-.cmEngineRule{border-bottom-color:var(--sage)}
-.cmMathBoundary{display:grid;grid-template-columns:1fr 1fr;gap:42px;margin-top:38px;padding-top:22px;border-top:1px solid #2b274419}
-.cmMathBoundary p{display:grid;grid-template-columns:105px 1fr;gap:14px;margin:0!important;font-size:13px!important;color:var(--cm-muted)}.cmMathBoundary b{color:var(--cm-ink)}
 
 .cmTransitFailure{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:2}.cmTransitFailure path{fill:none;stroke:var(--rose);stroke-width:6;stroke-linecap:round}.cmTransitFailure text{fill:var(--rose);font:700 12px var(--case-font,inherit);letter-spacing:.06em;text-anchor:middle;text-transform:uppercase}
 .cmReplay{margin:34px 0 52px;padding:22px 0 30px;border-top:1px solid #2b274419;border-bottom:1px solid #2b274419}
@@ -455,19 +301,15 @@
 .cmReplay.isFailed .cmReplayHandoff i{transform:translateX(6px);background:var(--plum);color:#fff}.cmReplay.isFailed .cmReplayBus>div{text-decoration:line-through;text-decoration-color:var(--rose)}.cmReplay.isFailed .cmBARTVehicle{transform:translateX(4%)}.cmBARTVehicle{transition:transform .6s cubic-bezier(.2,.8,.2,1)}
 
 /* One ten-week validation journey replaces the former proof-card wall. */
-.cmWeekRun{margin:46px 0 18px;padding:0 0 30px;border-bottom:1px solid #2b274419}
+.cmWeekRun{margin:var(--cm-block-gap) 0 18px;padding:0 0 30px;border-bottom:1px solid #2b274419}
 .cmWeekLabels{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;margin-bottom:13px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--cm-muted)}.cmWeekLabels span:last-child{text-align:right}.cmWeekLabels b{color:var(--sage);font-size:11px}
 .cmWeekTrack{position:relative;display:grid;grid-template-columns:repeat(10,1fr);gap:9px}.cmWeekTrack:before{content:'';position:absolute;left:0;right:0;top:50%;height:2px;background:#2b274419}
 .cmWeekTrack>div{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:3px;padding:9px 5px}
 .cmWeekTrack i{position:relative;width:100%;aspect-ratio:1;border-radius:50%;background:#d8d5d0;transform:scale(.45);opacity:.35;transition:transform .25s ease calc(var(--morning) * 35ms),background .25s ease calc(var(--morning) * 35ms),opacity .25s ease calc(var(--morning) * 35ms)}
 .cmWeekRun.isRunning .cmWeekTrack i{transform:scale(1);opacity:1;background:var(--sage)}.cmWeekRun.isRunning .cmWeekTrack>div:nth-child(3n) i:nth-child(even){background:var(--plum-soft)}
 .cmWeekLegend{display:flex;justify-content:center;gap:24px;margin-top:14px;font-size:10px;color:var(--cm-muted)}.cmWeekLegend span{display:flex;align-items:center;gap:6px}.cmWeekLegend i{width:7px;height:7px;border-radius:50%;background:var(--sage)}.cmWeekLegend span:nth-child(2) i{box-shadow:0 0 0 3px #4f7a6c22}.cmWeekLegend span:nth-child(3) i{background:var(--plum-soft)}
-.cmLearningLoop{margin:32px 0}.cmLearningLoop>div{border-top:0;border-bottom:3px solid var(--sage);padding:10px 0 16px}.cmLearningLoop>i{font-size:24px}
-.cmLearningEvidence{grid-template-columns:repeat(3,1fr);gap:32px}.cmLearningEvidence article{display:block;padding:16px 0;border-top:1px solid #2b274429}.cmLearningEvidence p{margin:7px 0 0;font-size:12.5px;line-height:1.5}
-.cmProofBand{display:grid;grid-template-columns:175px 1fr auto 1fr;gap:20px;align-items:center;margin-top:50px;padding:27px 0;border-top:4px solid var(--cm-ink);border-bottom:1px solid #2b274425}.cmProofBand>span{color:var(--sage);font-size:10px;font-weight:750;letter-spacing:.12em;text-transform:uppercase}.cmProofBand>strong{font-size:17px;line-height:1.35;color:var(--cm-ink)}.cmProofBand>i{font-style:normal;font-size:25px;color:var(--rose)}
 
 @media(max-width:700px){
- .cmSimFlow{grid-template-columns:78px 1fr 68px;gap:8px}.cmSimFlow:before{left:78px;right:56px}.cmSimSource{width:72px;height:72px;gap:1px}.cmSimSource b{font-size:10px}.cmSimSource span{font-size:8px}.cmDeadline{box-sizing:border-box;padding-left:8px}.cmDeadline span{font-size:21px}.cmDeadline b{font-size:8px;letter-spacing:.04em}.cmSimCaption{margin-left:88px!important}.cmMathBoundary{grid-template-columns:1fr;gap:18px}.cmMathBoundary p{grid-template-columns:90px 1fr}.cmEngine>ol li+li{margin-left:0}
  .cmReplayTrack{grid-template-columns:1fr;gap:6px}.cmReplayTrack:before{left:50%;right:auto;top:14px;bottom:14px;width:2px;height:auto}.cmReplayHandoff i{transform:rotate(90deg)}.cmReplay.isFailed .cmReplayHandoff i{transform:rotate(90deg) translateX(6px)}.cmTransitVehicle{max-width:220px;justify-self:center}.cmReplayRoute>div{background:var(--case-bg,#faf8f4)}
  .cmWeekTrack{gap:3px}.cmWeekTrack>div{grid-template-columns:1fr;gap:2px;padding:5px 3px}.cmWeekTrack i{width:7px;justify-self:center}.cmWeekLabels b{font-size:9px}.cmWeekLegend{display:grid;grid-template-columns:1fr;gap:5px}.cmLearningEvidence{grid-template-columns:1fr}.cmProofBand{grid-template-columns:1fr;gap:10px}.cmProofBand>i{transform:rotate(90deg)}
 }
@@ -475,414 +317,220 @@
 
 /* A disruption learned at 8:27 cannot rewrite a 7:30 alarm. Completed steps
    stay visibly locked while the reachable future is recalculated. */
-.cmItinTime small{margin-top:4px;color:var(--sage);font-size:9px;font-weight:750;letter-spacing:.1em;text-transform:uppercase}
-.cmItin.isDelayed .cmItinTime b{color:var(--cm-ink)}
-.cmItin.isDelayed .is-wake,.cmItin.isDelayed .is-leave{opacity:.58}
-.cmItin.isDelayed .is-wake .cmItinDot,.cmItin.isDelayed .is-leave .cmItinDot{background:var(--sage);box-shadow:none}
-.cmItin.isDelayed .is-ride .cmItinTime b,.cmItin.isDelayed .is-arrive .cmItinTime b,.cmItin.isDelayed .is-ride .cmItinBody>span,.cmItin.isDelayed .is-arrive .cmItinBody>span{color:var(--rose)}
-.cmLateUpdate{display:grid;grid-template-columns:110px 1fr;gap:18px;max-width:720px!important;margin:34px auto 0!important;padding:16px 0;border-top:2px solid var(--rose);border-bottom:1px solid #2b274419;font-size:13px!important;color:var(--cm-muted)}
-.cmLateUpdate>b{color:var(--rose);text-transform:uppercase;letter-spacing:.08em}.cmLateUpdate>div{display:grid;gap:3px}.cmLateUpdate strong{color:var(--cm-ink);font-size:15px}.cmLateUpdate span{line-height:1.55}
-.cmItinToggle:not([aria-pressed=true]){animation:cmTryCue 2.2s ease-in-out infinite}
 @keyframes cmTryCue{0%,70%,100%{box-shadow:0 0 0 0 #4a417000}82%{box-shadow:0 0 0 8px #4a41701d}}
 @media(max-width:700px){.cmLateUpdate{grid-template-columns:1fr;gap:6px}}
 @media(prefers-reduced-motion:reduce){.cmItinToggle:not([aria-pressed=true]){animation:none}}
 
 /* Forecast mode runs before wake-up: the whole still-future plan can move. */
-.cmItin.isDelayed .is-wake,.cmItin.isDelayed .is-leave{opacity:1}
-.cmItin.isDelayed .is-wake .cmItinDot{background:var(--plum);box-shadow:0 0 0 6px #4a417024}
-.cmItin.isDelayed .is-leave .cmItinDot{background:var(--cream);box-shadow:inset 0 0 0 3.5px var(--sage)}
-.cmItin.isDelayed .is-wake .cmItinTime b,.cmItin.isDelayed .is-leave .cmItinTime b,.cmItin.isDelayed .is-ride .cmItinTime b{color:var(--plum)}
-.cmItin.isDelayed .is-arrive .cmItinTime b,.cmItin.isDelayed .is-arrive .cmItinBody>span{color:var(--sage)}
-.cmForecastUpdate{border-top-color:var(--sage)}.cmForecastUpdate>b{color:var(--sage)}
 
 /* Seven robustness rules: numbered, rule-topped, no card around them. */
-.cmRobustGrid article{position:relative;padding:17px 0 0;border-top:1px solid #2b274426;background:none}
-.cmRobustGrid i{display:block;margin-bottom:7px;color:var(--sage);font:750 11px/1 var(--case-font);letter-spacing:.12em;font-style:normal}
-.cmRobustGrid b{display:block;margin-bottom:6px;color:var(--cm-ink);font-size:16px;line-height:1.3}
-.cmRobustGrid p{margin:0!important;color:var(--cm-muted);font-size:13.5px!important;line-height:1.55!important}
 @media(max-width:900px){.cmRobustGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.cmRobustGrid{grid-template-columns:1fr;gap:0}.cmRobustGrid article{padding:15px 0}}
 
 /* The stance, not a slider: what the app refuses to ask, and what it asks instead. */
-.cmBudget{margin:44px 0 6px;padding-top:30px;border-top:1px solid #2b274426}
-.cmBudgetAsk{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:14px 52px;align-items:start}
-.cmBudgetAsk span{grid-column:1;color:var(--sage);font-size:11px;font-weight:750;letter-spacing:.13em;text-transform:uppercase}
-.cmBudgetAsk strong{grid-column:1;grid-row:2;color:var(--cm-ink);font-size:clamp(22px,2.2vw,30px);line-height:1.15;letter-spacing:-.02em}
-.cmBudgetAsk p{grid-column:2;grid-row:1/3;margin:0!important;color:var(--cm-muted);font-size:15px!important;line-height:1.6!important}
-.cmBudgetScale{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 34px;margin:30px 0 0;padding:0;list-style:none}
-.cmBudgetScale li{position:relative;padding:15px 0 0;border-top:1px solid #2b274426}
-.cmBudgetScale li.isPicked{border-top:2px solid var(--sage)}
-.cmBudgetScale b{display:block;color:var(--cm-ink);font-size:15.5px;line-height:1.3}
-.cmBudgetScale span{display:block;margin-top:6px;color:var(--cm-muted);font-size:13.5px;line-height:1.45}
-.cmBudgetScale i{display:inline-block;margin-top:9px;color:var(--sage);font:750 10.5px/1 var(--case-font);letter-spacing:.12em;text-transform:uppercase;font-style:normal}
-.cmBudgetNote{display:grid;max-width:none!important;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:8px 40px;margin:26px 0 0!important;padding-top:20px;border-top:1px solid #2b274419;color:var(--cm-muted);font-size:14px!important;line-height:1.6!important}
-.cmBudgetNote b{color:var(--cm-ink)}
 @media(max-width:820px){.cmBudgetAsk,.cmBudgetNote{grid-template-columns:1fr;gap:10px}.cmBudgetAsk strong,.cmBudgetAsk p{grid-column:1;grid-row:auto}.cmBudgetScale{grid-template-columns:1fr;gap:0}}
 
 /* The fair question, answered straight. */
-.cmWhyNotSetting{margin:52px 0 0;padding-top:34px;border-top:4px solid var(--cm-ink)}
-.cmWhyNotSetting>header{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:14px 52px;align-items:start}
-.cmWhyNotSetting>header span{grid-column:1;color:var(--sage);font-size:11px;font-weight:750;letter-spacing:.13em;text-transform:uppercase}
-.cmWhyNotSetting>header h3{grid-column:1;grid-row:2;margin:0;color:var(--cm-ink);line-height:1.15}
-.cmWhyNotSetting>header p{grid-column:2;grid-row:1/3;margin:0!important;color:var(--cm-muted);font-size:15.5px!important;line-height:1.6!important}
-.cmWhyNotSetting>ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 52px;margin:34px 0 0;padding:0;list-style:none}
-.cmWhyNotSetting>ol li{padding-top:16px;border-top:1px solid #2b274426}
-.cmWhyNotSetting>ol i{display:block;margin-bottom:7px;color:var(--sage);font:750 11px/1 var(--case-font);letter-spacing:.12em;font-style:normal}
-.cmWhyNotSetting>ol b{display:block;margin-bottom:6px;color:var(--cm-ink);font-size:16.5px;line-height:1.3}
-.cmWhyNotSetting>ol p{margin:0!important;color:var(--cm-muted);font-size:14px!important;line-height:1.58!important}
-.cmWhyNotSetting>footer{margin-top:30px;padding-top:18px;border-top:1px solid #2b274419;color:var(--cm-muted);font-size:14.5px;line-height:1.6}
-.cmWhyNotSetting>footer b{color:var(--cm-ink)}
 @media(max-width:820px){.cmWhyNotSetting>header{grid-template-columns:1fr;gap:10px}.cmWhyNotSetting>header h3,.cmWhyNotSetting>header p{grid-column:1;grid-row:auto}.cmWhyNotSetting>ol{grid-template-columns:1fr;gap:0}.cmWhyNotSetting>ol li{padding:15px 0}}
 
 /* Pre-registered comparison bars. Static content sits on the page, ruled off
    with borders rather than boxed into a card. */
-.cmPrereg{margin-top:54px;padding-top:30px;border-top:1px solid #2b274429}
-.cmPrereg>header{display:grid;grid-template-columns:1fr 1fr;gap:10px var(--cm-gap);align-items:end;margin-bottom:26px}
-.cmPrereg>header span{grid-column:1/-1;color:var(--sage);font-size:10px;font-weight:750;letter-spacing:.12em;text-transform:uppercase}
-.cmPrereg>header strong{grid-column:1;color:var(--cm-ink);font-size:clamp(19px,2.1vw,26px);font-weight:550;letter-spacing:-.01em;line-height:1.3}
-.cmPrereg>header p{grid-column:2;margin:0;max-width:46ch;font-size:14px;color:var(--cm-muted)}
-.cmPrereg>ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 48px;margin:0;padding:0;list-style:none}
-.cmPrereg>ol li{padding:18px 0;border-top:1px solid #2b274419}
-.cmPrereg>ol b{display:block;color:var(--cm-ink);font-size:15px}
-.cmPrereg>ol p{margin:6px 0 0;font-size:13px;line-height:1.55;color:var(--cm-muted)}
-.cmPrereg>ol i{font-style:normal;font-weight:650;color:var(--plum)}
-.cmKill{margin-top:28px;padding-left:18px;border-left:4px solid var(--rose)}
-.cmKill>span{display:block;margin-bottom:10px;color:var(--rose);font-size:10px;font-weight:750;letter-spacing:.12em;text-transform:uppercase}
-.cmKill ul{display:grid;gap:9px;margin:0;padding:0;list-style:none}
-.cmKill li{font-size:13.5px;line-height:1.55;color:var(--cm-muted)}
-.cmKill b{color:var(--cm-ink)}
 @media(max-width:900px){.cmPrereg>header{grid-template-columns:1fr}.cmPrereg>header strong,.cmPrereg>header p{grid-column:1}.cmPrereg>ol{grid-template-columns:1fr}}
-
-/* ── Where the spread comes from ───────────────────────────────────────── */
-.cmVariance{margin:52px 0 0;padding-top:32px;border-top:1px solid #2b274429}
-.cmVariance>header{display:grid;grid-template-columns:1fr 1fr;gap:10px var(--cm-gap);align-items:end;margin-bottom:26px}
-.cmVariance>header span{grid-column:1/-1;color:var(--sage);font-size:10px;font-weight:750;letter-spacing:.12em;text-transform:uppercase}
-.cmVariance>header h3{grid-column:1;margin:0;color:var(--cm-ink);font-size:clamp(22px,2.6vw,33px);font-weight:550;letter-spacing:-.015em;line-height:1.22}
-.cmVariance>header p{grid-column:2;margin:0;max-width:48ch;font-size:14px;line-height:1.6;color:var(--cm-muted)}
-.cmVariance>ol{margin:0;padding:0;list-style:none}
-.cmVariance>ol li{display:grid;grid-template-columns:200px minmax(0,1fr) 260px;gap:20px;align-items:center;padding:16px 0;border-top:1px solid #2b274419}
-.cmVarHead b{display:block;color:var(--cm-ink);font-size:15px}
-.cmVarHead em{display:block;margin-top:2px;font-style:normal;font-size:11.5px;color:var(--cm-muted);font-variant-numeric:tabular-nums}
-.cmVarBar{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
-.cmVarBar i{display:block;height:10px;width:0;border-radius:5px;background:var(--sage);transition:width .8s cubic-bezier(.22,.7,.3,1);transition-delay:calc(.1s + var(--i) * .1s)}
-.cmVariance.isIn .cmVarBar i{width:var(--w)}
-.cmVariance li.is-mid .cmVarBar i{background:var(--plum)}
-.cmVariance li.is-wide .cmVarBar i{background:var(--rose)}
-.cmVarBar span{font-size:11.5px;font-weight:650;color:var(--cm-muted);font-variant-numeric:tabular-nums;white-space:nowrap}
-.cmVariance li.is-wide .cmVarBar span{color:var(--rose)}
-.cmEditorial .cmVariance>ol p{max-width:none!important;margin:0!important;font-size:12.5px!important;line-height:1.5;color:var(--cm-muted)}
-.cmVarPunch{margin-top:30px;padding-top:24px;border-top:4px solid var(--cm-ink);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 48px}
-.cmVarPunch b{color:var(--cm-ink)}
-.cmEditorial .cmVarPunch p{max-width:none!important;margin:0!important;font-size:14px!important;line-height:1.6;color:var(--cm-muted)}
 
 /* ── Between the alarm and the door ────────────────────────────────────── */
 .cmEditorial .cmSlip{grid-column:1/-1;margin:56px 0 0;padding-top:34px;border-top:1px solid #2b274429}
-.cmSlip>header{display:grid;grid-template-columns:1fr 1fr;gap:10px var(--cm-gap);align-items:end;margin-bottom:28px}
-.cmSlip>header span{grid-column:1/-1;color:var(--plum);font-size:10px;font-weight:750;letter-spacing:.12em;text-transform:uppercase}
-.cmSlip>header h3{grid-column:1;margin:0;color:var(--cm-ink);font-size:clamp(22px,2.6vw,33px);font-weight:550;letter-spacing:-.015em;line-height:1.22}
-.cmSlip>header p{grid-column:2;margin:0;max-width:48ch;font-size:14px;line-height:1.6;color:var(--cm-muted)}
-.cmSlipPick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
-.cmSlipPick button{padding:14px 16px 14px 0;border:0;border-top:2px solid #2b27441f;background:transparent;font:inherit;text-align:left;cursor:pointer;transition:border-color .2s}
-.cmSlipPick button+button{padding-left:22px;border-left:1px solid #2b274419}
-.cmSlipPick b{display:block;color:var(--cm-muted);font-size:14px;font-weight:600;transition:color .2s}
-.cmSlipPick span{display:block;margin-top:3px;color:var(--cm-muted);font-size:11.5px;opacity:.8;font-variant-numeric:tabular-nums}
-.cmSlipPick button:hover b{color:var(--cm-ink)}
-.cmSlipPick button[aria-pressed=true] b{color:var(--cm-ink)}
-.cmSlip.is-ok .cmSlipPick button[aria-pressed=true]{border-top-color:var(--sage)}
-.cmSlip.is-warn .cmSlipPick button[aria-pressed=true]{border-top-color:var(--plum)}
-.cmSlip.is-late .cmSlipPick button[aria-pressed=true]{border-top-color:var(--rose)}
-.cmSlipBody{display:grid;grid-template-columns:1fr 1fr;gap:var(--cm-gap);align-items:start;margin-top:32px}
-.cmSlipRail{position:relative;display:grid;gap:22px;padding-left:4px}
-.cmSlipRail:before{content:'';position:absolute;left:8px;top:10px;bottom:10px;width:2px;background:#2b274426}
-.cmSlipRail>div{position:relative;display:grid;grid-template-columns:34px auto 1fr;align-items:baseline;gap:0 12px}
-.cmSlipRail i{grid-row:1/2;width:11px;height:11px;margin-left:3px;border-radius:50%;background:var(--case-bg,#faf8f4);box-shadow:inset 0 0 0 2.5px var(--sage);transform:translateY(2px)}
-.cmSlipRail small{color:var(--cm-muted);font-size:10px;font-weight:750;letter-spacing:.1em;text-transform:uppercase}
-.cmSlipRail b{color:var(--cm-ink);font-size:20px;font-variant-numeric:tabular-nums;transition:color .25s}
-.cmSlip.is-warn .cmSlipRail>.is-end b,.cmSlip.is-late .cmSlipRail>.is-end b{color:var(--rose)}
-.cmSlip.is-warn .cmSlipRail>.is-end i{box-shadow:inset 0 0 0 2.5px var(--rose)}
-.cmSlip.is-late .cmSlipRail>.is-end i{box-shadow:inset 0 0 0 2.5px var(--rose);background:var(--rose)}
-.cmSlipRead>strong{display:block;color:var(--cm-ink);font-size:clamp(18px,2vw,24px);font-weight:550;letter-spacing:-.01em;line-height:1.3}
 .cmEditorial .cmSlipRead p{max-width:52ch!important;margin:12px 0 0!important;font-size:14px!important;line-height:1.62;color:var(--cm-muted)}
 .cmEditorial p.cmSlipAct{display:grid;gap:5px;margin-top:20px!important;padding-top:16px;border-top:2px solid var(--cm-ink)}
-.cmSlipAct span{color:var(--sage);font-size:10px;font-weight:750;letter-spacing:.12em;text-transform:uppercase}
-.cmSlipAct b{color:var(--cm-ink);font-size:17px;font-weight:600}
-.cmSlip.is-late .cmSlipAct b{color:var(--rose)}
-.cmSlip>footer{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 48px;margin-top:34px;padding-top:24px;border-top:1px solid #2b274419}
-.cmSlip>footer b{color:var(--cm-ink)}
 .cmEditorial .cmSlip>footer p{max-width:none!important;margin:0!important;font-size:13.5px!important;line-height:1.6;color:var(--cm-muted)}
 
-@media(max-width:900px){
- .cmVariance>header,.cmSlip>header{grid-template-columns:1fr}
- .cmVariance>header h3,.cmVariance>header p,.cmSlip>header h3,.cmSlip>header p{grid-column:1}
- .cmVariance>ol li{grid-template-columns:1fr;gap:9px}
- .cmVarPunch,.cmSlipBody,.cmSlip>footer{grid-template-columns:1fr}
+@media(max-width:900px){.cmSlip>header{grid-template-columns:1fr}.cmSlip>header h3,.cmSlip>header p{grid-column:1}
 }
 @media(max-width:700px){
- .cmSlipPick{grid-template-columns:1fr}
  /* Stacked, a top border reads as an underline on the option above it, so the
     selected state moves to a left rule that can only belong to its own row. */
- .cmSlipPick button{padding:13px 0 13px 14px;border-top:1px solid #2b274419;border-left:3px solid transparent}
- .cmSlipPick button+button{padding-left:14px}
- .cmSlip.is-ok .cmSlipPick button[aria-pressed=true]{border-left-color:var(--sage)}
- .cmSlip.is-warn .cmSlipPick button[aria-pressed=true]{border-left-color:var(--plum)}
- .cmSlip.is-late .cmSlipPick button[aria-pressed=true]{border-left-color:var(--rose)}
- .cmSlipPick button[aria-pressed=true]{border-top-color:#2b274419}
-}
-@media(prefers-reduced-motion:reduce){
- .cmVarBar i{transition:none;width:var(--w)}
 }
 
 /* ── The feedback loop the evaluation cannot see ───────────────────────── */
-.cmReflex{margin:54px 0 0;padding-top:30px;border-top:4px solid var(--rose)}
-.cmReflex>header{margin-bottom:24px}
-.cmReflex>header span{display:block;margin-bottom:9px;color:var(--rose);font-size:10px;font-weight:750;letter-spacing:.12em;text-transform:uppercase}
-.cmReflex>header h3{margin:0;max-width:22ch;color:var(--cm-ink);font-size:clamp(22px,2.7vw,34px);font-weight:550;letter-spacing:-.015em;line-height:1.2}
-.cmReflex>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px 44px}
-.cmReflex>div>p{position:relative;padding-top:18px;border-top:1px solid #2b274429}
-.cmReflex b{display:block;margin-bottom:5px;color:var(--cm-ink)}
-.cmEditorial .cmReflex>div>p{max-width:none!important;margin:0!important;font-size:13.5px!important;line-height:1.6;color:var(--cm-muted)}
 
 @media(max-width:900px){
- .cmReflex>div{grid-template-columns:1fr}
 }
 
 /* ── What the public feeds do and do not publish ───────────────────────── */
-.cmFeeds{margin:52px 0 0;padding-top:32px;border-top:1px solid #2b274429}
-.cmFeeds>header{display:grid;grid-template-columns:1fr 1fr;gap:10px var(--cm-gap);align-items:end;margin-bottom:26px}
-.cmFeeds>header span{grid-column:1/-1;color:var(--sage);font-size:10px;font-weight:750;letter-spacing:.12em;text-transform:uppercase}
-.cmFeeds>header h3{grid-column:1;margin:0;color:var(--cm-ink);font-size:clamp(21px,2.5vw,31px);font-weight:550;letter-spacing:-.015em;line-height:1.24}
-.cmFeeds>header p{grid-column:2;margin:0;max-width:48ch;font-size:14px;line-height:1.6;color:var(--cm-muted)}
-.cmFeeds>ol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 44px;margin:0;padding:0;list-style:none}
-.cmFeeds>ol li{padding:20px 0 4px;border-top:1px solid #2b274419}
-.cmFeedHead b{display:block;color:var(--cm-ink);font-size:17px}
-.cmFeedHead em{display:block;margin-top:3px;font-style:normal;font-size:11.5px;font-weight:650;color:var(--plum)}
-.cmFeedHead small{display:block;margin-top:7px;font-size:12px;line-height:1.5;color:var(--cm-muted)}
-.cmEditorial .cmFeeds>ol p{max-width:none!important;margin:16px 0 0!important;padding-top:12px;border-top:1px solid #2b274414;font-size:13px!important;line-height:1.55;color:var(--cm-muted)}
-.cmFeeds>ol p span{display:block;margin-bottom:4px;font-size:9.5px;font-weight:750;letter-spacing:.11em;text-transform:uppercase}
-.cmFeedGives span{color:var(--sage)}
-.cmFeedCannot span{color:var(--rose)}
-.cmFeedGap{margin-top:34px;padding-top:26px;border-top:4px solid var(--cm-ink)}
-.cmFeedGap>b,.cmFeedRate>b{display:block;margin-bottom:8px;color:var(--cm-ink);font-size:17px}
-.cmEditorial .cmFeedGap p{max-width:78ch!important;margin:0 0 10px!important;font-size:14px!important;line-height:1.62;color:var(--cm-muted)}
-.cmFeedGap em{font-style:normal;font-weight:650;color:var(--cm-ink)}
-.cmFeedRate{margin-top:26px;padding-left:18px;border-left:4px solid var(--plum)}
-.cmFeedRate>b{font-size:14px}
-.cmEditorial .cmFeedRate p{max-width:76ch!important;margin:0!important;font-size:13.5px!important;line-height:1.6;color:var(--cm-muted)}
 @media(max-width:900px){
- .cmFeeds>header{grid-template-columns:1fr}
- .cmFeeds>header h3,.cmFeeds>header p{grid-column:1}
- .cmFeeds>ol{grid-template-columns:1fr}
 }
 
 /* Final Commute edit: one visual per question, compact evidence, no section
    container around the native product surfaces. */
-.cmMathStage>h3{position:relative;z-index:1;margin:0;max-width:24ch;color:var(--cm-ink);font-size:clamp(23px,2.5vw,34px);font-weight:550;letter-spacing:-.02em;line-height:1.18}
-.cmMathStage>h2{position:relative;z-index:1;margin:0 0 14px;max-width:none;width:100%;white-space:nowrap;color:var(--cm-ink);font-size:clamp(36px,4.1vw,56px);font-weight:500;letter-spacing:-.035em;line-height:1.04}
-.cmMathStage>p{position:relative;z-index:1;margin:12px 0 32px;max-width:64ch;color:var(--cm-muted);font-size:14px;line-height:1.6}
-.cmEvidencePair{display:grid;grid-template-columns:1fr 1fr;gap:64px;margin-top:54px;padding-top:36px;border-top:4px solid var(--cm-ink)}
-.cmEvidencePair>.cmVariance,.cmEvidencePair>section{min-width:0;margin:0;padding:0;border:0}
-.cmEvidencePair .cmVariance>header{display:block;margin-bottom:22px}
-.cmEvidencePair .cmVariance>header h3,.cmEvidencePair .cmVariance>header p{display:block;margin:0;max-width:none}
-.cmEvidencePair .cmVariance>header p{margin-top:10px}
-.cmEvidencePair .cmVariance>ol li{grid-template-columns:142px minmax(0,1fr);gap:14px;padding:11px 0}
-.cmEvidencePair .cmVariance>div{display:block;margin-top:20px;padding-top:14px}
-.cmEvidencePair .cmVariance>div>div{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:0}
-.cmEvidencePair .cmVariance>div>div>div{font-size:25px}
-.cmVarianceDecision{margin:18px 0 0!important;padding:15px 0 0;border-top:1px solid #2b274419;font-size:13px!important;line-height:1.55;color:var(--cm-muted)}
-.cmVarianceDecision b{color:var(--cm-ink)}
-.cmEvidencePair>section>header{margin:0 0 22px}
-.cmEvidencePair>section>header h3{max-width:20ch;font-size:clamp(22px,2.3vw,31px);font-weight:550;letter-spacing:-.018em;line-height:1.2}
-.cmEvidencePair>section>header p{margin:10px 0 0;max-width:46ch;color:var(--cm-muted);font-size:14px;line-height:1.6}
-.cmEvidencePair .cmUpdateTable{margin-top:0}
-.cmEvidencePair .cmUpdateTable th,.cmEvidencePair .cmUpdateTable td{padding:11px 6px 11px 0;font-size:12.5px}
-.cmSwitchNotice{position:relative;z-index:3;display:grid!important;grid-template-columns:28px 1fr!important;gap:10px!important;width:min(270px,90%);margin:0 0 12px!important;padding:10px 12px!important;border:0!important;border-radius:16px;background:#fff!important;box-shadow:0 12px 28px #2b274429}
-.cmSwitchNotice>i{display:grid;width:28px;height:28px;place-items:center;border-radius:8px;background:var(--sage);color:#fff;font-style:normal;font-weight:750}
-.cmSwitchNotice>span{display:grid;gap:1px;margin:0!important}
-.cmSwitchNotice b,.cmSwitchNotice strong,.cmSwitchNotice small{display:block!important;text-align:left}
-.cmSwitchNotice b{color:var(--sage);font-size:9px;letter-spacing:.08em;text-transform:uppercase}
-.cmSwitchNotice strong{color:var(--cm-ink);font-size:13px}
-.cmSwitchNotice small{color:var(--cm-muted);font-size:10.5px}
-.cmEditorial>.cmSurface{width:min(1180px,calc(100% - 64px));max-width:1180px;padding:150px 0 130px;background:none}
 .cmSurface>.cmSectionIntro,.cmSurface>.csSurfaces{max-width:none}
 @media(max-width:900px){
- .cmEvidencePair{grid-template-columns:1fr;gap:46px}
- .cmEditorial>.cmSurface{width:calc(100% - 36px);padding-top:92px}
-}
-@media(max-width:620px){
- .cmEvidencePair .cmVariance>ol li{grid-template-columns:1fr;gap:7px}
- .cmEvidencePair .cmVariance>div>div{grid-template-columns:1fr}
 }
 
 /* Plain-language revision: compact sections and show the product response. */
 .cmReplay>button{display:block;margin:0 auto 22px;padding:10px 16px;background:var(--plum);color:#fff}
 .cmReplay>button:hover{background:transparent;color:var(--plum)}
-.cmUpdateMechanism{position:relative;padding-left:24px!important;border-left:1px solid #2b27441f!important}
-.cmUpdateMechanism:before{content:'';position:absolute;left:-5px;top:4px;width:9px;height:9px;border-radius:50%;background:var(--rose);box-shadow:0 0 0 7px #b4607a18}
-.cmUpdateTable tbody tr{background:linear-gradient(90deg,#ffffff52,transparent);opacity:0;transform:translateX(18px)}
-.cmUpdateTable tbody tr:nth-child(even){background:linear-gradient(90deg,#dbe7e340,transparent)}
-.cmUpdateMechanism.isIn tbody tr{animation:cmDayIn .5s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(180ms + var(--day) * 150ms)}
-.cmUpdateTable td:first-child{width:34px;color:var(--sage);font-weight:750}
 @keyframes cmDayIn{to{opacity:1;transform:none}}
-.cmSwitchNotice{width:min(290px,92%);padding:11px 12px!important;border:1px solid #ffffff4d!important;border-radius:18px;background:linear-gradient(145deg,#383451f2,#242136f2)!important;box-shadow:0 14px 34px #2b27443d;color:#fff!important}
-.cmSwitchNotice b{color:#a8d6c7}
-.cmSwitchNotice strong{color:#fff}
-.cmSwitchNotice small{color:#ffffffb8}
-.cmEditorial>.cmSurface{padding-top:96px;padding-bottom:90px}
 .cmSurface>.cmSectionIntro{margin-bottom:28px;padding-bottom:24px}
 .cmSurface>.cmSectionIntro h2{max-width:18ch;font-size:clamp(34px,4.5vw,58px)}
 .cmSurface>.cmSectionIntro p{max-width:48ch}
-.cmMetrics{grid-template-columns:repeat(2,minmax(0,1fr));max-width:680px}
 .cmEditorial>.cmAlgorithm{padding-top:92px}
-.cmMathStage{margin-top:0;padding-top:0;border-top:0}
 .cmLearning>header h2{max-width:17ch;font-size:clamp(34px,4.6vw,58px)}
 .cmLearning>header p{max-width:52ch;line-height:1.6}
-.cmLearningLoop{grid-template-columns:1fr auto 1fr auto 1fr;gap:20px}
-.cmSectionIntro>p,.cmRouteChoice>div>p,.cmMathStage>p,.cmVariance>header>p,.cmUpdateMechanism>header>p,.cmLearning>header>p{font-family:var(--font-serif)!important}
-@media(prefers-reduced-motion:reduce){.cmUpdateMechanism tbody tr{opacity:1;transform:none;animation:none}}
+.cmSectionIntro>p,.cmRouteChoice>div>p,.cmMathStage>p,.cmLearning>header>p{font-family:var(--font-serif)!important}
 @media(max-width:900px){.cmMathStage>h2{white-space:normal}}
 
 /* The model is one inspectable decision system, not a decorative simulation. */
-.cmModelInputs{display:flex;flex-wrap:wrap;gap:8px 18px;margin:0 0 24px;padding:12px 0;border-top:1px solid #2b274419;border-bottom:1px solid #2b274419}
-.cmModelInputs span{font:650 11px/1.3 var(--case-font,inherit);color:var(--sage)}
-.cmModelStep{display:flex;gap:13px;align-items:flex-start;margin:28px 0 12px}.cmModelStep>b{display:grid;flex:0 0 27px;width:27px;height:27px;place-items:center;border:1px solid var(--sage);border-radius:50%;color:var(--sage);font-size:11px}.cmModelStep strong,.cmModelStep span{display:block}.cmModelStep strong{color:var(--cm-ink);font-size:16px}.cmModelStep span{margin-top:3px;color:var(--cm-muted);font-size:12px}.cmModelStepFinal{margin-top:28px}
-.cmModelFormula{display:flex;justify-content:space-between;gap:24px;align-items:baseline;margin:26px 0 18px}
-.cmModelFormula code{white-space:normal;font:600 clamp(14px,1.65vw,21px)/1.45 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--cm-ink)}
-.cmModelFormula span{font-size:11px;color:var(--cm-muted)}
-.cmCandidateTest{margin-top:10px;border-top:2px solid var(--cm-ink);font-variant-numeric:tabular-nums}
-.cmCandidateTest header,.cmCandidateTest>div{display:grid;grid-template-columns:150px minmax(260px,1fr) 70px 120px;gap:16px;align-items:center}
-.cmCandidateTest header{padding:10px 0 8px;font-size:9px;font-weight:750;letter-spacing:.1em;text-transform:uppercase;color:var(--cm-muted)}
-.cmCandidateTest header span:nth-child(2){grid-column:2/4}
-.cmCandidateTest>div{padding:13px 0;border-top:1px solid #2b274419}
-.cmCandidateTest b{font-size:18px;color:var(--cm-ink)}
-.cmCandidateTest i{height:5px;background:#2b274414;overflow:hidden}.cmCandidateTest i u{display:block;height:100%;background:var(--sage);transform-origin:left;animation:cmConfidenceIn .65s ease both}
-.cmCandidateTest strong{font-size:14px;color:var(--cm-ink)}
-.cmCandidateTest em{font-style:normal;font-size:11px;font-weight:700;color:var(--sage)}
-.cmCandidateTest .is-chosen{border-top-color:var(--sage);border-bottom:2px solid var(--sage)}
-.cmCandidateTest .is-chosen b,.cmCandidateTest .is-chosen strong{color:var(--plum)}
-.cmCandidateTest .is-rejected i u{background:var(--rose)}.cmCandidateTest .is-rejected em{color:var(--rose)}
-.cmModelChoice{display:grid;grid-template-columns:auto auto auto auto auto auto auto auto;gap:10px 16px;align-items:center;margin-top:16px;padding:18px 0;border-top:1px solid #2b274419;border-bottom:4px solid var(--sage)}
-.cmModelChoice span{font-size:9px;font-weight:750;letter-spacing:.1em;text-transform:uppercase;color:var(--cm-muted)}
-.cmModelChoice code{font:600 13px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--cm-ink)}
-.cmModelChoice i{font-style:normal;color:var(--rose)}.cmModelChoice strong{font-size:14px;color:var(--cm-ink)}
-.cmModelLearning{display:grid;grid-template-columns:minmax(260px,.8fr) minmax(360px,1.2fr);gap:70px;align-items:start;margin-top:48px;padding:34px 0;border-top:1px solid #2b274429;border-bottom:1px solid #2b274429}
-.cmModelLearningCopy h3{margin:0;color:var(--cm-ink);font-size:clamp(24px,2.8vw,36px);font-weight:550;line-height:1.16;letter-spacing:-.025em}
-.cmModelLearningCopy p{margin:12px 0 18px;max-width:48ch;font-family:var(--font-serif);font-size:14px;line-height:1.6;color:var(--cm-muted)}
-.cmModelLearningCopy strong{display:block;font-size:11px;line-height:1.5;color:var(--sage)}
-.cmModelLearning ol{margin:0;padding:0;list-style:none}.cmModelLearning li{display:grid;grid-template-columns:138px minmax(100px,1fr) 62px;gap:12px;align-items:center;padding:9px 0;border-top:1px solid #2b274412}
-.cmModelLearning li span,.cmModelLearning li b{font-size:11px;color:var(--cm-muted)}
-.cmModelLearning li i{height:5px;background:#2b274410}.cmModelLearning li i u{display:block;width:0;height:100%;background:var(--sage);transition:width .55s ease calc(var(--i) * 90ms)}
-.cmModelLearning.isIn li i u{width:var(--w)}.cmModelLearning li.is-focus span,.cmModelLearning li.is-focus b{font-weight:750;color:var(--rose)}.cmModelLearning li.is-focus i u{background:var(--rose)}
 @keyframes cmConfidenceIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @media(max-width:760px){.cmModelFormula{display:block}.cmModelFormula span{display:block;margin-top:8px}.cmCandidateTest header{display:none}.cmCandidateTest>div{grid-template-columns:62px 1fr 44px}.cmCandidateTest>div em{grid-column:2}.cmModelChoice{grid-template-columns:1fr;gap:6px}.cmModelChoice i{transform:rotate(90deg);width:max-content}.cmModelLearning{grid-template-columns:1fr;gap:28px}.cmModelLearning li{grid-template-columns:116px 1fr 58px}}
 .case-commute .cdAnswerHead{display:none}
 
 /* The evidence reads like the commute itself: a route line beside a live
-   station board, rather than two presentation columns. */
-.cmEvidencePair{align-items:start;border-top:0;padding-top:0}
-.cmEvidencePair .cmVariance{position:relative;padding:26px 28px 28px!important;border:1px solid #2b274418!important;border-radius:26px;background:linear-gradient(155deg,#eef3f0 0%,#f7f3f1 100%)}
-.cmEvidencePair .cmVariance>ol{position:relative;padding-left:20px}
-.cmEvidencePair .cmVariance>ol:before{content:'';position:absolute;left:5px;top:21px;bottom:21px;width:3px;border-radius:3px;background:linear-gradient(var(--rose),var(--sage))}
-.cmEvidencePair .cmVariance>ol li{position:relative}
-.cmEvidencePair .cmVariance>ol li:before{content:'';position:absolute;left:-20px;top:50%;width:11px;height:11px;border:3px solid #f4f5f1;border-radius:50%;background:var(--sage);translate:-1px -50%;box-shadow:0 0 0 1px #2b274426}
-.cmEvidencePair .cmVariance>ol li:first-child:before{background:var(--rose)}
-.cmEvidencePair .cmUpdateMechanism{padding:26px 28px 28px!important;border:0!important;border-radius:26px;background:#17161e;box-shadow:0 24px 50px -34px #17161ecc;color:#f7f3ee}
-.cmEvidencePair .cmUpdateMechanism:before{display:none}
-.cmEvidencePair .cmUpdateMechanism h3{color:#fff}
-.cmEvidencePair .cmUpdateMechanism>header p{color:#c8c4ce}
-.cmEvidencePair .cmUpdateTable thead{border-bottom-color:#e9b358}
-.cmEvidencePair .cmUpdateTable th{color:#e9b358;font-family:"SFMono-Regular",ui-monospace,monospace;font-size:10px;letter-spacing:.06em}
-.cmEvidencePair .cmUpdateTable tbody tr,.cmEvidencePair .cmUpdateTable tbody tr:nth-child(even){background:transparent}
-.cmEvidencePair .cmUpdateTable td{border-bottom-color:#ffffff17;color:#e9e6ed;font-family:"SFMono-Regular",ui-monospace,monospace}
-.cmEvidencePair .cmUpdateTable td:first-child{color:#8fd2bb}
-.cmEvidencePair .cmUpdateTable td:last-child{color:#fff;font-weight:750}
-@media(max-width:900px){.cmEvidencePair .cmVariance,.cmEvidencePair .cmUpdateMechanism{border-radius:20px;padding:22px 20px!important}}
+   station board{align-items:start;border-top:0;padding-top:0}
 
 /* Keep the evidence page-native. The transit character comes from route
-   lines, station dots, and board typography, not filled presentation boxes. */
-.cmEvidencePair .cmVariance{padding:20px 0 0!important;border:0!important;border-radius:0;background:none}
-.cmEvidencePair .cmUpdateMechanism{padding:20px 0 0 26px!important;border:0!important;border-left:1px solid #2b274426!important;border-radius:0;background:none;box-shadow:none;color:var(--cm-text)}
-.cmEvidencePair .cmUpdateMechanism h3{color:var(--cm-ink)}
-.cmEvidencePair .cmUpdateMechanism>header p{color:var(--cm-muted)}
-.cmEvidencePair .cmUpdateTable thead{border-bottom-color:var(--cm-ink)}
-.cmEvidencePair .cmUpdateTable th{color:var(--sage)}
-.cmEvidencePair .cmUpdateTable td{border-bottom-color:#2b274419;color:var(--cm-text)}
-.cmEvidencePair .cmUpdateTable td:first-child{color:var(--sage)}
-.cmEvidencePair .cmUpdateTable td:last-child{color:var(--plum)}
-@media(max-width:900px){.cmEvidencePair .cmVariance{padding:8px 0 0!important}.cmEvidencePair .cmUpdateMechanism{padding:28px 0 0!important;border-left:0!important;border-top:1px solid #2b274426!important}}
+   lines, station dots, and board typography{padding:20px 0 0!important;border:0!important;border-radius:0;background:none}
 
 /* Where the uncertainty actually lives, grouped by what the product can do
    about it: a feed already covers the transit legs, so the only way to shrink
    the big one is to measure it. The grouping plus one shared bar scale is the
-   argument; the copy only names it. */
-.cmSpread{margin-top:48px;padding:40px 0 34px;border-top:1px solid #2b274429;border-bottom:1px solid #2b274429}
-.cmSpread>header{max-width:60ch;margin-bottom:34px}
-.cmSpread>header h3{margin:0;color:var(--cm-ink);font-size:clamp(24px,2.8vw,34px);font-weight:550;line-height:1.16;letter-spacing:-.025em}
-.cmSpread>header p{margin:12px 0 0;font-family:var(--font-serif);font-size:15px;line-height:1.6;color:var(--cm-muted)}
+   argument;
 
-.cmSpreadGroups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 48px;align-items:stretch}
-.cmSpreadGroup{display:grid;grid-template-rows:auto auto 1fr;gap:14px;align-content:start}
-.cmSpreadGroup+.cmSpreadGroup{padding-left:48px;margin-left:-48px;border-left:1px solid #2b274420}
-.cmSpreadCap{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:0;padding-bottom:10px;border-bottom:1px solid #2b274420;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cm-muted)}
-.cmSpreadCap em{flex:0 0 auto;font-style:normal;letter-spacing:.1em;color:color-mix(in srgb,var(--cm-muted) 70%,transparent)}
-.cmSpreadGroup.is-mine .cmSpreadCap{color:var(--rose);border-bottom-color:color-mix(in srgb,var(--rose) 30%,transparent)}
+/* ── the missing pre-door interval ──────────────────────────────
+   Transit owns the route; Commute adds the personal time before it. The
+   section is one continuous timeline and one equation, not a set of cards. */
+.cmLoop{margin-top:48px;padding:46px 0 42px;border-top:1px solid #2b274429;border-bottom:1px solid #2b274429}
+.cmLoop>header{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(310px,.72fr);column-gap:clamp(54px,8vw,124px);row-gap:15px;align-items:start;margin-bottom:38px}
+.cmLoop>header h3{max-width:var(--cm-head-measure);margin:0;color:var(--cm-ink)}
+.cmLoop>header>p:not(.cmLoopEyebrow){max-width:var(--cm-lead-measure);margin:var(--cm-lead-gap) 0 0;color:var(--cm-muted)}
 
-.cmSpread ol{margin:0;padding:0;list-style:none}
-.cmSpread li{display:grid;grid-template-columns:minmax(0,1fr) 168px 62px;gap:16px;align-items:center;padding:13px 0;border-top:1px solid #2b274412}
-.cmSpread li:first-child{border-top:0}
-.cmSpread li span{display:grid;gap:2px;min-width:0}
-.cmSpread li span b{font-size:13.5px;font-weight:600;line-height:1.25;color:var(--cm-ink)}
-.cmSpread li cite{font-style:normal;font-size:10px;line-height:1.35;color:var(--cm-muted)}
-.cmSpread li i{height:7px;border-radius:4px;background:#2b274410}
-.cmSpread li i u{display:block;width:0;height:100%;border-radius:4px;background:var(--sage);transition:width .6s ease calc(var(--i) * 90ms)}
-.cmSpread.isIn li i u{width:var(--w)}
-.cmSpread li strong{display:flex;align-items:baseline;justify-content:flex-end;gap:3px;font-size:19px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em;color:var(--cm-ink)}
-.cmSpread li strong small{font-size:10px;font-weight:500;color:var(--cm-muted)}
-.cmSpread li.is-focus span b,.cmSpread li.is-focus strong{color:var(--rose)}
-.cmSpread li.is-focus strong{font-size:26px}
-.cmSpread li.is-focus i u{background:var(--rose)}
+/* the eight mornings as values. Tabular numerals so the columns compare
+   straight down; the Result column carries the argument, so it is the one
+   that gets colour, and a miss is named rather than smoothed away. */
+.cmRoutineMeasure{--rail-pad:22px;--rail-y:88px;--rail-gutter:28px;--rail-watch:138px;--rail-gap-gutter:clamp(32px,4vw,56px);position:relative;display:grid;grid-template-columns:minmax(220px,.8fr) minmax(330px,1.25fr) minmax(220px,.8fr);gap:0;margin:0;padding:0;border-top:1px solid #2b27441f;border-bottom:1px solid #2b27441f;list-style:none}
+/* The rail is drawn in segments, one per column, so it always meets the figure
+   it connects and never runs behind a label. Each segment sits on the same
+   axis: the vertical centre of the 176px figure above the caption. */
+.cmRoutineMeasure li:before{content:"";position:absolute;z-index:0;top:calc(var(--rail-pad) + var(--rail-y) - 1px);height:2px;background:var(--plum-soft)}
+.cmRoutineMeasure .is-watch:before{left:calc(var(--rail-watch) / 2);right:0}
+.cmRoutineMeasure .is-gap:before{left:0;width:var(--rail-gap-gutter)}
+.cmRoutineMeasure .is-gap:after{content:"";position:absolute;z-index:0;top:calc(var(--rail-pad) + var(--rail-y) - 1px);right:0;width:var(--rail-gap-gutter);height:2px;background:var(--plum-soft)}
+.cmRoutineMeasure .is-door:before{left:0;width:var(--rail-gutter)}
+.cmRoutineMeasure li{position:relative;z-index:1;display:flex;min-width:0;min-height:270px;padding:var(--rail-pad) var(--rail-gutter) 24px 0;flex-direction:column;align-items:flex-start}
+.cmRoutineMeasure li+li{padding-left:var(--rail-gutter);border-left:1px solid #2b27441a}
+.cmRoutineMeasure li:last-child{padding-right:0}
+.cmRoutineMeasure .is-gap{align-items:center;padding-left:var(--rail-gap-gutter);padding-right:var(--rail-gap-gutter);text-align:center}
+.cmRoutineMeasure .is-gap .cmRoutineKicker{color:var(--rose);text-align:center}
+.cmRoutineMeasure .is-door{align-items:flex-start;text-align:left}
+.cmRoutineMeasure .is-door .cmRoutineKicker{text-align:left}
+.cmRoutineCopy{display:flex;min-width:0;flex-direction:column;gap:5px;margin-top:9px}
+.cmRoutineCopy strong{font-size:16px;line-height:1.15;color:var(--cm-ink)}
+.cmRoutineCopy small{max-width:28ch;font-size:12px;line-height:1.45;color:var(--cm-muted)}
+.cmRoutineCopy strong,.cmRoutineCopy small{overflow-wrap:anywhere}
+.cmRoutineMeasure .is-gap .cmRoutineCopy{align-items:center}.cmRoutineMeasure .is-door .cmRoutineCopy{align-items:flex-start}
 
-.cmSpreadNote{align-self:end;margin:0;font-size:12.5px;line-height:1.55;color:var(--cm-muted)}
-.cmSpreadGroup.is-mine .cmSpreadNote{color:var(--cm-ink)}
-.cmSpreadLoop{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:32px 0 0;padding-top:22px;border-top:1px solid #2b274420}
-.cmSpreadLoop b{font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--sage)}
-.cmSpreadLoop i{font-style:normal;font-size:12px;color:var(--cm-muted)}
-@media(max-width:760px){
- .cmSpreadGroups{grid-template-columns:1fr;gap:28px}
- .cmSpreadGroup+.cmSpreadGroup{margin-left:0;padding-left:0;border-left:0;padding-top:24px;border-top:1px solid #2b274420}
- .cmSpread li{grid-template-columns:minmax(0,1fr) 96px 56px;gap:10px}
+/* A believable watch alarm surface: restrained device proportions and alarm
+   hierarchy, without suggesting a separate branded watch app was shipped. */
+.cmWatch{position:relative;width:138px;height:176px;display:grid;place-items:center}
+.cmWatchBand{position:absolute;inset:0 auto;width:66px;border-radius:18px;background:linear-gradient(90deg,#34333a,#55535b 48%,#302f35);box-shadow:inset 7px 0 12px #fff1,inset -7px 0 12px #0003}
+.cmWatchCase{position:relative;z-index:1;width:126px;height:142px;padding:7px;border:1px solid #111218;border-radius:34px;background:linear-gradient(145deg,#77767d,#29292e 32%,#17181c 72%,#54535a);box-shadow:0 11px 18px #1a18221f,inset 1px 1px 1px #ffffff63}
+.cmWatchCase:after{content:"";position:absolute;right:-7px;top:73px;width:5px;height:26px;border-radius:0 4px 4px 0;background:#34343a;box-shadow:inset 0 0 0 1px #0f1013}
+.cmWatchCrown{position:absolute;right:-11px;top:36px;width:8px;height:24px;border:1px solid #17181c;border-radius:0 5px 5px 0;background:repeating-linear-gradient(0deg,#4b4b51 0 2px,#27282d 2px 4px)}
+.cmWatchScreen{height:100%;border-radius:27px;background:radial-gradient(circle at 50% 10%,#282a30,#07080b 72%);box-shadow:inset 0 0 0 1px #ffffff12;display:grid;grid-template-columns:25px 1fr;grid-template-rows:23px 43px 31px;align-content:center;column-gap:6px;padding:10px 11px;color:#f7f7f8;font-variant-numeric:tabular-nums}
+.cmWatchAlarmIcon{position:relative;align-self:center;width:22px;height:22px;border:2px solid #ff9f0a;border-radius:50%}
+.cmWatchAlarmIcon:before,.cmWatchAlarmIcon:after{content:"";position:absolute;top:-5px;width:7px;height:4px;border:2px solid #ff9f0a;border-bottom:0;border-radius:5px 5px 0 0}.cmWatchAlarmIcon:before{left:-4px;transform:rotate(-36deg)}.cmWatchAlarmIcon:after{right:-4px;transform:rotate(36deg)}
+.cmWatchAlarmIcon i{position:absolute;left:9px;top:4px;width:2px;height:8px;background:#ff9f0a;transform-origin:50% 7px;transform:rotate(-35deg)}
+.cmWatchScreen>small{align-self:center;font-size:8px;font-weight:650;letter-spacing:.12em;color:#ff9f0a}
+.cmWatchScreen>b{grid-column:1/-1;align-self:center;font-size:30px;font-weight:500;line-height:1;letter-spacing:-.05em;text-align:center}
+.cmWatchScreen>em{grid-column:1/-1;align-self:end;padding:6px 0;border-radius:12px;background:#3b3d43;font-size:9px;font-style:normal;font-weight:600;text-align:center;color:#f5f5f6}
+.cmRoutineInterval{position:relative;width:100%;height:176px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+.cmRoutineInterval i{position:absolute;left:0;right:0;top:calc(var(--rail-y) - 1px);height:2px;background:linear-gradient(90deg,var(--plum-soft) 0 32%,transparent 32% 68%,var(--plum-soft) 68%)}
+.cmRoutineInterval i:before,.cmRoutineInterval i:after{content:"";position:absolute;top:-8px;width:2px;height:18px;background:var(--plum-soft)}.cmRoutineInterval i:before{left:0}.cmRoutineInterval i:after{right:0}
+.cmRoutineInterval b{position:relative;padding:0 16px;font-size:clamp(34px,3.4vw,50px);font-weight:560;line-height:1;letter-spacing:-.055em;color:var(--plum)}
+.cmRoutineInterval small{position:relative;margin-top:7px;padding:0 8px;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cm-muted)}
+.cmDepartureMoment{width:min(100%,228px);height:176px;display:flex;align-items:center;justify-content:flex-start;gap:14px;font-variant-numeric:tabular-nums}
+.cmDepartureMoment>span{display:flex;min-width:0;flex-direction:column;gap:5px;align-items:flex-start;order:2}
+.cmDepartureMoment .cmDoor{order:1}
+.cmDepartureMoment b{font-size:32px;font-weight:560;line-height:1;letter-spacing:-.045em;color:var(--cm-ink)}
+.cmDepartureMoment small{font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--sage)}
+.cmDoor{position:relative;width:56px;height:112px;border:2px solid var(--sage);border-bottom-width:4px;border-radius:4px 4px 0 0;background:linear-gradient(90deg,#fff8,#e9e6de88);box-shadow:8px 0 0 #2f6c5c14}
+.cmDoor:before{content:"";position:absolute;left:9px;right:9px;top:13px;height:55px;border:1px solid #2f6c5c30}
+.cmDoor u{position:absolute;right:7px;top:74px;width:5px;height:5px;border-radius:50%;background:var(--rose);box-shadow:0 0 0 3px #ffffffa6}
+
+@media(prefers-reduced-motion:reduce){.cmLoopTable tbody tr{opacity:1;transform:none;animation:none}}
+@media(max-width:1020px){.cmLoopCols{grid-template-columns:1fr;gap:30px}}
+@media(max-width:620px){
 }
 
-/* ── the morning routine, drawn ───────────────────────────────────
-   Two sensor timestamps in the case's line-art idiom and, between them,
-   a dashed band the phone cannot see into. The picture carries the
-   argument the numbers above make: measure the block, don't model it. */
-.cmRoutine{margin:34px 0 0;padding-top:26px;border-top:1px solid #2b274420}
-.cmRoutine svg{display:block;width:100%;max-width:940px;margin:0 auto;overflow:visible;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.cmRoutine text{fill:var(--cm-muted);stroke:none;text-anchor:middle;font-family:inherit}
+/* the shrink, shown: three numbers that get smaller as the model gets better */
+/* the section's payoff, restyled in the case's own idiom now that it sits
+   outside .mlab and its scoped variables */
+.cmLoopOutcome{display:grid;grid-template-columns:minmax(125px,.38fr) minmax(440px,1.42fr) minmax(260px,.82fr);gap:clamp(22px,3vw,46px);align-items:center;margin:26px 0 0;padding:24px 0 2px;border-top:1px solid #2b274429}
+.cmLoopOutcome>p{align-self:start;margin:8px 0 0;color:var(--rose);font-size:10px;font-weight:750;letter-spacing:.13em;text-transform:uppercase}
+.cmLoopEquation{display:flex;align-items:center;gap:clamp(12px,1.5vw,22px);font-variant-numeric:tabular-nums}
+.cmLoopEquation span{display:flex;flex-direction:column;gap:4px;min-width:max-content}
+.cmLoopEquation b{font-size:clamp(25px,2.5vw,36px);font-weight:580;line-height:1;letter-spacing:-.04em;color:var(--cm-ink)}
+.cmLoopEquation small{font-size:10px;font-weight:650;letter-spacing:.08em;text-transform:uppercase;color:var(--cm-muted)}
+.cmLoopEquation i{font-style:normal;font-size:22px;color:color-mix(in srgb,var(--cm-ink) 32%,transparent)}
+.cmLoopEquation .is-answer b,.cmLoopEquation .is-answer small{color:var(--rose)}
+.cmLoopOutcome .cmLoopOutcomeCopy{max-width:34ch;font-family:var(--font-serif);font-size:14px;line-height:1.55;color:var(--cm-muted)}
+.cmLoop .cmLoopClose{max-width:72ch}
 
-.cmRtRail{stroke:var(--rose);stroke-width:2}
-.cmRtBand{fill:color-mix(in srgb,var(--rose) 5%,transparent);stroke:color-mix(in srgb,var(--rose) 42%,transparent);stroke-width:1.6;stroke-dasharray:7 6}
-
-/* Faint on purpose: these are the minutes no feed can reach. */
-.cmRtIn{stroke:color-mix(in srgb,var(--cm-ink) 34%,transparent);stroke-width:1.8;opacity:0;transition:opacity .5s ease}
-.cmRoutine.isIn .cmRtIn{opacity:1}
-.cmRtIn:nth-of-type(2){transition-delay:.08s}
-.cmRtIn:nth-of-type(3){transition-delay:.16s}
-.cmRtIn:nth-of-type(4){transition-delay:.24s}
-.cmRtCap{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;fill:color-mix(in srgb,var(--rose) 82%,transparent)}
-
-.cmRtEnd{stroke:var(--rose);stroke-width:2}
-.cmRtEnd circle{fill:var(--case-bg,#faf8f4)}
-.cmRtFence{stroke-width:1.4;stroke-dasharray:4 4;opacity:.62}
-.cmRtTime{font-size:17px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em;fill:var(--cm-ink)}
-.cmRtSrc{font-size:10px;letter-spacing:.06em;text-transform:uppercase}
-
-.cmRtBrace{stroke:color-mix(in srgb,var(--cm-ink) 24%,transparent);stroke-width:1.4}
-.cmRtSpan{font-size:12.5px;fill:var(--cm-ink)}
-
-@media(max-width:700px){
- .cmRtSrc{font-size:12px;letter-spacing:.03em}
- .cmRtCap{font-size:12px}
- .cmRtSpan{font-size:14px}
+@media(max-width:900px){
+ .cmLoop>header{grid-template-columns:1fr;gap:16px}.cmLoop>header h3{max-width:var(--cm-head-measure)}.cmRoutineMeasure{grid-template-columns:1fr}.cmRoutineMeasure li:before,.cmRoutineMeasure .is-gap:after{content:none}.cmRoutineMeasure li,.cmRoutineMeasure .is-gap,.cmRoutineMeasure .is-door{min-height:0;padding:20px 0;align-items:flex-start;text-align:left}.cmRoutineMeasure li+li{padding-left:0;border-left:0;border-top:1px solid #2b27441f}.cmRoutineMeasure .cmRoutineKicker,.cmRoutineMeasure .is-gap .cmRoutineKicker,.cmRoutineMeasure .is-door .cmRoutineKicker{text-align:left}.cmRoutineMeasure .is-gap .cmRoutineCopy,.cmRoutineMeasure .is-door .cmRoutineCopy{align-items:flex-start}.cmRoutineInterval{align-items:flex-start}.cmRoutineInterval b,.cmRoutineInterval small{margin-left:20px}.cmDepartureMoment{justify-content:flex-start}.cmDepartureMoment>span{align-items:flex-start}.cmLoopOutcome{grid-template-columns:1fr;gap:14px}.cmLoopOutcome>p{margin-top:0}.cmWeekLimit{grid-template-columns:1fr;gap:7px}
 }
-@media(prefers-reduced-motion:reduce){.cmRtIn{transition:none}}
+@media(max-width:560px){.cmLoopEquation{gap:9px}.cmLoopEquation b{font-size:23px}.cmLoopEquation small{font-size:8px}.cmLoopOutcome .cmLoopOutcomeCopy{font-size:13px}}
+
+/* The four minutes inside the gap bar. Faded and desaturated on purpose: they
+   happen, but nothing on the phone observes them, and that fade is the whole
+   reason the routine is measured end-to-end instead of modelled step by step. */
+
+/* Final editorial pass: one desktop rhythm, with each heading owning the copy
+   immediately beneath it. svh-based spacing keeps the page composed on both a
+   laptop-height viewport and a taller desktop without turning sections into
+   forced full-screen slides. */
+.cmEditorial>section:last-child{padding-bottom:clamp(92px,14svh,140px)}
+.cmEditorial>.cmProblem{padding-top:clamp(52px,7svh,76px)}
+.cmEditorial>.cmAlgorithm,
+.cmEditorial>.cmDecision,
+.cmEditorial>.cmLearning,
+.cmEditorial>.cmClose{padding-top:clamp(88px,12svh,132px)}
+.cmSectionIntro{display:block;margin-bottom:var(--cm-block-gap);padding-bottom:0;border-bottom:0}
+.cmSectionIntro>h2,
+.cmDecision>.cmSectionIntro>h2{max-width:var(--cm-head-measure)}
+.cmSectionIntro>p,
+.cmDecision>.cmSectionIntro>p{max-width:var(--cm-lead-measure);margin:var(--cm-lead-gap) 0 0;color:var(--cm-muted)}
+.cmLearning>header{display:block;max-width:940px;padding-bottom:0}
+.cmLearning>header h2{max-width:var(--cm-head-measure)}
+.cmLearning>header p{max-width:var(--cm-lead-measure);margin-top:var(--cm-lead-gap)}
+
+.cmLoop{margin-top:clamp(38px,6svh,56px);padding:clamp(38px,6svh,52px) 0}
+.cmLoop>header{display:block;max-width:900px;margin-bottom:var(--cm-block-gap)}
+.cmLoop>header h3{max-width:var(--cm-head-measure)}
+.cmLoop>header>p{max-width:var(--cm-lead-measure)}
+.cmRoutineMeasure{--rail-pad:24px}
+.cmRoutineMeasure li{min-height:244px}
+.cmLoopOutcome{grid-template-columns:minmax(440px,1.35fr) minmax(260px,.75fr);gap:clamp(34px,5vw,78px);padding-top:26px}
+.cmLoopOutcome .cmLoopOutcomeCopy{max-width:38ch}
+
+.cmReplay>header{display:block;margin-bottom:var(--cm-block-gap)}
+.cmReplay>header h3{max-width:var(--cm-head-measure);margin:0}
+.cmReplayRule>header{display:block}
+
+/* The route policy reads in order: the live choice, the trigger, then the
+   qualified fallback. Vehicle and caption share one wrapper, so they never
+   animate as disconnected decoration and explanation. */
+.cmReplayRoute,.cmReplayHandoff,.cmReplay>p{opacity:0;transform:translateY(10px)}
+.cmReplay.isSequenced .cmReplayBus{animation:cmPairIn .48s cubic-bezier(.2,.75,.25,1) .08s both}
+.cmReplay.isSequenced .cmReplayHandoff{animation:cmPairIn .42s ease .48s both}
+.cmReplay.isSequenced .cmReplayBart{animation:cmPairIn .48s cubic-bezier(.2,.75,.25,1) .82s both}
+.cmReplay.isSequenced>p{animation:cmPairIn .42s ease 1.18s both}
+@keyframes cmPairIn{to{opacity:1;transform:none}}
+
+@media(max-width:900px){
+ .cmEditorial>.cmProblem,.cmEditorial>.cmAlgorithm,.cmEditorial>.cmDecision,.cmEditorial>.cmLearning,.cmEditorial>.cmClose{padding-top:84px}
+ 
+ .cmLoopOutcome{grid-template-columns:1fr;gap:16px}
+}
+
+@media(prefers-reduced-motion:reduce){
+ .cmReplayRoute,.cmReplayHandoff,.cmReplay>p{opacity:1;transform:none;animation:none!important}
+}

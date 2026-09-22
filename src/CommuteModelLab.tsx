@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import RollingVehicle from './RollingVehicle';
+import {Landmark} from './CommuteArt';
 import './commute-model-lab.css';
 
 /* The model section used to *describe* the simulation: a formula, a sentence
@@ -29,7 +30,7 @@ const tri = (lo: number, mode: number, hi: number, u: number) => {
     : hi - Math.sqrt((1 - u) * (hi - lo) * (hi - mode));
 };
 
-type Leg = {k: string; name: string; short: string; src: string; lo: number; hi: number; draw: (u: number) => number};
+type Leg = {k: string; name: string; short: string; art: string; src: string; feed: string; lo: number; hi: number; draw: (u: number) => number};
 type Route = {
   k: 'nl' | 'bart';
   name: string;
@@ -50,10 +51,10 @@ const ROUTES: Route[] = [
     name: 'NL bus',
     role: 'Faster when it runs',
     legs: [
-      {k: 'walk',  name: 'Walk to the stop', short: 'walk',  src: 'HealthKit pace · Google Routes', lo: 5,  hi: 9,  draw: u => tri(5, 7, 9, u)},
-      {k: 'wait',  name: 'Wait at the stop', short: 'wait',  src: '511 GTFS-Realtime',              lo: 0,  hi: 7,  draw: u => 7 * Math.pow(u, 1.7)},
-      {k: 'ride',  name: 'Bridge ride',      short: 'ride',  src: '511 live NL · 511 traffic',      lo: 18, hi: 30, draw: u => tri(18, 21, 30, u)},
-      {k: 'final', name: 'Final walk',       short: 'final', src: 'HealthKit pace · Google Routes', lo: 4,  hi: 7,  draw: u => tri(4, 5, 7, u)}
+      {k: 'walk',  name: 'Walk to the stop', art: 'sidewalk', short: 'walk',  src: 'HealthKit pace · Google Routes', feed: 'HealthKit · Routes', lo: 5,  hi: 9,  draw: u => tri(5, 7, 9, u)},
+      {k: 'wait',  name: 'Wait at the stop', art: 'stop', short: 'wait',  src: '511 GTFS-Realtime',              feed: '511 realtime', lo: 0,  hi: 7,  draw: u => 7 * Math.pow(u, 1.7)},
+      {k: 'ride',  name: 'Bridge ride', art: 'bridge',      short: 'ride',  src: '511 live NL · 511 traffic',      feed: '511 live NL', lo: 18, hi: 30, draw: u => tri(18, 21, 30, u)},
+      {k: 'final', name: 'Final walk',       art: 'street', short: 'final', src: 'HealthKit pace · Google Routes', feed: 'HealthKit · Routes', lo: 4,  hi: 7,  draw: u => tri(4, 5, 7, u)}
     ],
     /* One bus in ten is the bad one, and the next is half an hour behind. */
     disrupt: {p: 0.10, mean: 26, label: 'missed it, or the bridge backed up', src: '511 traffic · WeatherKit'},
@@ -64,10 +65,10 @@ const ROUTES: Route[] = [
     name: 'BART',
     role: 'The fallback the alarm has to survive',
     legs: [
-      {k: 'walk',  name: 'Walk to the station', short: 'walk',  src: 'HealthKit pace · Google Routes', lo: 16, hi: 23, draw: u => tri(16, 19, 23, u)},
-      {k: 'wait',  name: 'Platform wait',       short: 'wait',  src: '511 GTFS-Realtime',              lo: 0,  hi: 6,  draw: u => 6 * Math.pow(u, 1.8)},
-      {k: 'ride',  name: 'The ride',            short: 'ride',  src: '511 live BART',                  lo: 11, hi: 13, draw: u => 11 + 1.6 * u},
-      {k: 'final', name: 'Final walk',          short: 'final', src: 'HealthKit pace · Google Routes', lo: 6,  hi: 9,  draw: u => tri(6, 7, 9, u)}
+      {k: 'walk',  name: 'Walk to the station', art: 'sidewalk', short: 'walk',  src: 'HealthKit pace · Google Routes', feed: 'HealthKit · Routes', lo: 16, hi: 23, draw: u => tri(16, 19, 23, u)},
+      {k: 'wait',  name: 'Platform wait', art: 'station',       short: 'wait',  src: '511 GTFS-Realtime',              feed: '511 realtime', lo: 0,  hi: 6,  draw: u => 6 * Math.pow(u, 1.8)},
+      {k: 'ride',  name: 'The ride', art: 'tunnel',            short: 'ride',  src: '511 live BART',                  feed: '511 live BART', lo: 11, hi: 13, draw: u => 11 + 1.6 * u},
+      {k: 'final', name: 'Final walk',          art: 'street', short: 'final', src: 'HealthKit pace · Google Routes', feed: 'HealthKit · Routes', lo: 6,  hi: 9,  draw: u => tri(6, 7, 9, u)}
     ],
     /* Smaller failures, more often: one train missed costs five or six minutes. */
     disrupt: {p: 0.15, mean: 13, label: 'delay on the line', src: '511 live BART · WeatherKit'},
@@ -75,19 +76,19 @@ const ROUTES: Route[] = [
   }
 ];
 
-const ROUTINE = 48;       // learned getting-ready time, minutes
+export const ROUTINE = 48;       // learned getting-ready time, minutes
 const DEADLINE = 9 * 60;  // 9:00, in minutes past midnight
 const TARGET = 0.9;       // a departure has to clear this to be allowed
 const N = 1000;
 
 /* Three candidate departures. One seed each, shared by both routes. */
-const CANDIDATES = [
+export const CANDIDATES = [
   {leave: 8 * 60 + 6,  seed: 250},
   {leave: 8 * 60 + 12, seed: 421},
   {leave: 8 * 60 + 18, seed: 916}
 ];
 
-const clock = (mins: number) => {
+export const clock = (mins: number) => {
   const m = Math.round(mins);
   return `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`;
 };
@@ -120,30 +121,6 @@ function runSim(route: Route, leave: number, seed: number): RunResult {
 const BIN_LO = 8 * 60 + 36, BIN_HI = 9 * 60 + 12, BIN_N = BIN_HI - BIN_LO;
 const binOf = (arrival: number) => Math.min(BIN_N - 1, Math.max(0, Math.floor(arrival) - BIN_LO));
 
-/* Landmark glyphs: line art at a common 48x40 box so every marker on the strip
-   sits on the same baseline. They are the labels — the words under them are
-   only there for a screen reader and a first read. */
-const GLYPH: Record<string, React.ReactNode> = {
-  /* An Oakland two-story with the stoop it actually has. */
-  home: <><path d="M4 21 24 6l20 15"/><path d="M13 17V9h4v5"/><path d="M9 20v15h30V20"/><path d="M20 35v-8h8v8"/><path d="M13 23h5v5h-5zM30 23h5v5h-5z"/><path d="M3 35h42"/></>,
-  /* AC Transit stop: shelter, bench, and the route blade on its pole. */
-  stop: <><path d="M34 35V9"/><path d="M34 6h12v8H34z"/><path d="M37 10h6"/><path d="M4 15h24v3H4z"/><path d="M6 18v17M26 18v17"/><path d="M6 27h20"/><path d="M3 35h42"/></>,
-  /* A BART entrance: stairs down from the sidewalk, handrail, and the pylon. */
-  station: <><path d="M3 35h10v-4h5v-4h5v-4h5v-4h9"/><path d="M37 19h8"/><path d="M4 31 25 19"/><path d="M9 32v-4M15 28v-4M21 24v-4"/><path d="M40 19V8"/><path d="M34 3h12v7H34z"/><path d="M37 6.5h6"/></>,
-  /* The west span: two braced towers, the main cable sagging between them. */
-  bridge: <><path d="M2 27h44"/><path d="M11 27V7M17 27V7M11 7h6M11 13h6M11 20h6"/><path d="M31 27V7M37 27V7M31 7h6M31 13h6M31 20h6"/><path d="M2 21C5 21 8 7 11 7"/><path d="M17 7c3 0 4 11 7 11s4-11 7-11"/><path d="M37 7c3 0 6 14 9 14"/><path d="M20 11v16M24 18v9M28 11v16"/></>,
-  /* The Transbay Tube: the bay above, the segmented tube and a train below. */
-  tunnel: <><path d="M2 13h44"/><path d="M5 8c2-2.5 4 2.5 6 0M19 8c2-2.5 4 2.5 6 0M33 8c2-2.5 4 2.5 6 0"/><path d="M2 23h44M2 34h44"/><path d="M15 23v11M27 23v11M39 23v11"/><path d="M5 26h9a2 2 0 0 1 2 2v3H5z"/><path d="M2 37h44"/></>,
-  /* Salesforce Tower, tapering to its rounded crown, with downtown beside it. */
-  tower: <><path d="M17 35 19 13a5 5 0 0 1 10 0l2 22"/><path d="M18.4 28h11.2M18.8 22h10.4M19.2 16h9.6"/><path d="M4 35V23h9v12M35 35V26h9v9"/><path d="M2 35h44"/></>,
-  /* Crossing the last three blocks on foot. */
-  walk: <><circle cx="22" cy="6" r="3.2"/><path d="M22 10v9"/><path d="M22 19l-5 10M22 19l5 10"/><path d="M16 14l6 2 6-4"/><path d="M3 35h7M15 35h7M27 35h7M39 35h6"/></>
-};
-
-function Glyph({name, label}: {name: string; label: string}){
-  return <svg className="mlabGlyph" viewBox="0 0 48 40" role="img" aria-label={label}>{GLYPH[name]}</svg>;
-}
-
 /* The arrival equation, drawn to scale: every leg is as wide as the minutes it
    drew, so the picture and the arithmetic are the same object. */
 function JourneyStrip({route, leave, one, revealed}: {
@@ -154,19 +131,20 @@ function JourneyStrip({route, leave, one, revealed}: {
   const total = parts.reduce((a, b) => a + b, 0) + delay;
   const arrival = leave + total;
   const landed = !!one && revealed > route.legs.length;
-  const marks = route.k === 'nl'
-    ? [{g: 'home', l: 'Home'}, {g: 'stop', l: 'NL stop'}, {g: 'bridge', l: 'Bay Bridge'}, {g: 'walk', l: 'Downtown'}, {g: 'tower', l: 'The office'}]
-    : [{g: 'home', l: 'Home'}, {g: 'station', l: 'BART station'}, {g: 'tunnel', l: 'Transbay Tube'}, {g: 'walk', l: 'Downtown'}, {g: 'tower', l: 'The office'}];
-
-  return <div className={`mlabJourney${landed ? ' isLanded' : ''}${one && one.late ? ' is-late' : ''}`}
+  return <div className={`mlabJourney${one ? ' isSequencing' : ''}${landed ? ' isLanded' : ''}${one && one.late ? ' is-late' : ''}`}
     role="img"
     aria-label={one
       ? `Leaving at ${clock(leave)} by ${route.name}: ${route.legs.map((l, i) => `${l.name} ${one.parts[i].toFixed(1)} minutes`).join(', ')}${one.delay ? `, plus ${one.delay.toFixed(0)} minutes lost to ${route.disrupt.label}` : ''}, arriving ${clock(arrival)}`
       : 'The arrival equation, drawn to scale'}>
 
+    <p className={`mlabRisk${landed ? ' isVisible' : ''}`}>
+      <b>{Math.round(route.disrupt.p * 10)} morning{Math.round(route.disrupt.p * 10) === 1 ? '' : 's'} in 10</b>
+      {route.disrupt.label} · watched with {route.disrupt.src}
+    </p>
+
     <div className="mlabTrip">
       <div className="mlabStop is-start">
-        <Glyph name={marks[0].g} label={marks[0].l}/>
+        <Landmark name="home" label="Home"/>
         <b>{clock(leave)}</b>
         <em>leave home</em>
       </div>
@@ -174,39 +152,35 @@ function JourneyStrip({route, leave, one, revealed}: {
       {route.legs.map((l, i) => {
         const lit = revealed > i;
         const at = ((parts[i] - l.lo) / (l.hi - l.lo)) * 100;
-        return <React.Fragment key={l.k}>
-          <div className={`mlabLeg is-${l.k}${lit ? ' isLit' : ''}`} style={{'--m': parts[i]} as React.CSSProperties}>
-            <span className="mlabLegVal">{lit ? parts[i].toFixed(1) : '·'}<u>{lit ? 'min' : ''}</u></span>
-            <span className="mlabLegBar"><i style={{'--at': `${Math.max(0, Math.min(100, at))}%`} as React.CSSProperties}/></span>
-            <span className="mlabLegName">{l.name}</span>
-            <span className="mlabLegSrc">{l.lo}–{l.hi} min · {l.src}</span>
-          </div>
-          {i < route.legs.length - 1 && <div className="mlabStop">
-            <Glyph name={marks[i + 1].g} label={marks[i + 1].l}/>
-          </div>}
-        </React.Fragment>;
+        return <div key={l.k} className={`mlabLeg is-${l.k}${lit ? ' isLit' : ''}`} style={{'--m': parts[i]} as React.CSSProperties}>
+          <span className="mlabLegVal">{lit ? parts[i].toFixed(1) : '·'}<u>{lit ? 'min' : ''}</u></span>
+          <Landmark name={l.art} label={l.name}/>
+          <span className="mlabLegBar"><i style={{'--at': `${Math.max(0, Math.min(100, at))}%`} as React.CSSProperties}/></span>
+          <span className="mlabLegName">{l.name}</span>
+          <span className="mlabLegSrc"><b>{l.lo}–{l.hi} min</b>{l.feed}</span>
+        </div>;
       })}
 
       {delay > 0 && <div className="mlabLeg is-delay isLit" style={{'--m': delay} as React.CSSProperties}>
         <span className="mlabLegVal">+{delay.toFixed(0)}<u>min</u></span>
         <span className="mlabLegBar"><i/></span>
         <span className="mlabLegName">{route.disrupt.label}</span>
-        <span className="mlabLegSrc">{Math.round(route.disrupt.p * 10)} mornings in 10 · {route.disrupt.src}</span>
       </div>}
 
       <div className={`mlabStop is-end${landed ? ' isLanded' : ''}`}>
-        <Glyph name="tower" label="The office"/>
+        <Landmark name="tower" label="The office"/>
         <b>{landed ? clock(arrival) : '—'}</b>
         <em>{landed ? (one!.late ? 'missed 9:00' : 'made it') : 'deadline 9:00'}</em>
       </div>
     </div>
+
   </div>;
 }
 
 /* One route's run: its vehicle crossing as the mornings pile up, the arrivals
    stacking into a distribution, and the verdict the constraint produces. */
-function RouteRun({route, leave, seed, drawn, binding}: {
-  route: Route; leave: number; seed: number; drawn: number; binding: boolean;
+function RouteRun({route, leave, seed, drawn, binding, revealIndex}: {
+  route: Route; leave: number; seed: number; drawn: number; binding: boolean; revealIndex: number;
 }){
   const result = useMemo(() => runSim(route, leave, seed), [route, leave, seed]);
   const full = useMemo(() => {
@@ -227,7 +201,8 @@ function RouteRun({route, leave, seed, drawn, binding}: {
   const pct = Math.round((done ? result.onTime : live) * 100);
   const safe = result.onTime >= TARGET;
 
-  return <div className={`mlabRoute is-${route.k}${binding ? ' isBinding' : ''}`}>
+  return <div className={`mlabRoute is-${route.k}${binding ? ' isBinding' : ''}`}
+    style={{'--route-index': revealIndex} as React.CSSProperties}>
     <div className="mlabRouteHead">
       <div className="mlabRouteId">
         <span className="mlabRouteArt" style={{'--p': `${(drawn / N) * 100}%`} as React.CSSProperties}>
@@ -256,13 +231,12 @@ function RouteRun({route, leave, seed, drawn, binding}: {
     <dl className="mlabFacts">
       <div><dt>typical arrival</dt><dd>{clock(result.p50)}</dd></div>
       <div><dt>9 in 10 by</dt><dd>{clock(result.p90)}</dd></div>
-      <div><dt>worst of 1,000</dt><dd>{clock(result.worst)}</dd></div>
     </dl>
 
     <p className={`mlabVerdict${safe ? ' is-safe' : ' is-bad'}`}>
       {binding
         ? safe ? 'Clears 90%, so this departure is allowed.' : 'Below 90%, so this departure is thrown out.'
-        : safe ? 'Also clears 90%, and lands earlier — so this is the one to ride.' : 'Below 90% on its own.'}
+        : safe ? 'Also clears 90%, and lands earlier, so this is the one to ride.' : 'Below 90% on its own.'}
     </p>
   </div>;
 }
@@ -277,19 +251,11 @@ export default function CommuteModelLab(){
   const [one, setOne] = useState<Sample | null>(null);
   const [revealed, setRevealed] = useState(0);
   const [drawn, setDrawn] = useState(0);
-  const [log, setLog] = useState<string[]>([]);
+  const [runKey, setRunKey] = useState(0);
 
   const cand = CANDIDATES[pick];
   const route = ROUTES[lane];
   const done = drawn >= N;
-
-  /* Both routes, every morning. The constraint binds on the fallback. */
-  const runs = useMemo(() => ROUTES.map(r => ({route: r, ...runSim(r, cand.leave, cand.seed)})), [cand]);
-  const fallback = runs[1];                                   // BART
-  const allowed = fallback.onTime >= TARGET;
-  const ride = allowed && runs[0].onTime >= TARGET && runs[0].p50 < fallback.p50 ? runs[0] : fallback;
-
-  const say = useCallback((line: string) => setLog(l => [...l.slice(-8), line]), []);
 
   /* One morning, drawn in front of you, so the formula stops being notation. */
   const sampleOne = useCallback((seed?: number) => {
@@ -297,7 +263,6 @@ export default function CommuteModelLab(){
     setOne(s);
     if (reduced.current){
       setRevealed(route.legs.length + 1);
-      say(`  one ${route.k} morning -> ${clock(s.arrival)} ${s.late ? 'LATE' : 'on time'}`);
       return;
     }
     setRevealed(0);
@@ -305,40 +270,24 @@ export default function CommuteModelLab(){
     const tick = () => {
       i++;
       setRevealed(i);
-      if (i <= route.legs.length) window.setTimeout(tick, 250);
-      else say(`  one ${route.k} morning -> ${clock(s.arrival)} ${s.late ? 'LATE' : 'on time'}`);
+      if (i <= route.legs.length) window.setTimeout(tick, 420);
     };
-    window.setTimeout(tick, 120);
-  }, [route, cand, say]);
+    window.setTimeout(tick, 160);
+  }, [route, cand]);
 
   /* The 1,000-morning loop, animated by batches so it reads as accumulation. */
   const runAll = useCallback(() => {
-    setLog([
-      `$ commute plan --leave ${clock(cand.leave)} --by 09:00`,
-      `  method   monte carlo · ${N} draws per route · seed fixed`,
-      `  live     511 GTFS-Realtime · Google Routes · HealthKit · WeatherKit`,
-      `  routes   nl (bus)   bart (fallback)`
-    ]);
-    const finish = () => {
-      runs.forEach(r => say(
-        `  ${r.route.k.padEnd(5)} p50 ${clock(r.p50)}  p90 ${clock(r.p90)}  on time ${Math.round(r.onTime * 100)}%`
-      ));
-      say(`  rule     the alarm must survive the fallback -> test bart`);
-      say(allowed
-        ? `  ALLOWED  ride ${ride.route.k}, hold ${ride === fallback ? 'nl' : 'bart'}, alarm ${clock(cand.leave - ROUTINE)}`
-        : `  REJECTED leave earlier`);
-    };
-    if (reduced.current){ setDrawn(N); finish(); return; }
+    setRunKey(k => k + 1);
+    if (reduced.current){ setDrawn(N); return; }
     setDrawn(0);
     let n = 0;
     const step = () => {
       n = Math.min(N, n + 24);
       setDrawn(n);
       if (n < N) requestAnimationFrame(step);
-      else finish();
     };
     requestAnimationFrame(step);
-  }, [cand, runs, allowed, ride, fallback, say]);
+  }, []);
 
   useEffect(() => {
     reduced.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -365,12 +314,11 @@ export default function CommuteModelLab(){
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [armed, pick]);
 
-  const eqParts = one ? one.parts : route.legs.map(l => (l.lo + l.hi) / 2);
-
   return <div ref={hostRef} className={`mlab${armed ? ' isArmed' : ''}`}>
     <header className="mlabHead">
+      <span>Parts 01 and 02 · Routine and the Monte Carlo model</span>
       <h2>How Commute chooses the alarm each morning.</h2>
-      <p>A Monte Carlo loop, run on both routes: play the morning out 1,000 times each, keep the departures that still reach 9:00 in at least 90% of them, and take the latest one. It runs below, in your browser, on the ranges I measured over 10 weeks.</p>
+      <p>Commute tests each reachable departure across the ranges I observed, keeps only the plans whose fallback clears a 90% on-time threshold, and chooses the latest one. The run below is one inspectable example—not a claim that the same result generalizes beyond my commute.</p>
     </header>
 
     {/* ── 1. one morning ─────────────────────────────────────────── */}
@@ -378,18 +326,18 @@ export default function CommuteModelLab(){
       <div className="mlabStepHead">
         <b>1</b>
         <div>
-          <strong>Play one morning</strong>
-          <span>Every term is a range I measured, not a fixed number. One pass of the loop draws a value from each and checks the arrival against 9:00.</span>
+          <strong>Build one possible morning</strong>
+          <span>Draw one value for each leg, add them in sequence, and check the resulting arrival against 9:00.</span>
         </div>
-        <div className="mlabPicker" role="group" aria-label="Route to sample">
-          {ROUTES.map((r, i) => <button key={r.k} type="button" aria-pressed={i === lane} onClick={() => setLane(i)}>{r.name}</button>)}
+        <div className="mlabStepTools">
+          <div className="mlabPicker" role="group" aria-label="Route to sample">
+            {ROUTES.map((r, i) => <button key={r.k} type="button" aria-pressed={i === lane} onClick={() => setLane(i)}>{r.name}</button>)}
+          </div>
+          <button type="button" className="mlabGhostBtn mlabDrawBtn" onClick={() => sampleOne()}>Draw another ↻</button>
         </div>
       </div>
 
-      <div className="mlabEqRow">
-        <JourneyStrip route={route} leave={cand.leave} one={one} revealed={revealed}/>
-        <button type="button" className="mlabGhostBtn mlabDrawBtn" onClick={() => sampleOne()}>Draw another ↻</button>
-      </div>
+      <JourneyStrip route={route} leave={cand.leave} one={one} revealed={revealed}/>
     </section>
 
     {/* ── 2. the loop, on both routes ────────────────────────────── */}
@@ -397,30 +345,30 @@ export default function CommuteModelLab(){
       <div className="mlabStepHead">
         <b>2</b>
         <div>
-          <strong>Run the loop 1,000 times — on both routes</strong>
-          <span>One bar per minute of arrival. The bus is quicker on a good morning; the train is the one that always has another train five minutes behind it. Since the bus can fall through, the 90% test is applied to the train I would fall back to.</span>
+          <strong>Test the plan and its fallback</strong>
+          <span>The bus is usually quicker; BART recovers more gracefully because another train follows in five to six minutes. The fallback has to clear the same 90% rule before the bus plan is allowed.</span>
         </div>
-        <div className="mlabPicker" role="group" aria-label="Candidate departure time">
-          {CANDIDATES.map((c, i) => <button key={c.leave} type="button" aria-pressed={i === pick} onClick={() => setPick(i)}>
-            leave {clock(c.leave)}
-          </button>)}
+        <div className="mlabStepTools">
+          <div className="mlabPicker" role="group" aria-label="Candidate departure time">
+            {CANDIDATES.map((c, i) => <button key={c.leave} type="button" aria-pressed={i === pick} onClick={() => setPick(i)}>
+              leave {clock(c.leave)}
+            </button>)}
+          </div>
+          {/* Always rendered, so finishing a run does not shift the layout. */}
+          <button type="button" className="mlabGhostBtn" onClick={runAll} disabled={!done}>Run again ↻</button>
         </div>
       </div>
 
       <p className="mlabRunCount" aria-live="polite">
         <b>{Math.min(drawn, N).toLocaleString()}</b> / 1,000 mornings simulated per route
-        {done && <button type="button" className="mlabGhostBtn" onClick={runAll}>Run again ↻</button>}
       </p>
 
-      <div className="mlabRoutes">
+      <div key={runKey} className="mlabRoutes isSequenced">
         {ROUTES.map((r, i) => <RouteRun
-          key={r.k} route={r} leave={cand.leave} seed={cand.seed} drawn={drawn} binding={i === 1}
+          key={r.k} route={r} leave={cand.leave} seed={cand.seed} drawn={drawn} binding={i === 1} revealIndex={i}
         />)}
       </div>
 
-      <pre className="mlabTerminal" aria-live="polite" aria-label="Simulation log">
-        {log.map((l, i) => <code key={i}>{l}</code>)}
-      </pre>
     </section>
 
     {/* ── 3. one answer ──────────────────────────────────────────── */}
@@ -428,36 +376,51 @@ export default function CommuteModelLab(){
       <div className="mlabStepHead">
         <b>3</b>
         <div>
-          <strong>Take the latest departure the fallback survives, then subtract the routine</strong>
-          <span>The model never shows a reader a probability. All of the above exists to produce one number, once a day.</span>
+          <strong>Choose the latest qualifying departure</strong>
+          <span>The product UI does not ask someone to interpret probability. The model collapses the tradeoff into one alarm and keeps monitoring the plan.</span>
         </div>
       </div>
 
-      <div className="mlabAnswer">
-        {CANDIDATES.map(c => {
-          const bart = runSim(ROUTES[1], c.leave, c.seed);
-          const nl = runSim(ROUTES[0], c.leave, c.seed);
-          const ok = bart.onTime >= TARGET;
-          const latest = ok && !CANDIDATES.some(o => o.leave > c.leave && runSim(ROUTES[1], o.leave, o.seed).onTime >= TARGET);
-          return <div key={c.leave} className={`mlabOption${ok ? '' : ' is-out'}${latest ? ' is-pick' : ''}`}>
-            <b>{clock(c.leave)}</b>
-            <span>bus {Math.round(nl.onTime * 100)}% · train {Math.round(bart.onTime * 100)}%</span>
-            <em>{latest ? 'latest departure the fallback survives' : ok ? 'safe, but earlier than it needs to be' : 'the fallback misses 9:00 too often'}</em>
-          </div>;
-        })}
-      </div>
+      {/* The search, not a beauty contest: walk later until the fallback
+          breaks, then take the one before. Rows in time order with the margin
+          over the 90% rule in its own column — the margin going +5, +1, -27 is
+          why 8:18 dies, and taking +1 over +5 is the "sleep, not safety margin"
+          decision shown rather than asserted. */}
+      <table className="mlabSearch">
+        <thead>
+          <tr>
+            <th>Leave home</th><th>Bus</th><th>Train <small>fallback</small></th>
+            <th>Margin over 90%</th><th>Verdict</th>
+          </tr>
+        </thead>
+        <tbody>
+          {CANDIDATES.map(c => {
+            const bart = runSim(ROUTES[1], c.leave, c.seed);
+            const nl = runSim(ROUTES[0], c.leave, c.seed);
+            const train = Math.round(bart.onTime * 100);
+            const ok = bart.onTime >= TARGET;
+            const latest = ok && !CANDIDATES.some(o => o.leave > c.leave && runSim(ROUTES[1], o.leave, o.seed).onTime >= TARGET);
+            const margin = train - Math.round(TARGET * 100);
+            return <tr key={c.leave} className={`${ok ? '' : 'is-out'}${latest ? ' is-pick' : ''}`}>
+              <th scope="row">{clock(c.leave)}{latest && <em>chosen</em>}</th>
+              <td>{Math.round(nl.onTime * 100)}%</td>
+              <td className="mlabKeyCol">{train}%</td>
+              <td className="mlabMargin">{margin > 0 ? `+${margin}` : margin}</td>
+              <td>{latest ? 'The last departure the fallback survives.'
+                   : ok ? 'Safe, and six minutes of sleep left on the table.'
+                        : 'The fallback misses 9:00 too often.'}</td>
+            </tr>;
+          })}
+        </tbody>
+      </table>
 
-      <p className="mlabMath">
-        <span>{clock(CANDIDATES[1].leave)} <small>chosen departure</small></span>
-        <i aria-hidden="true">−</i>
-        <span>{ROUTINE} min <small>learned routine</small></span>
-        <i aria-hidden="true">=</i>
-        <strong>{clock(CANDIDATES[1].leave - ROUTINE)} <small>alarm</small></strong>
-      </p>
+      {/* Steps 1 and 2 would look the same in a spreadsheet. These three are
+          the decisions that make it a product rather than an analysis. */}
+      {/* Each call gets the number from the table that proves it, so the
+          three read as evidence pulled off the rows above rather than three
+          paragraphs parked underneath them. */}
+      <p className="mlabDecisionNote"><b>Product call</b> Use the last departure whose fallback still qualifies. The extra margin at 8:06 is sleep already paid for; 8:18 fails the rule.</p>
 
-      <p className="mlabHandoff">
-        The plan wakes me for the bus and holds the train behind it. Which one I actually take is decided later, by a live check before I leave — the next section.
-      </p>
     </section>
   </div>;
 }

@@ -7,6 +7,12 @@
 
 /* ---- demo phone ---- */
 .csDemo{display:grid;justify-items:center;gap:14px;width:100%}
+/* .csDemo centres its children, so they size to content — and .iosPhoneDevice
+   is width:min(100%,330px), a percentage of that indefinite width, which
+   collapses to 0. The stage needs a definite width for the phone to have
+   anything to be a percentage of. This lived in the in-depth case layout, so
+   the skim view rendered the controls with no phone above them. */
+.csDemo .iphoneDemoStage{width:100%}
 .csViewSwitch{display:inline-flex;padding:3px;border-radius:10px;background:rgba(43,39,68,.08)}
 .csViewSwitch button{border:0;background:transparent;padding:6px 16px;border-radius:8px;font:600 13px/1 var(--cs-sf);color:rgba(43,39,68,.6);cursor:pointer;transition:background .2s,color .2s,box-shadow .2s}
 .csViewSwitch button[aria-selected=true]{background:#fff;color:var(--cs-ink);box-shadow:0 1px 3px rgba(43,39,68,.16)}
