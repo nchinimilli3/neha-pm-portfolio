@@ -236,10 +236,29 @@ function RouteRun({route, leave, seed, drawn, binding, revealIndex}: {
   </div>;
 }
 
+/* Each step owns its own viewport, so nothing animates off-screen: a step
+   arms the first time it is actually being read, and stays armed after. */
+function useInView(){
+  const ref = useRef<HTMLElement>(null);
+  const [seen, setSeen] = useState(false);
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){ setSeen(true); return; }
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting){ setSeen(true); io.disconnect(); }
+    }, {threshold: .35});
+    io.observe(node);
+    return () => io.disconnect();
+  }, []);
+  return [ref, seen] as const;
+}
+
 export default function CommuteModelLab(){
-  const hostRef = useRef<HTMLDivElement>(null);
-  const [armed, setArmed] = useState(false);
   const reduced = useRef(false);
+  const [step1Ref, step1In] = useInView();
+  const [step2Ref, step2In] = useInView();
+  const [step3Ref, step3In] = useInView();
 
   const [pick, setPick] = useState(1);        // which departure
   const [lane, setLane] = useState(0);        // which route the single morning uses
@@ -286,30 +305,24 @@ export default function CommuteModelLab(){
 
   useEffect(() => {
     reduced.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const node = hostRef.current;
-    if (!node) return;
-    if (reduced.current){ setArmed(true); return; }
-    const io = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting){ setArmed(true); io.disconnect(); }
-    }, {threshold: .15});
-    io.observe(node);
-    return () => io.disconnect();
   }, []);
 
+  /* Step 1 draws its morning once the step itself is on screen. */
   useEffect(() => {
-    if (!armed) return;
+    if (!step1In) return;
     sampleOne(7); // a fixed first morning, so the opening read is the same for everyone
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [armed, lane]);
+  }, [step1In, lane]);
 
+  /* Step 2 waits for its own viewport before the 1,000 mornings start piling up. */
   useEffect(() => {
-    if (!armed) return;
-    const t = window.setTimeout(runAll, reduced.current ? 0 : 1500);
+    if (!step2In) return;
+    const t = window.setTimeout(runAll, reduced.current ? 0 : 400);
     return () => window.clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [armed, pick]);
+  }, [step2In, pick]);
 
-  return <div ref={hostRef} className={`mlab${armed ? ' isArmed' : ''}`}>
+  return <div className="mlab">
     <header className="mlabHead">
       <span>Parts 01 and 02</span>
       <h2>How Commute chooses the alarm each morning.</h2>
@@ -317,7 +330,7 @@ export default function CommuteModelLab(){
     </header>
 
     {/* ── 1. one morning ─────────────────────────────────────────── */}
-    <section className="mlabStep">
+    <section ref={step1Ref as React.RefObject<HTMLElement>} className={`mlabStep${step1In ? ' isInView' : ''}`}>
       <div className="mlabStepHead">
         <b>1</b>
         <div>
@@ -335,7 +348,7 @@ export default function CommuteModelLab(){
     </section>
 
     {/* ── 2. the loop, on both routes ────────────────────────────── */}
-    <section className="mlabStep">
+    <section ref={step2Ref as React.RefObject<HTMLElement>} className={`mlabStep${step2In ? ' isInView' : ''}`}>
       <div className="mlabStepHead">
         <b>2</b>
         <div>
@@ -356,7 +369,7 @@ export default function CommuteModelLab(){
         <b>{Math.min(drawn, N).toLocaleString()}</b> / 1,000 mornings simulated per route
       </p>
 
-      <div key={runKey} className="mlabRoutes isSequenced">
+      <div key={runKey} className={`mlabRoutes${step2In ? ' isSequenced' : ''}`}>
         {ROUTES.map((r, i) => <RouteRun
           key={r.k} route={r} leave={cand.leave} seed={cand.seed} drawn={drawn} binding={i === 1} revealIndex={i}
         />)}
@@ -365,7 +378,7 @@ export default function CommuteModelLab(){
     </section>
 
     {/* ── 3. one answer ──────────────────────────────────────────── */}
-    <section className="mlabStep mlabStepLast">
+    <section ref={step3Ref as React.RefObject<HTMLElement>} className={`mlabStep mlabStepLast${step3In ? ' isInView' : ''}`}>
       <div className="mlabStepHead">
         <b>3</b>
         <div>

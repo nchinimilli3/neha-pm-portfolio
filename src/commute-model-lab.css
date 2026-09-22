@@ -241,3 +241,31 @@
  .mlabJourney.isSequencing .mlabRisk,
  .mlabRoutes.isSequenced .mlabRoute{opacity:1;transform:none;filter:none;transition:none;animation:none}
 }
+
+/* ── One step, one screen ────────────────────────────────────────────────
+   Each numbered step holds a full viewport and centres itself in it, so the
+   reader meets exactly one idea at a time and each animation gets to start
+   where it is being watched. Below 861px the step still fills the screen but
+   is free to grow past it rather than squash. */
+@media(min-width:861px){
+ .mlabStep{
+  min-height:100svh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:clamp(32px,6svh,72px) 0;
+  margin-top:0;
+ }
+ .mlabStep+.mlabStep{margin-top:0}
+}
+@media(max-width:860px){
+ .mlabStep{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:clamp(28px,5svh,48px) 0;margin-top:0}
+ .mlabStep+.mlabStep{margin-top:0}
+}
+
+/* The step itself settles in as it arrives; its inner simulation is armed by
+   the same observer, so nothing has run before it is on screen. */
+.mlabStep{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .7s cubic-bezier(.2,.75,.25,1)}
+.mlabStep.isInView{opacity:1;transform:none}
+
+@media(prefers-reduced-motion:reduce){
+ .mlabStep{opacity:1;transform:none;transition:none}
+}
