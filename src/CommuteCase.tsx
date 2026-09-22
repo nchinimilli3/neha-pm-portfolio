@@ -61,7 +61,7 @@ function ModelLearningSummary(){
       </div>
      </div>
     </div>
-    <div className="cmRoutineCopy"><strong>Alarm dismissed</strong><small>The morning starts with one reliable event.</small></div>
+    <div className="cmRoutineCopy"><strong>Alarm dismissed</strong><small>AlarmKit timestamps the dismissal.</small></div>
    </li>
    <li className="is-gap">
     <div className="cmRoutineInterval" role="img" aria-label={`${ROUTINE} minutes from alarm dismissed to leaving home`}>
@@ -69,14 +69,14 @@ function ModelLearningSummary(){
      <b>{ROUTINE} min</b>
      <small>alarm to front door</small>
     </div>
-    <div className="cmRoutineCopy"><strong>My pre-door routine</strong><small>One personal interval, learned from real mornings.</small></div>
+    <div className="cmRoutineCopy"><strong>My pre-door routine</strong><small>The gap between the two timestamps, measured rather than assumed.</small></div>
    </li>
    <li className="is-door">
     <div className="cmDepartureMoment" role="img" aria-label={`Left home at ${labClock(leave)}`}>
      <span><b>{labClock(leave)}</b><small>LEFT HOME</small></span>
      <i className="cmDoor" aria-hidden="true"><u/></i>
     </div>
-    <div className="cmRoutineCopy"><strong>Live data takes over</strong><small>Current conditions pick bus or BART.</small></div>
+    <div className="cmRoutineCopy"><strong>Live data takes over</strong><small>A Core Location geofence at home marks the door. Live conditions pick bus or BART.</small></div>
    </li>
   </ol>
   <aside className="cmLoopOutcome" aria-label={`${labClock(leave)} leave-by time minus a ${ROUTINE} minute routine becomes a ${labClock(alarm)} alarm`}>
@@ -145,11 +145,11 @@ function DisruptionReplay(){
 
 function LearningRun(){
  const [ref,seen]=useInView<HTMLDivElement>();
- const weeks=Array.from({length:10},(_,i)=>i+1);
+ const weeks=Array.from({length:8},(_,i)=>i+1);
  return <section className="cmLearning cmStage" id="cm-learn">
-  <header><h2>I tested the loop without letting it grade itself on known outcomes.</h2><p>Each weekday, I locked the prediction before leaving, recorded what actually happened, and let that result update only the next morning. That made calibration and sleep tradeoffs inspectable without pretending a personal prototype had proven universal reliability.</p></header>
-  <div ref={ref} className={`cmWeekRun${seen?' isRunning':''}`} aria-label="Ten-week learning run across 40 to 50 weekday mornings">
-   <div className="cmWeekLabels"><span>Week 1</span><b>40 to 50 weekday mornings</b><span>Week 10</span></div>
+  <header><h2>I tested the loop without letting it grade itself on known outcomes.</h2><p>Each weekday, I locked the prediction before leaving, and a geofence at the office logged the arrival, with a tap on the widget as backup when it misfired. That result updated only the next morning. That made calibration and sleep tradeoffs inspectable without pretending a personal prototype had proven universal reliability.</p></header>
+  <div ref={ref} className={`cmWeekRun${seen?' isRunning':''}`} aria-label="Eight-week learning run across 40 weekday mornings">
+   <div className="cmWeekLabels"><span>Week 1</span><b>40 weekday mornings</b><span>Week 8</span></div>
    <div className="cmWeekTrack">{weeks.map(week=><div key={week}>{Array.from({length:5},(_,day)=><i key={day} style={{'--morning':(week-1)*5+day} as React.CSSProperties}/>)}</div>)}</div>
    <div className="cmWeekLegend"><span><i/>prediction locked</span><span><i/>actual morning observed</span><span><i/>next prediction updated</span></div>
   </div>
@@ -192,38 +192,20 @@ function useLive<T extends HTMLElement>(){
 }
 
 /* The four pieces of the product, named as pieces. Each description carries its own
-   reason for existing rather than labelling one, and everything after this section is
-   one of these four in detail, so a reader who stops here still knows what was built. */
+   reason for existing rather than labelling one. They close the case: by the time the
+   reader reaches them, the problem, the model and the validation are already behind. */
 const parts=[
  {n:'01',t:'Learns my routine',
-  d:'Forty-eight minutes from alarm to front door, measured from my own mornings rather than assumed. Transit feeds time the trip; nothing times the part before it, which is why a leave-by time was never a wake-up time.'},
+  d:'Forty-eight minutes from alarm to front door, measured from my own mornings rather than assumed.'},
  {n:'02',t:'Runs a Monte Carlo loop over every departure',
-  d:'A thousand simulated mornings for each departure I could still make, drawing walk, wait, ride and traffic from the ranges I observed. A departure only qualifies if its backup route clears 90% too, which is how the alarm lands on the latest safe time instead of a padded guess.'},
+  d:'A thousand simulated mornings for each departure I could still make.'},
  {n:'03',t:'Re-checks and switches routes',
-  d:'Live transit and traffic keep running after the alarm goes off. If the chosen route slips, the fallback that already qualified takes over: the alarm is spent by then, so the switch protects the 9:00 and costs no sleep. Only a change that moves the plan is worth a notification.'},
+  d:'Live transit and traffic keep running after the alarm goes off. Only a change that moves the plan is worth a notification.'},
  {n:'04',t:'Lives on the Lock Screen',
-  d:'A Live Activity counting down to leave, a widget holding the whole plan, and a notification only when the plan changes. A normal morning costs no attention, so the measure of this part is how often I never open the app.'}
+  d:'A Live Activity, a widget holding the whole plan, and a notification only when the plan changes. The measure of this part is how often I never open the app.'}
 ];
-function AppParts(){
- return <section className="cmParts cmStage" id="cm-parts" aria-labelledby="cm-parts-title">
-  <header className="cmSectionIntro">
-   <span>What the app is</span>
-   <h2 id="cm-parts-title">Four parts, one alarm.</h2>
-   <p>Each part covers a piece of the morning nothing else on my phone was covering. The rest of this case is these four, in order.</p>
-  </header>
-  <ol className="cmPartsGrid">
-   {parts.map(p=><li key={p.n}>
-    <i>{p.n}</i>
-    <b>{p.t}</b>
-    <span>{p.d}</span>
-   </li>)}
-  </ol>
- </section>;
-}
-
 const commuteStages=[
  {id:'cm-discover',name:'Discover',did:'Why another commute app?'},
- {id:'cm-parts',name:'Parts',did:'What is the app made of?'},
  {id:'cm-algorithm',name:'Model',did:'How does it choose?'},
  {id:'cm-decide',name:'Decide',did:'What if traffic delays the bus?'},
  {id:'cm-learn',name:'Validate',did:'Did it learn without cheating?'},
@@ -252,15 +234,12 @@ export default function CommuteCase({demo}:{demo:React.ReactNode}){
    </div>
   </section>
 
-  <AppParts/>
-
   <section className="cmAlgorithm cmStage" id="cm-algorithm">
    <ReliabilityEngine/>
   </section>
 
   <section className="cmDecision cmStage" id="cm-decide">
    <header className="cmSectionIntro">
-    <span>Part 03 · Live replanning</span>
     <h2>Commute re-checks the plan before I leave, and never rides without a backup.</h2>
     <p>The bus is faster, so it goes first. BART stays available as a fallback that cleared the same 90% simulation rule. If the live feed says the bus has slipped, the app switches while the modeled arrival still holds at 8:53.</p>
    </header>
@@ -273,9 +252,16 @@ export default function CommuteCase({demo}:{demo:React.ReactNode}){
    <div className="cmCloseCopy">
     <h2>What shipped, what I measured, and what comes next.</h2>
 
+    <ol className="cmPartsGrid">
+     {parts.map(p=><li key={p.n}>
+      <i>{p.n}</i>
+      <b>{p.t}</b>
+      <span>{p.d}</span>
+     </li>)}
+    </ol>
+
     <ol className="cmScopeStops" aria-label="Scope">
-     <li className="is-shipped"><i/><div><b>Shipped</b><span>Routine learning · route picking · live replanning · lock screen widget</span></div></li>
-     <li className="is-next"><i/><div><b>Evidence boundary</b><span>One commuter · two East Bay routes · 10 weeks</span></div></li>
+     <li className="is-next"><i/><div><b>Evidence boundary</b><span>One commuter · two East Bay routes · 8 weeks</span></div></li>
      <li className="is-cut"><i/><div><b>Not built</b><span>Navigation · social · booking · dashboards</span></div></li>
     </ol>
    </div>
@@ -290,7 +276,7 @@ export default function CommuteCase({demo}:{demo:React.ReactNode}){
    <div className="cmTicket">
     <div className="cmTicketStub" aria-hidden="true"><span>Commute</span><i className="cmBarcode"/></div>
     <div className="cmTicketMain">
-     <header><strong>The scorecard for the 10-week test</strong></header>
+     <header><strong>The scorecard for the 8-week test</strong></header>
      <dl>{measures.map(m=><div key={m.label}><dt>{m.label}</dt><dd>{m.desc}</dd></div>)}</dl>
      <footer><span>One alarm</span><i aria-hidden="true">→</i><span>One live route check</span></footer>
     </div>

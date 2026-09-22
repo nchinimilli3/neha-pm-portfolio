@@ -6,7 +6,7 @@ import './commute-model-lab.css';
 /* The model section used to *describe* the simulation: a formula, a sentence
    saying it runs 1,000 times, and three pre-baked bars. This runs it instead.
    Every number on screen is produced by the sampler below, in the browser, from
-   the leg ranges observed across the 10-week test, and both routes are simulated
+   the leg ranges observed across the 8-week test, and both routes are simulated
    every morning. The bus is only worth planning around if the train it falls
    back to still makes 9:00. Seeds are fixed per departure so the case reads the
    same for every visitor. */

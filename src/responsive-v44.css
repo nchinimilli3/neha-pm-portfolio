@@ -10,7 +10,6 @@
    so each of these drops one step. Art and device mockups are left alone:
    they are drawn to a fixed aspect and shrink correctly. */
 @media(min-width:851px) and (max-width:1200px){
-  .cmPartsGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
   .kohlerWorkspaceGrid,.kohlerSurfaceBody{grid-template-columns:1fr!important}
   .bcPlan{grid-template-columns:repeat(2,minmax(0,1fr))!important}
   .cdSupporting{grid-template-columns:1fr!important}
