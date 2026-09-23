@@ -163,9 +163,12 @@ const travelers:Record<string,React.ReactNode>={
 };
 
 export type Traveler='car'|'mustang'|'mache'|'ev'|'cablecar'|'box'|'cheese'|'train'|'calendar'|'book'|'bottle'|'bubble';
+const HONKS:Record<string,string>={train:'ding ding!',cablecar:'clang clang!',book:'shh!',calendar:'ding!',bubble:'…',mustang:'vroom!',mache:'…whirr (it’s electric)',box:'beep beep!',bottle:'clink!',cheese:'squeak!'};
+
 export default function LifecycleRoad({stages,vehicle='car',label='Product lifecycle stages in this case study'}:{stages:{id:string,name:string,did:string}[],vehicle?:Traveler,label?:string}){
  const [progress,setProgress]=useState(0);
  const [shown,setShown]=useState(false);
+ const [honk,setHonk]=useState(0);
  const [moving,setMoving]=useState(false);
  const navRef=useRef<HTMLElement>(null);
  // Mustang smoke is emitted into the scene: each puff stays where the car released it,
@@ -219,7 +222,7 @@ export default function LifecycleRoad({stages,vehicle='car',label='Product lifec
    <span className="lcAsphalt" aria-hidden="true"><i className="lcFill"/></span>
    <span className="lcWake" aria-hidden="true"><i/><i/><i/>{Array.from({length:7},(_,k)=><em key={k} style={{'--k':k} as React.CSSProperties}/>)}</span>
    {vehicle==='mustang'&&<span className="lcSmoke" aria-hidden="true">{puffs.map(p=><i key={p.id} style={{left:p.pos,'--v':p.v} as React.CSSProperties}/>)}</span>}
-   <span className="lcCar" aria-hidden="true">{vehicle==='train'?<RollingVehicle className="lcBartImg" src={`${import.meta.env.BASE_URL}project-media/bart-train.webp`} w={2172} h={418} moving={moving} wheels={[171,465,1724,2009].map(cx=>({cx,cy:375,r:44}))} alt=""/>:travelers[vehicle]}</span>
+   <span className={`lcCar${honk?' isHonking':''}`} aria-hidden="true" onClick={()=>{setHonk(0);requestAnimationFrame(()=>setHonk(Date.now()));window.setTimeout(()=>setHonk(0),900)}}>{honk?<b key={honk} className="lcHonk">{HONKS[vehicle]||'beep beep!'}</b>:null}{vehicle==='book'&&<span className="lcStack">{Array.from({length:current},(_,k)=><i key={k} style={{'--k':k} as React.CSSProperties}/>)}</span>}{vehicle==='train'?<RollingVehicle className="lcBartImg" src={`${import.meta.env.BASE_URL}project-media/bart-train.webp`} w={2172} h={418} moving={moving} wheels={[171,465,1724,2009].map(cx=>({cx,cy:375,r:44}))} alt=""/>:travelers[vehicle]}</span>
    <ol>{stages.map((st,i)=><li key={st.id} className={i<current?'isPast':i===current?'isHere':''}><button type="button" onClick={()=>go(st.id)} aria-current={i===current?'step':undefined}><b>{st.name}</b></button></li>)}</ol>
   </div>
   <p className="lcNow" aria-live="polite"><span>{String(current+1).padStart(2,'0')} / {String(stages.length).padStart(2,'0')}</span><b key={current}>{stages[current].name}</b><small key={`d${current}`}>{stages[current].did}</small></p>

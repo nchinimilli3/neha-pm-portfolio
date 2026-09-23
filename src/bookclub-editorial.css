@@ -156,6 +156,11 @@
 .bcThreadBody{display:grid;align-content:start;gap:12px;min-height:430px;padding:16px 16px 24px;border-radius:0 0 34px 34px;background:#fff}
 .bcMsg{position:relative;display:grid;grid-template-columns:minmax(0,max-content) auto;column-gap:8px;align-items:end;justify-items:start;opacity:0;transform:translateY(12px) scale(.96);transform-origin:left bottom;transition:opacity .35s,transform .45s var(--ease-spring)}
 .bcMsg.isShown{opacity:1;transform:none}
+.bcSpoiler{position:relative;cursor:help;outline:0}
+.bcSpoiler>span{filter:blur(5px);transition:filter .35s ease}
+.bcSpoiler>i{position:absolute;inset:0;display:grid;place-items:center;padding:0 10px;font-style:normal;font-size:10.5px;font-weight:600;letter-spacing:.02em;text-align:center;transition:opacity .25s}
+.bcSpoiler:hover>span,.bcSpoiler:focus-visible>span{filter:none}
+.bcSpoiler:hover>i,.bcSpoiler:focus-visible>i{opacity:0}
 .bcMsg .bcBubble{grid-column:1;max-width:218px}
 .bcMsg small{grid-column:1/-1;margin:0 0 4px 8px;font-size:10.5px;color:#8b928d}
 .bcBubble{max-width:82%;padding:8px 12px;border-radius:18px 18px 18px 5px;background:#e9e9eb;font-size:14px;line-height:1.35;color:#1d2622}

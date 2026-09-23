@@ -8,10 +8,10 @@ export function AccentureToolRelay() {
  const tools = [
   {slug: 'salesforce', color: '#00A1E0', name: 'Salesforce', did: 'Holds the request record and its intake fields'},
   {slug: 'googlesheets', color: '#34A853', name: 'Google Sheets', did: 'Tracks repeated patterns and process issues'},
-  {slug: 'openai', color: '#111111', name: 'Codex prototype', did: 'Runs the rules and flags review cases'},
+  {slug: 'openai', color: '#111111', name: 'OpenAI API workflow', did: 'Runs the rules live and flags review cases'},
   {slug: 'googleslides', color: '#F4B400', name: 'Google Slides', did: 'Turns findings into recommended next steps'},
  ];
- return <div className="axRelay" aria-label="The request moved from Salesforce to Google Sheets, a Codex prototype, and Google Slides">
+ return <div className="axRelay" aria-label="The request moved from Salesforce to Google Sheets, an OpenAI API workflow, and Google Slides">
   <span className="axRelayToken" aria-hidden="true">#021</span>
   <ol>{tools.map(tool => <li key={tool.slug}>
    <span className="axLogo" style={{'--logo': `url(${icon(tool.slug)})`, '--brand': tool.color} as React.CSSProperties} role="img" aria-label={`${tool.name} logo`}/>

@@ -4,7 +4,14 @@
 .aboutFilmFrame.isGallery.instantFilmFrame:before{display:none!important}
 .filmGalleryHeader{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 0 8px;color:#65716b;font:9px ui-monospace,monospace;letter-spacing:.1em}
 .filmGalleryHeader button,.filmSequenceClose{display:grid;place-items:center;width:30px;height:30px;background:#e8e9e1;border:1px solid #3f514520;border-radius:50%;color:#3b4a42;font-size:21px;cursor:pointer;padding:0}
-.aboutPhoto .instantFilmFrame .filmGalleryPhoto{display:block!important;width:100%!important;height:auto!important;max-width:100%!important;max-height:none!important;aspect-ratio:auto!important;object-fit:contain!important;border:0!important;border-radius:1px!important;box-shadow:none!important;margin:0!important;padding:0!important}
+/* The ratio is a registered number so the frame morphs between portrait and landscape instead of snapping. */
+@property --film-ratio{syntax:'<number>';inherits:true;initial-value:1.5}
+.aboutFilmFrame.isGallery.instantFilmFrame{transition:--film-ratio .6s var(--ease-in-out,cubic-bezier(.65,0,.35,1))}
+.filmPhotoStage{position:relative;width:100%;aspect-ratio:var(--film-ratio);overflow:hidden;border-radius:1px;background:#e9e6dc}
+.aboutPhoto .instantFilmFrame .filmGalleryPhoto{position:absolute!important;inset:0!important;display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;aspect-ratio:auto!important;object-fit:cover!important;border:0!important;border-radius:0!important;box-shadow:none!important;margin:0!important;padding:0!important;animation:filmPhotoIn .6s var(--ease-in-out,cubic-bezier(.65,0,.35,1)) both}
+.aboutPhoto .instantFilmFrame .filmGalleryPhoto.isLeaving{animation:filmPhotoOut .6s var(--ease-in-out,cubic-bezier(.65,0,.35,1)) both}
+@keyframes filmPhotoIn{from{opacity:0;transform:scale(1.03)}to{opacity:1;transform:none}}
+@keyframes filmPhotoOut{from{opacity:1}to{opacity:0}}
 .filmGalleryControls{display:grid;grid-template-columns:36px 1fr 36px;align-items:center;gap:12px;margin-top:12px}
 .filmGalleryControls button{display:grid;place-items:center;width:36px;height:36px;border:1px solid #3f51452b;background:transparent;border-radius:50%;color:#3c4c42;cursor:pointer}
 .filmGalleryControls span{text-align:center;font:11px ui-monospace,monospace;color:#5a6860;font-variant-numeric:tabular-nums}
@@ -18,4 +25,4 @@
 @keyframes filmPrint{0%,32%{transform:translateY(-225px)}82%,100%{transform:translateY(0)}}
 @keyframes filmGalleryIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media(max-width:650px){.aboutFilmFrame.isGallery.instantFilmFrame{width:min(100%,calc(min(60vh,480px) * var(--film-ratio) + 24px))!important}.instantCameraArt{max-height:480px}.filmCameraSequence{max-width:380px;margin:auto}}
-@media(prefers-reduced-motion:reduce){.filmGalleryReveal,.filmCameraSequence,.filmCameraBody,.filmEjectPrint,.filmSoftFlash{animation:none!important}.filmSoftFlash{display:none}.filmReplay{display:none}}
+@media(prefers-reduced-motion:reduce){.aboutFilmFrame.isGallery.instantFilmFrame{transition:none}.aboutPhoto .instantFilmFrame .filmGalleryPhoto{animation:none!important}.filmGalleryReveal,.filmCameraSequence,.filmCameraBody,.filmEjectPrint,.filmSoftFlash{animation:none!important}.filmSoftFlash{display:none}.filmReplay{display:none}}

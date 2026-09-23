@@ -162,6 +162,7 @@
 /* ---- Supporting evidence, deliberately quieter ------------------------ */
 
 .casePage .cdSupporting{margin:48px 0;padding-top:24px;border-top:1px solid var(--cd-rule)}
+.casePage .cdMoment+.cdSupporting{border-top:0}
 .casePage .cdSupporting>header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;margin-bottom:24px}
 .casePage .cdSupportingTitle{margin:0;font-size:13px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--cd-muted)}
 .casePage .cdSupportingNote{margin:0;max-width:56ch;font-size:15px;line-height:1.55;color:var(--cd-muted)}

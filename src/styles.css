@@ -1279,6 +1279,7 @@ section[id]{scroll-margin-top:96px}
 /* Proximity and consistency: related information stays together, sections stay distinct. */
 .v28Experience,.v28Projects,.v28Fun,.aboutSection{padding-top:var(--space-9)!important}
 .v28Projects,.v28Fun,.aboutSection{border-top:1px solid var(--color-line)!important}
+.companyBanner+.v28Projects{border-top:0!important}
 .v28Experience .experienceAccordion{max-width:1080px!important}
 .v28Experience .experienceSummary{
   min-height:104px;

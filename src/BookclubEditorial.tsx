@@ -35,6 +35,7 @@ const thread=[
   {who:'Maya',text:'what are we reading next??',job:'Choose'},
   {who:'Jordan',poll:['Piranesi','Circe','The Overstory'],job:'Choose'},
   {who:'Sam',text:'did anyone finish ch 12? pls no spoilers',job:'Keep pace'},
+  {who:'Jordan',spoiler:'omg ch 17, when she finally opens the door and',job:'Keep pace'},
   {who:'Priya',text:'can we move it to thursday?',job:'Meet'},
   {who:'Maya',text:'what was that quote you loved last time?',job:'Meet'},
 ];
@@ -52,7 +53,7 @@ function GroupThread(){
     <div className="bcThreadBody">
       {thread.map((m,i)=><div key={i} className={`bcMsg ${shown>i?'isShown':''}`}>
         <small>{m.who}</small>
-        {m.poll?<div className="bcBubble bcPoll"><b>Poll: next book</b>{m.poll.map((o,k)=><span key={o}><i style={{width:`${[62,48,22][k]}%`}}/>{o}</span>)}</div>:<div className="bcBubble">{m.text}</div>}
+        {m.spoiler?<div className="bcBubble bcSpoiler" tabIndex={0} aria-label="Hidden spoiler. You're on chapter 12."><span>{m.spoiler}</span><i>You're on ch. 12 · hover to peek</i></div>:m.poll?<div className="bcBubble bcPoll"><b>Poll: next book</b>{m.poll.map((o,k)=><span key={o}><i style={{width:`${[62,48,22][k]}%`}}/>{o}</span>)}</div>:<div className="bcBubble">{m.text}</div>}
         <em className={`bcJob job-${m.job.replace(' ','')}`}>{m.job}</em>
       </div>)}
       <div className={`bcTyping ${shown>=thread.length?'isShown':''}`} aria-hidden="true"><i/><i/><i/></div>
@@ -158,7 +159,7 @@ export function BookclubEditorial(){
     <CasePull>Same shape: a little more effort, <em>a better group outcome.</em></CasePull>
 
     <section className="bcValidate bcStage" id="bc-validate">
-      <header><h2>How I’ll know <em>it works</em></h2><p>Live with my reading group. Three checks before building more.</p></header>
+      <header><h2>How I’ll know <em>it works</em></h2><p>Live with 10 active users in my reading group. Three checks before building more.</p></header>
       <ValidationPlan/>
       <div className="bcRules">
         <p className="bcRulesHead">If the tests show…</p>
