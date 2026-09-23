@@ -143,16 +143,37 @@ function DisruptionReplay(){
  </div>;
 }
 
-/* A breath after the two densest sections: one line, set large, nothing else. */
+/* Validate: one weekday morning, read left to right in the order it happened,
+   then the same morning repeated 40 times on the same axis. The step glyphs
+   (ring, filled dot, plum thread) are the chart's legend, so the method and
+   the evidence read as one figure. The order is the argument: the prediction
+   is locked before the outcome exists and only learns from it tomorrow. */
+const checkSteps=[
+ {when:'Before leaving',name:'Lock',line:'The prediction is locked before I leave.'},
+ {when:'At arrival',name:'Log',line:'A geofence at the office logs the arrival, with a tap on the widget as backup when it misfires.'},
+ {when:'Next morning',name:'Learn',line:'The result updates the prediction only the next morning.'}
+];
 function LearningRun(){
  const [ref,seen]=useInView<HTMLDivElement>();
  const weeks=Array.from({length:8},(_,i)=>i+1);
- return <section className="cmLearning cmStage cmRhSplit" id="cm-learn">
-  <header><h2>I tested the loop without letting it grade itself on known outcomes.</h2><p>Each weekday, I locked the prediction before leaving, and a geofence at the office logged the arrival, with a tap on the widget as backup when it misfired. That result updated only the next morning. That made calibration and sleep tradeoffs inspectable without pretending a personal prototype had proven universal reliability.</p></header>
-  <div ref={ref} className={`cmWeekRun${seen?' isRunning':''}`} aria-label="Eight-week learning run across 40 weekday mornings">
-   <div className="cmWeekLabels"><span>Week 1</span><b>40 weekday mornings</b><span>Week 8</span></div>
-   <div className="cmWeekTrack">{weeks.map(week=><div key={week}>{Array.from({length:5},(_,day)=><i key={day} style={{'--morning':(week-1)*5+day} as React.CSSProperties}/>)}</div>)}</div>
-   <div className="cmWeekLegend"><span><i/>prediction locked</span><span><i/>actual morning observed</span><span><i/>next prediction updated</span></div>
+ return <section className="cmLearning cmStage" id="cm-learn">
+  <header><h2>I tested the loop without letting it grade itself on known outcomes.</h2><p>Every weekday ran the same three steps. That made calibration and sleep tradeoffs inspectable without pretending a personal prototype had proven universal reliability.</p></header>
+  <div ref={ref} className={`cmCheckRun${seen?' isRunning':''}`}>
+   <ol className="cmCheckSteps" aria-label="One weekday morning">
+    {checkSteps.map((s,i)=><li key={s.name} style={{'--step':i} as React.CSSProperties}>
+     <i aria-hidden="true"/>
+     <span>{s.when}</span>
+     <h3>{s.name}</h3>
+     <p>{s.line}</p>
+    </li>)}
+   </ol>
+   <div className="cmWeekRun" role="img" aria-label="Eight-week run: 40 weekday mornings, each locked, logged and learned from">
+    <div className="cmWeekHead"><b>40 weekday mornings</b><span>Each dot is one morning through all three steps</span></div>
+    <div className="cmWeekTrack" aria-hidden="true">{weeks.map(week=><div key={week}>
+     <div>{Array.from({length:5},(_,day)=><i key={day} style={{'--morning':(week-1)*5+day} as React.CSSProperties}/>)}</div>
+     <span>Week {week}</span>
+    </div>)}</div>
+   </div>
   </div>
  </section>;
 }

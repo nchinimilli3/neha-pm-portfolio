@@ -1328,7 +1328,7 @@ const aboutFilmPhotos=[
   {src:'project-media/about-film/06.jpg',width:750,height:1133,alt:'Paddleboarder on clear blue Lake Tahoe framed by tall trees'},
   {src:'project-media/about-film/07.jpg',width:1002,height:1512,alt:'Turquoise cove and waterfall along a rocky California coastline'},
   {src:'project-media/about-film/08.jpg',width:1193,height:1800,alt:'Graduation portrait between colorful library stacks'},
-  {src:'project-media/about-film/09.jpg',width:1194,height:1800,alt:'Chicago theater sign glowing between downtown buildings in warm evening light'},
+  {src:'project-media/about-film/09-conservatory.jpg',width:1193,height:1800,alt:'Water lilies and hanging orchids under the glass roof of a plant conservatory'},
   {src:'project-media/about-film/10.jpg',width:1333,height:883,alt:'Painted Ladies with the San Francisco skyline in the distance'}
 ];
 

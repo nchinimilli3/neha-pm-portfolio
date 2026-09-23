@@ -248,7 +248,7 @@ main.casePage .cdSupporting:last-child{margin-bottom:0;padding-bottom:0!importan
 .casePage .cdStatement{font-size:var(--cs-statement)!important;line-height:1.04!important;font-weight:500!important;letter-spacing:-.04em!important;max-width:18ch}
 /* Every decision moment gets the same extra room: 32 more than a chapter
    break above and below (160 total), wherever the case places it. */
-.casePage .cdMoment{margin:var(--s-4) 0!important;padding:var(--s-5) 0 0!important}
+.casePage .cdMoment{margin:var(--s-4) 0!important;padding:var(--s-5) 0!important}
 .casePage .cdMomentGrid{margin-top:var(--s-5);padding-top:var(--s-4);gap:var(--s-4)}
 .casePage .cdMomentCol{gap:var(--s-2)}
 .casePage .cdMomentCol>b{color:var(--cd-muted)}
