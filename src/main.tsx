@@ -8,7 +8,8 @@ import { SurveyDemo } from './FCVFResearch';
 import { KohlerAssembly, KohlerBoxOpen, KohlerDelivery, KohlerExceptions, KohlerOrderHold, KohlerPrinciples, KohlerRoles } from './KohlerVisuals';
 import { AccentureBoundary, AccentureEvidenceFunnel, AccentureStagger, AccentureToolRelay } from './AccentureVisuals';
 import AboutFilmCamera from './AboutFilmCamera';
-import FinSimpleCase, { FinSimpleBuildDeck } from './FinSimpleCase';
+import FinSimpleCase from './FinSimpleCase';
+import FinSimpleEstimateDemo from './FinSimpleEstimateDemo';
 import './accenture-v2.css';
 import SchedulerPlannerHero from './SchedulerPlannerHero';
 import AccentureRequestRelay from './AccentureRequestRelay';
@@ -868,7 +869,7 @@ function CaseSkimDemo({id,setLightbox}:{id:string,setLightbox:(img:{src:string,a
  // view shows the actual screens rather than a decorative compact.
  if(id==='estee')return <section className="caseSkimDemo esteeSkimShots" aria-label="See the released Double Wear experience"><header><h2>See the product</h2></header><EsteeVisual/></section>;
  if(id==='bookclub')return <section className="caseSkimDemo" aria-label="See the live Bookclub product"><header><h2>See the product</h2></header><BookclubEditorialHero/></section>;
- if(id==='finsimple')return <section className="caseSkimDemo" aria-label="See the FinSimple feature from prototype to release"><header><h2>See the shipped feature</h2></header><div className="fseEditorial fseSkimDeck"><div className="fseBuild"><FinSimpleBuildDeck setLightbox={setLightbox}/></div></div></section>;
+ if(id==='finsimple')return <section className="caseSkimDemo" aria-label="Try Previous Estimates"><header><h2>Try the shipped feature</h2></header><FinSimpleEstimateDemo/></section>;
  return null;
 }
 
