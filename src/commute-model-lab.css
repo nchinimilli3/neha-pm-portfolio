@@ -52,7 +52,7 @@
 .mlabStop.is-end.isLanded .mlabGlyph{opacity:1;filter:none}
 .mlabJourney.is-late .mlabStop.is-end.isLanded .mlabGlyph{filter:grayscale(.5) sepia(.3)}
 
-.mlabStop b{grid-row:4;padding-top:8px;font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ml-ink);white-space:nowrap}
+.mlabStop b{grid-row:4;display:flex;height:28px;align-items:flex-start;justify-content:center;padding-top:8px;font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-size:15px;line-height:1.3;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ml-ink);white-space:nowrap}
 .mlabStop em{grid-row:5;font-style:normal;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ml-muted);white-space:nowrap}
 .mlabStop.is-end b{color:color-mix(in srgb,var(--ml-ink) 35%,transparent);transition:color .4s ease}
 .mlabStop.is-end.isLanded b{color:var(--ml-accent)}
@@ -67,7 +67,7 @@
 .mlabLeg.isLit .mlabLegBar{background:color-mix(in srgb,var(--ml-accent) 30%,transparent)}
 .mlabLegBar i{position:absolute;top:50%;left:var(--at,50%);width:9px;height:9px;border-radius:50%;background:var(--ml-accent);translate:-50% -50%;opacity:0;transition:left .5s var(--ease-out),opacity .3s ease}
 .mlabLeg.isLit .mlabLegBar i{opacity:1}
-.mlabLegName{grid-row:4;padding-top:8px;font-size:12px;line-height:1.3;text-align:center;text-wrap:balance;color:var(--ml-ink)}
+.mlabLegName{grid-row:4;display:flex;height:28px;align-items:flex-start;justify-content:center;padding-top:8px;font-size:12px;line-height:1.3;text-align:center;text-wrap:balance;color:var(--ml-ink)}
 .mlabLegSrc{grid-row:5;display:grid;gap:1px;padding-top:4px;font-size:9.5px;line-height:1.35;text-align:center;color:color-mix(in srgb,var(--ml-muted) 70%,transparent)}
 .mlabLegSrc b{font-weight:500;font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--ml-muted) 88%,transparent)}
 .mlabLeg.is-delay .mlabLegSrc{display:none}
@@ -75,10 +75,14 @@
 .mlabLeg.is-delay .mlabLegBar{background:repeating-linear-gradient(115deg,color-mix(in srgb,var(--ml-late) 60%,transparent) 0 5px,transparent 5px 9px);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ml-late) 32%,transparent)}
 .mlabLeg.is-delay .mlabLegVal,.mlabLeg.is-delay .mlabLegName{color:var(--ml-late)}
 .mlabLeg.is-delay .mlabLegBar i{display:none}
+.mlabLeg.is-delay .mlabLegVal{grid-row:2;align-self:end;margin-bottom:8px;padding:5px 10px;border-radius:999px;background:color-mix(in srgb,var(--ml-late) 9%,#fff);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ml-late) 28%,transparent);font-size:13px;line-height:1;white-space:nowrap}
+.mlabLeg.is-delay .mlabLegVal u:first-child{margin-right:5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ml-late)}
 
 /* The one input that is not a leg, stated once. */
 .mlabRisk{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;margin:0 0 16px;padding:0 0 12px;border-bottom:1px solid var(--ml-rule);font-size:11.5px;line-height:1.5;color:color-mix(in srgb,var(--ml-muted) 82%,transparent)}
 .mlabRisk b{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ml-late)}
+.mlabStep:first-of-type .mlabStepHead{margin-bottom:10px}
+.mlabStep:first-of-type .mlabRisk{margin-bottom:30px}
 
 .mlabDrawBtn{flex:0 0 auto}
 

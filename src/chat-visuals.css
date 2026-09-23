@@ -156,4 +156,4 @@
 .isMac .imsgSend{flex-basis:22px;height:22px}.isMac .imsgSend svg{width:13px;height:13px}
 .imsg.isMac .sandboxNote{grid-column:1/-1;border-top:.5px solid #0000001f}
 @media(max-width:640px){.imsg.isMac{grid-template-columns:1fr}.isMac .imsgSide{display:none}}
-.imsgField input:focus,.imsgField input:focus-visible{outline:none!important;box-shadow:none!important}.imsgField:focus-within{border-color:#0b84fe80;box-shadow:0 0 0 3px #0b84fe2e}
+.imsgField input:focus,.imsgField input:focus-visible{outline:none!important;box-shadow:none!important}.imsgField:focus-within{border-color:#c6c6c8;box-shadow:0 0 0 3px #0b84fe2e}.imsgMain:focus-within{outline:none}

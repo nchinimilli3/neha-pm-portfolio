@@ -186,13 +186,37 @@
  .accentureStory .axRide>.axRideNow{position:static;max-width:none;margin:12px 0 0!important}
 }
 
+/* Close on the analyst's working paper: the 8x signal is shown as a normalized
+   spreadsheet comparison, which is truer to the consulting work than another
+   San Francisco landmark. */
+.axRatioPull{column-gap:clamp(28px,4vw,56px);row-gap:24px;align-items:center}
+.axRatioPull .axEightfold{grid-column:1 / span 7;display:grid;grid-template-columns:minmax(0,1fr) 132px;gap:24px;align-items:center;min-width:0}
+.axAnalystSheet{position:relative;overflow:hidden;border:1px solid rgba(64,40,74,.2);background:#fffdf9;box-shadow:0 18px 38px -26px rgba(49,25,60,.38)}
+.axAnalystSheet>header{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:9px 12px;border-bottom:1px solid #d8d3da;background:#f2eef4;color:#62576a;font:600 9px/1 var(--font-ui)}
+.axAnalystSheet>header span{display:flex;gap:4px}.axAnalystSheet>header i{width:7px;height:7px;border-radius:50%;background:#d484a1}.axAnalystSheet>header i:nth-child(2){background:#dfb559}.axAnalystSheet>header i:nth-child(3){background:#70ae83}.axAnalystSheet>header em{font-style:normal;font-weight:500;color:#908696}
+.axFormula{display:grid;grid-template-columns:24px minmax(0,1fr) auto;align-items:center;min-height:42px;border-bottom:1px solid #d8d3da;font:500 9px/1 var(--font-ui)}
+.axFormula>b{display:grid;height:100%;place-items:center;border-right:1px solid #d8d3da;color:#188038;font-style:italic}.axFormula code{padding:0 10px;color:#61556a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.axFormula strong{align-self:stretch;display:grid;place-items:center;padding:0 12px;background:#e8d8f3;color:#6725a5;font:700 18px/1 var(--font-display)}
+.axSheetGrid{display:grid;grid-template-columns:96px repeat(8,1fr);margin:12px;border-left:1px solid #ddd8df;border-top:1px solid #ddd8df}
+.axSheetGrid>*{display:grid;min-width:0;height:28px;place-items:center;border-right:1px solid #ddd8df;border-bottom:1px solid #ddd8df}
+.axSheetGrid>span{background:#f5f3f6;color:#877e8b;font:600 8px/1 var(--font-ui)}.axSheetGrid>.axCorner{justify-items:start;padding-left:8px;font-size:7px;letter-spacing:.08em}
+.axSheetGrid>b{justify-items:start;padding-left:8px;background:#faf8fb;color:#55495c;font:600 8px/1 var(--font-ui)}
+.axSheetGrid>i{position:relative;background:#fff;font-style:normal}.axSheetGrid>i.isFilled:after{content:'';width:66%;height:58%;border-radius:2px;background:linear-gradient(135deg,#8d42c5,#c4519a);box-shadow:0 3px 8px rgba(104,37,151,.2);animation:axCellFill .55s var(--ease-out) both;animation-delay:calc(var(--cell,0) * 70ms)}
+.axSheetGrid>i:nth-child(11){--cell:0}.axSheetGrid>i:nth-child(12){--cell:1}.axSheetGrid>i:nth-child(13){--cell:2}.axSheetGrid>i:nth-child(14){--cell:3}.axSheetGrid>i:nth-child(15){--cell:4}.axSheetGrid>i:nth-child(16){--cell:5}.axSheetGrid>i:nth-child(17){--cell:6}.axSheetGrid>i:nth-child(18){--cell:7}
+.axAnalystSheet>p{display:flex;gap:9px;margin:0!important;padding:10px 12px;border-top:1px solid #ddd8df;background:#fff8cf;color:#574e45;font:600 9px/1.35 var(--font-ui)!important}.axAnalystSheet>p span{color:#8b6513;text-transform:uppercase;letter-spacing:.09em}
+.axRatioPull .csPullFigure{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:10px;grid-column:auto!important;margin:0!important}
+.axRatioPull .csPullFigure strong{font:500 clamp(62px,7vw,96px)/.78 var(--font-display);letter-spacing:-.075em;color:var(--cd-accent)}
+.axRatioPull .csPullFigure span{max-width:12ch;font:600 11px/1.25 var(--font-ui);letter-spacing:.11em;text-transform:uppercase;color:var(--cd-muted)}
+.axRatioPull>.axClose{grid-column:8 / -1!important;align-self:center}
+@keyframes axCellFill{from{opacity:0;transform:scaleX(.2);transform-origin:left}to{opacity:1;transform:none}}
+@media(max-width:980px){.axRatioPull .axEightfold,.axRatioPull>.axClose{grid-column:1 / -1!important}.axRatioPull .axEightfold{width:100%;max-width:720px}.axRatioPull>.axClose{max-width:60ch!important}}
+@media(max-width:640px){.axRatioPull .axEightfold{grid-template-columns:1fr}.axRatioPull .csPullFigure{flex-direction:row;align-items:flex-end;justify-content:flex-start}.axRatioPull .csPullFigure span{padding-bottom:2px}}
+@media(max-width:520px){.axSheetGrid{grid-template-columns:76px repeat(8,1fr);margin:8px}.axFormula code{font-size:7px}.axAnalystSheet>header em{display:none}}
+@media(prefers-reduced-motion:reduce){.axSheetGrid>i.isFilled:after{animation:none}}
+
 /* Chapter sections are grids; the handoff line must span the whole track
    rather than drop into a single narrow column. */
 
 
 
 /* The page used to end on the cable-car illustration; close on the finding instead. */
-
-
-
 

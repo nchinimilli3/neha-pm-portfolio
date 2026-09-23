@@ -471,6 +471,8 @@ main.casePage .cdSupporting:last-child{margin-bottom:0;padding-bottom:0!importan
 .macMsgsCompose{display:flex;gap:8px;align-items:center;padding:12px 16px}
 .macMsgsCompose input{flex:1;min-width:0;height:32px;padding:0 12px;border:1px solid rgba(0,0,0,.14);border-radius:16px;background:#fff;font:inherit;color:inherit}
 .macMsgsCompose button{width:28px;height:28px;border:0;border-radius:50%;background:#0a84ff;color:#fff;font-weight:700;cursor:pointer}
+.macMsgsStaticField{display:flex;align-items:center;flex:1;min-width:0;height:32px;padding:0 12px;border:1px solid rgba(0,0,0,.14);border-radius:16px;background:#fff;color:#a0a0a5;font-size:13px}
+.macMsgsStaticSend{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#0a84ff;color:#fff;font-size:14px;font-weight:700}
 
 /* FinSimple Skim: the build deck (prototype, AEM component, customer release)
    with the stage notes beside it, instead of repeating the hero photo. */
@@ -483,6 +485,18 @@ main.casePage .cdSupporting:last-child{margin-bottom:0;padding-bottom:0!importan
 /* Skim demos sit on the same 1180 column as the hero and summary (they were
    inset to 1120 at x=160). */
 .casePage .caseSkimDemo,.casePage .caseSkimFinish{width:var(--cs-w)!important;max-width:var(--cs-max)!important;margin-left:auto!important;margin-right:auto!important}
+
+/* The skim chat is a product UI nested directly in the case, so protect its
+   toolbar and native focus treatment from the case-study display rules. */
+.casePage .caseSkimDemo .imsgWho h2{width:auto!important;max-width:none!important;margin:0!important;padding:0!important;font:500 15px/1.2 -apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif!important;letter-spacing:-.01em!important;color:#1d1d1f!important}
+.casePage .caseSkimDemo .imsgField input:focus-visible{outline:0!important;outline-offset:0!important;box-shadow:none!important}
+.casePage .caseSkimDemo .imsgField:focus-within{border-color:#c6c6c8!important;box-shadow:0 0 0 3px rgba(11,132,254,.18)!important}
+.casePage .caseSkimDemo .imsgMain:focus-within{outline:0!important;box-shadow:none!important}
+.casePage .caseSkimDemo .imsgField{overflow:hidden}
+.casePage .sandboxSection .imsgField input:focus,
+.casePage .sandboxSection .imsgField input:focus-visible{border:0!important;outline:0!important;outline-offset:0!important;box-shadow:none!important}
+.casePage .sandboxSection .imsgField:focus-within{border-color:#c6c6c8!important;outline:0!important;box-shadow:0 0 0 3px rgba(11,132,254,.18)!important}
+.casePage .sandboxSection .imsgMain:focus-within{outline:0!important;box-shadow:none!important}
 
 /* ---- Previous / next case ---------------------------------------------------
    The end of every case: two quiet links on the 1180 column, previous on the

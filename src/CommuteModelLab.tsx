@@ -162,7 +162,7 @@ function JourneyStrip({route, leave, one, revealed}: {
       })}
 
       {delay > 0 && <div className="mlabLeg is-delay isLit" style={{'--m': delay} as React.CSSProperties}>
-        <span className="mlabLegVal">+{delay.toFixed(0)}<u>min</u></span>
+        <span className="mlabLegVal"><u>delay</u>+{delay.toFixed(0)}<u>min</u></span>
         <span className="mlabLegBar"><i/></span>
         <span className="mlabLegName">{route.disrupt.label}</span>
       </div>}

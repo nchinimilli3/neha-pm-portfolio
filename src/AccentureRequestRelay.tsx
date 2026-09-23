@@ -157,7 +157,7 @@ export default function AccentureRequestRelay() {
                 <span className="sfObj">{Icon.record}</span>
                 <div><small>Training Request</small><strong>Enterprise AI basics</strong></div>
                 {!auto && stage === 0
-                  ? <button type="button" className="sfBtn isBrand" onClick={submit}>Submit</button>
+                  ? <button type="button" className="sfBtn isBrand isNextAction" onClick={submit}><i aria-hidden="true"/>Submit request</button>
                   : <span className="sfBtn" aria-hidden="true">+ Follow</span>}
               </div>
               <ol className="sfPath" aria-label={`Status: ${status}`}>
@@ -217,7 +217,7 @@ export default function AccentureRequestRelay() {
                           <p className="skContext">🛑 Review stop: region is required to match a trainer.</p>
                           <div className="skActions"><button type="button" className="skBtn isPrimary" onClick={confirmRegion}>Confirm EMEA · English</button><span className="skBtn" aria-hidden="true">Edit</span></div>
                         </>}
-                        {!auto && !asked && <div className="skActions"><button type="button" className="skBtn isPrimary" onClick={ask}>Ask requester for region</button><span className="skBtn" aria-hidden="true">View in Salesforce</span></div>}
+                        {!auto && !asked && <div className="skActions"><button type="button" className="skBtn isPrimary isNextAction" onClick={ask}><i aria-hidden="true"/>Ask requester for region</button><span className="skBtn" aria-hidden="true">View in Salesforce</span></div>}
                       </div>
                     </div>
 

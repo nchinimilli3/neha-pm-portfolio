@@ -375,3 +375,10 @@ button.gcSlot:hover{background:#e8f0fe}
 @media(max-width:1000px){.rqModeBar{flex-direction:column;align-items:flex-start;gap:16px}.rqLive{--rq-h:460px}}
 @media(prefers-reduced-motion:reduce){.rqIn,.gcEvent,.rqBooked,.gcNudge,.gcOff,.rqFilled,.sfBtn.isBrand,.skBtn.isPrimary,.gcBtn,.sfSpin,.skTyping i{animation:none!important}}
 @media(prefers-reduced-motion:reduce){.sfToast.isTimed{display:none}}
+
+/* The two ambiguous first moves get a quiet beacon inside the real control. */
+.rqLive .isNextAction{position:relative;isolation:isolate;display:inline-flex;align-items:center;gap:7px;overflow:visible;animation:rqNextGlow 1.8s ease-in-out infinite}
+.rqLive .isNextAction>i{display:block;width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 0 0 currentColor;animation:rqNextDot 1.8s ease-out infinite}
+@keyframes rqNextGlow{0%,100%{box-shadow:0 0 0 0 rgba(123,44,191,0)}50%{box-shadow:0 0 0 5px rgba(123,44,191,.17),0 5px 14px rgba(66,24,83,.16)}}
+@keyframes rqNextDot{0%{box-shadow:0 0 0 0 currentColor;opacity:1}70%,100%{box-shadow:0 0 0 7px transparent;opacity:.7}}
+@media(prefers-reduced-motion:reduce){.rqLive .isNextAction,.rqLive .isNextAction>i{animation:none}.rqLive .isNextAction{box-shadow:0 0 0 3px rgba(123,44,191,.16)}}

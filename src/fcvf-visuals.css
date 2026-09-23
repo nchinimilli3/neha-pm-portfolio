@@ -141,7 +141,6 @@
 /* Shipped screen shown in a browser frame so it reads as the live product, not a loose screenshot. */
 .fvDelivery>.fvEvidence{position:relative;overflow:hidden;padding-top:32px;border-radius:12px;background:#e8ecf0;box-shadow:0 0 0 1px #102f4818,0 30px 60px -18px #102f4840}
 .fvDelivery>.fvEvidence:before{content:'';position:absolute;left:14px;top:12px;width:52px;height:10px;background:radial-gradient(circle at 5px 5px,#ff5f57 4.5px,transparent 5px),radial-gradient(circle at 23px 5px,#febc2e 4.5px,transparent 5px),radial-gradient(circle at 41px 5px,#28c840 4.5px,transparent 5px)}
-.fvDelivery>.fvEvidence:after{content:'';position:absolute;left:50%;top:8px;width:min(46%,420px);height:18px;border-radius:8px;background:#fff;translate:-50% 0}
 .fvDelivery>.fvEvidence img{display:block;box-shadow:none!important;border-radius:0}
 
 /* ── Try it both ways: the shipped Ford CVF app ─────────────────────────────

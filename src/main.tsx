@@ -237,13 +237,11 @@ function FCVFVisual(){
   return <PhotoLaptopMockup src="project-media/ford-after.webp" alt="Ford Customer Value Framework web application" scene="front"/>
 }
 function MiniChat(){
-  const [messages,setMessages]=useState([
+  const messages=[
     {mine:false,text:'did everyone push?'},
     {mine:true,text:'yep just finished the socket changes'},
     {mine:false,text:'perfect I see them live'}
-  ]);
-  const [text,setText]=useState('');
-  const send=()=>{if(!text.trim())return;setMessages(m=>[...m,{mine:true,text:text.trim()}]);setText('')};
+  ];
   // Drawn as Messages on macOS: the recreation is a web app, so a desktop window is the
   // honest frame for it. Other sidebar rows are blank placeholders, not invented chats.
   const last=messages[messages.length-1];
@@ -259,7 +257,7 @@ function MiniChat(){
     <section className="macMsgsMain" aria-label="Project group conversation">
       <header><span>To:</span><b>Project group</b><small>3 people</small></header>
       <div className="macMsgsThread">{messages.map((m,i)=><p className={m.mine?'mine':'theirs'} key={i}>{m.text}</p>)}</div>
-      <div className="macMsgsCompose"><input value={text} onChange={e=>setText(e.target.value)} onKeyDown={e=>e.key==='Enter'&&send()} placeholder="iMessage" aria-label="Message"/><button type="button" onClick={send} aria-label="Send">↑</button></div>
+      <div className="macMsgsCompose" aria-hidden="true"><span className="macMsgsStaticField">iMessage</span><span className="macMsgsStaticSend">↑</span></div>
     </section>
   </div>
 }
@@ -1108,18 +1106,18 @@ const accentureStages=[
  {id:'ax-define',name:'Define',did:'Write the rules down'},
  {id:'ax-build',name:'Build',did:'Build and launch'},
  {id:'ax-test',name:'Test',did:'Find where rules break'},
- {id:'ax-recommend',name:'Recommend',did:'Five ideas, each with a 90-day test'}
+ {id:'ax-recommend',name:'Recommend',did:'Decide where to scale next'}
 ];
 function AccentureCase(){return <div className="accentureStory"><AccentureStagger/><LifecycleRoad stages={accentureStages} vehicle="cablecar"/>
-  <CaseChapter id="ax-discover" className="axStage axDiscover" title={<>How one request moved <em>through the process.</em></>} lead="At Accenture in San Francisco, I supported intake, trainer matching, and scheduling for an AI lab client. Every request crossed three tools before a trainer was booked for a training session.">
+  <CaseChapter id="ax-discover" className="axStage axDiscover" title={<>How one request moved <em>through the process.</em></>} lead="At Accenture in San Francisco, I supported intake, trainer matching, and scheduling for an AI lab client. Follow request #021 across three tools, first by hand and then with the workflow I built.">
    <AccentureRequestRelay/>
   </CaseChapter>
 
-  <CaseChapter id="ax-define" className="axStage axRules csChapter--split" title={<>From repeated decisions <em>to rules I could test.</em></>} lead="The same checks came up on every request, so I wrote them into a 10-tab data contract: required inputs, matching logic, warnings, reason codes, and the cases that need a person.">
+  <CaseChapter id="ax-define" className="axStage axRules csChapter--split" title={<>From repeated decisions <em>to rules I could test.</em></>} lead="Request #021 exposed the pattern: every handoff repeated the same checks. I wrote them into a 10-tab data contract covering inputs, matching logic, warnings, reason codes, and human-review cases.">
    <AccentureWorkflowVisual/>
   </CaseChapter>
 
-  <CaseChapter id="ax-build" className="axStage axBuild" title={<>Then the workflow, <em>built and launched.</em></>} lead="I built an OpenAI API workflow in Codex, using tool calling, MCP, and RAG. It automates Salesforce intake, trainer matching, and calendar checks, and routes only flagged cases to a coordinator. It went live and cuts about 60 minutes of coordinator work per request.">
+  <CaseChapter id="ax-build" className="axStage axBuild" title={<>Then the workflow, <em>built and launched.</em></>} lead="Once the rules were explicit, I built an OpenAI API workflow in Codex using tool calling, MCP, and RAG. It automates intake, matching, and calendar checks, routes flagged cases to a coordinator, and cuts about 60 minutes of work per request.">
    <AccentureToolRelay/>
   </CaseChapter>
 
@@ -1138,9 +1136,9 @@ function AccentureCase(){return <div className="accentureStory"><AccentureStagge
    </DecisionMoment>
   </div>
 
-  <CaseChapter id="ax-recommend" className="axStage axRecommend" title={<>Using evidence <em>to decide what to test next.</em></>}>
+  <CaseChapter id="ax-recommend" className="axStage axRecommend" title={<>The workflow worked. <em>Where should the program scale next?</em></>} lead="After proving the workflow on individual requests, I analyzed adoption to decide where the program should scale next. The 8× usage gap became the priority, and I turned it into five recommendations, each with a 90-day test.">
    <AccentureEvidenceFunnel/>
-   <div className="csPull"><p className="csPullFigure" aria-hidden="true">8x</p><p className="axClose">The clearest signal in the data was how unevenly the program was used: the heaviest-using teams ran <b>8x</b> the requests per trainer of the lightest. That gap is what the five recommendations are aimed at, and each one ships with a 90-day test so the program can tell whether it closed.</p></div>
+   <div className="csPull axRatioPull"><div className="axEightfold" role="img" aria-label="An analysis workbook shows the heaviest-using teams running eight times as many requests per trainer as the lightest-using teams"><div className="axAnalystSheet" aria-hidden="true"><header><span><i/><i/><i/></span><b>program-usage-analysis.xlsx</b><em>Working paper</em></header><div className="axFormula"><b>fx</b><code>= MAX(requests / trainer) ÷ MIN(requests / trainer)</code><strong>8×</strong></div><div className="axSheetGrid"><span className="axCorner">TEAM COHORT</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><b>Heaviest-use</b>{Array.from({length:8},(_,i)=><i className="isFilled" key={`heavy-${i}`}/>)}<b>Lightest-use</b><i className="isFilled"/>{Array.from({length:7},(_,i)=><i key={`light-${i}`}/>)}</div><p><span>Signal</span>One cohort moved eight times more requests per trainer.</p></div><p className="csPullFigure"><strong>8×</strong><span>requests per trainer</span></p></div><p className="axClose">The heaviest-using teams ran <b>8×</b> the requests per trainer of the lightest. I made closing that adoption gap the next product priority: five recommendations, each paired with a 90-day test so the program could measure whether it worked.</p></div>
   </CaseChapter>
  </div>}
 
@@ -1361,7 +1359,7 @@ function BookRecForm(){
      setStatus('error');
    }
  };
- return <form className={`bookRecForm ${status}`} onSubmit={submit}><p className="bookRecTitle"><svg className="bookRecIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10 5 7 4.6 3.5 5v13c3.5-.4 6.5 0 8.5 1.5 2-1.5 5-1.9 8.5-1.5V5C17 4.6 14 5 12 6.5z"/><path d="M12 6.5v13"/></svg>Reading anything good? Send me a rec.</p><div className="bookRecRow"><input id="book-rec" aria-label="Leave me a book rec" value={book} onChange={e=>{setBook(e.target.value);if(status==='error'||status==='sent')setStatus('idle')}} placeholder={status==='sent'?'Added to my reading list :)':'Title and author'} autoComplete="off" disabled={status==='sending'||status==='sent'}/><button type="submit" disabled={!book.trim()||status==='sending'||status==='sent'}>{status==='sending'?'Sending…':status==='sent'?'Sent ✓':'Send →'}</button></div>{status==='error'&&<span className="bookRecStatus" role="status">Couldn’t send that one. Try again.</span>}{status==='sent'&&<span className="bookRecThanks" role="status"><span className="bookFlip" aria-hidden="true"><i/><i/></span>Thanks! Added to my list.</span>}</form>
+ return <form className={`bookRecForm ${status}`} onSubmit={submit}><p className="bookRecTitle"><svg className="bookRecIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10 5 7 4.6 3.5 5v13c3.5-.4 6.5 0 8.5 1.5 2-1.5 5-1.9 8.5-1.5V5C17 4.6 14 5 12 6.5z"/><path d="M12 6.5v13"/></svg>Reading anything good? Send me a rec.</p><div className="bookRecRow"><input id="book-rec" aria-label="Leave me a book rec" value={book} onChange={e=>{setBook(e.target.value);if(status==='error'||status==='sent')setStatus('idle')}} placeholder={status==='sent'?'Added to my reading list :)':'Title and author'} autoComplete="off" disabled={status==='sending'||status==='sent'}/><button type="submit" disabled={!book.trim()||status==='sending'||status==='sent'}>{status==='sending'?'Sending…':status==='sent'?'Sent ✓':'Send →'}</button></div>{status==='error'&&<span className="bookRecStatus" role="status">Couldn’t send that one. Try again.</span>}{status==='sent'&&<span className="bookRecThanks" role="status"><svg className="bookAdded" viewBox="0 0 36 28" aria-hidden="true"><path className="bookAddedPages" d="M18 7C14.8 4.4 10.5 3.6 5 4.3v17.2c5.5-.7 9.8.1 13 2.7 3.2-2.6 7.5-3.4 13-2.7V4.3C25.5 3.6 21.2 4.4 18 7Z"/><path className="bookAddedSpine" d="M18 7v17.2"/><path className="bookAddedCheck" d="m11 13 3.2 3.2 7-7"/><circle cx="3" cy="6" r="1.2"/><circle cx="33" cy="2.5" r="1"/><path className="bookAddedSpark" d="M30 24h4M32 22v4"/></svg>Thanks—shelved for later.</span>}</form>
 }
 
 function Home({openCase}){
