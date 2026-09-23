@@ -137,7 +137,7 @@ function JourneyStrip({route, leave, one, revealed}: {
       ? `Leaving at ${clock(leave)} by ${route.name}: ${route.legs.map((l, i) => `${l.name} ${one.parts[i].toFixed(1)} minutes`).join(', ')}${one.delay ? `, plus ${one.delay.toFixed(0)} minutes lost to ${route.disrupt.label}` : ''}, arriving ${clock(arrival)}`
       : 'The arrival equation, drawn to scale'}>
 
-    <p className={`mlabRisk${landed ? ' isVisible' : ''}`}>
+    <p className="mlabRisk">
       <b>{Math.round(route.disrupt.p * 10)} morning{Math.round(route.disrupt.p * 10) === 1 ? '' : 's'} in 10</b>
       {route.disrupt.label}
     </p>
@@ -179,8 +179,8 @@ function JourneyStrip({route, leave, one, revealed}: {
 
 /* One route's run: its vehicle crossing as the mornings pile up, the arrivals
    stacking into a distribution, and the verdict the constraint produces. */
-function RouteRun({route, leave, seed, drawn, binding, revealIndex}: {
-  route: Route; leave: number; seed: number; drawn: number; binding: boolean; revealIndex: number;
+function RouteRun({route, leave, seed, drawn, binding}: {
+  route: Route; leave: number; seed: number; drawn: number; binding: boolean;
 }){
   const result = useMemo(() => runSim(route, leave, seed), [route, leave, seed]);
   const full = useMemo(() => {
@@ -201,8 +201,7 @@ function RouteRun({route, leave, seed, drawn, binding, revealIndex}: {
   const pct = Math.round((done ? result.onTime : live) * 100);
   const safe = result.onTime >= TARGET;
 
-  return <div className={`mlabRoute is-${route.k}${binding ? ' isBinding' : ''}`}
-    style={{'--route-index': revealIndex} as React.CSSProperties}>
+  return <div className={`mlabRoute is-${route.k}${binding ? ' isBinding' : ''}`}>
     <div className="mlabRouteHead">
       <div className="mlabRouteId">
         <span className="mlabRouteArt" style={{'--p': `${(drawn / N) * 100}%`} as React.CSSProperties}>
@@ -256,6 +255,8 @@ function useInView(){
 
 export default function CommuteModelLab(){
   const reduced = useRef(false);
+  const sampleTimer = useRef<number | null>(null);
+  const runFrame = useRef<number | null>(null);
   const [step1Ref, step1In] = useInView();
   const [step2Ref, step2In] = useInView();
   const [step3Ref, step3In] = useInView();
@@ -265,7 +266,6 @@ export default function CommuteModelLab(){
   const [one, setOne] = useState<Sample | null>(null);
   const [revealed, setRevealed] = useState(0);
   const [drawn, setDrawn] = useState(0);
-  const [runKey, setRunKey] = useState(0);
 
   const cand = CANDIDATES[pick];
   const route = ROUTES[lane];
@@ -273,6 +273,7 @@ export default function CommuteModelLab(){
 
   /* One morning, drawn in front of you, so the formula stops being notation. */
   const sampleOne = useCallback((seed?: number) => {
+    if (sampleTimer.current !== null) window.clearTimeout(sampleTimer.current);
     const s = sampleMorning(route, cand.leave, rng(seed ?? (Date.now() & 0xffff)));
     setOne(s);
     if (reduced.current){
@@ -284,23 +285,30 @@ export default function CommuteModelLab(){
     const tick = () => {
       i++;
       setRevealed(i);
-      if (i <= route.legs.length) window.setTimeout(tick, 420);
+      if (i <= route.legs.length) sampleTimer.current = window.setTimeout(tick, 420);
+      else sampleTimer.current = null;
     };
-    window.setTimeout(tick, 160);
+    sampleTimer.current = window.setTimeout(tick, 160);
   }, [route, cand]);
 
   /* The 1,000-morning loop, animated by batches so it reads as accumulation. */
   const runAll = useCallback(() => {
-    setRunKey(k => k + 1);
+    if (runFrame.current !== null) cancelAnimationFrame(runFrame.current);
     if (reduced.current){ setDrawn(N); return; }
     setDrawn(0);
     let n = 0;
     const step = () => {
       n = Math.min(N, n + 24);
       setDrawn(n);
-      if (n < N) requestAnimationFrame(step);
+      if (n < N) runFrame.current = requestAnimationFrame(step);
+      else runFrame.current = null;
     };
-    requestAnimationFrame(step);
+    runFrame.current = requestAnimationFrame(step);
+  }, []);
+
+  useEffect(() => () => {
+    if (sampleTimer.current !== null) window.clearTimeout(sampleTimer.current);
+    if (runFrame.current !== null) cancelAnimationFrame(runFrame.current);
   }, []);
 
   useEffect(() => {
@@ -368,9 +376,9 @@ export default function CommuteModelLab(){
         <b>{Math.min(drawn, N).toLocaleString()}</b> / 1,000 mornings simulated per route
       </p>
 
-      <div key={runKey} className={`mlabRoutes${step2In ? ' isSequenced' : ''}`}>
+      <div className="mlabRoutes">
         {ROUTES.map((r, i) => <RouteRun
-          key={r.k} route={r} leave={cand.leave} seed={cand.seed} drawn={drawn} binding={i === 1} revealIndex={i}
+          key={r.k} route={r} leave={cand.leave} seed={cand.seed} drawn={drawn} binding={i === 1}
         />)}
       </div>
 

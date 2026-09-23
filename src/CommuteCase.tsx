@@ -9,16 +9,13 @@ import CommuteModelLab, {ROUTINE, CANDIDATES, clock as labClock} from './Commute
 import {CommuteArtDefs} from './CommuteArt';
 
 
-/* A forecast can be accurate and still produce bad mornings, so the scoreboard tracks the
-   decisions the app made, not only the numbers it predicted. */
+/* User-confirmed outcomes from the 40-morning run. A route change is not
+   automatically a helpful switch, so keep that label neutral. */
 const measures=[
- {label:'Arrival error',desc:'Predicted vs. actual walk-in time'},
- {label:'On-time rate',desc:'How often I actually made 9:00'},
- {label:'Calibration',desc:'Whether "90% likely" happens about 90% of the time'},
- {label:'Unnecessary early minutes',desc:'Sleep given up that the morning turned out not to need'},
- {label:'Missed sleep',desc:'Mornings I could safely have woken later'},
- {label:'Helpful switches',desc:'Route changes that actually protected the arrival'},
- {label:'Interruptions',desc:'Normal mornings that needed me. Target: 0'}
+ {value:'36 / 40',label:'On-time arrivals',desc:'Mornings I reached work before 9:00'},
+ {value:'6 min',label:'Typical arrival error',desc:'Predicted versus actual walk-in time'},
+ {value:'17',label:'Route changes',desc:'Times Commute changed the recommended route'},
+ {value:'3',label:'Unnecessary interruptions',desc:'Normal mornings that still prompted me'}
 ];
 
 /* Reveal-on-scroll used by the diagrams below. Honors reduced motion by
@@ -285,11 +282,30 @@ export default function CommuteCase({demo}:{demo:React.ReactNode}){
      </ol>
     </div>
 
-    <ol className="cmScopeStops" aria-label="Scope">
-     <li className="is-next"><i/><div><b>Evidence boundary</b><span>One commuter · two East Bay routes · 8 weeks</span></div></li>
-     <li className="is-cut"><i/><div><b>Not built</b><span>Navigation · social · booking · dashboards</span></div></li>
-    </ol>
    </div>
+   <div className="cmTicket">
+    <div className="cmClipperCard" role="img" aria-label="Blue Clipper transit card illustration">
+     <div className="cmClipperCardTop" aria-hidden="true"><strong>CLIPPER<span>®</span></strong><span>ADULT</span></div>
+     <svg className="cmClipperMark" viewBox="0 0 220 300" aria-hidden="true" focusable="false">
+      <path d="M51 27 66 9q3-4 6 0l15 18q3 4-2 4H53q-5 0-2-4Z"/>
+      <path d="M44 62 66 36q4-5 8 0l22 26q4 5-2 5H46q-6 0-2-5Z"/>
+      <path d="M35 104 66 72q4-5 9 0l31 32q5 6-3 6H38q-8 0-3-6Z"/>
+      <path d="M28 119h82q8 0 4 7l-39 45q-5 7-11 0l-40-45q-5-7 4-7Z"/>
+      <path d="m120 28 24-27q4-5 8 0l24 27q4 5-3 5h-50q-7 0-3-5Z"/>
+      <path d="m108 88 36-44q5-6 10 0l36 44q5 6-3 6h-76q-8 0-3-6Z"/>
+      <path d="m100 168 45-58q6-7 12 0l45 58q6 8-4 8h-94q-10 0-4-8Z"/>
+      <path d="M71 190h130q12 0 5 10l-61 86q-8 11-16 0l-64-86q-7-10 6-10Z"/>
+     </svg>
+    </div>
+    <div className="cmTicketMain">
+     <header><strong>Eight-week outcomes</strong><small>40 weekday mornings</small></header>
+     <dl>{measures.map(m=><div key={m.label}><dt>{m.value}</dt><dd><b>{m.label}</b><span>{m.desc}</span></dd></div>)}</dl>
+    </div>
+   </div>
+   <ol className="cmScopeStops" aria-label="Scope">
+    <li className="is-next"><i/><div><b>Evidence boundary</b><span>One commuter · two East Bay routes · 8 weeks</span></div></li>
+    <li className="is-cut"><i/><div><b>Not built</b><span>Navigation · social · booking · dashboards</span></div></li>
+   </ol>
    <div className="cmScale">
     <header><h3>What the next version still needs.</h3></header>
     <ol>
@@ -297,14 +313,6 @@ export default function CommuteCase({demo}:{demo:React.ReactNode}){
      <li><b>Uneven data:</b> Many cities lack realtime feeds. Widen buffer.</li>
      <li><b>One miss:</b> Show why you were late. Don't quietly replan.</li>
     </ol>
-   </div>
-   <div className="cmTicket">
-    <div className="cmTicketStub" aria-hidden="true"><span>Commute</span><i className="cmBarcode"/></div>
-    <div className="cmTicketMain">
-     <header><strong>The scorecard for the 8-week test</strong></header>
-     <dl>{measures.map(m=><div key={m.label}><dt>{m.label}</dt><dd>{m.desc}</dd></div>)}</dl>
-     <footer><span>One alarm</span><i aria-hidden="true">→</i><span>One live route check</span></footer>
-    </div>
    </div>
   </section>
 

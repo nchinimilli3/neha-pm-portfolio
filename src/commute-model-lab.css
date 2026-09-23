@@ -79,10 +79,10 @@
 .mlabLeg.is-delay .mlabLegVal u:first-child{margin-right:5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ml-late)}
 
 /* The one input that is not a leg, stated once. */
-.mlabRisk{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;margin:0 0 16px;padding:0 0 12px;border-bottom:1px solid var(--ml-rule);font-size:11.5px;line-height:1.5;color:color-mix(in srgb,var(--ml-muted) 82%,transparent)}
+.cmEditorial .mlabRisk{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;width:100%;max-width:none;margin:0 0 24px;padding:0 0 14px;border-bottom:1px solid var(--ml-rule);font-size:16px;line-height:1.5;color:var(--ml-muted)}
 .mlabRisk b{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ml-late)}
 .mlabStep:first-of-type .mlabStepHead{margin-bottom:10px}
-.mlabStep:first-of-type .mlabRisk{margin-bottom:30px}
+.cmEditorial .mlabStep:first-of-type .mlabRisk{margin-bottom:30px}
 
 .mlabDrawBtn{flex:0 0 auto}
 
@@ -218,20 +218,8 @@
 .mlabStepHead span{display:block;margin-top:4px}
 .mlabStepTools{grid-column:3;grid-row:1;align-self:start}
 
-/* One possible morning is one continuous sentence. Each landmark, its sampled
-   minutes, and the explanatory labels below it enter as a single unit. */
-.mlabJourney.isSequencing .mlabLeg{opacity:0;transform:translateY(10px);filter:saturate(.45);transition:opacity .38s ease,transform .42s var(--ease-out),filter .42s ease}
-.mlabJourney.isSequencing .mlabLeg.isLit{opacity:1;transform:none;filter:none}
-.mlabJourney.isSequencing .mlabStop.is-end{opacity:0;transform:translateY(10px);transition:opacity .4s ease,transform .42s var(--ease-out)}
-.mlabJourney.isSequencing .mlabStop.is-end.isLanded{opacity:1;transform:none}
-.mlabJourney.isSequencing .mlabRisk{opacity:0;transform:translateY(6px);transition:opacity .36s ease .12s,transform .4s ease .12s}
-.mlabJourney.isSequencing .mlabRisk.isVisible{opacity:1;transform:none}
-
-/* Rerunning the simulation remounts this pair, so NL and BART always enter in
-   the same readable order with each vehicle, title, chart, and verdict kept
-   together. */
-.mlabRoutes.isSequenced .mlabRoute{animation:mlabPairIn .52s var(--ease-out) both;animation-delay:calc(var(--route-index) * .52s)}
-@keyframes mlabPairIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+/* Keep the journey and route comparison in place while their values update.
+   Hiding and remounting them made repeat runs visibly blink. */
 
 @media(max-width:860px){
  .mlabStepHead{grid-template-columns:30px minmax(0,1fr)}
@@ -239,10 +227,7 @@
 }
 
 @media(prefers-reduced-motion:reduce){
- .mlabJourney.isSequencing .mlabLeg,
- .mlabJourney.isSequencing .mlabStop.is-end,
- .mlabJourney.isSequencing .mlabRisk,
- .mlabRoutes.isSequenced .mlabRoute{opacity:1;transform:none;filter:none;transition:none;animation:none}
+ .mlabLegBar i,.mlabLegVal,.mlabStop.is-end .mlabGlyph{transition:none}
 }
 
 /* ── One step, mostly one screen ────────────────────────────────────────
@@ -261,11 +246,4 @@
  .mlabStep:first-of-type{padding-top:0}
 }
 
-/* The step itself settles in as it arrives; its inner simulation is armed by
-   the same observer, so nothing has run before it is on screen. */
-.mlabStep{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .7s var(--ease-out)}
-.mlabStep.isInView{opacity:1;transform:none}
-
-@media(prefers-reduced-motion:reduce){
- .mlabStep{opacity:1;transform:none;transition:none}
-}
+/* Steps remain readable while the sampled values and histogram animate. */

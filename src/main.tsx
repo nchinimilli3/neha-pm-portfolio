@@ -713,6 +713,9 @@ function ToolLogoStrip({id}){const items=toolSets[id]||[];if(!items.length)retur
 const revealSkip='.caseLead,.cdAnswer,.carBand,.lcRoad,.sandboxSection,.iphoneDemoStage,.kohlerSurface,.requestApp,.accentureSchemaWindow,.fvSurveyExperiment,.fvWorkbookBefore,.fvWorkbookGrid,.cmBoard,.cmLock,.bcThreadPhone,.axRide,.axStagger,.fseStagger,[data-stagger],.elScopeNotes,.bcPlan,.fseDeck,.fvBuildNav,.imageLightbox,.toolLogoRow,.fcvfRoadStage,.bartTrain,.elSizeToggle,.elViewport,.kxLineStage,svg';
 function useCaseReveal(id:string){
  useEffect(()=>{
+  // Commute sequences its own diagrams. A second page-wide fade hid sections
+  // during scrolling and made the model appear to disappear and reappear.
+  if(id==='commute')return;
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   let onScroll:(()=>void)|undefined;
   const timers:number[]=[];
@@ -1335,6 +1338,7 @@ const aboutFilmPhotos=[
 function BookRecForm(){
  const [book,setBook]=useState('');
  const [status,setStatus]=useState('idle');
+ const inputRef=useRef<HTMLInputElement>(null);
  const submit=async(e)=>{
    e.preventDefault();
    const value=book.trim();
@@ -1354,12 +1358,36 @@ function BookRecForm(){
      if(!response.ok)throw new Error('Submission failed');
      setBook('');
      setStatus('sent');
-     window.setTimeout(()=>setStatus('idle'),3500);
    }catch{
      setStatus('error');
    }
  };
- return <form className={`bookRecForm ${status}`} onSubmit={submit}><p className="bookRecTitle"><svg className="bookRecIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10 5 7 4.6 3.5 5v13c3.5-.4 6.5 0 8.5 1.5 2-1.5 5-1.9 8.5-1.5V5C17 4.6 14 5 12 6.5z"/><path d="M12 6.5v13"/></svg>Reading anything good? Send me a rec.</p><div className="bookRecRow"><input id="book-rec" aria-label="Leave me a book rec" value={book} onChange={e=>{setBook(e.target.value);if(status==='error'||status==='sent')setStatus('idle')}} placeholder={status==='sent'?'Added to my reading list :)':'Title and author'} autoComplete="off" disabled={status==='sending'||status==='sent'}/><button type="submit" disabled={!book.trim()||status==='sending'||status==='sent'}>{status==='sending'?'Sending…':status==='sent'?'Sent ✓':'Send →'}</button></div>{status==='error'&&<span className="bookRecStatus" role="status">Couldn’t send that one. Try again.</span>}{status==='sent'&&<span className="bookRecThanks" role="status"><svg className="bookAdded" viewBox="0 0 36 28" aria-hidden="true"><path className="bookAddedPages" d="M18 7C14.8 4.4 10.5 3.6 5 4.3v17.2c5.5-.7 9.8.1 13 2.7 3.2-2.6 7.5-3.4 13-2.7V4.3C25.5 3.6 21.2 4.4 18 7Z"/><path className="bookAddedSpine" d="M18 7v17.2"/><path className="bookAddedCheck" d="m11 13 3.2 3.2 7-7"/><circle cx="3" cy="6" r="1.2"/><circle cx="33" cy="2.5" r="1"/><path className="bookAddedSpark" d="M30 24h4M32 22v4"/></svg>Thanks—shelved for later.</span>}</form>
+ return <form className={`bookRecForm ${status}`} onSubmit={submit}>
+  <p className="bookRecTitle"><svg className="bookRecIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10 5 7 4.6 3.5 5v13c3.5-.4 6.5 0 8.5 1.5 2-1.5 5-1.9 8.5-1.5V5C17 4.6 14 5 12 6.5z"/><path d="M12 6.5v13"/></svg>Reading anything good? Send me a rec.</p>
+  {status==='sent' ? <div className="bookRecConfirmation" role="status">
+   <span className="bookRecConfirmCopy"><strong>Thanks! I’ll add it to my list :)</strong></span>
+   <button type="button" onClick={()=>{setStatus('idle');requestAnimationFrame(()=>inputRef.current?.focus())}}>Send another</button>
+   <svg className="bookRecScene" viewBox="0 0 100 76" aria-hidden="true" focusable="false">
+    <defs>
+     <linearGradient id="bookRecCoverFill" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#c87491"/><stop offset="1" stopColor="#8d3c5d"/></linearGradient>
+     <linearGradient id="bookRecPaperFill" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#fffdf8"/><stop offset="1" stopColor="#e9d9d5"/></linearGradient>
+    </defs>
+    <ellipse className="bookRecShadow" cx="50" cy="67" rx="42" ry="5"/>
+    <path className="bookRecCover" d="M50 17C39 11 24 11 8 17v43c15-5 30-4 42 4 12-8 27-9 42-4V17c-16-6-31-6-42 0Z"/>
+    <path className="bookRecPageEdge" d="M12 55c15-4 27-2 38 5 11-7 23-9 38-5v4c-15-4-27-2-38 5-11-7-23-9-38-5Z"/>
+    <path className="bookRecLeftPage" d="M50 19C40 13 26 13 12 18v36c14-4 27-2 38 6V19Z"/>
+    <path className="bookRecRightPage" d="M50 19c10-6 24-6 38-1v36c-14-4-27-2-38 6V19Z"/>
+    <path className="bookRecTurningPage" d="M50 19c10-6 24-6 38-1v36c-14-4-27-2-38 6V19Z"/>
+    <path className="bookRecPrint" d="M19 28c9-2 17-1 24 3M19 35c9-2 17-1 24 3M57 31c7-4 15-5 24-3M57 38c7-4 15-5 24-3"/>
+    <path className="bookRecSpine" d="M50 18v43"/>
+    <path className="bookRecBookmark" d="M67 16v17l-4-4-4 5V17"/>
+   </svg>
+  </div> : <div className="bookRecRow">
+   <input ref={inputRef} id="book-rec" aria-label="Leave me a book rec" value={book} onChange={e=>{setBook(e.target.value);if(status==='error')setStatus('idle')}} placeholder="Title and author" autoComplete="off" disabled={status==='sending'}/>
+   <button type="submit" disabled={!book.trim()||status==='sending'}>{status==='sending'?'Sending…':'Send →'}</button>
+  </div>}
+  {status==='error'&&<span className="bookRecStatus" role="status">Couldn’t send that one. Try again.</span>}
+ </form>
 }
 
 function Home({openCase}){
