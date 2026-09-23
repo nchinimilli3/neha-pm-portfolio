@@ -16,9 +16,11 @@ export default function EsteeCompact(){
    frame=0;
    if(!scene.current||!lid.current)return;
    const {top,height}=scene.current.getBoundingClientRect();
-   const entry=window.innerHeight*.92-height*.7;
+   // Start opening as soon as a quarter of the compact is on screen, so the lid is
+   // fully open while the compact is still in view rather than after it has scrolled past.
+   const entry=window.innerHeight*.95-height*.25;
    const bottomTop=top+window.scrollY-(document.documentElement.scrollHeight-window.innerHeight);
-   const travel=Math.max(1,Math.min(window.innerHeight*.4,entry-bottomTop-16));
+   const travel=Math.max(1,Math.min(window.innerHeight*.35,entry-bottomTop-16));
    const progress=reduced.matches?1:Math.max(0,Math.min(1,(entry-top)/travel));
    const eased=progress*progress*(3-2*progress);
    // Orthographic projection of a rigid lid rotating about its rear hinge.
