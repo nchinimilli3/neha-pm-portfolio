@@ -3028,45 +3028,6 @@ input,select,button{accent-color:var(--color-focus)}
 .aboutCopy p{max-width:76ch!important}
 .aboutCopy strong{font-weight:700!important}
 .hobbyLine{position:relative!important}
-.hobbyPopover{position:relative!important;display:inline!important}
-.hobbyPopoverTrigger{
-  appearance:none!important;
-  border:0!important;
-  border-bottom:1px dotted rgba(76,85,80,.48)!important;
-  background:transparent!important;
-  padding:0!important;
-  margin:0!important;
-  color:inherit!important;
-  font:inherit!important;
-  cursor:pointer!important;
-}
-.hobbyPopoverCard{
-  position:absolute!important;
-  z-index:30!important;
-  left:50%!important;
-  bottom:calc(100% + 12px)!important;
-  transform:translate(-50%,6px)!important;
-  width:max-content!important;
-  min-width:220px!important;
-  max-width:min(290px,80vw)!important;
-  padding:16px 16px!important;
-  display:flex!important;
-  flex-direction:column!important;
-  gap:4px!important;
-  border:1px solid rgba(38,44,41,.08)!important;
-  border-radius:var(--r-sm)!important;
-  background:rgba(250,248,243,.98)!important;
-  box-shadow:var(--shadow-soft)!important;
-  opacity:0!important;
-  visibility:hidden!important;
-  pointer-events:none!important;
-  transition:opacity .16s ease,transform .16s ease,visibility .16s!important;
-  text-align:left!important;
-}
-.hobbyPopoverCard strong{font-size:var(--t-micro)!important;font-weight:700!important;letter-spacing:.01em!important;color:#6a706d!important;margin-bottom:4px!important}
-.hobbyPopoverCard>span{font-size:var(--t-meta)!important;line-height:1.35!important;color:#2f3632!important;white-space:nowrap!important}
-.hobbyPopover:hover .hobbyPopoverCard,.hobbyPopover:focus-within .hobbyPopoverCard{opacity:1!important;visibility:visible!important;transform:translate(-50%,0)!important}
-.hobbyPopoverTrigger:focus-visible{outline:2px solid rgba(98,87,168,.25)!important;outline-offset:3px!important;border-radius:var(--r-sm)!important}
 .aboutActions{display:flex!important;align-items:flex-start!important;gap:24px!important;flex-wrap:wrap!important;margin-top:24px!important}
 .photoCta{display:inline-flex!important;align-items:center!important;min-height:44px!important;font-size:14px!important;font-weight:700!important;text-decoration:none!important}
 
@@ -3158,8 +3119,6 @@ input,select,button{accent-color:var(--color-focus)}
   .aboutSection{grid-template-columns:1fr!important;gap:32px!important}
   .aboutPhoto{max-width:460px!important}
   .aboutActions{display:block!important}
-  .hobbyPopoverCard{left:0!important;transform:translate(0,6px)!important}
-  .hobbyPopover:hover .hobbyPopoverCard,.hobbyPopover:focus-within .hobbyPopoverCard{transform:translate(0,0)!important}
   .photoCarouselStage.portrait{max-width:82vw!important}
 }
 

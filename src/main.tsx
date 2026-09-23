@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 import './estee.css';
@@ -8,6 +8,7 @@ import { SurveyDemo } from './FCVFResearch';
 import { KohlerAssembly, KohlerBoxOpen, KohlerDelivery, KohlerExceptions, KohlerOrderHold, KohlerPrinciples, KohlerRoles } from './KohlerVisuals';
 import { AccentureBoundary, AccentureEvidenceFunnel, AccentureStagger, AccentureToolRelay } from './AccentureVisuals';
 import AboutFilmCamera from './AboutFilmCamera';
+import { AboutBookshelf, AboutRealityTV, type ShelfBook, type TvShow } from './AboutHobbies';
 import FinSimpleCase from './FinSimpleCase';
 import FinSimpleEstimateDemo from './FinSimpleEstimateDemo';
 import './accenture-v2.css';
@@ -762,7 +763,7 @@ const caseAnswers={
   problem:'Commute tells me the latest time I can wake up and still reliably arrive by 9:00. It learns how long my own morning takes, watches live transit and traffic, and tests possible routes before recommending one plan.',
   owned:'I defined the product, built the SwiftUI app and monitoring service, designed the prediction model, and tested it across 40 weekday mornings.',
   call:'Recommend the latest wake-up time that still clears my on-time threshold.',
-  callHref:'#cm-decide',
+  callHref:'#cm-algorithm',
   evidence:'To make that recommendation, Commute simulates 1,000 possible mornings for each reachable departure, using routine history plus live walking, wait, traffic, and transit ranges. It selects the latest plan that clears the on-time threshold, then rechecks it as live conditions change.',
   result:'Used every weekday for 8 weeks. It replaced repeated map checks with one wake time, one route, and a notification only when the plan needed to change.'
  },
@@ -794,6 +795,7 @@ const caseAnswers={
   problem:'The CSE 477 brief was open-ended: build a real-time chat room with messages and join and leave events. A generic chat app would meet it, but there would be no clear bar for “good.”',
   owned:'I chose the direction, defined the scope, and built it solo in HTML, CSS, JavaScript, and Socket.IO.',
   call:'Typing and reactions are temporary state, not messages in the history.',
+  callHref:'#ch-design',
   evidence:'Everyone who would use it already knew iMessage, so their expectations became my spec: any detail that felt off would be noticed immediately.',
   result:'Typing expires instead of becoming chat history, and a Tapback updates the existing message rather than adding a second one.'
  },
@@ -905,12 +907,14 @@ function CaseStudy({id,onBack}){
  const openClickedImage=(e)=>{const img=e.target instanceof HTMLImageElement?e.target:null;if(!img||img.closest('.caseCompanyBar')||img.closest('.toolLogoSection')||img.closest('[data-no-lightbox]')||img.closest('.kohlerStory')||img.closest('.caseHeroLogoWrap')||img.classList.contains('companyLogo'))return;setLightbox({src:img.currentSrc||img.src,alt:img.alt||'Project image'})};
  const openDeepSection=(e)=>{
   openClickedImage(e);
-  if(readingMode!=='skim')return;
+  // The site routes on the URL hash, so a plain '#section' link would leave the
+  // case study. Scroll to it instead, opening the in-depth read first if needed.
   const anchor=(e.target as HTMLElement).closest('a[href^="#"]') as HTMLAnchorElement|null;
   const href=anchor?.getAttribute('href');
   if(!href||href==='#'||href.startsWith('#/'))return;   // '#/projects/…' is a route, not a section
-  e.preventDefault();setReadingMode('deep');
-  window.setTimeout(()=>document.querySelector(href)?.scrollIntoView({behavior:'smooth',block:'start'}),50);
+  e.preventDefault();
+  if(readingMode==='skim')setReadingMode('deep');
+  window.setTimeout(()=>document.getElementById(href.slice(1))?.scrollIntoView({behavior:'smooth',block:'start'}),readingMode==='skim'?50:0);
  };
  return <main className={`casePage case-${id} ${readingMode==='skim'?'isSkim':'isDeep'}`} onClick={openDeepSection}><AuraField tone={id}/><div className="caseReadingBar"><button className="backBtn" onClick={onBack}>← Selected work</button><div className="caseReadingControl"><div className="caseReadingToggle" role="group" aria-label="Case study reading depth"><button type="button" aria-pressed={readingMode==='skim'} onClick={()=>setReadingMode('skim')}><b>Skim</b></button><button type="button" aria-pressed={readingMode==='deep'} onClick={()=>setReadingMode('deep')}><b>In depth</b></button></div></div></div><section className="caseLead"><header className="caseHeader"><CaseCompanyBar id={id} fallback={p.company}/><h1>{p.title}</h1><div className="caseIntro">{p.summary}</div>{id==='bookclub'&&<a className="bookclubLiveLink" href={BOOKCLUB_LIVE_URL} target="_blank" rel="noreferrer" aria-label="Open the live Bookclub app in a new tab">Open live app ↗</a>}</header><div className="caseHeroMedia casePreviewHero"><ProjectVisual type={p.media}/></div>{metrics[id]&&<MetricStrip items={metrics[id]}/>}<ToolLogoStrip id={id}/></section>
  {caseAnswers[id]&&<CaseAnswer key={id} {...caseAnswers[id]} stat={metrics[id]?.some(([v])=>v===caseAnswers[id].stat?.value)?undefined:caseAnswers[id].stat}/>}
@@ -1308,20 +1312,6 @@ function EducationSection(){
 }
 
 
-function HobbyPopover({label,title,items,variant=''}){
-  // Books fall onto the shelf the first time it opens; after that they're already there.
-  const [dropped,setDropped]=useState('');
-  if(variant==='shelf'){
-    // [bookcloth, foil, length]: oxblood, bottle green, ochre (stamped in dark foil), navy, rust
-    const spines=[['#6d2631','#d6b066',150],['#264a3f','#d3ad63',168],['#b6863a','#3b2612',140],['#28314f','#d4b06a',158],['#7c3a29','#d6b066',146]];
-    return <span className="hobbyPopover" onMouseEnter={()=>setDropped(d=>d||'dropping')} onFocus={()=>setDropped(d=>d||'dropping')} onMouseLeave={()=>setDropped(d=>d==='dropping'?'done':d)} onBlur={()=>setDropped(d=>d==='dropping'?'done':d)}><button type="button" className="hobbyPopoverTrigger">{label}</button><span className={`hobbyShelf${dropped==='dropping'?' isDropping':dropped===''?' isFresh':''}`} role="tooltip"><strong>{title}</strong><span className="shelfBooks">{items.map((item,i)=>{const [bg,fg,h]=spines[i%spines.length];return <span key={item} className="shelfBook" style={{'--bg':bg,'--fg':fg,'--h':`${h}px`,'--k':i} as React.CSSProperties}><em>{item}</em></span>})}</span><span className="shelfBoard" aria-hidden="true"/></span></span>;
-  }
-  if(variant==='tv'){
-    return <span className="hobbyPopover"><button type="button" className="hobbyPopoverTrigger">{label}</button><span className="hobbyTv" role="tooltip"><span className="tvAntenna" aria-hidden="true"/><span className="tvBody"><span className="tvScreen"><strong>{title}</strong>{items.map((item,i)=><span key={item} className="tvShow" style={{'--k':i,'--n':items.length} as React.CSSProperties}><b>CH {i+2}</b>{item}</span>)}</span><span className="tvKnobs" aria-hidden="true"><i/><i/><span/></span></span><span className="tvLegs" aria-hidden="true"/></span></span>;
-  }
-  return <span className="hobbyPopover"><button type="button" className="hobbyPopoverTrigger">{label}</button><span className="hobbyPopoverCard" role="tooltip"><strong>{title}</strong>{items.map(item=><span key={item}>{item}</span>)}</span></span>
-}
-
 const aboutFilmPhotos=[
   {src:'project-media/about-film/01.jpg',width:1050,height:650,alt:'Golden Gate Bridge and Baker Beach framed by dark tree branches'},
   {src:'project-media/about-film/02.jpg',width:1002,height:1512,alt:'Yosemite granite cliffs rising above a green meadow and trees'},
@@ -1335,6 +1325,18 @@ const aboutFilmPhotos=[
   {src:'project-media/about-film/10.jpg',width:1333,height:883,alt:'Painted Ladies with the San Francisco skyline in the distance'}
 ];
 
+const shelfBooks:ShelfBook[]=[
+  {title:'A Thousand Splendid Suns',author:'Khaled Hosseini',cloth:'#6d2631',foil:'#d6b066',motif:'sun'},
+  {title:'When Breath Becomes Air',author:'Paul Kalanithi',cloth:'#264a3f',foil:'#d3ad63',motif:'breath'},
+  {title:'The Year of Magical Thinking',author:'Joan Didion',cloth:'#b6863a',foil:'#3b2612',motif:'moons'},
+  {title:'Sharp Objects',author:'Gillian Flynn',cloth:'#28314f',foil:'#d4b06a',motif:'shards'}
+];
+const tvShows:TvShow[]=[
+  {title:'Modern Family',kicker:'Sitcom',from:'#ffcf7a',to:'#e0793f',doodle:'house'},
+  {title:'Vanderpump Rules',kicker:'Reality',from:'#f7a9c0',to:'#b0406a',doodle:'glass'},
+  {title:'Summer House',kicker:'Reality',from:'#8fdde0',to:'#2b8aa6',doodle:'beach'},
+  {title:'Real Housewives',kicker:'The newest season',from:'#d8c2f2',to:'#6f4db3',doodle:'diamond'}
+];
 
 function BookRecForm(){
  const [book,setBook]=useState('');
@@ -1400,8 +1402,16 @@ function Home({openCase}){
  useEffect(()=>{const nav=navRef.current;if(!nav)return;const a=activeSection&&nav.querySelector(`a[href="#${activeSection}"]`);if(!a){setNavInd(v=>({...v,opacity:0}));return}setNavInd({opacity:1,width:`${a.offsetWidth}px`,transform:`translateX(${a.offsetLeft}px)`})},[activeSection]);
  useEffect(()=>{if(!navOpen)return;const k=e=>{if(e.key==='Escape')setNavOpen(false)};window.addEventListener('keydown',k);return()=>window.removeEventListener('keydown',k)},[navOpen]);
  const [heroPointerActive,setHeroPointerActive]=useState(false);
- const [filmOpen,setFilmOpen]=useState(false);
+ // The About photo can be taken over by the film camera, the bookshelf, or the TV: one at a time.
+ const [aboutView,setAboutView]=useState<'photo'|'film'|'books'|'tv'>('photo');
  const [filmIndex,setFilmIndex]=useState(0);
+ const aboutPhotoRef=useRef<HTMLDivElement>(null);
+ const openAbout=(view:'film'|'books'|'tv')=>{
+   setAboutView(view);
+   // Stacked layouts put the photo above the copy, so bring it into view.
+   requestAnimationFrame(()=>{const r=aboutPhotoRef.current?.getBoundingClientRect();if(r&&(r.top<60||r.top>window.innerHeight*.55))window.scrollTo({top:window.scrollY+r.top-88,behavior:'smooth'})});
+ };
+ const closeAbout=useCallback(()=>setAboutView('photo'),[]);
  const serious=['fcvf','accenture','finsimple','kohler','marketExpansion','estee'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
  const fun=['commute','bookclub','scheduler','chat'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
  const moveHeroAura=e=>{
@@ -1444,7 +1454,7 @@ function Home({openCase}){
                   </div>
                   </section>
   <section id="about" className="section aboutSection">
-    <div className="aboutPhoto"><AboutFilmCamera photos={aboutFilmPhotos} open={filmOpen} index={filmIndex} onClose={()=>setFilmOpen(false)} onChange={setFilmIndex}/></div><div className="aboutCopy"><h2>About me</h2><p>I’m Neha, finishing <strong>two degrees at Michigan State in Computer Science and Supply Chain Management</strong>. I’m drawn to work where I can understand why a system is hard to use, decide what should change, and help ship a better version. I’m a <span className="creativeWord" tabIndex={0} aria-label="creative">{"creative".split("").map((c,i)=><span key={i} aria-hidden="true" style={{"--i":i} as React.CSSProperties}>{c}</span>)}<svg className="creativeLine" viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path d="M3 9 C 18 3, 30 13, 46 7 S 74 3, 88 8 S 108 12, 117 5"/></svg><svg className="creativeWash" viewBox="-130 -70 260 140" aria-hidden="true">
+    <div className="aboutPhoto" ref={aboutPhotoRef}>{aboutView==='books'?<AboutBookshelf books={shelfBooks} onClose={closeAbout}/>:aboutView==='tv'?<AboutRealityTV shows={tvShows} onClose={closeAbout}/>:<AboutFilmCamera photos={aboutFilmPhotos} open={aboutView==='film'} index={filmIndex} onClose={closeAbout} onChange={setFilmIndex}/>}</div><div className="aboutCopy"><h2>About me</h2><p>I’m Neha, finishing <strong>two degrees at Michigan State in Computer Science and Supply Chain Management</strong>. I’m drawn to work where I can understand why a system is hard to use, decide what should change, and help ship a better version. I’m a <span className="creativeWord" tabIndex={0} aria-label="creative">{"creative".split("").map((c,i)=><span key={i} aria-hidden="true" style={{"--i":i} as React.CSSProperties}>{c}</span>)}<svg className="creativeLine" viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path d="M3 9 C 18 3, 30 13, 46 7 S 74 3, 88 8 S 108 12, 117 5"/></svg><svg className="creativeWash" viewBox="-130 -70 260 140" aria-hidden="true">
  <defs>
   <filter id="wcBleed" x="-30%" y="-30%" width="160%" height="160%">
    <feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="3" seed="7" result="n"/>
@@ -1460,7 +1470,7 @@ function Home({openCase}){
   {[[-70,-8,34,'wcRose'],[-22,-30,28,'wcPeach'],[34,-22,32,'wcCoral'],[78,6,26,'wcGold'],[-40,26,24,'wcPeach'],[22,30,27,'wcRose'],[-98,14,15,'wcCoral'],[100,-28,13,'wcRose']].map(([x,y,r,f],i)=><circle key={i} className="wcPool" cx={x} cy={y} r={r} fill={`url(#${f})`} style={{"--k":i} as React.CSSProperties}/>)}
   {[[-112,-34,2.6,'#d9587e'],[-86,-48,1.6,'#e8844f'],[112,32,2.2,'#d9604f'],[92,48,1.4,'#e0a13a'],[-60,50,1.8,'#d9587e'],[58,-50,2,'#e8844f'],[124,-6,1.3,'#d9587e'],[-124,40,1.2,'#e0a13a']].map(([x,y,r,c],i)=><circle key={'d'+i} className="wcDrop" cx={x} cy={y} r={r} fill={c as string} style={{"--k":i} as React.CSSProperties}/>)}
  </g>
-</svg></span> at heart, so I care about how a product feels, not only whether it works. I’ve built customer-facing software at Ford and Ford Credit and worked on product and business problems at Accenture and Spectrum. That mix is why I’m pursuing product management.</p><p className="hobbyLine">Outside of work, I’m usually trying a new coffee shop<span className="coffeeCup" aria-hidden="true"><svg viewBox="0 0 24 24"><path className="steam s1" d="M9.5 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/><path className="steam s2" d="M13 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/><path className="cupLine" d="M5 11h13v3.5A5.5 5.5 0 0 1 12.5 20h-2A5.5 5.5 0 0 1 5 14.5z"/><path className="cupLine" d="M18 12.2h.9a2.2 2.2 0 0 1 0 4.4h-1.3"/><path className="cupLine" d="M4 22h15"/></svg></span>, traveling, <HobbyPopover variant="shelf" label="reading" title="On my shelf" items={["A Thousand Splendid Suns","When Breath Becomes Air","The Year of Magical Thinking","Sharp Objects"]}/>, keeping up with <HobbyPopover variant="tv" label="reality TV" title="Always on rotation" items={["Modern Family","Vanderpump Rules","Summer House","the newest Real Housewives season"]}/>, baking, hiking, painting, or taking <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>{setFilmOpen(true);setFilmIndex(0)}} aria-expanded={filmOpen}>film photos</button><span className="filmPhotoHint" role="tooltip">click to see my photos</span></span>.</p><div className="aboutActions"><BookRecForm/></div></div></section>
+</svg></span> at heart, so I care about how a product feels, not only whether it works. I’ve built customer-facing software at Ford and Ford Credit and worked on product and business problems at Accenture and Spectrum. That mix is why I’m pursuing product management.</p><p className="hobbyLine">Outside of work, I’m usually trying a new coffee shop<span className="coffeeCup" aria-hidden="true"><svg viewBox="0 0 24 24"><path className="steam s1" d="M9.5 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/><path className="steam s2" d="M13 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/><path className="cupLine" d="M5 11h13v3.5A5.5 5.5 0 0 1 12.5 20h-2A5.5 5.5 0 0 1 5 14.5z"/><path className="cupLine" d="M18 12.2h.9a2.2 2.2 0 0 1 0 4.4h-1.3"/><path className="cupLine" d="M4 22h15"/></svg></span>, traveling, <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>openAbout('books')} aria-expanded={aboutView==='books'}>reading</button><span className="filmPhotoHint" role="tooltip">click to see my shelf</span></span>, keeping up with <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>openAbout('tv')} aria-expanded={aboutView==='tv'}>reality TV</button><span className="filmPhotoHint" role="tooltip">click to turn it on</span></span>, baking, hiking, painting, or taking <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>{openAbout('film');setFilmIndex(0)}} aria-expanded={aboutView==='film'}>film photos</button><span className="filmPhotoHint" role="tooltip">click to see my photos</span></span>.</p><div className="aboutActions"><BookRecForm/></div></div></section>
  </main><footer className="siteFooter"><span>© 2026 Neha Chinimilli</span><nav aria-label="Footer"><a href="mailto:chinimi2@msu.edu">Email</a><a className="linkedinLink" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Visit Neha Chinimilli on LinkedIn (opens in a new tab)"><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M19.5 3h-15A1.5 1.5 0 0 0 3 4.5v15A1.5 1.5 0 0 0 4.5 21h15a1.5 1.5 0 0 0 1.5-1.5v-15A1.5 1.5 0 0 0 19.5 3ZM8.25 18.25H5.75v-8h2.5v8ZM7 9.15a1.45 1.45 0 1 1 0-2.9 1.45 1.45 0 0 1 0 2.9Zm11.25 9.1h-2.5v-3.9c0-.93-.02-2.12-1.29-2.12-1.3 0-1.5 1.01-1.5 2.05v3.97h-2.5v-8h2.4v1.09h.04c.33-.64 1.15-1.32 2.37-1.32 2.54 0 3.01 1.67 3.01 3.84v4.39Z"/></svg><span>LinkedIn</span><span aria-hidden="true">↗</span></a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></nav></footer>
  </>
 }
