@@ -84,8 +84,6 @@ button.fsdPdf:hover{background:#eef4ff}
 .fsdLink:hover{text-decoration:underline}
 .fsdLink svg{width:14px;height:16px}
 .fsdToast{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);padding:10px 16px;border-radius:4px;background:var(--fsd-navy);color:#fff;font-size:13px;box-shadow:0 6px 16px #00095b40;animation:fsdIn .3s ease both}
-.fsdToast em{font-style:normal;opacity:.7}
-.fsdFootnote{margin:0;font-size:12px;color:#7a7d89}
 
 @media(max-width:900px){.fsdBar{flex-direction:column;align-items:flex-start}.fsdHeader,.fsdTitle{padding-left:20px;padding-right:20px}.fsdBody{padding:16px}.fsdFields{grid-template-columns:1fr}.fsdResult{flex-wrap:wrap;gap:16px}}
 @media(prefers-reduced-motion:reduce){.fsdNext,.fsdTabs .isCue,.fsdCard,.fsdResult,.fsdTable tr.isNew td,.fsdToast{animation:none!important}}

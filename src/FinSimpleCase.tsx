@@ -225,7 +225,7 @@ export default function FinSimpleCase({setLightbox}){
      <path d="M512 112h28" className="fseSignArrow"/><path d="M534 108l6 4-6 4" className="fseSignArrow"/>
     </g>
    </svg>
-   <p className="fseFreewayNote"><b>5</b> workstreams<b>15%</b> less calendar time per story</p>
+   <p className="fseFreewayNote"><span><b>5</b> workstreams</span><span><b>15%</b> less calendar time per story</span></p>
   </figure>
   <DecisionMoment
    statement={<>Nobody owned the<br/>release sequence.</>}

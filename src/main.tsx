@@ -1442,7 +1442,7 @@ function ScrollToTopButton(){
  const [visible,setVisible]=useState(false);
  const [progress,setProgress]=useState(0);
  useEffect(()=>{const update=()=>{setVisible(window.scrollY>520);const max=document.documentElement.scrollHeight-window.innerHeight;setProgress(max>0?Math.min(1,window.scrollY/max):0)};update();window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update);return()=>{window.removeEventListener('scroll',update);window.removeEventListener('resize',update)}},[]);
- return <button type="button" className={`scrollTopButton ${visible?'visible':''}`} onClick={()=>window.scrollTo({top:0,behavior:'smooth'})} aria-label="Back to top" title="Back to top"><svg className="scrollRing" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" className="scrollRingTrack"/><circle cx="24" cy="24" r="22" className="scrollRingFill" style={{strokeDashoffset:138.2*(1-progress)}}/></svg><span aria-hidden="true">↑</span></button>
+ return <button type="button" className={`scrollTopButton ${visible?'visible':''}`} onClick={()=>window.scrollTo({top:0,behavior:'smooth'})} aria-label="Back to top" title="Back to top"><svg className="scrollRing" viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="scrollRingInk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" className="scrollRingStop1"/><stop offset="1" className="scrollRingStop2"/></linearGradient></defs><circle cx="24" cy="24" r="22" className="scrollRingTrack"/><circle cx="24" cy="24" r="22" className="scrollRingFill" style={{strokeDashoffset:138.2*(1-progress)}}/></svg><span aria-hidden="true">↑</span></button>
 }
 
 function App(){

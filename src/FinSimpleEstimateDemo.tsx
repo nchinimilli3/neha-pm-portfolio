@@ -177,10 +177,9 @@ export default function FinSimpleEstimateDemo() {
               </section>
             )}
           </div>
-          {toast && <p className="fsdToast" role="status">{toast} <em>(sample)</em></p>}
+          {toast && <p className="fsdToast" role="status">{toast}</p>}
         </div>
       </div>
-      <p className="fsdFootnote">Reproduction of the shipped Vehicle Estimate page. Vehicles, VINs, and amounts are sample data; the estimate form is simplified.</p>
     </div>
   );
 }

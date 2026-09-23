@@ -86,9 +86,9 @@
 .fseSignTitle{font:600 12px var(--case-font);fill:#fff;text-anchor:middle}
 .fseSignBig{font:700 20px var(--case-font);fill:#fff;text-anchor:middle}
 .fseSignArrow{fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.fseEditorial .fseFreewayNote{display:flex;flex-wrap:wrap;gap:4px 24px;max-width:none;margin:16px 0 0;font-size:15px;color:#34546e}
-.fseFreewayNote b{margin-right:-16px;font-size:28px;font-weight:600;letter-spacing:-.03em;color:#153f66}
-.fseFreewayNote b{margin-right:8px}
+.fseEditorial .fseFreewayNote{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 48px;max-width:none;margin:16px 0 0;font-size:15px;color:#34546e}
+.fseFreewayNote span{display:inline-flex;align-items:baseline;gap:10px}
+.fseFreewayNote b{font-size:28px;line-height:1;font-weight:600;letter-spacing:-.03em;color:#153f66;font-variant-numeric:tabular-nums}
 
 /* Grouped items appear one by one. */
 .fseStagger>*{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s var(--ease-out);transition-delay:calc(var(--si,0) * .25s)}
