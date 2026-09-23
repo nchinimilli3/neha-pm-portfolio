@@ -19,6 +19,7 @@ import { SchedulerDemo, SchedulerFlatten, SchedulerSync } from './SchedulerVisua
 import LifecycleRoad from './LifecycleRoad';
 import {BookclubEditorial, BookclubEditorialHero} from './BookclubEditorial';
 import { GrazeArtifacts, GrazeBriefFacts, GrazeGrowth, GrazeHero, GrazeLocations, GrazePrepSteps, GrazeProjectPreview, GrazeRecipe } from './GrazeExperience';
+import { GrazeScorecardDemo } from './GrazeScorecardDemo';
 import './fcvf.css';
 import './annotation-fixes.css';
 import './annotation-final.css';
@@ -863,7 +864,7 @@ function CaseSkimDemo({id,setLightbox}:{id:string,setLightbox:(img:{src:string,a
  if(id==='scheduler')return <section className="caseSkimDemo schedulerDemo" aria-label="Try the scheduler"><header><h2>Try the product</h2></header><SchedulerDemo/></section>;
  if(id==='chat')return <section className="caseSkimDemo" aria-label="Try the chat product"><header><h2>Try the product</h2></header><ChatSandbox/></section>;
  if(id==='kohler')return <section className="caseSkimDemo kohlerProductStage" aria-label="Try the export workflow"><header><h2>Try the product</h2></header><KohlerProductSurface compact/></section>;
- if(id==='marketExpansion')return <section className="caseSkimDemo" aria-label="Explore the market comparison"><header><h2>Try the scorecard</h2></header><GrazeLocations/></section>;
+ if(id==='marketExpansion')return <section className="caseSkimDemo" aria-label="Explore the market comparison"><header><h2>Try the scorecard</h2></header><GrazeScorecardDemo/></section>;
  if(id==='fcvf')return <section className="caseSkimDemo" aria-label="Try the assessment decision"><header><h2>Try the key decision</h2></header><SurveyDemo/></section>;
  if(id==='accenture')return <section className="caseSkimDemo" aria-label="Try the request workflow"><header><h2>Try the workflow</h2></header><AccentureRequestRelay/></section>;
  // No interaction to offer here: the deliverable was the released experience, so the skim
