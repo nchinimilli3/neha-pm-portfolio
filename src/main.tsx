@@ -30,8 +30,8 @@ import CommuteCase from './CommuteCase';
 import { CommutePhoneDemo, useMorning } from './CommuteSurfaces';
 import { CaseAnswer, CaseChapter, CaseResults, CausalChain, CountUp, DecisionMoment, Tradeoff } from './CaseDecision';
 import { CarBand } from './CarArt';
-import './responsive-v44.css';
 import './case-system.css';
+import './responsive-v44.css';
 
 const assetUrl=src=>{
   if(/^https?:\/\//.test(src))return src;

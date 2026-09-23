@@ -1,8 +1,4 @@
-/* =========================================================
-   V44 — iPad and wide-monitor passes.
-   Both are scoped away from the desktop range (1201–1699px),
-   which is deliberately left exactly as it was.
-   ========================================================= */
+/* iPad and wide monitor adjustments. The 1201–1699px desktop range is unchanged. */
 
 /* ---------- iPad landscape and the gap above the phone rules ----------
    Below 851px the site already stacks. Between there and 1200px the
@@ -16,24 +12,21 @@
   .expColumns{grid-template-columns:repeat(2,minmax(0,1fr))!important}
   .expMetricRow{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 
-  /* The portrait is absolutely positioned against the hero's right edge.
-     At desktop widths the text columns stop well short of it; in this range
-     they do not, and the tagline runs under the photo. Reserve the portrait's
-     column instead of narrowing each paragraph separately. */
-  .v28Hero .heroInner,.heroInner{padding-right:clamp(240px,25vw,304px)!important}
-  .heroThesis,.heroTagline{max-width:none!important}
 }
 
-/* ---------- wide monitors ----------
-   The page is capped at 1420px, which reads as a narrow column once the
-   display is wider than about 1700px. The cap grows; nothing else does,
-   so line lengths and type sizes stay where they were tuned. */
+/* The portrait moves beside the copy above 1000px. Reserve its space only
+   while it is beside the copy; below that it sits above the text. */
+@media(min-width:1001px) and (max-width:1200px){
+  .homePage .heroInner{padding-right:clamp(240px,25vw,304px)!important}
+  .homePage .heroThesis,.homePage .heroTagline{max-width:none!important}
+}
+
+/* A wider home gallery uses monitor space while case-study reading columns
+   retain their intentional 1180px line length. The case canvas stays full
+   viewport width so its background and centered content never shift left. */
 @media(min-width:1700px){
-  .v28Hero .heroInner,.heroInner,.section,.siteFooter,.caseLead,.casePage{
-    width:min(1660px,calc(100% - 96px))!important;
-    max-width:1660px!important;
-  }
-  /* Keep the logo strip's left edge on the same line as the content above it
-     instead of letting it spread the full width of the display. */
-  .companyBanner{padding-inline:max(64px,calc((100% - 1664px)/2))!important}
+  .homePage{--cs-max:1480px}
+  .siteHeader{padding-inline:max(48px,calc((100% - 1480px)/2))!important}
+  .siteFooter{width:min(1480px,calc(100% - 96px))!important;max-width:1480px!important}
+  main.casePage{width:100%!important;max-width:none!important}
 }
