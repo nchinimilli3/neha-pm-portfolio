@@ -4,12 +4,14 @@ import React from 'react';
 // Reference: https://ford.bg/cars/mustang-mach-e
 // Coordinates follow the reference photograph; the group maps them into 800 × 410.
 export default function MachEArtwork({ className = '' }: { className?: string }) {
+ // Per-instance gradient ids: this artwork can be on the page more than once.
+ const _u = React.useId().replace(/:/g, '');
  const wheel = (x: number, name: string) => <g>
   <circle cx={x} cy="664" r="102" fill="#11161d" stroke="#202832" strokeWidth="3"/>
   <circle cx={x} cy="664" r="88" fill="#1b222b" stroke="#454d57" strokeWidth="2"/>
   <circle cx={x} cy="664" r="72" fill="#101923" stroke="#77818b" strokeWidth="4"/>
   <path d={`M${x+36} 620Q${x+53} 627 ${x+51} 664L${x+44} 687L${x+30} 685L${x+32} 639Z`} fill="#a52c39"/>
-  <g className={`meWheel ${name}`}>{Array.from({length:10},(_,i)=><g key={i} transform={`rotate(${i*36} ${x} 664)`}><path d={`M${x-7} 649L${x-20} 598L${x-9} 594L${x+4} 648Z`} fill="url(#maAlloy)" stroke="#202a36" strokeWidth="2"/><path d={`M${x+5} 646L${x+24} 599L${x+33} 605L${x+16} 652Z`} fill="#687887" stroke="#222d36" strokeWidth="2"/></g>)}</g>
+  <g className={`meWheel ${name}`}>{Array.from({length:10},(_,i)=><g key={i} transform={`rotate(${i*36} ${x} 664)`}><path d={`M${x-7} 649L${x-20} 598L${x-9} 594L${x+4} 648Z`} fill={`url(#maAlloy${_u})`} stroke="#202a36" strokeWidth="2"/><path d={`M${x+5} 646L${x+24} 599L${x+33} 605L${x+16} 652Z`} fill="#687887" stroke="#222d36" strokeWidth="2"/></g>)}</g>
   <circle cx={x} cy="664" r="19" fill="#29333d" stroke="#94a1ad" strokeWidth="2"/>
   {[0,72,144,216,288].map(a=><circle key={a} cx={x+Math.cos(a*Math.PI/180)*27} cy={664+Math.sin(a*Math.PI/180)*27} r="4" fill="#d5dce2"/>)}
   <circle cx={x} cy="664" r="8" fill="#bcc7ce"/>
@@ -17,30 +19,30 @@ export default function MachEArtwork({ className = '' }: { className?: string })
  </g>;
  return <svg className={`meIllustration ${className}`} viewBox="0 0 800 410" role="img" aria-label="Original blue Mustang Mach-E side-profile illustration, shaped from Ford's official photo, with curved panoramic roof, rising quarter window, sculpted doors and large alloy wheels.">
  <defs>
-  <linearGradient id="maPaint" x1="0" y1="0" x2=".08" y2="1"><stop stopColor="#6ca5c9"/><stop offset=".19" stopColor="#1675b2"/><stop offset=".35" stopColor="#0b5284"/><stop offset=".49" stopColor="#238dcc"/><stop offset=".62" stopColor="#08608f"/><stop offset=".86" stopColor="#0588ca"/><stop offset="1" stopColor="#074675"/></linearGradient>
-  <linearGradient id="maGlass" x2=".6" y2="1"><stop stopColor="#68717b"/><stop offset=".24" stopColor="#313d4a"/><stop offset="1" stopColor="#162839"/></linearGradient>
-  <linearGradient id="maAlloy" x2=".7" y2="1"><stop stopColor="#a1adb8"/><stop offset=".5" stopColor="#566371"/><stop offset=".65" stopColor="#b7c2cc"/><stop offset="1" stopColor="#434f5b"/></linearGradient>
-  <linearGradient id="maBelly" x2="0" y2="1"><stop stopColor="#00517b" stopOpacity=".1"/><stop offset=".34" stopColor="#003c63" stopOpacity=".8"/><stop offset=".7" stopColor="#03416a" stopOpacity=".75"/><stop offset="1" stopColor="#32b8ef" stopOpacity=".4"/></linearGradient>
-  <linearGradient id="maShoulder" x2="0" y2="1"><stop stopColor="#4ac4fd" stopOpacity=".7"/><stop offset="1" stopColor="#006299" stopOpacity="0"/></linearGradient>
-  <linearGradient id="meTrail"><stop stopColor="#60aaff" stopOpacity="0"/><stop offset="1" stopColor="#72bcff"/></linearGradient>
-  <filter id="maShadow" x="-.1" y="-1" width="1.2" height="3"><feGaussianBlur stdDeviation="10"/></filter>
+  <linearGradient id={`maPaint${_u}`} x1="0" y1="0" x2=".08" y2="1"><stop stopColor="#6ca5c9"/><stop offset=".19" stopColor="#1675b2"/><stop offset=".35" stopColor="#0b5284"/><stop offset=".49" stopColor="#238dcc"/><stop offset=".62" stopColor="#08608f"/><stop offset=".86" stopColor="#0588ca"/><stop offset="1" stopColor="#074675"/></linearGradient>
+  <linearGradient id={`maGlass${_u}`} x2=".6" y2="1"><stop stopColor="#68717b"/><stop offset=".24" stopColor="#313d4a"/><stop offset="1" stopColor="#162839"/></linearGradient>
+  <linearGradient id={`maAlloy${_u}`} x2=".7" y2="1"><stop stopColor="#a1adb8"/><stop offset=".5" stopColor="#566371"/><stop offset=".65" stopColor="#b7c2cc"/><stop offset="1" stopColor="#434f5b"/></linearGradient>
+  <linearGradient id={`maBelly${_u}`} x2="0" y2="1"><stop stopColor="#00517b" stopOpacity=".1"/><stop offset=".34" stopColor="#003c63" stopOpacity=".8"/><stop offset=".7" stopColor="#03416a" stopOpacity=".75"/><stop offset="1" stopColor="#32b8ef" stopOpacity=".4"/></linearGradient>
+  <linearGradient id={`maShoulder${_u}`} x2="0" y2="1"><stop stopColor="#4ac4fd" stopOpacity=".7"/><stop offset="1" stopColor="#006299" stopOpacity="0"/></linearGradient>
+  <linearGradient id={`meTrail${_u}`}><stop stopColor="#60aaff" stopOpacity="0"/><stop offset="1" stopColor="#72bcff"/></linearGradient>
+  <filter id={`maShadow${_u}`} x="-.1" y="-1" width="1.2" height="3"><feGaussianBlur stdDeviation="10"/></filter>
  </defs>
- <g className="meTrails" fill="none" stroke="url(#meTrail)" strokeLinecap="round"><path d="M-140 200H170" strokeWidth="2"/><path d="M-100 235H190" strokeWidth="3"/><path d="M-180 280H150" strokeWidth="1.5"/><path d="M-60 326H210" strokeWidth="2"/></g>
+ <g className="meTrails" fill="none" stroke={`url(#meTrail${_u})`} strokeLinecap="round"><path d="M-140 200H170" strokeWidth="2"/><path d="M-100 235H190" strokeWidth="3"/><path d="M-180 280H150" strokeWidth="1.5"/><path d="M-60 326H210" strokeWidth="2"/></g>
  <g className="meCar"><g transform="translate(-29 -33) scale(.5)">
- <ellipse cx="831" cy="748" rx="619" ry="21" fill="#09213a" opacity=".24" filter="url(#maShadow)"/>
- <path d="M212 469Q210 459 231 451L324 402L355 383L343 370Q383 356 440 351L492 344Q642 328 779 335Q858 337 908 358Q975 389 1083 467Q1284 461 1390 512L1448 539L1454 577L1454 622L1445 638L1454 691L1432 701L1368 706Q1373 550 1245 550Q1124 550 1124 714H548Q547 552 420 552Q294 552 296 704L252 694L211 667L208 635L215 580L208 528L215 491Z" fill="url(#maPaint)" stroke="#22475f" strokeWidth="2"/>
+ <ellipse cx="831" cy="748" rx="619" ry="21" fill="#09213a" opacity=".24" filter={`url(#maShadow${_u})`}/>
+ <path d="M212 469Q210 459 231 451L324 402L355 383L343 370Q383 356 440 351L492 344Q642 328 779 335Q858 337 908 358Q975 389 1083 467Q1284 461 1390 512L1448 539L1454 577L1454 622L1445 638L1454 691L1432 701L1368 706Q1373 550 1245 550Q1124 550 1124 714H548Q547 552 420 552Q294 552 296 704L252 694L211 667L208 635L215 580L208 528L215 491Z" fill={`url(#maPaint${_u})`} stroke="#22475f" strokeWidth="2"/>
  <path d="M342 368Q413 347 490 345L491 330Q508 323 538 341Q654 330 779 335Q859 337 909 357L902 365Q831 342 734 347Q598 346 456 377L376 400L357 386Z" fill="#203444"/>
  <path d="M344 369Q435 347 489 345Q660 330 779 336Q861 338 908 357" fill="none" stroke="#abc6dc" strokeWidth="4"/>
  <path d="M231 451L345 402L444 374Q592 348 731 349Q849 349 909 374Q988 414 1078 470L1038 471Q958 411 908 393Q824 353 732 359Q567 363 410 416Z" fill="#0c476f"/>
- <path d="M411 416Q531 376 645 363Q744 353 810 363Q883 370 940 404L1048 469L775 465L641 460L497 442L441 432Z" fill="url(#maGlass)" stroke="#142733" strokeWidth="3"/>
+ <path d="M411 416Q531 376 645 363Q744 353 810 363Q883 370 940 404L1048 469L775 465L641 460L497 442L441 432Z" fill={`url(#maGlass${_u})`} stroke="#142733" strokeWidth="3"/>
  <path d="M414 417L442 432L469 434L507 386Z" fill="#314354" stroke="#121f2a" strokeWidth="3"/>
  <path d="M528 383L499 442M731 358L752 464" stroke="#15232f" strokeWidth="16"/>
  <path d="M553 408Q603 382 689 380Q708 380 710 397L714 450L549 438Z" fill="#8ba0ae" opacity=".14"/>
  <path d="M773 382Q815 365 916 409L960 444L949 458L787 455Z" fill="#bdcfdd" opacity=".28"/>
  <path d="M443 446L442 535M460 440L443 465M745 469L757 524L758 704M1067 468Q1096 523 1076 619L1064 715" fill="none" stroke="#103e59" strokeWidth="2"/>
  <path d="M230 471Q360 455 452 465Q560 477 648 470L1049 480Q1194 475 1328 510" fill="none" stroke="#4caee0" strokeOpacity=".55" strokeWidth="3"/>
- <path d="M229 480Q303 478 414 496L439 528Q334 516 294 569L249 606L218 590Z" fill="url(#maShoulder)"/>
- <path d="M516 548Q536 521 595 522L1080 542L1068 651Q916 639 751 637Q627 622 563 624Q537 612 516 548Z" fill="url(#maBelly)"/>
+ <path d="M229 480Q303 478 414 496L439 528Q334 516 294 569L249 606L218 590Z" fill={`url(#maShoulder${_u})`}/>
+ <path d="M516 548Q536 521 595 522L1080 542L1068 651Q916 639 751 637Q627 622 563 624Q537 612 516 548Z" fill={`url(#maBelly${_u})`}/>
  <path d="M563 624Q675 596 762 607L1068 651Q902 644 751 642L606 643Z" fill="#35b8ef" opacity=".27"/>
  <path d="M550 670L657 653L803 657L965 664L1126 692L1125 716L551 715Z" fill="#1b2b38"/>
  <path d="M557 674L672 662L965 675L1095 692L1069 703H557Z" fill="#71808b" opacity=".23"/>

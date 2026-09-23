@@ -172,6 +172,15 @@ export default function LifecycleRoad({stages,vehicle='car',label='Product lifec
  // then rises and thins toward the top of the bar while the car drives on.
  const [puffs,setPuffs]=useState<{id:number,pos:string,v:number}[]>([]);
  const posRef=useRef('0%');
+ // Label each chapter's heading with its stage ("02 · Define") so the page's own headings
+ // carry the same map as the sticky road. Styled by [data-eyebrow] in case-system.css.
+ useEffect(()=>{
+  stages.forEach((st,i)=>{
+   const el=document.getElementById(st.id);
+   const heading=el?.matches('h2')?el:el?.querySelector('h2,.cdStatement');
+   heading?.setAttribute('data-eyebrow',`${String(i+1).padStart(2,'0')} · ${st.name}`);
+  });
+ },[stages]);
  useEffect(()=>{
   let frame=0,stop=0;
   const update=()=>{

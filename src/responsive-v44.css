@@ -20,7 +20,7 @@
      At desktop widths the text columns stop well short of it; in this range
      they do not, and the tagline runs under the photo. Reserve the portrait's
      column instead of narrowing each paragraph separately. */
-  .v28Hero .heroInner,.heroInner{padding-right:clamp(238px,25vw,300px)!important}
+  .v28Hero .heroInner,.heroInner{padding-right:clamp(240px,25vw,304px)!important}
   .heroThesis,.heroTagline{max-width:none!important}
 }
 
@@ -35,5 +35,5 @@
   }
   /* Keep the logo strip's left edge on the same line as the content above it
      instead of letting it spread the full width of the display. */
-  .companyBanner{padding-inline:max(72px,calc((100% - 1660px)/2))!important}
+  .companyBanner{padding-inline:max(64px,calc((100% - 1664px)/2))!important}
 }

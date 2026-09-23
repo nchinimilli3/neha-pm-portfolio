@@ -27,6 +27,33 @@ export default function SchedulerPlannerHero(){
     io.observe(el);
     return () => io.disconnect();
   }, []);
+
+  // Aim the pencil at the drawn date. Its travel used to be fixed pixel offsets, which
+  // missed the "16" whenever the planner rendered at a different size. Measure where the
+  // tip lands at the writing angle and hand the offset to the keyframes as --tx / --ty.
+  const pencil = useRef<HTMLDivElement>(null);
+  const tip = useRef<HTMLElement>(null);
+  const date = useRef<SVGSVGElement>(null);
+  useEffect(() => {
+    const aim = () => {
+      const p = pencil.current, t = tip.current, d = date.current;
+      if (!p || !t || !d) return;
+      const {animation, transform} = p.style;
+      p.style.animation = 'none';
+      p.style.transform = 'none';
+      const scale = p.getBoundingClientRect().width / (p.offsetWidth || 1);
+      p.style.transform = 'rotate(34deg)';
+      const tr = t.getBoundingClientRect(), dr = d.getBoundingClientRect();
+      p.style.setProperty('--tx', `${(dr.left + dr.width * .5 - tr.left) / scale}px`);
+      p.style.setProperty('--ty', `${(dr.top + dr.height * .55 - tr.top) / scale}px`);
+      p.style.transform = transform;
+      p.style.animation = animation;
+    };
+    aim();
+    const late = window.setTimeout(aim, 2400);   // after the ticket has settled into place
+    window.addEventListener('resize', aim);
+    return () => { window.clearTimeout(late); window.removeEventListener('resize', aim); };
+  }, []);
   let step = 0;
   return <div ref={ref} className={`schPlannerHero ${live ? 'isLive' : ''}`} role="img" aria-label="A tactile weekly desk planner that turns tentative availability into a confirmed calendar event">
     <div className="schPlannerCover"><span>WEEKLY</span><b>HAPPENINGS</b></div>
@@ -51,7 +78,7 @@ export default function SchedulerPlannerHero(){
       <time>
         {/* The date is drawn rather than typed: each stroke is dashed out and pulled back in
             while the pencil is over it, so the card reads as written by hand. */}
-        <svg className="schInkDate" viewBox="0 0 46 42" aria-hidden="true">
+        <svg ref={date} className="schInkDate" viewBox="0 0 46 42" aria-hidden="true">
           <path d="M15.2 10.6c-2.9 2.4-5 3.7-7.6 4.4" style={{'--len': 9, '--o': '0ms', '--t': '.22s'} as React.CSSProperties}/>
           <path d="M14.4 10.2 13.6 34.8" style={{'--len': 25, '--o': '170ms', '--t': '.3s'} as React.CSSProperties}/>
           <path d="M38.2 11.4c-6 1.5-10.3 7-11 13.7-.5 4.9 1.7 8.9 5.6 9.3 3.5.4 6.2-2 6.4-5.1.2-3.3-2.2-5.6-5.4-5.5-2.5.1-4.8 1.6-6 3.8" style={{'--len': 60, '--o': '470ms', '--t': '.62s'} as React.CSSProperties}/>
@@ -59,7 +86,7 @@ export default function SchedulerPlannerHero(){
         SEP
       </time>
       <div><strong>Design Sync</strong><p>Tuesday · 10:30–11:00</p><small>Minskoff Pavilion · 3 people</small></div><b>✓</b></article>
-    <div className="schPencil" aria-hidden="true"/>
+    <div ref={pencil} className="schPencil" aria-hidden="true"><i ref={tip} className="schPencilTip"/></div>
     <small className="schHeroCaption">From uncertain plans to one calendar-ready event.</small>
   </div>
 }

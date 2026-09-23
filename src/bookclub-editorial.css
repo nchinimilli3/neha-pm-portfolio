@@ -54,7 +54,7 @@
 
 
 .bcStory a:focus-visible,.bcStory input:focus-visible{outline:3px solid #b89862;outline-offset:6px}
-@media(max-width:1050px){.case-bookclub .caseLead{gap:28px!important}.bcHeroCaption{font-size:11px}}
+@media(max-width:1050px){.case-bookclub .caseLead{gap:32px!important}.bcHeroCaption{font-size:11px}}
 @media(max-width:760px){.case-bookclub .caseLead{grid-template-columns:1fr!important}.case-bookclub .caseLead .caseHeroMedia{max-width:550px!important;margin:auto!important}.bcHeroCaption{font-size:12px}.bcHeroLeft,.bcHeroRight{top:13%}}
 @media(prefers-reduced-motion:reduce){.bcHero figure{transition:none}.bcHero:hover .bcHeroLeft{transform:rotate(-7deg)}.bcHero:hover .bcHeroRight{transform:rotate(7deg)}}
 /* Bookish artifacts with a job: a stack in the opening and a navigable chapter shelf. */
@@ -138,33 +138,33 @@
 .bcStory h2 em{font-style:normal;color:#8a6a45}
 .bcStory p{color:#56655b}
 
-.bcProblem{display:grid;grid-template-columns:1.1fr .9fr;gap:70px;align-items:center;padding:60px 0 40px}
+.bcProblem{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:center;padding:64px 0 40px}
 .bcProblem h2{margin:0 0 20px}
 .bcProblemCopy>p{max-width:50ch;margin:0}
-.bcJobs{display:grid;gap:12px;margin:30px 0 0;padding:0;list-style:none}
+.bcJobs{display:grid;gap:12px;margin:32px 0 0;padding:0;list-style:none}
 .bcJobs li{display:flex;align-items:baseline;gap:12px;font-size:17px;color:#46564c}
-.bcJobs b{min-width:92px;font-weight:650}
+.bcJobs b{min-width:92px;font-weight:700}
 .job-Choose{--job:var(--bc-choose)}.job-Keeppace{--job:var(--bc-pace)}.job-Meet{--job:var(--bc-meet)}
 .bcJobs b{color:var(--job)}
 .bcJobs li:before{content:'';flex:0 0 10px;height:10px;border-radius:50%;background:var(--job);translate:0 -1px}
 
 /* Group thread phone */
 .bcThreadPhone{width:min(100%,340px);margin:0 auto;padding:12px;border-radius:44px;background:#1d2622;box-shadow:0 40px 70px #1b2e2433,inset 0 0 0 2px #3b4a43}
-.bcThreadTop{display:grid;justify-items:center;gap:2px;padding:14px 0 10px;border-radius:34px 34px 0 0;background:#f4f4f2;border-bottom:1px solid #e2e4e0}
-.bcThreadAvatars{display:flex}.bcThreadAvatars i{width:24px;height:24px;margin-left:-6px;border-radius:50%;border:2px solid #f4f4f2;background:#c9a27e}.bcThreadAvatars i:nth-child(2){background:#6b8f7a}.bcThreadAvatars i:nth-child(3){background:#9d4f45}
+.bcThreadTop{display:grid;justify-items:center;gap:2px;padding:16px 0 8px;border-radius:34px 34px 0 0;background:#f4f4f2;border-bottom:1px solid #e2e4e0}
+.bcThreadAvatars{display:flex}.bcThreadAvatars i{width:24px;height:24px;margin-left:-8px;border-radius:50%;border:2px solid #f4f4f2;background:#c9a27e}.bcThreadAvatars i:nth-child(2){background:#6b8f7a}.bcThreadAvatars i:nth-child(3){background:#9d4f45}
 .bcThreadTop strong{font-size:14px;color:#1d2622}.bcThreadTop small{font-size:11px;color:#88908b}
-.bcThreadBody{display:grid;align-content:start;gap:12px;min-height:430px;padding:16px 14px 22px;border-radius:0 0 34px 34px;background:#fff}
-.bcMsg{position:relative;display:grid;grid-template-columns:minmax(0,max-content) auto;column-gap:8px;align-items:end;justify-items:start;opacity:0;transform:translateY(12px) scale(.96);transform-origin:left bottom;transition:opacity .35s,transform .45s cubic-bezier(.2,1.3,.4,1)}
+.bcThreadBody{display:grid;align-content:start;gap:12px;min-height:430px;padding:16px 16px 24px;border-radius:0 0 34px 34px;background:#fff}
+.bcMsg{position:relative;display:grid;grid-template-columns:minmax(0,max-content) auto;column-gap:8px;align-items:end;justify-items:start;opacity:0;transform:translateY(12px) scale(.96);transform-origin:left bottom;transition:opacity .35s,transform .45s var(--ease-spring)}
 .bcMsg.isShown{opacity:1;transform:none}
 .bcMsg .bcBubble{grid-column:1;max-width:218px}
-.bcMsg small{grid-column:1/-1;margin:0 0 3px 10px;font-size:10.5px;color:#8b928d}
-.bcBubble{max-width:82%;padding:8px 13px;border-radius:18px 18px 18px 5px;background:#e9e9eb;font-size:14px;line-height:1.35;color:#1d2622}
-.bcPoll{display:grid;gap:5px;min-width:180px}.bcPoll b{font-size:12px}
-.bcPoll span{position:relative;z-index:0;padding:3px 8px;font-size:12.5px}.bcPoll span i{position:absolute;inset:0 auto 0 0;z-index:-1;border-radius:5px;background:#cfdcd2}
-.bcMsg>.bcJob{grid-column:2;align-self:end;margin:0 0 4px 6px;padding:1px 7px;font-size:10px;white-space:nowrap;opacity:0;transform:translateX(-6px);transition:opacity .4s .5s,transform .4s .5s}
+.bcMsg small{grid-column:1/-1;margin:0 0 4px 8px;font-size:10.5px;color:#8b928d}
+.bcBubble{max-width:82%;padding:8px 12px;border-radius:18px 18px 18px 5px;background:#e9e9eb;font-size:14px;line-height:1.35;color:#1d2622}
+.bcPoll{display:grid;gap:4px;min-width:180px}.bcPoll b{font-size:12px}
+.bcPoll span{position:relative;z-index:0;padding:4px 8px;font-size:12.5px}.bcPoll span i{position:absolute;inset:0 auto 0 0;z-index:-1;border-radius:4px;background:#cfdcd2}
+.bcMsg>.bcJob{grid-column:2;align-self:end;margin:0 0 4px 8px;padding:1px 8px;font-size:10px;white-space:nowrap;opacity:0;transform:translateX(-6px);transition:opacity .4s .5s,transform .4s .5s}
 .bcMsg.isShown>.bcJob{opacity:1;transform:none}
-.bcJob{display:inline-block;padding:2px 8px;border-radius:10px;background:color-mix(in srgb,var(--job) 14%,transparent);color:var(--job);font:600 11px var(--case-font);font-style:normal}
-.bcTyping{display:flex;gap:4px;width:max-content;margin-top:4px;padding:10px 12px;border-radius:16px;background:#e9e9eb;opacity:0;transition:opacity .3s}
+.bcJob{display:inline-block;padding:2px 8px;border-radius:12px;background:color-mix(in srgb,var(--job) 14%,transparent);color:var(--job);font:600 11px var(--case-font);font-style:normal}
+.bcTyping{display:flex;gap:4px;width:max-content;margin-top:4px;padding:8px 12px;border-radius:16px;background:#e9e9eb;opacity:0;transition:opacity .3s}
 .bcTyping.isShown{opacity:1}
 .bcTyping i{width:6px;height:6px;border-radius:50%;background:#9ba19d;animation:bcDot 1.2s infinite}
 .bcTyping i:nth-child(2){animation-delay:.15s}.bcTyping i:nth-child(3){animation-delay:.3s}
@@ -172,52 +172,52 @@
 
 /* Product bets */
 .bcBets{padding:80px 0 40px}
-.bcBets header,.bcValidate header{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:44px}
+.bcBets header,.bcValidate header{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end;margin-bottom:48px}
 .bcBets header h2,.bcValidate header h2{margin:0}.bcBets header p,.bcValidate header p{margin:0}
 .bcBets ol{display:grid;grid-template-columns:repeat(3,1fr);gap:48px;margin:0;padding:0;list-style:none}
 .bcBets li{display:grid;align-content:start;justify-items:start}
-.bcBetPhone{width:62%;margin:0 auto 26px;justify-self:center}
+.bcBetPhone{width:62%;margin:0 auto 24px;justify-self:center}
 .bcBets li:nth-child(1) .bcBetPhone{transform:rotate(-3deg)}.bcBets li:nth-child(3) .bcBetPhone{transform:rotate(3deg)}
-.bcBets h3{margin:10px 0 10px;color:var(--bc-ink)}
+.bcBets h3{margin:8px 0 8px;color:var(--bc-ink)}
 .bcStory .bcInstead{margin:0!important;font-size:15px!important;color:#8d948f!important}
 .bcInstead s{text-decoration-color:#9d4f4599;text-decoration-thickness:1.5px}
-.bcStory .bcTradeoff{margin:10px 0 0!important;font-size:15px!important;line-height:1.5!important}
+.bcStory .bcTradeoff{margin:8px 0 0!important;font-size:15px!important;line-height:1.5!important}
 .bcTradeoff b{display:block;font-size:13px;color:#8a6a45}
 
 /* Validation plan */
-.bcValidate{padding:80px 0 100px}
+.bcValidate{padding:80px 0 96px}
 .bcPlan{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:48px}
 .bcPlan:before{content:'';position:absolute;left:18px;right:18px;top:18px;border-top:2px dashed #b39a73;transform:scaleX(0);transform-origin:left;transition:transform 1.6s ease}
 .bcPlan.isIn:before{transform:none}
 .bcPhase{position:relative;opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s;transition-delay:calc(var(--pi) * .5s)}
 .bcPlan.isIn .bcPhase{opacity:1;transform:none}
-.bcPhaseNum{position:relative;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#2f5244;color:#fff;font-weight:650;box-shadow:0 0 0 6px #f5f3ed}
-.bcPhase h3{margin:18px 0 8px;color:var(--bc-ink)}
-.bcStory .bcPhase>p{margin:0 0 22px!important;font-size:15px!important;line-height:1.55!important}
-.bcPeople{display:flex;gap:6px}
+.bcPhaseNum{position:relative;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#2f5244;color:#fff;font-weight:700;box-shadow:0 0 0 6px #f5f3ed}
+.bcPhase h3{margin:16px 0 8px;color:var(--bc-ink)}
+.bcStory .bcPhase>p{margin:0 0 24px!important;font-size:15px!important;line-height:1.55!important}
+.bcPeople{display:flex;gap:8px}
 .bcPeople figure{display:grid;justify-items:center;margin:0;opacity:0;transform:translateY(10px);transition:opacity .4s,transform .4s;transition-delay:calc(.4s + var(--k) * .18s)}
 .bcPlan.isIn .bcPeople figure{opacity:1;transform:none}
 .bcPeople svg{width:52px;height:52px}.bcHalo{fill:#fbf8ef;stroke:#3f6a5533}
 .bcPeople figcaption{margin-top:4px;font-size:11px;color:#8b928d}
-.bcTasks{display:grid;gap:14px;margin:0;padding:0;list-style:none}
-.bcTasks li{display:grid;gap:6px}
-.bcTasks li>span:first-child{display:flex;justify-content:space-between;gap:10px;font-size:13.5px;color:#46564c}
-.bcTasks small{flex:none;font-size:11.5px;color:#8b928d}
-.bcTaskBar{position:relative;height:5px;border-radius:5px;background:#e3ded0;overflow:hidden}
+.bcTasks{display:grid;gap:16px;margin:0;padding:0;list-style:none}
+.bcTasks li{display:grid;gap:8px}
+.bcTasks li>span:first-child{display:flex;justify-content:space-between;gap:8px;font-size:13.5px;color:#46564c}
+.bcTasks small{flex:none;font-size:12px;color:#5f6763}
+.bcTaskBar{position:relative;height:5px;border-radius:4px;background:#e3ded0;overflow:hidden}
 .bcTaskBar em{position:absolute;inset:0;background:var(--bc-choose);transform:scaleX(0);transform-origin:left;transition:transform 1.2s ease;transition-delay:calc(1s + var(--k) * .35s)}
 .bcPlan.isIn .bcTaskBar em{transform:scaleX(.8)}
 .bcTaskDots{display:flex;gap:4px}.bcTaskDots i{width:9px;height:9px;border-radius:50%;box-shadow:inset 0 0 0 1.5px #c9c2ae}.bcTaskDots i.ok{background:var(--bc-choose);box-shadow:none}
-.bcMatrix{position:relative;height:170px;margin:4px 0 0 22px;border-left:2px solid #b8b09a;border-bottom:2px solid #b8b09a}
+.bcMatrix{position:relative;height:170px;margin:4px 0 0 24px;border-left:2px solid #b8b09a;border-bottom:2px solid #b8b09a}
 .bcQuad{position:absolute;right:0;top:0;width:50%;height:50%;background:#9d4f4514;border-radius:0 6px 0 0}
 .bcAxisY{position:absolute;left:-24px;bottom:0;font-size:11px;color:#8b928d;writing-mode:vertical-rl;rotate:180deg}
 .bcAxisX{position:absolute;right:0;bottom:-20px;font-size:11px;color:#8b928d}
-.bcMatrix b{position:absolute;width:12px;height:12px;margin:-6px;border-radius:50%;background:#b3a98f;opacity:0;transform:translateY(-30px);transition:opacity .4s,transform .6s cubic-bezier(.3,1.5,.5,1);transition-delay:calc(1.6s + var(--k) * .2s)}
+.bcMatrix b{position:absolute;width:12px;height:12px;margin:-8px;border-radius:50%;background:#b3a98f;opacity:0;transform:translateY(-30px);transition:opacity .4s,transform .6s var(--ease-spring);transition-delay:calc(1.6s + var(--k) * .2s)}
 .bcPlan.isIn .bcMatrix b{opacity:1;transform:none}
 .bcMatrix b.isTop{width:16px;height:16px;margin:-8px;background:var(--bc-meet);box-shadow:0 0 0 6px #9d4f4526}
-.bcMatrix b small{position:absolute;right:22px;top:-3px;white-space:nowrap;font-size:12px;font-weight:650;color:var(--bc-meet)}
-.bcRules{display:grid;gap:10px;margin-top:64px}
-.bcStory .bcRules p{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;margin:0!important;font-size:17px!important;color:#3f4e45!important}
-.bcRules span{padding:1px 9px;border-radius:10px;background:#2f5244;color:#fff;font-size:12px;font-weight:650}
+.bcMatrix b small{position:absolute;right:22px;top:-3px;white-space:nowrap;font-size:12px;font-weight:700;color:var(--bc-meet)}
+.bcRules{display:grid;gap:8px;margin-top:64px}
+.bcStory .bcRules p{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 8px;margin:0!important;font-size:17px!important;color:#3f4e45!important}
+.bcRules span{padding:1px 8px;border-radius:12px;background:#2f5244;color:#fff;font-size:12px;font-weight:700}
 .bcRules i{font-style:normal;color:#b39a73}
 
 @media(max-width:900px){
@@ -230,42 +230,92 @@
 
 /* Lifecycle road palette */
 .bcStory{--lc-ink:#203f3b;--lc-road:#2f5244;--lc-accent:#9d4f45;--lc-accent-2:#c9876f;--lc-muted:#5b625c;--lc-tint:#e6efe4f2;--lc-glass:#efe6d6}
-.bcStage{scroll-margin-top:110px}
+.bcStage{scroll-margin-top:112px}
 
 /* Composition (desktop): problem beside the group thread → three bets under a centered header, stepped down the
    page like books on a shelf → validation keeps the split header, with the if/then rules set as a narrow column
    beside the research plan. */
 @media(min-width:1001px){
- .bcBets header{grid-template-columns:1fr;justify-items:center;gap:14px;max-width:720px;margin:0 auto 56px;text-align:center}
+ .bcBets header{grid-template-columns:1fr;justify-items:center;gap:16px;max-width:720px;margin:0 auto 56px;text-align:center}
  .bcBets li:nth-child(2){margin-top:56px}
  .bcBets li:nth-child(3){margin-top:112px}
  .bcValidate{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:32px;align-items:start}
  .bcValidate>header{grid-column:1/-1}
  .bcValidate>.bcPlan{grid-column:1/10}
- .bcValidate>.bcRules{grid-column:10/13;margin-top:0;gap:22px;padding-left:24px;border-left:1px solid #2f524422}
+ .bcValidate>.bcRules{grid-column:10/13;margin-top:0;gap:24px;padding-left:24px;border-left:1px solid #2f524422}
  .bcStory .bcValidate>.bcRules p{display:block!important;font-size:15px!important;line-height:1.55!important}
- .bcValidate>.bcRules span{margin-right:6px}
+ .bcValidate>.bcRules span{margin-right:8px}
  .bcValidate>.bcRules i{margin:0 4px}
 }
 
 /* The lead bet carries the decision; the other two run as a quieter pair. */
 .bcBets .cdMomentEvidence .bcLeadBet{max-width:340px;margin:0}
-.bcBets .cdSupporting ol{grid-template-columns:repeat(2,minmax(0,1fr));gap:40px}
-@media(max-width:820px){.bcBets .cdSupporting ol{grid-template-columns:1fr}}
+/* The other two bets zig-zag: phone left / copy right, then the reverse, so
+   the section reads as a sequence instead of one more row of screens. */
+.bcBets .cdSupporting ol{grid-template-columns:1fr;gap:clamp(56px,9svh,96px)}
+.bcBets .cdSupporting li{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);grid-template-rows:1fr auto auto auto auto 1fr;column-gap:clamp(32px,6vw,96px);align-items:start;justify-items:start}
+.bcBets .cdSupporting li>.bcBetPhone{grid-column:1;grid-row:1/-1;width:min(200px,100%);margin:0;justify-self:center;transform:rotate(-2deg)}
+.bcBets .cdSupporting li>:not(.bcBetPhone){grid-column:2}
+/* Copy is vertically centred on its screen: rows 1 and 6 are flexible spacers. */
+.bcBets .cdSupporting li>.bcJob{grid-row:2}
+.bcBets .cdSupporting li>h3{grid-row:3}
+.bcBets .cdSupporting li>.bcInstead{grid-row:4}
+.bcBets .cdSupporting li>.bcTradeoff{grid-row:5}
+.bcBets .cdSupporting li h3{max-width:22ch;font-size:clamp(24px,2.4vw,32px)}
+.bcBets .cdSupporting li:nth-child(even){grid-template-columns:minmax(0,8fr) minmax(0,4fr)}
+.bcBets .cdSupporting li:nth-child(even)>.bcBetPhone{grid-column:2;transform:rotate(2deg)}
+.bcBets .cdSupporting li:nth-child(even)>:not(.bcBetPhone){grid-column:1;justify-self:end;text-align:right}
+@media(max-width:820px){
+ .bcBets .cdSupporting li,.bcBets .cdSupporting li:nth-child(even){grid-template-columns:1fr;grid-template-rows:none}
+ .bcBets .cdSupporting li>:not(.bcBetPhone),.bcBets .cdSupporting li:nth-child(even)>:not(.bcBetPhone),.bcBets .cdSupporting li:nth-child(even)>.bcBetPhone{grid-column:1;grid-row:auto;justify-self:start;text-align:left}
+ .bcBets .cdSupporting li>.bcBetPhone{grid-row:auto}
+ .bcBets .cdSupporting li>.bcBetPhone{width:min(62%,240px);margin:0 auto 24px;justify-self:center}
+ .bcBets .cdSupporting li>.bcJob,.bcBets .cdSupporting li>h3,.bcBets .cdSupporting li>.bcInstead,.bcBets .cdSupporting li>.bcTradeoff{grid-row:auto}
+}
 
 /* Step 3: issues ranked as bars (frequency x hurt), top one flagged */
-.bcRank{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:14px}
-.bcRank li{display:grid;grid-template-columns:1fr auto;gap:6px 10px;align-items:center}
+.bcRank{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:16px}
+.bcRank li{display:grid;grid-template-columns:1fr auto;gap:8px 8px;align-items:center}
 .bcRank span{font-size:14px;font-weight:600;color:#203f3b}
-.bcRank em{font-style:normal;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--bc-meet);padding:2px 8px;border-radius:9px}
-.bcRank b{grid-column:1/-1;display:block;height:8px;border-radius:5px;background:linear-gradient(90deg,#b3a98f calc(var(--w)*100%),#2f524414 0);transform-origin:left;transform:scaleX(0);transition:transform .7s cubic-bezier(.2,.8,.2,1);transition-delay:calc(1.4s + var(--k)*.15s)}
+.bcRank em{font-style:normal;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--bc-meet);padding:2px 8px;border-radius:8px}
+.bcRank b{grid-column:1/-1;display:block;height:8px;border-radius:4px;background:linear-gradient(90deg,#b3a98f calc(var(--w)*100%),#2f524414 0);transform-origin:left;transform:scaleX(0);transition:transform .7s var(--ease-out);transition-delay:calc(1.4s + var(--k)*.15s)}
 .bcRank li.isTop b{height:10px;background:linear-gradient(90deg,var(--bc-meet) calc(var(--w)*100%),#2f524414 0)}
 .bcPlan.isIn .bcRank b{transform:none}
 /* Decision rules: condition, then the action it triggers */
-.bcRules .bcRulesHead{margin:0 0 4px!important;font-size:12px!important;font-weight:650;letter-spacing:.12em;text-transform:uppercase;color:#4f5d55!important}
-.bcRule{display:grid;gap:4px;padding-left:14px;border-left:2px solid #b3a98f}
+.bcRules .bcRulesHead{margin:0 0 4px!important;font-size:12px!important;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#4f5d55!important}
+.bcRule{display:grid;gap:4px;padding-left:16px;border-left:2px solid #b3a98f}
 .bcRule span{padding:0;background:none;border-radius:0;font-size:14px;font-weight:400;line-height:1.45;color:#4f5d55}
 .bcRule b{position:relative;font-size:15.5px;font-weight:600;line-height:1.4;color:#203f3b}
 .bcRule b:before{content:'→ ';color:var(--bc-meet)}
 @media(prefers-reduced-motion:reduce){.bcRank b{transition:none}}
 .bcRank em{grid-row:1;grid-column:2;justify-self:end}
+
+/* ── Rhythm pass ────────────────────────────────────────────────
+   Breath between Build and Validate: one centred line at display size. */
+
+
+
+
+
+
+
+/* Validate: heading left, the lead set as a margin note on the right. */
+@media(min-width:1001px){
+ .bcValidate>header{grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:0 clamp(40px,8vw,128px)}
+ .bcStory .bcValidate>header p{padding-left:16px;border-left:2px solid var(--bc-meet);font-size:15px;line-height:1.55}
+}
+
+
+
+/* Lead bet: the claim and its proof side by side (F-pattern entry on the
+   statement), the reasoning columns running full width beneath. */
+@media(min-width:1001px){
+ .bcBets .cdMoment{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:auto 1fr auto;column-gap:32px;align-items:start}
+ .bcBets .cdMoment>.cdStatement{grid-column:1/8;grid-row:1}
+ .bcBets .cdMoment>.cdMomentSub{grid-column:1/8;grid-row:2}
+ .bcBets .cdMoment>.cdMomentGrid{grid-column:1/-1;grid-row:3}
+ .bcBets .cdMoment>.cdMomentEvidence{grid-column:9/13;grid-row:1/3;align-self:center;justify-self:center;margin:0}
+ .bcBets .cdMomentEvidence .bcLeadBet{width:min(240px,100%);transform:rotate(2deg)}
+ /* The phone now sits beside the statement, so it arrives with it, not 1.7s later. */
+ .case-bookclub .bcBets .cdMoment.isShown .cdMomentEvidence>*:not(.cmRuleGrid){transition-delay:.1s}
+}

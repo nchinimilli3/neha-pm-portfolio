@@ -2,7 +2,7 @@ import React, {useEffect, useId, useRef, useState} from 'react';
 import {bookclubDevicePath,bookclubDeviceViewBox} from './bookclub-device-mask';
 import './bookclub-editorial.css';
 import LifecycleRoad from './LifecycleRoad';
-import { DecisionMoment, Supporting, Tradeoff } from './CaseDecision';
+import { CasePull, DecisionMoment, Supporting, Tradeoff } from './CaseDecision';
 export function BookclubDevice({screen,label}:{screen:string;label:string}){
   const id=useId().replace(/:/g,'');
   return <svg className="bcDevice" viewBox={bookclubDeviceViewBox} role="img" aria-label={label}>
@@ -109,6 +109,7 @@ function ValidationPlan(){
   </div>;
 }
 
+/* A breath between the bets and the validation plan: one line, set large. */
 const bookclubStages=[
   {id:'bc-discover',name:'Discover',did:'The coordination problem'},
   {id:'bc-build',name:'Build',did:'Three product bets'},
@@ -117,9 +118,9 @@ const bookclubStages=[
 export function BookclubEditorial(){
   return <div className="bcStory">
     <LifecycleRoad stages={bookclubStages} vehicle="book"/>
-    <section className="bcProblem bcStage" id="bc-discover">
+    <section className="bcProblem bcStage" id="bc-discover"><h2 className="csTitle">The hard part of a book club <em>happens between meetings.</em></h2>
       <div className="bcProblemCopy">
-        <h2>The hard part of a book club<br/><em>happens between meetings.</em></h2>
+        
         <p>My reading group is busy adults coordinating from their phones. Choosing the next book, reading at different speeds, and showing up with something to say each happened somewhere different, and none of it stayed put.</p>
         <ul className="bcJobs">
           <li className="job-Choose"><b>Choose</b>a book the whole group wants</li>
@@ -143,7 +144,7 @@ export function BookclubEditorial(){
         <figure className="bcBetPhone bcLeadBet"><BookclubDevice screen={bets[0].screen} label={bets[0].label}/></figure>
       </DecisionMoment>
 
-      <Supporting title="The other two bets" note="Same shape: a little more effort, a better group outcome.">
+      <Supporting title="The other two bets">
         <ol>{bets.slice(1).map((b,i)=><li key={b.title} style={{'--k':i} as React.CSSProperties}>
           <figure className="bcBetPhone"><BookclubDevice screen={b.screen} label={b.label}/></figure>
           <em className={`bcJob job-${b.job.replace(' ','')}`}>{b.job}</em>
@@ -153,6 +154,8 @@ export function BookclubEditorial(){
         </li>)}</ol>
       </Supporting>
     </section>
+
+    <CasePull>Same shape: a little more effort, <em>a better group outcome.</em></CasePull>
 
     <section className="bcValidate bcStage" id="bc-validate">
       <header><h2>How I’ll know <em>it works</em></h2><p>Live with my reading group. Three checks before building more.</p></header>

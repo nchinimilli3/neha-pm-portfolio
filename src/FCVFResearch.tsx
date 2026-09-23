@@ -163,142 +163,72 @@ export function SurveyDemo() {
         </button>
       </div>
 
-      <div className="fvSurveyExperiment">
-        <div className="fvSurveyForm">
-          <div className="fvSurveyTop">
-            <span>Customer Value Framework</span>
-            <span>Example question</span>
-          </div>
-
-          <fieldset>
-            <legend>
-              What is the perceived demand for this experience?
-            </legend>
-
-            <p>
-              Choose the answer that best matches the customer evidence.
-            </p>
-
-            {options.map((option, i) => (
-              <label
-                key={option.label}
-                className={answer === i ? 'chosen' : ''}
-              >
-                <input
-                  type="radio"
-                  name="fv-demand"
-                  value={i}
-                  checked={answer === i}
-                  onChange={() => {
-                    setAnswer(i);
-                    setSubmitted(false);
-                  }}
-                />
-                <span>{option.label}</span>
-              </label>
-            ))}
-          </fieldset>
-
-          {mode === 'after' && (
-            <button
-              className="fvSubmit"
-              type="button"
-              onClick={() => setSubmitted(true)}
-            >
-              {submitted ? 'Submitted ✓' : 'Submit answer →'}
-            </button>
-          )}
-
+      {/* Drawn as the shipped Ford Customer Value Framework app (navy bar, Ford oval,
+          section stepper, Select + Comments, Help-style side box, square buttons), so the
+          decision is shown inside the product it changed rather than a generic card. */}
+      <div className="fvSurveyExperiment fvApp">
+        <div className="fvAppBar">
+          <img src={`${import.meta.env.BASE_URL}company-logos/ford-white-source.png`} alt="Ford" data-no-lightbox />
+          <strong>Ford Customer Value Framework</strong>
         </div>
 
-        <aside
-          className={`fvScorePanel ${visible ? '' : 'isProtected'}`}
-          aria-live="polite"
-        >
+        <ol className="fvAppSteps" aria-label="Assessment sections">
+          {['CSX Assessment', 'Value', 'Experience', 'Expectation', 'Emotion', 'NPS'].map((step, i) => (
+            <li key={step} className={i === 0 ? 'isDone' : i === 1 ? 'isHere' : ''}><i aria-hidden="true" />{step}</li>
+          ))}
+        </ol>
 
-          {visible ? (
-            <>
-              <div
-                className="fvScoreValue"
-                key={options[answer].score}
-              >
-                <strong>{options[answer].score}</strong>
-                <span>/ 100</span>
-              </div>
+        <div className="fvAppBody">
+          <div className="fvAppForm">
+            <h3 className="fvAppQ">What is the perceived demand for this experience?</h3>
+            <p className="fvAppHint">Choose the answer that best matches the customer evidence.</p>
+            <div className="fvAppRow">
+              <label className="fvAppSelect">
+                <span className="fvSrOnly">Perceived demand</span>
+                <select value={answer} onChange={(e) => { setAnswer(Number(e.target.value)); setSubmitted(false); }}>
+                  {options.map((option, i) => <option key={option.label} value={i}>{option.label}</option>)}
+                </select>
+              </label>
+              <label className="fvAppComments">
+                <span>Comments</span>
+                <textarea rows={3} aria-label="Comments" />
+              </label>
+            </div>
+          </div>
 
-              <div
-                className="fvScoreTrack"
-                role="meter"
-                aria-label="Illustrative score"
-                aria-valuemin={0}
-                aria-valuemax={100}
-                aria-valuenow={options[answer].score}
-              >
-                <i
-                  style={{
-                    width: `${options[answer].score}%`,
-                  }}
-                />
-              </div>
+          <aside className={`fvAppScore ${visible ? '' : 'isProtected'}`} aria-live="polite">
+            <header>Score</header>
+            <div className="fvAppScoreBody">
+              {visible ? (
+                <>
+                  <p className="fvAppScoreValue" key={options[answer].score}><strong>{options[answer].score}</strong><span>/ 100</span></p>
+                  <div className="fvAppScoreTrack" role="meter" aria-label="Illustrative score" aria-valuemin={0} aria-valuemax={100} aria-valuenow={options[answer].score}>
+                    <i style={{ width: `${options[answer].score}%` }} />
+                  </div>
+                  <h4>{mode === 'before' ? 'The score changes with every answer.' : 'The score appears after submission.'}</h4>
+                  <p>{mode === 'before'
+                    ? 'Try another answer. You can immediately see which option produces a higher score, even though the customer evidence has not changed.'
+                    : 'The same scoring logic still runs, but the user makes the choice before seeing the result.'}</p>
+                </>
+              ) : (
+                <>
+                  <p className="fvAppScoreValue isHidden"><strong>—</strong><span>/ 100</span></p>
+                  <h4>The score stays hidden until submission.</h4>
+                  <p>The user can answer the question without seeing how each option changes the result.</p>
+                  <p className="fvCompletion"><i /> Answer ready to submit</p>
+                </>
+              )}
+            </div>
+          </aside>
+        </div>
 
-              <h3>
-                {mode === 'before'
-                  ? 'The score changes with every answer.'
-                  : 'The score appears after submission.'}
-              </h3>
-
-              <p>
-                {mode === 'before'
-                  ? 'Try another answer. You can immediately see which option produces a higher score, even though the customer evidence has not changed.'
-                  : 'The same scoring logic still runs, but the user makes the choice before seeing the result.'}
-              </p>
-            </>
-          ) : (
-            <>
-              <div
-                className="fvProtectedWindow"
-                aria-hidden="true"
-              >
-                <svg viewBox="0 0 80 90">
-                  <path
-                    d="M20 40V25a20 20 0 0 1 40 0V40"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="5"
-                  />
-
-                  <rect
-                    x="9"
-                    y="37"
-                    width="62"
-                    height="45"
-                    rx="6"
-                    fill="currentColor"
-                  />
-
-                  <path
-                    d="M40 51V67"
-                    stroke="#eef2ef"
-                    strokeWidth="5"
-                  />
-                </svg>
-              </div>
-
-              <h3>
-                The score stays hidden until submission.
-              </h3>
-
-              <p>
-                The user can answer the question without seeing how each
-                option changes the result.
-              </p>
-
-              <div className="fvCompletion">
-                <i /> Answer ready to submit
-              </div>
-            </>
-          )}
-        </aside>
+        <footer className="fvAppActions">
+          <button type="button" className="isGhost" tabIndex={-1} aria-hidden="true">Back</button>
+          {mode === 'after'
+            ? <button type="button" onClick={() => setSubmitted(true)}>{submitted ? 'Submitted' : 'Submit'}</button>
+            : <button type="button" tabIndex={-1} aria-hidden="true">Next</button>}
+          <button type="button" className="isEnd" tabIndex={-1} aria-hidden="true">Close</button>
+        </footer>
       </div>
     </section>
   );

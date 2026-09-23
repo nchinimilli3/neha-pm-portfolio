@@ -1,15 +1,15 @@
 /* Mach-E wheel spokes spin around their own center wherever the car is drawn */
 .meWheel{transform-box:fill-box;transform-origin:center}
 /* Shared sticky lifecycle road. Colors come from --lc-* tokens set by each case study. */
-.lcRoad{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:230px minmax(0,1fr);gap:48px;align-items:center;width:100%;margin:0 0 -78px;padding:6px max(24px,calc((100% - 1180px)/2)) 8px;background:none;opacity:0;transform:translateY(-100%);pointer-events:none;transition:opacity .35s,transform .45s cubic-bezier(.3,.8,.3,1)}
+.lcRoad{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:230px minmax(0,1fr);gap:48px;align-items:center;width:100%;margin:0 0 -80px;padding:8px max(24px,calc((100% - 1184px)/2)) 8px;background:none;opacity:0;transform:translateY(-100%);pointer-events:none;transition:opacity .35s,transform .45s var(--ease-out)}
 .lcRoad:before{content:'';position:absolute;z-index:-1;top:0;bottom:0;left:calc(50% - 50vw);width:100vw;background:linear-gradient(var(--lc-tint),var(--lc-tint)),var(--lc-glass,#f4f1ea);-webkit-backdrop-filter:blur(22px) saturate(1.2);backdrop-filter:blur(22px) saturate(1.2);border:0;box-shadow:none;pointer-events:none}
 /* The surface is solid so page text never shows through the stage labels.
    Its edge is a soft cast shadow rather than a translucent fade, which read as
    text being half-covered as it scrolled underneath. */
 .lcRoad:after{content:'';position:absolute;z-index:-1;left:calc(50% - 50vw);bottom:0;width:100vw;height:1px;box-shadow:0 6px 18px 2px color-mix(in srgb,var(--lc-ink) 14%,transparent);pointer-events:none}
 .lcRoad.isShown{opacity:1;transform:none;pointer-events:auto}
-.lcRoadTrack{position:relative;padding-top:30px}
-.lcAsphalt{position:absolute;left:calc(100% / var(--n) / 2);right:calc(100% / var(--n) / 2);top:33px;height:6px;border-radius:6px;background:var(--lc-road);box-shadow:inset 0 -2px 0 #0d253866,0 1px 0 #ffffff99}
+.lcRoadTrack{position:relative;padding-top:32px}
+.lcAsphalt{position:absolute;left:calc(100% / var(--n) / 2);right:calc(100% / var(--n) / 2);top:33px;height:6px;border-radius:8px;background:var(--lc-road);box-shadow:inset 0 -2px 0 #0d253866,0 1px 0 #ffffff99}
 .lcAsphalt:after{content:'';position:absolute;left:4px;right:4px;top:3.5px;height:1px;background:repeating-linear-gradient(90deg,#f3f1e9aa 0 7px,transparent 7px 13px)}
 .lcFill{position:absolute;left:0;top:0;bottom:0;width:var(--fill);border-radius:8px;background:linear-gradient(90deg,var(--lc-accent),var(--lc-accent-2))}
 .lcCar{position:absolute;z-index:2;top:2px;left:var(--pos);width:76px;translate:-50% 0;transition:left .18s linear}
@@ -22,19 +22,19 @@
 .lcRoad.isMoving[data-traveler=car] .lcCar svg,.lcRoad.isMoving[data-traveler=ev] .lcCar svg,.lcRoad.isMoving[data-traveler=train] .lcCar svg,.lcRoad.isMoving[data-traveler=cablecar] .lcCar svg{animation:lcRumble .18s ease-in-out infinite}
 @keyframes lcRumble{50%{transform:translateY(-.6px)}}
 .lcRoadTrack ol{position:relative;display:grid;grid-template-columns:repeat(var(--n),1fr);margin:0;padding:0;list-style:none}
-.lcRoadTrack button{display:grid;justify-items:center;width:100%;padding:18px 0 0;border:0;background:none;cursor:pointer;color:inherit}
+.lcRoadTrack button{display:grid;justify-items:center;width:100%;padding:16px 0 0;border:0;background:none;cursor:pointer;color:inherit}
 
-.lcRoadTrack b{margin-top:3px;font-size:11.5px;font-weight:600;letter-spacing:.01em;color:var(--lc-muted);transition:color .3s}
+.lcRoadTrack b{margin-top:4px;font-size:11.5px;font-weight:600;letter-spacing:.01em;color:var(--lc-muted);transition:color .3s}
 
 .lcRoadTrack .isPast b{color:#3f5a6c}
 
-.lcRoadTrack .isHere b{color:var(--lc-ink);font-weight:750}
+.lcRoadTrack .isHere b{color:var(--lc-ink);font-weight:800}
 .lcRoadTrack button:hover b{color:var(--lc-ink)}
-.lcNow{order:-1;display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:10px;align-items:baseline;min-width:0;margin:0;line-height:1.3}
-.lcNow small{grid-column:1/-1;margin-top:3px;overflow:hidden;font-size:12.5px;color:var(--lc-muted);white-space:nowrap;text-overflow:ellipsis;animation:lcIn .35s ease}
+.lcNow{order:-1;display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:8px;align-items:baseline;min-width:0;margin:0;line-height:1.3}
+.lcNow small{grid-column:1/-1;margin-top:4px;overflow:hidden;font-size:12.5px;color:var(--lc-muted);white-space:nowrap;text-overflow:ellipsis;animation:lcIn .35s ease}
 @keyframes lcIn{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
 .lcNow span{font:600 11px/1 var(--case-font,inherit);letter-spacing:.06em;color:var(--lc-accent);font-variant-numeric:tabular-nums}
-.lcNow b{font:650 16px/1.1 var(--case-font,inherit);color:var(--lc-ink);animation:lcIn .35s ease}
+.lcNow b{font:700 16px/1.1 var(--case-font,inherit);color:var(--lc-ink);animation:lcIn .35s ease}
 @media(max-width:900px){.lcRoad{grid-template-columns:1fr!important}.lcNow{display:none!important}.lcRoadTrack b{font-size:11px}}
 @media(max-width:560px){.lcRoadTrack b{visibility:hidden}.lcRoadTrack .isHere b{visibility:visible;white-space:nowrap}}
 @media(prefers-reduced-motion:reduce){.lcNow b,.lcNow small{animation:none}.lcCar,.lcRoad{transition:none!important}.lcRoad.isMoving .lcWheel,.lcRoad.isMoving .lcCar svg{animation:none}}
@@ -64,10 +64,10 @@
 /* Tracks */
 [data-traveler=train] .lcAsphalt{height:9px;border-radius:1px;background:linear-gradient(#9aa1aa,#9aa1aa) 0 0/100% 1.8px no-repeat,linear-gradient(#9aa1aa,#9aa1aa) 0 100%/100% 1.8px no-repeat,repeating-linear-gradient(90deg,#6d5a48 0 3px,transparent 3px 10px);box-shadow:none}
 [data-traveler=cablecar] .lcAsphalt{height:7px;background:linear-gradient(90deg,#3b2f36,#4a3a44);box-shadow:inset 0 1.5px 0 #c9a24a,inset 0 -1.5px 0 #c9a24a}
-[data-traveler=box] .lcAsphalt{height:10px;border-radius:5px;background:radial-gradient(circle at 6px 50%,#aeb8b2 0 2.2px,#46524c 2.6px) 0 0/12px 100% repeat-x;box-shadow:inset 0 0 0 1.5px #2f3a35}
+[data-traveler=box] .lcAsphalt{height:10px;border-radius:4px;background:radial-gradient(circle at 6px 50%,#aeb8b2 0 2.2px,#46524c 2.6px) 0 0/12px 100% repeat-x;box-shadow:inset 0 0 0 1.5px #2f3a35}
 .lcRoad.isMoving[data-traveler=box] .lcAsphalt{animation:lcBelt .4s linear infinite}
 @keyframes lcBelt{to{background-position:12px 0}}
-[data-traveler=cheese] .lcAsphalt{height:11px;border-radius:5px;background:repeating-linear-gradient(90deg,#ffffff1a 0 1px,transparent 1px 23px),repeating-linear-gradient(177deg,#00000012 0 1px,transparent 1px 4px),linear-gradient(#c38f5a,#a4713f);box-shadow:0 2px 0 #7d5530}
+[data-traveler=cheese] .lcAsphalt{height:11px;border-radius:4px;background:repeating-linear-gradient(90deg,#ffffff1a 0 1px,transparent 1px 23px),repeating-linear-gradient(177deg,#00000012 0 1px,transparent 1px 4px),linear-gradient(#c38f5a,#a4713f);box-shadow:0 2px 0 #7d5530}
 [data-traveler=calendar] .lcAsphalt{height:8px;border-radius:2px;background:repeating-linear-gradient(90deg,var(--lc-road) 0 1.4px,transparent 1.4px 9px) 0 0/100% 5px no-repeat,linear-gradient(#ffffffb0,#ffffffb0);box-shadow:inset 0 -1.6px 0 var(--lc-road)}
 [data-traveler=book] .lcAsphalt{height:9px;border-radius:2px;background:repeating-linear-gradient(#f8f2e2 0 1.4px,#d7cbad 1.4px 2.3px);box-shadow:0 1px 0 #b8a98a}
 [data-traveler=bottle] .lcAsphalt{height:7px;border-radius:4px;background:linear-gradient(#f5e3b6,#c9a25d 55%,#8e6a30);box-shadow:0 2px 3px #8e6a3040}
@@ -87,11 +87,11 @@
 .lcRoad.isMoving[data-traveler=mustang] .shelbyWheel,
 .lcRoad.isMoving[data-traveler=mache] .meWheel{animation:lcSpin .38s linear infinite}
 .lcRoad[data-traveler=mustang] .shelbyWheel,.lcRoad[data-traveler=mache] .meWheel{transform-box:fill-box;transform-origin:center}
-[data-traveler=mustang] .lcAsphalt,[data-traveler=mache] .lcAsphalt{height:6px;border-radius:6px;background:var(--lc-road);box-shadow:inset 0 -2px 0 #0d253866,0 1px 0 #ffffff99}
+[data-traveler=mustang] .lcAsphalt,[data-traveler=mache] .lcAsphalt{height:6px;border-radius:8px;background:var(--lc-road);box-shadow:inset 0 -2px 0 #0d253866,0 1px 0 #ffffff99}
 [data-traveler=mustang] .lcAsphalt:after,[data-traveler=mache] .lcAsphalt:after{display:block}
 
 /* Full-bleed car band: the transition from the 20-second answer into the case. */
-.carBand{position:relative;width:100vw;margin-left:calc(50% - 50vw);margin-top:6px;margin-bottom:10px;padding:26px 0 22px;overflow:hidden}
+.carBand{position:relative;width:100vw;margin-left:calc(50% - 50vw);margin-top:8px;margin-bottom:8px;padding:24px 0 24px;overflow:hidden}
 .carBandRoad{position:absolute;left:0;right:0;bottom:34px;height:2px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--case-accent,#4a5a52) 34%,transparent) 12%,color-mix(in srgb,var(--case-accent,#4a5a52) 34%,transparent) 88%,transparent)}
 .carBandRoad i{position:absolute;left:0;right:0;top:6px;height:1px;background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--case-accent,#4a5a52) 26%,transparent) 0 22px,transparent 22px 44px);opacity:.7}
 .carBandRider{width:clamp(200px,22vw,320px);will-change:transform}
@@ -102,7 +102,7 @@
  .carBand .shelbyWheel,.carBand .meWheel{transform:none}
 }
 @media(max-width:760px){
- .carBand{padding:16px 0 14px}
+ .carBand{padding:16px 0 16px}
  .carBandRoad{bottom:22px}
  .carBandRider{width:190px}
 }
@@ -142,12 +142,12 @@
 
 /* Glass bar: sits lower off the top edge, translucent and blurred like the home nav,
    with a soft hairline instead of a hard block edge. */
-.lcRoad{padding-top:18px;padding-bottom:12px}
+.lcRoad{padding-top:16px;padding-bottom:12px}
 .lcRoad:before{background:color-mix(in srgb,var(--lc-glass,#f4f1ea) 84%,transparent);-webkit-backdrop-filter:blur(24px) saturate(1.5);backdrop-filter:blur(24px) saturate(1.5);border-bottom:1px solid color-mix(in srgb,var(--lc-ink) 8%,transparent)}
 .lcRoad:after{box-shadow:0 8px 24px -4px color-mix(in srgb,var(--lc-ink) 8%,transparent)}
 
 /* Wake: exhaust puffs and speed streaks trail the car while scrolling. */
-.lcWake{position:absolute;z-index:1;top:6px;left:var(--pos);width:90px;height:32px;translate:-100% 0;margin-left:-30px;pointer-events:none;transition:left .18s linear}
+.lcWake{position:absolute;z-index:1;top:6px;left:var(--pos);width:90px;height:32px;translate:-100% 0;margin-left:-32px;pointer-events:none;transition:left .18s linear}
 .lcWake i{position:absolute;right:0;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--lc-accent) 70%,transparent));opacity:0;transform-origin:right;transform:scaleX(.2);transition:opacity .3s,transform .3s}
 .lcWake i:nth-child(1){top:8px;width:70px}.lcWake i:nth-child(2){top:15px;width:90px}.lcWake i:nth-child(3){top:22px;width:55px}
 .lcWake em{position:absolute;right:-4px;top:22px;width:9px;height:9px;border-radius:50%;background:color-mix(in srgb,var(--lc-muted,#8aa0ae) 55%,transparent);filter:blur(1.5px);opacity:0}
@@ -161,7 +161,7 @@
 .lcRoad[data-traveler=mustang] .lcWake,.lcRoad[data-traveler=mache] .lcWake,.lcRoad[data-traveler=train] .lcWake{display:block}
 /* Mustang: gas only. Mach-E: electric streaks only. BART: wind gusts. */
 [data-traveler=mustang] .lcWake i,[data-traveler=mache] .lcWake em,[data-traveler=train] .lcWake em{display:none}
-[data-traveler=train] .lcWake{width:120px;margin-left:-44px}
+[data-traveler=train] .lcWake{width:120px;margin-left:-48px}
 [data-traveler=train] .lcWake i{height:1.5px;background:none;border-top:1.5px solid color-mix(in srgb,var(--lc-muted,#8aa0ae) 70%,transparent);border-radius:50%/100% 100% 0 0}
 [data-traveler=train] .lcWake i:nth-child(1){top:6px;width:80px}[data-traveler=train] .lcWake i:nth-child(2){top:14px;width:115px}[data-traveler=train] .lcWake i:nth-child(3){top:23px;width:70px}
 .lcRoad.isMoving[data-traveler=train] .lcWake i{animation:lcWind .6s ease-in-out infinite}
@@ -170,15 +170,15 @@
 
 /* Fixed, not sticky: a sticky bar sits in the page flow when undocked, so scrolling
    up showed it mid-screen while it faded out. Fixed keeps it pinned to the top edge. */
-.lcRoad{position:fixed;left:0;right:0;top:0;width:auto;margin:0;padding-left:max(24px,calc((100vw - 1180px)/2));padding-right:max(24px,calc((100vw - 1180px)/2));transform:translateY(-110%);transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1),visibility 0s linear .6s;visibility:hidden}
-.lcRoad.isShown{visibility:visible;transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1),visibility 0s}
+.lcRoad{position:fixed;left:0;right:0;top:0;width:auto;margin:0;padding-left:max(24px,calc((100vw - 1184px)/2));padding-right:max(24px,calc((100vw - 1184px)/2));transform:translateY(-110%);transition:opacity .5s var(--ease-out),transform .6s var(--ease-out),visibility 0s linear .6s;visibility:hidden}
+.lcRoad.isShown{visibility:visible;transition:opacity .5s var(--ease-out),transform .6s var(--ease-out),visibility 0s}
 .lcRoad:before,.lcRoad:after{left:0;width:100%}
 .lcRoad[data-traveler=bottle] .lcCar{width:34px;top:-7px}.lcRoad[data-traveler=bottle] .lcCar svg{width:34px;height:38px}
 /* Mustang smoke: puffs are placed at the tailpipe where they were emitted and stay
    there as the car moves on, billowing up and fading out toward the top of the bar. */
 [data-traveler=mustang] .lcWake{display:none!important}
 .lcSmoke{position:absolute;inset:0;z-index:1;pointer-events:none}
-.lcSmoke i{position:absolute;top:24px;width:10px;height:10px;margin-left:-46px;border-radius:50%;background:radial-gradient(circle,#7f8b95b3 0,#94a0a98c 35%,#aab4bc40 60%,transparent 72%);filter:blur(1.5px);opacity:0;animation:lcRise 2.5s cubic-bezier(.15,.55,.3,1) forwards}
+.lcSmoke i{position:absolute;top:24px;width:10px;height:10px;margin-left:-48px;border-radius:50%;background:radial-gradient(circle,#7f8b95b3 0,#94a0a98c 35%,#aab4bc40 60%,transparent 72%);filter:blur(1.5px);opacity:0;animation:lcRise 2.5s var(--ease-out) forwards}
 @keyframes lcRise{
  0%{opacity:0;transform:translate(0,0) scale(.4)}
  8%{opacity:.5}

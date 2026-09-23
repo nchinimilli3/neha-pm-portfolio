@@ -1,6 +1,6 @@
 /* Motion for a photographic/vector vehicle: the wheels turn, the body rides on its suspension,
    and speed streaks trail it only while it is actually moving. */
-.rvVehicle{position:relative;display:block;width:100%;line-height:0;filter:drop-shadow(0 12px 9px rgba(43,39,68,.16));transition:transform .6s cubic-bezier(.2,.8,.2,1),opacity .4s ease,filter .4s ease}
+.rvVehicle{position:relative;display:block;width:100%;line-height:0;filter:drop-shadow(0 12px 9px rgba(43,39,68,.16));transition:transform .6s var(--ease-out),opacity .4s ease,filter .4s ease}
 .rvBody{display:block;width:100%;height:auto}
 .rvWheel{position:absolute;aspect-ratio:1;border-radius:50%;background-repeat:no-repeat;transform:rotate(0deg)}
 

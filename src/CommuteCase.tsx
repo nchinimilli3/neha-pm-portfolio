@@ -3,6 +3,7 @@ import './commute-case.css';
 import CommuteBARTStory from './CommuteBARTStory';
 import RollingVehicle from './RollingVehicle';
 import LifecycleRoad from './LifecycleRoad';
+import { CasePull } from './CaseDecision';
 import { CommutePhoneDemo, useMorning } from './CommuteSurfaces';
 import CommuteModelLab, {ROUTINE, CANDIDATES, clock as labClock} from './CommuteModelLab';
 import {CommuteArtDefs} from './CommuteArt';
@@ -139,14 +140,14 @@ function DisruptionReplay(){
    <div className="cmReplayHandoff" aria-hidden="true"><span>if the bus slips 5 min</span><i>→</i></div>
    <div className="cmReplayRoute cmReplayBart"><BARTMiniGraphic live={false}/><div><b>BART</b><span>Qualified fallback · modeled arrival 8:53</span></div></div>
   </div>
-  <p>The alarm is already set, so switching costs no sleep. This check changes the route and the leave countdown, nothing else.</p>
  </div>;
 }
 
+/* A breath after the two densest sections: one line, set large, nothing else. */
 function LearningRun(){
  const [ref,seen]=useInView<HTMLDivElement>();
  const weeks=Array.from({length:8},(_,i)=>i+1);
- return <section className="cmLearning cmStage" id="cm-learn">
+ return <section className="cmLearning cmStage cmRhSplit" id="cm-learn">
   <header><h2>I tested the loop without letting it grade itself on known outcomes.</h2><p>Each weekday, I locked the prediction before leaving, and a geofence at the office logged the arrival, with a tap on the widget as backup when it misfired. That result updated only the next morning. That made calibration and sleep tradeoffs inspectable without pretending a personal prototype had proven universal reliability.</p></header>
   <div ref={ref} className={`cmWeekRun${seen?' isRunning':''}`} aria-label="Eight-week learning run across 40 weekday mornings">
    <div className="cmWeekLabels"><span>Week 1</span><b>40 weekday mornings</b><span>Week 8</span></div>
@@ -246,19 +247,22 @@ export default function CommuteCase({demo}:{demo:React.ReactNode}){
    <DisruptionReplay/>
   </section>
 
+  <CasePull>The alarm is already set, so switching costs no sleep. <em>This check changes the route and the leave countdown, nothing else.</em></CasePull>
+
   <LearningRun/>
 
-  <section className="cmClose cmStage" id="cm-ship">
+  <section className="cmClose cmStage cmRhSticky" id="cm-ship">
    <div className="cmCloseCopy">
-    <h2>What shipped, what I measured, and what comes next.</h2>
-
-    <ol className="cmPartsGrid">
-     {parts.map(p=><li key={p.n}>
-      <i>{p.n}</i>
-      <b>{p.t}</b>
-      <span>{p.d}</span>
-     </li>)}
-    </ol>
+    <div className="cmShipped">
+     <h2>What shipped, what I measured, and what comes next.</h2>
+     <ol className="cmPartsGrid">
+      {parts.map(p=><li key={p.n}>
+       <i>{p.n}</i>
+       <b>{p.t}</b>
+       <span>{p.d}</span>
+      </li>)}
+     </ol>
+    </div>
 
     <ol className="cmScopeStops" aria-label="Scope">
      <li className="is-next"><i/><div><b>Evidence boundary</b><span>One commuter · two East Bay routes · 8 weeks</span></div></li>

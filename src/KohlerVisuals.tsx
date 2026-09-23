@@ -121,7 +121,7 @@ export function KohlerHeroTag() {
   <div className="kxTagWrap"><div className="kxTag" aria-label="Kohler export order SO-28471, K-14402 to Bengaluru, India, packet ready for review">
    <svg className="kxTagString" viewBox="0 0 120 60" aria-hidden="true"><path d="M2 8C40 2 70 50 118 30"/></svg>
    <span className="kxTagHole" aria-hidden="true"/>
-   <img className="kxTagLogo" src={asset('company-logos/kohler.svg')} alt="Kohler"/>
+   <img className="kxTagLogo" src={asset('company-logos/kohler.svg')} alt="Kohler" loading="lazy" decoding="async"/>
    <small>Export order</small>
    <strong>SO-28471</strong>
    <div className="kxTagRoute"><span>K-14402</span><i aria-hidden="true"/><span>Bengaluru, IN</span></div>

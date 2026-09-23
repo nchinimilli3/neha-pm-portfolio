@@ -1,7 +1,7 @@
 /* Scoped separately from the case-study layout. The car's position is linked to scroll. */
 .fvHeroCar.shelbyScene{overflow:visible;padding-bottom:4px}
 .shelbyScene .shelbyIllustration{display:block;width:100%;height:auto;overflow:visible}
-.shelbyScene .shelbyHint{display:block;text-align:center;margin-top:10px;font:10px ui-monospace,monospace;color:#617583}
+.shelbyScene .shelbyHint{display:block;text-align:center;margin-top:8px;font:10px ui-monospace,monospace;color:#617583}
 .shelbyScene .shelbySpeed{opacity:calc(var(--drive-progress,0) * .72)}
 .shelbyScene .shelbyRear{transform-origin:180px 291px}
 .shelbyScene .shelbyFront{transform-origin:587px 291px}

@@ -4,37 +4,38 @@
 .case-estee .caseLead{display:grid!important;grid-template-columns:.8fr 1.2fr!important;gap:48px!important;align-items:center!important;padding-bottom:64px!important}
 .case-estee .caseHeader h1{font-size:clamp(48px,5.7vw,86px)!important;letter-spacing:-.045em!important}
 .case-estee .esteeHeroMockup{border-radius:2px;box-shadow:0 24px 50px #33261920;border:0}
-.case-estee .toolLogoSection{padding-top:20px!important;padding-bottom:30px!important}
+.case-estee .toolLogoSection{padding-top:20px!important;padding-bottom:32px!important}
 .elEditorial{font-size:17px;line-height:1.65;color:var(--el-ink)}
-.elEditorial section{width:min(1180px,calc(100% - 64px));margin:0 auto;padding:94px 0}
-.elEditorial h2{font:400 clamp(38px,4.4vw,65px)/1.05 var(--case-font);letter-spacing:-.035em;margin:20px 0 28px}
+.elEditorial section{width:min(1180px,calc(100% - 64px));margin:0 auto;padding:96px 0}
+.elEditorial h2{font:400 clamp(38px,4.4vw,65px)/1.05 var(--case-font);letter-spacing:-.035em;margin:20px 0 32px}
 .elEditorial h2 em{font-weight:400;color:#c9b18b}
-.elEditorial p{margin:0 0 22px;max-width:550px}
+.elEditorial p{margin:0 0 24px;max-width:550px}
 .elEditorial figure{margin:0;min-width:0}
 .elEditorial figure img{display:block;width:100%;height:auto;cursor:zoom-in}
-.elEditorial figcaption{font-size:13px;line-height:1.6;margin-top:18px;color:#62646c}
+.elEditorial figcaption{font-size:13px;line-height:1.6;margin-top:16px;color:#62646c}
 
-.elVanity{display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center;border-top:1px solid #bca98c66}
-.elMirrorScene{position:relative;padding:0 25px 32px;isolation:isolate}
-.elMirrorGlass{position:relative;aspect-ratio:1/1.14;border-radius:48% 48% 44% 44%;padding:18px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:linear-gradient(115deg,#6d5839,#e4d3b4 12%,#a38a61 20%,#f8edd8 26%,#a38a61 65%,#f6e9d2 80%,#796342);box-shadow:14px 22px 30px #30271322,inset 0 0 0 1px #82704d}
+.elVanity{display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:center}
+.elMirrorScene{position:relative;padding:0 24px 32px;isolation:isolate}
+.elMirrorGlass{position:relative;aspect-ratio:1/1.14;border-radius:48% 48% 44% 44%;padding:16px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:linear-gradient(115deg,#6d5839,#e4d3b4 12%,#a38a61 20%,#f8edd8 26%,#a38a61 65%,#f6e9d2 80%,#796342);box-shadow:14px 22px 30px #30271322,inset 0 0 0 1px #82704d}
 .elMirrorGlass:before{content:'';position:absolute;inset:18px;border-radius:inherit;z-index:1;pointer-events:none;background:linear-gradient(118deg,transparent 18%,#ffffffb8 20%,#ffffff40 25%,transparent 27%,transparent 31%,#ffffff8c 32.5%,transparent 35%),linear-gradient(118deg,transparent 64%,#ffffff55 66%,transparent 70%);box-shadow:inset 0 0 0 2px #ffffffb0,inset 0 3px 10px #4a3a2240,inset 0 -6px 24px #ffffff80}
 .elReflection{position:absolute;inset:18px;border-radius:inherit;overflow:hidden;background:radial-gradient(120% 90% at 30% 20%,#fbfcfdeb,#e3e8edd9 55%,#c4ccd4e0),url('/project-media/el-home.webp') center 65%/auto 150%;background-blend-mode:normal,luminosity}
-.elMirrorGlass p{position:relative;z-index:2;font:400 clamp(27px,3vw,43px)/1.2 Georgia,serif;margin:0 10px 22px;text-shadow:0 1px 12px #fff}
+.elMirrorGlass p{position:relative;z-index:2;font:400 clamp(27px,3vw,43px)/1.2 Georgia,serif;margin:0 8px 24px;text-shadow:0 1px 12px #fff}
 .elMirrorGlass p em{font-weight:400}
 .elMirrorGlass>span{z-index:2;font-size:13px;color:#5c5146}
 .elMirrorStem{height:55px;width:16px;margin:auto;background:linear-gradient(90deg,#7d6441,#f5e4c4 40%,#8e744c);box-shadow:8px 4px 12px #33261922}
 .elMirrorBase{height:25px;width:58%;border-radius:50%;margin:auto;background:linear-gradient(175deg,#e9d8b8,#9b825b 60%,#705b3e);box-shadow:0 17px 18px #33261930,inset 0 2px 1px #fff9}
 
-.elInvitation{display:grid;grid-template-columns:.65fr 1.35fr;gap:55px;align-items:center}.elInvitation figure{transform:rotate(-1deg);filter:drop-shadow(0 20px 15px #2c201c18)}
-.elEditorial .elProof{width:100%;padding:80px max(32px,calc((100% - 1180px)/2))}
-.elProof header{display:grid;grid-template-columns:1fr 1fr;gap:0 65px;align-items:end}.elProof h2{margin-bottom:36px}.elProof header p{margin-bottom:38px}.elProof figure{max-width:1080px;margin:0 auto}.elProof figure{filter:drop-shadow(0 30px 30px #1b1a2a2e)}
-.elPurchase{display:grid;grid-template-columns:1.1fr .8fr;gap:110px;align-items:center}.elRetail figure{max-width:540px;margin-top:35px;filter:drop-shadow(0 16px 16px #32231718)}
+.elInvitation{display:grid;grid-template-columns:1fr;gap:56px;align-items:center}
+.elInvitation>figure{max-width:880px}.elInvitation figure{transform:rotate(-1deg);filter:drop-shadow(0 20px 15px #2c201c18)}
+.elEditorial .elProof{width:100%;padding:80px max(32px,calc((100% - 1184px)/2))}
+.elProof header{display:grid;grid-template-columns:1fr 1fr;gap:0 64px;align-items:end}.elProof h2{margin-bottom:32px}.elProof header p{margin-bottom:40px}.elProof figure{max-width:1080px;margin:0 auto}.elProof figure{filter:drop-shadow(0 30px 30px #1b1a2a2e)}
+.elPurchase{display:grid;grid-template-columns:1.1fr .8fr;gap:112px;align-items:center}.elRetail figure{max-width:540px;margin-top:32px;filter:drop-shadow(0 16px 16px #32231718)}
 
 
 
-.elResponsive{border-top:1px solid #bca98c66}.elResponsive header{display:grid;grid-template-columns:1fr 1fr;gap:65px;align-items:center}.elSmall{font-size:14px;color:#62646c}.elSizeToggle{display:flex;justify-content:center;gap:6px;margin:25px 0}.elSizeToggle button{padding:10px 19px;border:1px solid #a8a39a;background:transparent;border-radius:30px;color:var(--el-ink);font-size:14px;cursor:pointer}.elSizeToggle button[aria-pressed=true]{background:var(--el-ink);color:white;border-color:var(--el-ink)}.elSizeToggle button:focus-visible{outline:3px solid #a8884f;outline-offset:3px}.elViewport{width:100%;max-width:980px;margin:0 auto;transition:max-width .65s cubic-bezier(.22,1,.36,1);filter:drop-shadow(0 20px 20px #33261920)}.elViewportCompact{max-width:390px}.elViewport img{display:block;width:100%;height:auto;cursor:zoom-in}.elEditorial .elViewportCaption{text-align:center;font-size:13px;max-width:none;margin:24px 0 0}
-.elEditorial .elFinal{display:grid;grid-template-columns:.7fr 1.3fr;gap:95px;align-items:center;border-top:1px solid #bca98c66;padding-bottom:110px}
-@media(max-width:800px){.case-estee .caseLead{grid-template-columns:1fr!important;gap:28px!important}.elEditorial section{width:calc(100% - 40px);padding:58px 0}.elVanity,.elInvitation,.elPurchase,.elEditorial .elFinal{grid-template-columns:1fr;gap:42px}.elMirrorScene{width:min(420px,100%);margin:auto}.elMirrorGlass p{font-size:34px}.elProof header,.elResponsive header{grid-template-columns:1fr;gap:0}.elInvitation figure{transform:none}.elEditorial .elProof{padding:58px 20px}.elRetail figure{margin:30px auto 0}.elEditorial .elFinal{gap:42px}.elFinal h2{font-size:42px}.elEditorial h2{font-size:42px}.elInvitation header p{margin-bottom:0}}
+.elResponsive header{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}.elSmall{font-size:14px;color:#62646c}.elSizeToggle{display:flex;justify-content:center;gap:8px;margin:24px 0}.elSizeToggle button{padding:8px 20px;border:1px solid #a8a39a;background:transparent;border-radius:30px;color:var(--el-ink);font-size:14px;cursor:pointer}.elSizeToggle button[aria-pressed=true]{background:var(--el-ink);color:white;border-color:var(--el-ink)}.elSizeToggle button:focus-visible{outline:3px solid #a8884f;outline-offset:3px}.elViewport{width:100%;max-width:980px;margin:0 auto;transition:max-width .65s var(--ease-out);filter:drop-shadow(0 20px 20px #33261920)}.elViewportCompact{max-width:390px}.elViewport img{display:block;width:100%;height:auto;cursor:zoom-in}.elEditorial .elViewportCaption{text-align:center;font-size:13px;max-width:none;margin:24px 0 0}
+.elEditorial .elFinal{display:grid;grid-template-columns:.7fr 1.3fr;gap:96px;align-items:center;padding-bottom:112px}
+@media(max-width:800px){.case-estee .caseLead{grid-template-columns:1fr!important;gap:32px!important}.elEditorial section{width:calc(100% - 40px);padding:56px 0}.elVanity,.elInvitation,.elPurchase,.elEditorial .elFinal{grid-template-columns:1fr;gap:40px}.elMirrorScene{width:min(420px,100%);margin:auto}.elMirrorGlass p{font-size:34px}.elProof header,.elResponsive header{grid-template-columns:1fr;gap:0}.elInvitation figure{transform:none}.elEditorial .elProof{padding:56px 20px}.elRetail figure{margin:32px auto 0}.elEditorial .elFinal{gap:40px}.elFinal h2{font-size:42px}.elEditorial h2{font-size:42px}}
 @media(prefers-reduced-motion:reduce){.elViewport{transition:none}}
 
 
@@ -43,24 +44,24 @@
 @media(max-width:500px){.elEditorial h2{font-size:38px}.elEditorial h2 br{display:none}.elFinal h2{font-size:38px}}
 
 /* Code-built cosmetic still life; recognition remains high-contrast HTML. */
-.elEditorial .elFinal{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:54px}
+.elEditorial .elFinal{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:56px}
 .elCompactScene{min-width:0;width:100%;align-self:center}
 .elCompactArtwork{display:block;width:100%;height:auto;overflow:visible}
 .elOutcomeText{min-width:0;color:#07132f}
-.elEditorial .elFinalRecognition{display:flex;align-items:center;gap:18px;margin:20px 0 30px;color:#07132f}
+.elEditorial .elFinalRecognition{display:flex;align-items:center;gap:16px;margin:20px 0 32px;color:#07132f}
 .elFinalRecognition strong{font:400 clamp(40px,4vw,56px)/1 var(--case-font);white-space:nowrap}
-.elFinalRecognition span{font-size:14px;line-height:1.4;max-width:90px;border-left:1px solid #b79a70;padding-left:18px}
-.elOutcomeText h2{font-size:clamp(36px,4.2vw,58px)}
-@media(max-width:800px){.elEditorial .elFinal{grid-template-columns:1fr;gap:24px}.elCompactScene{max-width:420px;margin:0 auto}.elOutcomeText h2{font-size:38px}.elEditorial .elFinalRecognition{margin:18px 0 24px}}
+.elFinalRecognition span{font-size:14px;line-height:1.4;max-width:90px;border-left:1px solid #b79a70;padding-left:16px}
+
+@media(max-width:800px){.elEditorial .elFinal{grid-template-columns:1fr;gap:24px}.elCompactScene{max-width:420px;margin:0 auto}.elEditorial .elFinalRecognition{margin:16px 0 24px}}
 
 /* Scope decisions as a Double Wear bottle: what stayed inside, and what was handed off through the cap. */
 .elScope{container-type:inline-size}
 .elScope h3{font:400 30px/1.1 var(--case-font);margin:0 0 40px;color:var(--el-ink)}
-.elBottleScene{position:relative;display:grid;grid-template-columns:170px 1fr;gap:0 28px}
+.elBottleScene{position:relative;display:grid;grid-template-columns:170px 1fr;gap:0 32px}
 .elBottle{width:170px;height:auto;overflow:visible;filter:drop-shadow(0 18px 22px #3b2a1a26)}
 .elBottleBrand{font:600 7px Georgia,serif;letter-spacing:.24em;fill:#07132f}
 .elBottleName{font:italic 400 12px Georgia,serif;fill:#07132f}
-.elFill{transform:scaleY(0);transform-origin:50% 296px;transition:transform 1.4s cubic-bezier(.2,.7,.2,1)}
+.elFill{transform:scaleY(0);transform-origin:50% 296px;transition:transform 1.4s var(--ease-out)}
 .elScope.isIn .elFill{transform:none}
 .elScopeNotes{position:relative;margin:0;padding:0;list-style:none}
 .elScopeNotes li{position:absolute;left:0;right:0;translate:0 -50%;opacity:0;transform:translateX(12px);transition:opacity .6s,transform .6s}
@@ -72,30 +73,33 @@
 .elScopeNotes .is-simplify{top:55%;transition-delay:.9s}
 .elScopeNotes .is-keep{top:80%;transition-delay:.5s}
 .elScopeNotes b{display:block;font:italic 400 24px/1.1 var(--case-font);color:var(--el-ink)}
-.elScopeNotes span{display:block;margin-top:3px;font-size:14.5px;line-height:1.45;color:#5a5249}
-.elBags{display:flex!important;gap:5px;margin-top:10px!important}
+.elScopeNotes span{display:block;margin-top:4px;font-size:14.5px;line-height:1.45;color:#5a5249}
+.elBags{display:flex!important;gap:4px;margin-top:8px!important}
 .elBags svg{width:24px;height:28px;overflow:visible;filter:drop-shadow(0 3px 3px #07132f2e)}
 .elBags svg:nth-child(even){transform:translateY(3px) rotate(4deg)}.elBags svg:nth-child(3n){transform:rotate(-5deg)}
 .elBagBody{fill:#0b1a3d}.elBagFold{fill:#1c2d57}.elBagHandle{fill:none;stroke:#c9a25d;stroke-width:1.6;stroke-linecap:round}.elBagEyelet{fill:#c9a25d}
-@container (max-width:470px){.elBottleScene{grid-template-columns:1fr;justify-items:center;gap:30px}.elBottle{width:180px}.elScopeNotes{display:grid;gap:18px;width:100%}.elScopeNotes li{position:static;translate:none;padding-left:18px;border-left:2px solid #b79a70}.elScopeNotes li:before,.elScopeNotes li:after{display:none}.elScopeNotes .is-keep{order:1;border-left:4px solid #5a331d}.elScopeNotes .is-simplify{order:2;border-left:4px solid #9a6441}.elScopeNotes .is-handoff{order:3;border-left:2px dashed #07132f}}
+@container (max-width:470px){.elBottleScene{grid-template-columns:1fr;justify-items:center;gap:32px}.elBottle{width:180px}.elScopeNotes{display:grid;gap:16px;width:100%}.elScopeNotes li{position:static;translate:none;padding-left:16px;border-left:2px solid #b79a70}.elScopeNotes li:before,.elScopeNotes li:after{display:none}.elScopeNotes .is-keep{order:1;border-left:4px solid #5a331d}.elScopeNotes .is-simplify{order:2;border-left:4px solid #9a6441}.elScopeNotes .is-handoff{order:3;border-left:2px dashed #07132f}}
 @media(prefers-reduced-motion:reduce){.elFill,.elScopeNotes li{transition:none;transform:none;opacity:1}}
 
 /* Lifecycle road palette */
 .elEditorial{--lc-ink:#07132f;--lc-road:#0b1d4d;--lc-accent:#b08a4a;--lc-accent-2:#e3c68c;--lc-muted:#85796a;--lc-tint:#f5e9eef2;--lc-glass:#f2e9da}
-.elStage{scroll-margin-top:110px}
+.elStage{scroll-margin-top:112px}
 
-/* Composition (desktop): Proof and Responsive were both split headers over a centered image. Responsive now
-   centers a stacked header like a gallery wall label; the final section mirrors the opening vanity (text first). */
+/* Composition (desktop): every heading holds the page's left edge (case-system.css); the bodies vary.
+   Discover sets the problem left and the vanity mirror right; Responsive stacks its header over the width demo;
+   the final section pairs the outcome text with the compact. */
 @media(min-width:1001px){
- .elEditorial .elResponsive header{grid-template-columns:1fr;justify-items:center;gap:14px;max-width:760px;margin:0 auto;text-align:center}
+ .elEditorial .elVanity>.elProblem{order:-1}
+ .elEditorial .elResponsive header{grid-template-columns:1fr;gap:16px;max-width:none;margin:0}
+ .elEditorial .elResponsive header p{max-width:62ch}
  .elEditorial .elFinal{grid-template-columns:repeat(12,minmax(0,1fr));column-gap:32px}
- .elEditorial .elFinal>.elOutcomeText{grid-column:1/6;grid-row:1}
- .elEditorial .elFinal>.elCompactScene{grid-column:7/13;grid-row:1}
+ .elEditorial .elFinal>.elOutcomeText{grid-column:1/6;grid-row:2}
+ .elEditorial .elFinal>.elCompactScene{grid-column:7/13;grid-row:2}
 }
 
 /* Hollywood vanity mirror: a lit frame of bulbs around silvered glass, sitting on a dressing table. */
-.isVanity{padding:0 0 10px}
-.elVanityFrame{position:relative;padding:34px;border-radius:26px;background:linear-gradient(135deg,#f3e6cc,#c9ad7c 30%,#f6ead2 52%,#b8996a 78%,#e9d8b8);box-shadow:0 30px 50px #3a2a1433,inset 0 1px 0 #fff,inset 0 0 0 1px #9c7f52}
+.isVanity{padding:0 0 8px}
+.elVanityFrame{position:relative;padding:32px;border-radius:24px;background:linear-gradient(135deg,#f3e6cc,#c9ad7c 30%,#f6ead2 52%,#b8996a 78%,#e9d8b8);box-shadow:0 30px 50px #3a2a1433,inset 0 1px 0 #fff,inset 0 0 0 1px #9c7f52}
 .isVanity .elMirrorGlass{aspect-ratio:1/1.05;border-radius:12px;padding:0;background:none;box-shadow:inset 0 0 0 3px #8a6f45,0 0 0 1px #fff8}
 .isVanity .elReflection,.isVanity .elMirrorGlass:before{inset:0;border-radius:12px}
 .elBulb{position:absolute;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff,#fff6d8 45%,#ffd98a);box-shadow:0 0 10px 3px #ffe7a6b3,0 0 26px 8px #ffd98a55;animation:elBulbOn .5s ease-out both;animation-delay:calc(var(--i) * 60ms)}
@@ -112,12 +116,12 @@
 /* Top 5 celebration: a gold shimmer sweeps the text and confetti bursts once. */
 .elOutcomeText{position:relative}
 .elOutcomeText .elFinalRecognition strong{background:linear-gradient(100deg,#8a6a38 0 35%,#fff3d1 45%,#d4af6a 52%,#8a6a38 62% 100%) 100% 0/250% 100% no-repeat;-webkit-background-clip:text;background-clip:text;transition:text-shadow .8s}
-.isCelebrating .elFinalRecognition strong{-webkit-text-fill-color:transparent;animation:elShimmer 1.6s cubic-bezier(.3,.7,.3,1) .15s both;text-shadow:0 0 28px #f3d99a88}
+.isCelebrating .elFinalRecognition strong{-webkit-text-fill-color:transparent;animation:elShimmer 1.6s var(--ease-out) .15s both;text-shadow:0 0 28px #f3d99a88}
 @keyframes elShimmer{from{background-position:100% 0}to{background-position:0 0}}
-.isCelebrating h2{animation:elGlow 2.2s ease-out .3s both}
+.elFinal:has(.isCelebrating)>.csTitle{animation:elGlow 2.2s ease-out .3s both}
 @keyframes elGlow{0%{text-shadow:none}35%{text-shadow:0 0 22px #f3d99acc,0 0 2px #fff}100%{text-shadow:0 0 14px #f3d99a40}}
 .elConfetti{position:absolute;left:24%;top:30%;width:0;height:0;pointer-events:none;z-index:2}
-.elConfetti i{position:absolute;width:9px;height:14px;border-radius:2px;background:var(--c);opacity:0;animation:elBurst 1.5s cubic-bezier(.15,.7,.3,1) var(--d) forwards}
+.elConfetti i{position:absolute;width:9px;height:14px;border-radius:2px;background:var(--c);opacity:0;animation:elBurst 1.5s var(--ease-out) var(--d) forwards}
 .elConfetti i:nth-child(3n){width:8px;height:8px;border-radius:50%}
 @keyframes elBurst{0%{opacity:1;transform:translate(0,0) rotate(0) scale(.4)}70%{opacity:1}100%{opacity:0;transform:translate(var(--x),calc(var(--y) + 120px)) rotate(calc(var(--r) + 540deg)) scale(1)}}
-@media(prefers-reduced-motion:reduce){.elConfetti{display:none}.isCelebrating .elFinalRecognition strong,.isCelebrating h2{animation:none}}
+@media(prefers-reduced-motion:reduce){.elConfetti{display:none}.isCelebrating .elFinalRecognition strong,.elFinal:has(.isCelebrating)>.csTitle{animation:none}}

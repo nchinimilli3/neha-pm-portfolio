@@ -141,7 +141,7 @@ export function CommutePhoneDemo({ m, app }: { m: Morning; app: React.ReactNode 
    ? <div className="iphoneDemoStage">
      <div className="iosPhoneDevice csDevice">
       <div className="iosDemoShell csLockShell"><LockScreen m={m} onOpen={() => setView('app')}/></div>
-      <img className="iosHardwareFrame" src="project-media/iphone-frame-v31.png" alt="" aria-hidden="true"/>
+      <img className="iosHardwareFrame" src="project-media/iphone-frame-v31.png" alt="" aria-hidden="true" loading="lazy" decoding="async"/>
       <div className={`csIsland${m.phase !== 'asleep' ? ' isLive' : ''}`} aria-hidden="true">
        <span className="csIslandIcon"><Glyph kind={m.island.icon}/></span>
        <span className="csIslandText">{m.island.text}</span>

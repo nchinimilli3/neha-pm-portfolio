@@ -70,12 +70,14 @@ export default function FCVFCase({setLightbox}) {
  ];
 
  const current=iterations[active];
- const evidence=(src,alt,caption)=><figure className="fvEvidence"><button type="button" onClick={(e)=>{e.stopPropagation();setLightbox({src:asset(src),alt})}} aria-label={`Expand ${alt}`}><img src={asset(src)} alt={alt} loading="lazy"/><span aria-hidden="true">↗</span></button><figcaption>{caption}</figcaption></figure>;
+ // Intrinsic sizes, so each evidence image reserves its space before it loads.
+ const dims={'project-media/fcvf-iterations/slide10-pic4.png':[1748,1284],'project-media/fcvf-iterations/slide6-pic5.png':[1596,442],'project-media/fcvf-iterations/slide6-pic6.png':[612,94],'project-media/fcvf-iterations/slide6-pic8.png':[658,646],'project-media/fcvf-iterations/slide8-pic5.png':[3550,1874],'project-media/fcvf-iterations/slide9-pic5.png':[1104,1468],'project-media/ford-after.webp':[1600,1175]};
+ const evidence=(src,alt,caption)=><figure className="fvEvidence"><button type="button" onClick={(e)=>{e.stopPropagation();setLightbox({src:asset(src),alt})}} aria-label={`Expand ${alt}`}><img src={asset(src)} alt={alt} width={dims[src]?.[0]} height={dims[src]?.[1]} loading="lazy" decoding="async"/><span aria-hidden="true">↗</span></button><figcaption>{caption}</figcaption></figure>;
  return <div className="fvEditorial">
   <LifecycleRoad stages={stages} vehicle="mustang"/>
 
-  <section className="fvBrief fvStage" id="fv-discover">
-   <div><h2>Better signals.<br/><em>Better decisions.</em></h2><p>Ford product teams used the Customer Value Framework to decide whether to invest in, improve, or stop a product idea.</p><p>The framework worked. The Excel workbook around it didn’t: one long sheet, formulas anyone could edit, and a score that changed while people were still answering.</p></div>
+  <section className="fvBrief fvStage" id="fv-discover"><h2 className="csTitle">Better signals. <em>Better decisions.</em></h2>
+   <div><p>Ford product teams used the Customer Value Framework to decide whether to invest in, improve, or stop a product idea.</p><p>The framework worked. The Excel workbook around it didn’t: one long sheet, formulas anyone could edit, and a score that changed while people were still answering.</p></div>
    <div className="fvWorkbookBefore" aria-label="Recreation of the original Excel Customer Value Framework workbook">
     <header><span className="fvWorkbookIcon">X</span><div><strong>Customer Value Framework.xlsx</strong><small>Original assessment · score logic exposed</small></div></header>
     <div className="fvWorkbookChrome"><span>File</span><span>Home</span><span>Insert</span><span>Formulas</span><span>Data</span><i>fx&nbsp;&nbsp;=SUMPRODUCT(C12:C28,D12:D28)</i></div>
@@ -84,8 +86,8 @@ export default function FCVFCase({setLightbox}) {
    </div>
   </section>
 
-  <section className="fvLogic fvStage" id="fv-define">
-   <div><h2>Keep the engine.<br/><em>Rethink the controls.</em></h2>    <ol className="fvGoals">
+  <section className="fvLogic fvStage" id="fv-define"><h2 className="csTitle">Keep the engine. <em>Rethink the controls.</em></h2>
+   <div>    <ol className="fvGoals">
      <li><b>Preserve the scoring logic</b><span>Same response values and formulas as the workbook.</span></li>
      <li><b>Make a long assessment easier to finish</b><span>Less scanning, clearer navigation, visible progress.</span></li>
      <li><b>Protect response integrity</b><span>No accidental formula edits, no answering toward a score.</span></li>
@@ -94,11 +96,11 @@ export default function FCVFCase({setLightbox}) {
    <div className="fvFormulaPair">{evidence('project-media/fcvf-iterations/slide6-pic5.png','Original Excel response values','01 / Response values')}{evidence('project-media/fcvf-iterations/slide6-pic6.png','Original Excel scoring formula','02 / Scoring logic')}</div>
   </section>
 
-  <section className="fvWorkbench fvStage" id="fv-build"><header><div><h2>Ship early.<br/><em>Then iterate.</em></h2></div><p>A plain HTML MVP got product owners reacting early. Each build after it answered the next open question.</p></header><div className="fvBuildNav" role="group" aria-label="Choose a prototype version">{iterations.map((item,i)=><button key={item.number} type="button" aria-pressed={active===i} onClick={()=>setActive(i)}><span>{item.number}</span>{item.title}</button>)}</div><div className="fvBuild" aria-live="polite"><div className="fvBuildImage">{evidence(current.src,current.alt,`Original project artifact / Build ${current.number}`)}</div><div className="fvBuildNotes"><h3>{current.title}</h3><dl><dt>What we built</dt><dd>{current.tried}</dd><dt>What we learned</dt><dd>{current.learned}</dd><dt>What changed next</dt><dd>{current.changed}</dd></dl></div></div></section>
+  <section className="fvWorkbench fvStage" id="fv-build"><h2 className="csTitle">Ship early. <em>Then iterate.</em></h2><header><p>A plain HTML MVP got product owners reacting early. Each build after it answered the next open question.</p></header><div className="fvBuildNav" role="group" aria-label="Choose a prototype version">{iterations.map((item,i)=><button key={item.number} type="button" aria-pressed={active===i} onClick={()=>setActive(i)}><span>{item.number}</span>{item.title}</button>)}</div><div className="fvBuild" aria-live="polite"><div className="fvBuildImage">{evidence(current.src,current.alt,`Original project artifact / Build ${current.number}`)}</div><div className="fvBuildNotes"><h3>{current.title}</h3><dl><dt>What we built</dt><dd>{current.tried}</dd><dt>What we learned</dt><dd>{current.learned}</dd><dt>What changed next</dt><dd>{current.changed}</dd></dl></div></div></section>
 
-  <section className="fvResearch fvStage" id="fv-validate"><header><h2>Four interviews changed<br/>the product's direction.</h2><InterviewRoom/></header><div className="fvResearchNotes"><p>I led four moderated interviews comparing the one-page build with a multi-page prototype. Two findings changed the product:</p><article><svg className="fvTestSketch" viewBox="0 0 190 74" aria-hidden="true"><rect x="1" y="1" width="188" height="70" rx="9" fill="none" stroke="currentColor"/><path d="M64 1V71M126 1V71" stroke="currentColor"/><path d="M11 17H52M11 28H52M11 39H41M137 17H177M137 28H177M137 39H166" stroke="currentColor" opacity=".25"/><rect x="72" y="10" width="46" height="52" rx="4" fill="#163f5b"/><path d="M81 23H109M81 32H109M81 41H100" stroke="#e2e8e7"/></svg><h3>The full assessment felt overwhelming.</h3><p>Pagination gave users one portion of the framework at a time, with progress they could see.</p></article><article><svg className="fvTestSketch" viewBox="0 0 190 74" aria-hidden="true"><rect x="1" y="1" width="188" height="70" rx="9" fill="none" stroke="currentColor"/><path d="M18 22H103M18 36H103M18 50H103" stroke="currentColor" opacity=".25"/><rect x="118" y="12" width="58" height="47" rx="4" fill="#163f5b"/><path d="M138 33V27a9 9 0 0 1 18 0V33" fill="none" stroke="#dce5e6" strokeWidth="2"/><rect x="135" y="32" width="24" height="18" rx="2" fill="#dce5e6"/><path d="M147 38V44" stroke="#163f5b" strokeWidth="2"/></svg><h3>A live score could steer the answers.</h3><p>Watching the number change while answering invited people to pick the option that scored higher, not the one the evidence supported.</p><a className="cdLeadsTo" href="#fv-decide">This became the decision<i aria-hidden="true">↓</i></a></article></div></section>
+  <section className="fvResearch fvStage" id="fv-validate"><h2 className="csTitle">Four interviews changed the product's direction.</h2><header><InterviewRoom/></header><div className="fvResearchNotes"><p>I led four moderated interviews comparing the one-page build with a multi-page prototype. Two findings changed the product:</p><article><svg className="fvTestSketch" viewBox="0 0 190 74" aria-hidden="true"><rect x="1" y="1" width="188" height="70" rx="9" fill="none" stroke="currentColor"/><path d="M64 1V71M126 1V71" stroke="currentColor"/><path d="M11 17H52M11 28H52M11 39H41M137 17H177M137 28H177M137 39H166" stroke="currentColor" opacity=".25"/><rect x="72" y="10" width="46" height="52" rx="4" fill="#163f5b"/><path d="M81 23H109M81 32H109M81 41H100" stroke="#e2e8e7"/></svg><h3>The full assessment felt overwhelming.</h3><p>Pagination gave users one portion of the framework at a time, with progress they could see.</p></article><article><svg className="fvTestSketch" viewBox="0 0 190 74" aria-hidden="true"><rect x="1" y="1" width="188" height="70" rx="9" fill="none" stroke="currentColor"/><path d="M18 22H103M18 36H103M18 50H103" stroke="currentColor" opacity=".25"/><rect x="118" y="12" width="58" height="47" rx="4" fill="#163f5b"/><path d="M138 33V27a9 9 0 0 1 18 0V33" fill="none" stroke="#dce5e6" strokeWidth="2"/><rect x="135" y="32" width="24" height="18" rx="2" fill="#dce5e6"/><path d="M147 38V44" stroke="#163f5b" strokeWidth="2"/></svg><h3>A live score could steer the answers.</h3><p>Watching the number change while answering invited people to pick the option that scored higher, not the one the evidence supported.</p><a className="cdLeadsTo" href="#fv-decide">This became the decision<i aria-hidden="true">↓</i></a></article></div></section>
 
-  <div className="fvStage" id="fv-decide">
+  <div className="fvStage csMoment" id="fv-decide">
    <DecisionMoment
     statement={<>I removed the<br/>live score.</>}
     because={<p>Interviews showed the running number invited people to pick the option that scored higher rather than the one the customer evidence supported. A framework used to invest in or stop a product idea is only worth the answers going into it.</p>}
@@ -110,13 +112,13 @@ export default function FCVFCase({setLightbox}) {
    </DecisionMoment>
   </div>
 
-  <section className="fvDelivery fvStage" id="fv-deliver"><header><h2>Shipped on a<br/><em>10-person Agile team.</em></h2><p>I implemented frontend and backend work in React, TypeScript, and Material UI on a Kotlin and Spring service, improved accessibility, and planned the work in GitHub Projects.</p></header>{evidence('project-media/ford-after.webp','Final Ford Customer Value Framework web experience','Shipped web experience / Multi-page flow · Visible progress · Score after completion')}
+  <section className="fvDelivery fvStage" id="fv-deliver"><h2 className="csTitle">Shipped on a <em>10-person Agile team.</em></h2><header><p>I implemented frontend and backend work in React, TypeScript, and Material UI on a Kotlin and Spring service, improved accessibility, and planned the work in GitHub Projects.</p></header>{evidence('project-media/ford-after.webp','Final Ford Customer Value Framework web experience','Shipped web experience / Multi-page flow · Visible progress · Score after completion')}
     <div className="fvShipFacts"><div className="fvFact"><strong>100+</strong><span>Git commits across the frontend and backend</span></div><div className="fvFact"><div className="fvFactHead"><strong>7<small>→</small>1</strong><CssConsolidation/></div><span>Legacy stylesheets consolidated into one Material UI theme</span></div></div>
   
   </section>
 
   <section className="fvMeasure fvStage" id="fv-measure">
-   <header className="fvMeasureHead"><h2>Measured by<br/><em>what users sent back.</em></h2></header>
+   <header className="fvMeasureHead"><h2>Measured by <em>what users sent back.</em></h2></header>
    <div className="fvMeasureResult"><FeedbackGauge/></div>
    <div className="fvMeasureNext">
     <h3>What I’d measure next</h3>

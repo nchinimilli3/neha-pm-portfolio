@@ -6,15 +6,15 @@
 .csDemo svg,.csSurfaces svg,.csDevice svg{fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 
 /* ---- demo phone ---- */
-.csDemo{display:grid;justify-items:center;gap:14px;width:100%}
+.csDemo{display:grid;justify-items:center;gap:16px;width:100%}
 /* .csDemo centres its children, so they size to content — and .iosPhoneDevice
    is width:min(100%,330px), a percentage of that indefinite width, which
    collapses to 0. The stage needs a definite width for the phone to have
    anything to be a percentage of. This lived in the in-depth case layout, so
    the skim view rendered the controls with no phone above them. */
 .csDemo .iphoneDemoStage{width:100%}
-.csViewSwitch{display:inline-flex;padding:3px;border-radius:10px;background:rgba(43,39,68,.08)}
-.csViewSwitch button{border:0;background:transparent;padding:6px 16px;border-radius:8px;font:600 13px/1 var(--cs-sf);color:rgba(43,39,68,.6);cursor:pointer;transition:background .2s,color .2s,box-shadow .2s}
+.csViewSwitch{display:inline-flex;padding:4px;border-radius:12px;background:rgba(43,39,68,.08)}
+.csViewSwitch button{border:0;background:transparent;padding:8px 16px;border-radius:8px;font:600 13px/1 var(--cs-sf);color:rgba(43,39,68,.6);cursor:pointer;transition:background .2s,color .2s,box-shadow .2s}
 .csViewSwitch button[aria-selected=true]{background:#fff;color:var(--cs-ink);box-shadow:0 1px 3px rgba(43,39,68,.16)}
 
 .csDevice{position:relative}
@@ -22,7 +22,7 @@
 .csLockShell:before{content:'';position:absolute;inset:0;background:radial-gradient(120% 60% at 70% 12%,rgba(255,214,170,.28),transparent 60%),radial-gradient(90% 50% at 10% 90%,rgba(120,210,190,.22),transparent 60%);pointer-events:none}
 
 /* Dynamic Island sits over the hardware frame's own pill and grows from it. */
-.csIsland{position:absolute;z-index:3;top:3%;left:50%;height:4.1%;width:29%;translate:-50% 0;display:flex;align-items:center;justify-content:space-between;padding:0 10px;border-radius:999px;background:#000;color:#fff;overflow:hidden;transition:width .45s cubic-bezier(.3,1.3,.5,1)}
+.csIsland{position:absolute;z-index:3;top:3%;left:50%;height:4.1%;width:29%;translate:-50% 0;display:flex;align-items:center;justify-content:space-between;padding:0 8px;border-radius:999px;background:#000;color:#fff;overflow:hidden;transition:width .45s var(--ease-spring)}
 .csIsland.isLive{width:52%}
 .csIslandIcon{display:grid;place-items:center;width:18px;height:18px;color:#8fe3c6}
 .csIslandIcon svg{width:17px;height:17px}
@@ -32,55 +32,55 @@
 .csDate{margin:0;font:600 13px/1.2 var(--cs-sf);color:rgba(255,255,255,.82)}
 .csClock{margin:2px 0 0;font:700 clamp(58px,19vw,72px)/1 var(--cs-sf);letter-spacing:-.02em;color:rgba(255,255,255,.94);font-variant-numeric:tabular-nums}
 
-.csNotice{display:flex;gap:9px;align-items:flex-start;width:100%;margin-top:18px;padding:10px 11px;border:0;border-radius:16px;background:rgba(255,255,255,.22);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);color:#fff;text-align:left;cursor:pointer;animation:csDrop .5s cubic-bezier(.2,1.2,.4,1)}
+.csNotice{display:flex;gap:8px;align-items:flex-start;width:100%;margin-top:16px;padding:8px 12px;border:0;border-radius:16px;background:rgba(255,255,255,.22);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);color:#fff;text-align:left;cursor:pointer;animation:csDrop .5s var(--ease-spring)}
 .csNoticeText{display:grid;gap:1px;min-width:0}
 .csNoticeText b{display:flex;justify-content:space-between;font:600 10.5px/1.3 var(--cs-sf);text-transform:uppercase;letter-spacing:.03em;color:rgba(255,255,255,.75)}
 .csNoticeText b em{font-style:normal;font-weight:500;text-transform:none}
 .csNoticeText strong{font:600 13.5px/1.3 var(--cs-sf)}
 .csNoticeText span{font:400 12px/1.35 var(--cs-sf);color:rgba(255,255,255,.88)}
-.csAppIcon{flex:0 0 auto;width:26px;height:26px;border-radius:7px;background:linear-gradient(145deg,#6fa596,#4f7a6c 55%,#2b2744);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+.csAppIcon{flex:0 0 auto;width:26px;height:26px;border-radius:8px;background:linear-gradient(145deg,#6fa596,#4f7a6c 55%,#2b2744);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
 
-.csLockFoot{display:grid;gap:10px;margin-top:auto}
-.csAlarmPill{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);font:500 12px/1.3 var(--cs-sf);color:rgba(255,255,255,.9)}
+.csLockFoot{display:grid;gap:8px;margin-top:auto}
+.csAlarmPill{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 12px;border-radius:16px;background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);font:500 12px/1.3 var(--cs-sf);color:rgba(255,255,255,.9)}
 .csAlarmPill svg{width:16px;height:16px;flex:0 0 auto}
 
 /* Live Activity: the one card that answers the morning. */
-.csLive{display:grid;gap:10px;width:100%;padding:13px 13px 12px;border:0;border-radius:22px;background:rgba(18,16,30,.62);-webkit-backdrop-filter:blur(22px) saturate(1.3);backdrop-filter:blur(22px) saturate(1.3);color:#fff;text-align:left;cursor:pointer;box-shadow:inset 0 0 0 .5px rgba(255,255,255,.14);transition:transform .15s}
+.csLive{display:grid;gap:8px;width:100%;padding:12px 12px 12px;border:0;border-radius:24px;background:rgba(18,16,30,.62);-webkit-backdrop-filter:blur(22px) saturate(1.3);backdrop-filter:blur(22px) saturate(1.3);color:#fff;text-align:left;cursor:pointer;box-shadow:inset 0 0 0 .5px rgba(255,255,255,.14);transition:transform .15s}
 .csLive:active{transform:scale(.985)}
-.csLiveTop{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px}
+.csLiveTop{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px}
 .csLiveIcon{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:rgba(143,227,198,.16);color:#8fe3c6}
 .csLiveIcon svg{width:19px;height:19px}
 .csLiveCopy{display:grid;gap:1px;min-width:0}
 .csLiveCopy strong{font:600 14.5px/1.2 var(--cs-sf);font-variant-numeric:tabular-nums}
 .csLiveCopy span{font:400 11.5px/1.3 var(--cs-sf);color:rgba(255,255,255,.66);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .csLiveBig{font:700 22px/1 var(--cs-sf);font-variant-numeric:tabular-nums;color:#8fe3c6}
-.csLiveBar{position:relative;display:block;height:5px;border-radius:5px;background:rgba(255,255,255,.14)}
-.csLiveBar i{position:absolute;inset:0 auto 0 0;border-radius:5px;background:linear-gradient(90deg,#4f7a6c,#8fe3c6);transition:width .3s linear}
-.csLiveBar em{position:absolute;top:50%;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgba(143,227,198,.35);transition:left .3s linear}
+.csLiveBar{position:relative;display:block;height:5px;border-radius:4px;background:rgba(255,255,255,.14)}
+.csLiveBar i{position:absolute;inset:0 auto 0 0;border-radius:4px;background:linear-gradient(90deg,#4f7a6c,#8fe3c6);transition:width .3s linear}
+.csLiveBar em{position:absolute;top:50%;width:11px;height:11px;margin:-4px 0 0 -4px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgba(143,227,198,.35);transition:left .3s linear}
 .csLiveNote{font:500 11px/1.2 var(--cs-sf);color:rgba(255,255,255,.62)}
 .csLiveDone{cursor:default}
 .csSwipe{margin:0;font:500 10.5px/1 var(--cs-sf);color:rgba(255,255,255,.5)}
 
 /* ---- controls ---- */
-.csControls{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 14px;width:100%;max-width:760px}
-.csPlay{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border:0;border-radius:999px;background:var(--cs-ink);color:#fff;font:600 13px/1 var(--cs-sf);cursor:pointer}
+.csControls{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 16px;width:100%;max-width:760px}
+.csPlay{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border:0;border-radius:999px;background:var(--cs-ink);color:#fff;font:600 13px/1 var(--cs-sf);cursor:pointer}
 .csPlay[aria-pressed=true]{background:var(--cs-accent)}
-.csScrub{display:flex;align-items:center;gap:10px;flex:1 1 220px;min-width:180px}
+.csScrub{display:flex;align-items:center;gap:8px;flex:1 1 220px;min-width:180px}
 .csScrub span{min-width:38px;font:700 14px/1 var(--cs-sf);font-variant-numeric:tabular-nums;color:var(--cs-ink)}
 .csScrub input{flex:1;accent-color:var(--cs-accent);cursor:pointer}
-.csDelay{display:inline-flex;padding:3px;border-radius:10px;background:rgba(43,39,68,.08)}
-.csDelay button{border:0;background:transparent;padding:7px 12px;border-radius:8px;font:600 12.5px/1 var(--cs-sf);color:rgba(43,39,68,.62);cursor:pointer;white-space:nowrap}
+.csDelay{display:inline-flex;padding:4px;border-radius:12px;background:rgba(43,39,68,.08)}
+.csDelay button{border:0;background:transparent;padding:8px 12px;border-radius:8px;font:600 12.5px/1 var(--cs-sf);color:rgba(43,39,68,.62);cursor:pointer;white-space:nowrap}
 .csDelay button[aria-pressed=true]{background:#fff;color:var(--cs-ink);box-shadow:0 1px 3px rgba(43,39,68,.16)}
-.csControls.isCompact{max-width:360px;gap:10px}
+.csControls.isCompact{max-width:360px;gap:8px}
 .csControls.isCompact .csPlay span{display:none}
 .csControls.isCompact .csScrub{flex:1 1 200px}
 
-.csBack{margin-left:6px;padding:0;border:0;background:none;font:inherit;color:var(--cs-accent);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.csBack{margin-left:8px;padding:0;border:0;background:none;font:inherit;color:var(--cs-accent);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 
 /* ---- the surfaces section ---- */
-.csSurfaces{display:grid;justify-items:center;gap:30px}
+.csSurfaces{display:grid;justify-items:center;gap:32px}
 .csRouteCompare{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:20px;align-items:center;width:100%;padding-bottom:8px}
-.csRouteCompare article{display:grid;gap:5px;padding:18px 0;border-top:3px solid rgba(43,39,68,.16);transition:border-color .3s,opacity .3s}
+.csRouteCompare article{display:grid;gap:4px;padding:16px 0;border-top:3px solid rgba(43,39,68,.16);transition:border-color .3s,opacity .3s}
 .csRouteCompare article.isSelected{border-top-color:var(--cs-accent)}
 .csRouteCompare article.isRejected{border-top-color:#bd5c72;opacity:.66}
 .csRouteCompare header{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
@@ -89,22 +89,22 @@
 .csRouteCompare article.isRejected header span{color:#bd5c72}
 .csRouteCompare article>strong{font:700 25px/1.15 var(--cs-sf);color:var(--cs-ink);font-variant-numeric:tabular-nums}
 .csRouteCompare article>small{font:600 10px/1.2 var(--cs-sf);letter-spacing:.05em;text-transform:uppercase;color:#8a869a}
-.csRouteCompare article>p{margin:5px 0 0;font:400 13px/1.45 var(--cs-sf);color:#6b6880}
+.csRouteCompare article>p{margin:4px 0 0;font:400 13px/1.45 var(--cs-sf);color:#6b6880}
 .csTradeoff{display:grid;justify-items:center;gap:4px;color:#8a869a}
 .csTradeoff span{font:600 9px/1.2 var(--cs-sf);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
 .csTradeoff i{font:500 24px/1 var(--cs-sf);font-style:normal}
-.csSurfaceNotice{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;align-items:start;width:min(100%,620px);padding:16px 18px;border:1px solid rgba(43,39,68,.1);border-radius:20px;background:rgba(255,255,255,.72);box-shadow:0 16px 34px -22px rgba(43,39,68,.55);color:var(--cs-ink);transition:background .3s,box-shadow .3s,transform .3s}
+.csSurfaceNotice{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;align-items:start;width:min(100%,620px);padding:16px 16px;border:1px solid rgba(43,39,68,.1);border-radius:24px;background:rgba(255,255,255,.72);box-shadow:0 16px 34px -22px rgba(43,39,68,.55);color:var(--cs-ink);transition:background .3s,box-shadow .3s,transform .3s}
 .csSurfaceNotice.isVisible{background:linear-gradient(145deg,#383451,#242136);box-shadow:0 16px 38px -18px rgba(43,39,68,.75);color:#fff;transform:translateY(-2px)}
-.csSurfaceNotice>.csAppIcon{width:34px;height:34px;border-radius:9px}
+.csSurfaceNotice>.csAppIcon{width:34px;height:34px;border-radius:8px}
 .csSurfaceNotice>span:last-child{display:grid;gap:2px;min-width:0;text-align:left}
-.csSurfaceNotice b{display:flex;justify-content:space-between;font:650 10px/1.3 var(--cs-sf);letter-spacing:.04em;text-transform:uppercase;color:var(--cs-accent)}
+.csSurfaceNotice b{display:flex;justify-content:space-between;font:700 10px/1.3 var(--cs-sf);letter-spacing:.04em;text-transform:uppercase;color:var(--cs-accent)}
 .csSurfaceNotice.isVisible b{color:#a8d6c7}
 .csSurfaceNotice b em{font-style:normal;font-weight:500;text-transform:none}
-.csSurfaceNotice strong{font:650 14px/1.25 var(--cs-sf)}
+.csSurfaceNotice strong{font:700 14px/1.25 var(--cs-sf)}
 .csSurfaceNotice small{font:400 12px/1.4 var(--cs-sf);color:#6b6880}
 .csSurfaceNotice.isVisible small{color:rgba(255,255,255,.7)}
-.csDecisionRoutes{display:grid!important;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}
-.csDecisionRoutes>span{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;padding:9px 10px;border:1px solid rgba(43,39,68,.12);border-radius:12px;background:rgba(255,255,255,.42);opacity:.62}
+.csDecisionRoutes{display:grid!important;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.csDecisionRoutes>span{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;padding:8px 8px;border:1px solid rgba(43,39,68,.12);border-radius:12px;background:rgba(255,255,255,.42);opacity:.62}
 .csSurfaceNotice.isVisible .csDecisionRoutes>span{border-color:rgba(255,255,255,.14);background:rgba(255,255,255,.06)}
 .csDecisionRoutes>span.isChosen{border-color:var(--cs-accent);box-shadow:inset 3px 0 0 var(--cs-accent);opacity:1}
 .csSurfaceNotice.isVisible .csDecisionRoutes>span.isChosen{border-color:#8fe3c6;box-shadow:inset 3px 0 0 #8fe3c6}
@@ -112,11 +112,11 @@
 .csDecisionRoutes i{grid-row:1/3;align-self:center;font:700 10px/1 var(--cs-sf);font-style:normal;color:var(--cs-accent)}
 .csDecisionRoutes b{font:700 13px/1.2 var(--cs-sf);letter-spacing:0;text-transform:none;color:inherit}
 .csDecisionRoutes small{font:500 10px/1.2 var(--cs-sf)}
-.csSurfaceRow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:34px;width:100%;align-items:center}
-.csSurface{display:grid;justify-items:center;gap:14px;margin:0}
+.csSurfaceRow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px;width:100%;align-items:center}
+.csSurface{display:grid;justify-items:center;gap:16px;margin:0}
 .csSurface figcaption{display:block!important;font:500 13px/1.4 var(--cs-sf);color:#6b6880;text-align:center}
 
-.csIslandWide{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;width:min(100%,380px);padding:16px 20px;border-radius:44px;background:#000;color:#fff;box-shadow:0 18px 40px -18px rgba(0,0,0,.6)}
+.csIslandWide{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:16px;width:min(100%,380px);padding:16px 20px;border-radius:44px;background:#000;color:#fff;box-shadow:0 18px 40px -18px rgba(0,0,0,.6)}
 .csIslandWide .csIslandIcon{width:40px;height:40px;border-radius:50%;background:rgba(143,227,198,.14)}
 .csIslandWide .csIslandIcon svg{width:22px;height:22px}
 .csIslandWideCopy{display:grid;gap:2px;min-width:0}
@@ -124,20 +124,20 @@
 .csIslandWideCopy span{font:400 12px/1.3 var(--cs-sf);color:rgba(255,255,255,.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .csIslandWideBig{font:700 26px/1 var(--cs-sf);color:#8fe3c6;font-variant-numeric:tabular-nums}
 
-.csWidget{display:grid;gap:12px;width:min(100%,340px);padding:16px 18px;border-radius:24px;background:rgba(255,255,255,.72);-webkit-backdrop-filter:blur(20px) saturate(1.3);backdrop-filter:blur(20px) saturate(1.3);box-shadow:0 18px 40px -22px rgba(43,39,68,.45),inset 0 0 0 .5px rgba(43,39,68,.1);color:var(--cs-ink)}
+.csWidget{display:grid;gap:12px;width:min(100%,340px);padding:16px 16px;border-radius:24px;background:rgba(255,255,255,.72);-webkit-backdrop-filter:blur(20px) saturate(1.3);backdrop-filter:blur(20px) saturate(1.3);box-shadow:0 18px 40px -22px rgba(43,39,68,.45),inset 0 0 0 .5px rgba(43,39,68,.1);color:var(--cs-ink)}
 .csWidget header{display:flex;align-items:center;gap:8px}
-.csWidget header .csAppIcon{width:20px;height:20px;border-radius:6px}
+.csWidget header .csAppIcon{width:20px;height:20px;border-radius:8px}
 .csWidget header b{font:600 13px/1 var(--cs-sf)}
 .csWidget header em{margin-left:auto;font:600 11px/1 var(--cs-sf);font-style:normal;color:var(--cs-accent)}
 .csWidget header em.isChanged{color:#b2553a}
 .csWidget dl{display:grid;grid-template-columns:repeat(3,1fr);margin:0}
-.csWidget dl div{display:grid;gap:3px}
+.csWidget dl div{display:grid;gap:4px}
 .csWidget dt{font:600 10.5px/1 var(--cs-sf);letter-spacing:.06em;text-transform:uppercase;color:#8a869a}
 .csWidget dd{margin:0;font:700 24px/1 var(--cs-sf);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 .csWidget p{margin:0;font:500 12px/1.3 var(--cs-sf);color:#6b6880}
 
 .csRules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;width:100%;margin:0;padding:0;list-style:none}
-.csRules li{display:grid;gap:6px;padding-top:14px;border-top:2px solid rgba(43,39,68,.14);transition:border-color .3s}
+.csRules li{display:grid;gap:8px;padding-top:16px;border-top:2px solid rgba(43,39,68,.14);transition:border-color .3s}
 .csRules li.isOn{border-top-color:var(--cs-accent)}
 .csRules b{font:600 15px/1.3 var(--cs-sf);color:var(--cs-ink)}
 .csRules span{font:400 14px/1.5 var(--cs-sf);color:#6b6880}

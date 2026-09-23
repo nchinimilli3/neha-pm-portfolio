@@ -56,7 +56,7 @@ export function GrazeRecipe(){
   return <div className="grazeRecipe">
     <div className="grazeRecipeMenu"><div className="grazeIngredientChoices" role="group" aria-label="Explore a scoring criterion">{criteria.map((c,i)=><button type="button" key={c.name} aria-pressed={selected===i} className={selected===i?'selected':''} onClick={()=>setSelected(i)}><span>0{i+1}</span><strong>{c.short}</strong><span aria-hidden="true">↗</span></button>)}</div></div>
     <div className="grazeRecipeDetail" aria-live="polite">
-      <h4>{item.name}</h4><p className="grazeCriterionDetail">{item.detail}</p><p>{item.why}</p>
+      <h3>{item.name}</h3><p className="grazeCriterionDetail">{item.detail}</p><p>{item.why}</p>
       <div className="grazeMathRow"><div className="grazeMath"><div><b>{item.criticality}</b><span>Criticality</span></div><i>×</i><div><b>{item.score}</b><span>Score</span></div><i>=</i><div className="grazeMathResult"><b>{item.criticality*item.score}</b><span>Contribution</span></div></div>
       {/* The contribution served as a board of cheese cubes: criticality rows × score columns. */}
       <div key={selected} className="grazeCubes" style={{gridTemplateColumns:`repeat(${item.score},40px)`}} aria-hidden="true">{Array.from({length:item.criticality*item.score},(_,i)=><svg key={i} viewBox="0 0 32 32" style={{'--d':`${i*28}ms`} as React.CSSProperties}><path className="cubeTop" d="M16 3 29 10 16 17 3 10Z"/><path className="cubeLeft" d="M3 10 16 17V30L3 23Z"/><path className="cubeRight" d="M29 10 16 17V30L29 23Z"/><ellipse cx="9" cy="19" rx="1.8" ry="2.2" className="cubeHole"/><ellipse cx="22" cy="22" rx="1.5" ry="1.9" className="cubeHole"/><ellipse cx="17" cy="9" rx="2" ry="1.1" className="cubeHole"/></svg>)}</div></div>
@@ -75,7 +75,7 @@ export function GrazeLocations(){
         <circle cx="110" cy="110" r="86" className="grazePlateScore" pathLength={150} style={{strokeDasharray:`${city.score} 150`}} transform="rotate(-90 110 110)"/>
         <text x="110" y="116" className="grazePlateValue">{city.score}</text><text x="110" y="140" className="grazePlateOf">of 150</text>
       </svg>
-      <div><h4>{city.name}</h4><p>{city.note}</p><p className="grazeNext"><strong>Next step</strong>{city.next}</p><small>Shortlist evidence, not a confirmed franchise opening.</small></div>
+      <div><h3>{city.name}</h3><p>{city.note}</p><p className="grazeNext"><strong>Next step</strong>{city.next}</p><small>Shortlist evidence, not a confirmed franchise opening.</small></div>
     </div>
   </div>;
 }
@@ -100,10 +100,10 @@ export function GrazeGrowth(){
 export function GrazeProjectPreview(){
   const asset=(path:string)=>`${import.meta.env.BASE_URL}${path}`;
   return <figure className="grazeProjectPreview" aria-label="Graze Craze franchise strategy: original location scorecard, scoring rubric, and Michigan shortlist presented together">
-    <div className="grazePreviewHeading"><img src={asset('project-media/graze/logo.png')} alt="Graze Craze"/><span>FRANCHISE STRATEGY<br/><b>A repeatable location decision.</b></span></div>
-    <div className="grazePreviewMap"><span>MICHIGAN SHORTLIST</span><img src={asset('project-media/graze/michigan.png')} alt="Original map of the three candidate Michigan markets"/><div>Northville · Ann Arbor<br/>Traverse City</div></div>
-    <div className="grazePreviewRubric"><span>SCORING RUBRIC</span><img src={asset('project-media/graze-rubric.png')} alt="Original evaluation rubric"/></div>
-    <div className="grazePreviewWorkbook"><header><span>▦</span><strong>Location scorecard</strong><small>Excel</small></header><img src={asset('project-media/graze-scorecard.png')} alt="Original Excel scorecard with weighted location criteria"/><footer><b>Evaluation</b><span>Criticality</span><span>Rubric</span></footer></div>
+    <div className="grazePreviewHeading"><img src={asset('project-media/graze/logo.png')} alt="Graze Craze" loading="lazy" decoding="async"/><span>FRANCHISE STRATEGY<br/><b>A repeatable location decision.</b></span></div>
+    <div className="grazePreviewMap"><span>MICHIGAN SHORTLIST</span><img src={asset('project-media/graze/michigan.png')} alt="Original map of the three candidate Michigan markets" loading="lazy" decoding="async"/><div>Northville · Ann Arbor<br/>Traverse City</div></div>
+    <div className="grazePreviewRubric"><span>SCORING RUBRIC</span><img src={asset('project-media/graze-rubric.png')} alt="Original evaluation rubric" loading="lazy" decoding="async"/></div>
+    <div className="grazePreviewWorkbook"><header><span>▦</span><strong>Location scorecard</strong><small>Excel</small></header><img src={asset('project-media/graze-scorecard.png')} alt="Original Excel scorecard with weighted location criteria" loading="lazy" decoding="async"/><footer><b>Evaluation</b><span>Criticality</span><span>Rubric</span></footer></div>
   </figure>;
 }
 
@@ -132,6 +132,8 @@ export function GrazePrepSteps(){
 }
 
 // Original deck artifacts, laid out like printouts taped to the table.
+// Intrinsic sizes so each printout reserves its space before the image loads.
+const paperDims:Record<string,[number,number]>={'project-media/graze-scorecard.png':[1668,818],'project-media/graze-rubric.png':[2380,794],'project-media/graze-map.png':[692,748]};
 export function GrazeArtifacts(){
   const asset=(path:string)=>`${import.meta.env.BASE_URL}${path}`;
   const items=[
@@ -140,7 +142,7 @@ export function GrazeArtifacts(){
     {src:'project-media/graze-map.png',alt:'Original Michigan location map from the Graze Craze presentation',title:'Location shortlist',note:'Northville, Ann Arbor, and Traverse City.',cls:'isMap'}
   ];
   return <div className="grazeArtifacts">{items.map((item,i)=><div key={item.src} className={`grazePrintout ${item.cls}`}>
-    <div className="grazePaper"><i className="grazeTape" aria-hidden="true"/><img src={asset(item.src)} alt={item.alt} loading="lazy"/></div>
+    <div className="grazePaper"><i className="grazeTape" aria-hidden="true"/><img src={asset(item.src)} alt={item.alt} width={paperDims[item.src]?.[0]} height={paperDims[item.src]?.[1]} loading="lazy" decoding="async"/></div>
     <div className="grazePrintNote"><b>{i+1}</b><div><strong>{item.title}</strong><span>{item.note}</span></div></div>
   </div>)}</div>;
 }

@@ -247,7 +247,7 @@ function useInView(){
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){ setSeen(true); return; }
     const io = new IntersectionObserver(([e]) => {
       if (e.isIntersecting){ setSeen(true); io.disconnect(); }
-    }, {threshold: .35});
+    }, {rootMargin: '0px 0px -25% 0px'});
     io.observe(node);
     return () => io.disconnect();
   }, []);
@@ -324,7 +324,6 @@ export default function CommuteModelLab(){
 
   return <div className="mlab">
     <header className="mlabHead">
-      <span>Parts 01 and 02</span>
       <h2>How Commute chooses the alarm each morning.</h2>
       <p>The latest departure whose fallback still clears 90%. One inspectable run, from my own commute.</p>
     </header>

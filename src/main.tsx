@@ -8,7 +8,7 @@ import { SurveyDemo } from './FCVFResearch';
 import { KohlerAssembly, KohlerBoxOpen, KohlerDelivery, KohlerExceptions, KohlerOrderHold, KohlerPrinciples, KohlerRoles } from './KohlerVisuals';
 import { AccentureBoundary, AccentureEvidenceFunnel, AccentureStagger, AccentureToolRelay } from './AccentureVisuals';
 import AboutFilmCamera from './AboutFilmCamera';
-import FinSimpleCase from './FinSimpleCase';
+import FinSimpleCase, { FinSimpleBuildDeck } from './FinSimpleCase';
 import './accenture-v2.css';
 import SchedulerPlannerHero from './SchedulerPlannerHero';
 import AccentureRequestRelay from './AccentureRequestRelay';
@@ -23,14 +23,13 @@ import './annotation-fixes.css';
 import './annotation-final.css';
 import './chat.css';
 import './case-auras.css';
-import './case-typography.css';
 import CommuteBARTStory from './CommuteBARTStory';
 import CommuteCase from './CommuteCase';
 import { CommutePhoneDemo, useMorning } from './CommuteSurfaces';
-import { CaseAnswer, CausalChain, CountUp, DecisionMoment, Tradeoff } from './CaseDecision';
+import { CaseAnswer, CaseChapter, CaseResults, CausalChain, CountUp, DecisionMoment, Tradeoff } from './CaseDecision';
 import { CarBand } from './CarArt';
-import './case-hero.css';
 import './responsive-v44.css';
+import './case-system.css';
 
 const assetUrl=src=>{
   if(/^https?:\/\//.test(src))return src;
@@ -94,7 +93,43 @@ const metrics = {
 
 
 
+/* The aura belongs to the hero. It is at full pigment and full speed over the
+   first screen, then falls away as the reader reaches the sections that are
+   actually made of text, so nothing colourful sits behind a case study. One
+   rAF-throttled listener writes a single 1→0 progress variable; the opacity
+   and the drift speed are both derived from it in CSS. */
+function useAuraFalloff(){
+  useEffect(() => {
+    const root = document.documentElement;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      root.style.setProperty('--aura-p', '0.35');
+      return;
+    }
+    let frame = 0;
+    const apply = () => {
+      frame = 0;
+      /* Eased over nearly two screens rather than one: a linear ramp over a
+         single viewport dropped to bare white the moment the hero left, which
+         read as two different pages stitched together. */
+      const span = Math.max(1, window.innerHeight * 1.8);
+      const t = Math.max(0, Math.min(1, window.scrollY / span));
+      const p = 1 - t * t * (3 - 2 * t);   // smoothstep: leaves slowly, settles slowly
+      root.style.setProperty('--aura-p', p.toFixed(3));
+    };
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(apply); };
+    apply();
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onScroll);
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, []);
+}
+
 function AuraField({tone='default'}){
+  useAuraFalloff();
   return <div className={`auraField tone-${tone}`} aria-hidden="true">
     <span className="auraBloom bloom1"/><span className="auraBloom bloom2"/><span className="auraBloom bloom3"/><span className="auraBloom bloom4"/><span className="auraBloom bloom5"/><span className="auraBloom bloom6"/><span className="auraBloom bloom7"/>
   </div>
@@ -162,7 +197,7 @@ const projects = [
     title:'iMessage Recreation on Web',
     company:'MSU · CSE 477',
     summary:'A real time chat room for a class assignment, built as an iMessage recreation.',
-    blurb:'An iMessage recreation, because everyone already knew the spec. Typing expires; a Tapback edits the message.',
+    blurb:'iMessage on the web, because everyone knew the spec. Typing expires; a Tapback edits the message.',
     media:'chat'
   },
   {
@@ -208,7 +243,24 @@ function MiniChat(){
   ]);
   const [text,setText]=useState('');
   const send=()=>{if(!text.trim())return;setMessages(m=>[...m,{mine:true,text:text.trim()}]);setText('')};
-  return <div className="phoneShell"><div className="phoneBar"><div className="avatar">NC</div><strong>Project group</strong><small>3 people</small></div><div className="phoneMessages">{messages.map((m,i)=><div className={m.mine?'bubble mine':'bubble theirs'} key={i}>{m.text}</div>)}</div><div className="composer"><input value={text} onChange={e=>setText(e.target.value)} onKeyDown={e=>e.key==='Enter'&&send()} placeholder="iMessage"/><button onClick={send}>↑</button></div></div>
+  // Drawn as Messages on macOS: the recreation is a web app, so a desktop window is the
+  // honest frame for it. Other sidebar rows are blank placeholders, not invented chats.
+  const last=messages[messages.length-1];
+  return <div className="macMsgs">
+    <aside className="macMsgsSide">
+      <div className="macMsgsLights" aria-hidden="true"><i/><i/><i/></div>
+      <div className="macMsgsSearch" aria-hidden="true">Search</div>
+      <ul>
+        <li className="isActive"><span className="macMsgsAvatar">NC</span><div><b>Project group</b><small>{last.text}</small></div></li>
+        {[0,1,2].map(i=><li key={i} className="isGhost" aria-hidden="true"><span className="macMsgsAvatar"/><div><b/><small/></div></li>)}
+      </ul>
+    </aside>
+    <section className="macMsgsMain" aria-label="Project group conversation">
+      <header><span>To:</span><b>Project group</b><small>3 people</small></header>
+      <div className="macMsgsThread">{messages.map((m,i)=><p className={m.mine?'mine':'theirs'} key={i}>{m.text}</p>)}</div>
+      <div className="macMsgsCompose"><input value={text} onChange={e=>setText(e.target.value)} onKeyDown={e=>e.key==='Enter'&&send()} placeholder="iMessage" aria-label="Message"/><button type="button" onClick={send} aria-label="Send">↑</button></div>
+    </section>
+  </div>
 }
 
 
@@ -366,7 +418,7 @@ function CommuteAppDemo(){
     if(name==='history')return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 9A8 8 0 1 1 5 16"/><path d="M4 4v5h5"/><path d="M12 8v5l3 2"/></svg>;
     return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/></svg>;
   };
-  const chrome=(content)=><div className="iosPhoneDevice"><div className="iosDemoShell"><div className="iosStatus"><span>{shortFmt(demoNow)}</span><StatusIcons/></div><div className="iosScreenContent" inert={permission?true:undefined}>{content}</div>{dialog}{toast&&<div className="iosToast" role="status" aria-live="polite">{toast}</div>}<div className="iosHomeIndicator" aria-hidden="true"></div></div><img className="iosHardwareFrame" src="project-media/iphone-frame-v31.png" alt="" aria-hidden="true"/></div>;
+  const chrome=(content)=><div className="iosPhoneDevice"><div className="iosDemoShell"><div className="iosStatus"><span>{shortFmt(demoNow)}</span><StatusIcons/></div><div className="iosScreenContent" inert={permission?true:undefined}>{content}</div>{dialog}{toast&&<div className="iosToast" role="status" aria-live="polite">{toast}</div>}<div className="iosHomeIndicator" aria-hidden="true"></div></div><img className="iosHardwareFrame" src="project-media/iphone-frame-v31.png" alt="" aria-hidden="true" loading="lazy" decoding="async"/></div>;
 
   if(stage==='welcome') return chrome(<div className="iosOnboarding iosWelcome"><div className="iosBrandMark">C</div><div className="welcomeCopy"><h3>Commute</h3><h2>Know when to get up.</h2><p>Tell it where you need to be. It works backward from arrival time, transit, traffic, and your routine.</p></div><label className="iosField"><span>Your name</span><input value={name} onChange={e=>setName(e.target.value)} /></label><button className="iosPrimary" type="button" onClick={next}>Set up my morning</button><button className="iosTextBtn" type="button" onClick={()=>setStage('app')}>Use current plan</button></div>);
   if(stage==='routine') return chrome(<div className="iosOnboarding"><div className="iosNavRow"><button type="button" aria-label="Back" onClick={()=>setStage('welcome')}>‹</button><span>1 of 6</span></div><h2>Your routine</h2><p className="iosSub">About how long do you need before leaving?</p><div className="routineEditor">{routine.map(x=><div className="routineItem" key={x.id}><span>{x.name}</span><div><button type="button" aria-label={`Decrease ${x.name} duration`} onClick={()=>changeRoutine(x.id,-1)}>−</button><strong>{x.minutes}m</strong><button type="button" aria-label={`Increase ${x.name} duration`} onClick={()=>changeRoutine(x.id,1)}>+</button></div></div>)}</div><div className="routineSummary"><span>Total</span><strong>{routineMinutes} min</strong></div><button className="iosPrimary" type="button" onClick={next}>Continue</button></div>);
@@ -474,7 +526,7 @@ function EsteeOutcome(){
  const colors=['#d4af6a','#f3dfb1','#b08a4f','#e8c3b0','#fff4dc'];
  return <div ref={ref} className={`elOutcomeText${on?' isCelebrating':''}`}>
   {on&&<div className="elConfetti" aria-hidden="true">{Array.from({length:36},(_,i)=>{const a=(i/36)*Math.PI*2+(i%3)*.3;const d=90+(i*37%110);return <i key={i} style={{'--x':`${Math.cos(a)*d*1.6}px`,'--y':`${Math.sin(a)*d-60}px`,'--r':`${(i*53)%360}deg`,'--c':colors[i%colors.length],'--d':`${(i%6)*40}ms`} as React.CSSProperties}/>})}</div>}
-  <p className="elFinalRecognition"><strong>Top 5</strong><span>Challenge finalist</span></p><h2>Top 5 finalist and C-suite presentation.</h2>
+  <p className="elFinalRecognition"><strong>Top 5</strong><span>Challenge finalist</span></p>
  </div>;
 }
 
@@ -803,7 +855,7 @@ function useCaseCanvas(id:string){
  },[id]);
 }
 
-function CaseSkimDemo({id}:{id:string}){
+function CaseSkimDemo({id,setLightbox}:{id:string,setLightbox:(img:{src:string,alt:string})=>void}){
  const morning=useMorning();
  if(id==='commute')return <section className="caseSkimDemo caseSkimCommute" aria-label="Try the Commute product"><header><h2>Try the product</h2></header><div className="cmDemoStage"><CommutePhoneDemo m={morning} app={<CommuteAppDemo/>}/></div></section>;
  if(id==='scheduler')return <section className="caseSkimDemo schedulerDemo" aria-label="Try the scheduler"><header><h2>Try the product</h2></header><SchedulerDemo/></section>;
@@ -816,8 +868,25 @@ function CaseSkimDemo({id}:{id:string}){
  // view shows the actual screens rather than a decorative compact.
  if(id==='estee')return <section className="caseSkimDemo esteeSkimShots" aria-label="See the released Double Wear experience"><header><h2>See the product</h2></header><EsteeVisual/></section>;
  if(id==='bookclub')return <section className="caseSkimDemo" aria-label="See the live Bookclub product"><header><h2>See the product</h2></header><BookclubEditorialHero/></section>;
- if(id==='finsimple')return <section className="caseSkimDemo" aria-label="See the released FinSimple feature"><header><h2>See the shipped feature</h2></header><ProjectVisual type="finsimple"/></section>;
+ if(id==='finsimple')return <section className="caseSkimDemo" aria-label="See the FinSimple feature from prototype to release"><header><h2>See the shipped feature</h2></header><div className="fseEditorial fseSkimDeck"><div className="fseBuild"><FinSimpleBuildDeck setLightbox={setLightbox}/></div></div></section>;
  return null;
+}
+
+/* Previous / next case study, in the same order as the home page (Selected work,
+   then the fun builds), wrapping at the ends, so no case is a dead end. */
+const CASE_ORDER=['fcvf','accenture','finsimple','kohler','marketExpansion','estee','commute','bookclub','scheduler','chat'];
+function CaseNav({id}:{id:string}){
+ const i=CASE_ORDER.indexOf(id);
+ if(i<0)return null;
+ const at=(n:number)=>projects.find(p=>p.id===CASE_ORDER[(n+CASE_ORDER.length)%CASE_ORDER.length]);
+ const prev=at(i-1),next=at(i+1);
+ const go=(target:string)=>(e:React.MouseEvent)=>{e.preventDefault();window.location.hash=`/projects/${target}`;window.scrollTo(0,0)};
+ const link=(p,dir:'prev'|'next')=>p&&<a className={`csCaseNavLink is-${dir}`} href={`#/projects/${p.id}`} onClick={go(p.id)}>
+  <span className="csCaseNavDir">{dir==='prev'?'← Previous case':'Next case →'}</span>
+  <strong>{p.title}</strong>
+  <small>{p.company}</small>
+ </a>;
+ return <nav className="csCaseNav" aria-label="More case studies">{link(prev,'prev')}{link(next,'next')}</nav>;
 }
 
 function CaseStudy({id,onBack}){
@@ -836,13 +905,13 @@ function CaseStudy({id,onBack}){
   if(readingMode!=='skim')return;
   const anchor=(e.target as HTMLElement).closest('a[href^="#"]') as HTMLAnchorElement|null;
   const href=anchor?.getAttribute('href');
-  if(!href||href==='#')return;
+  if(!href||href==='#'||href.startsWith('#/'))return;   // '#/projects/…' is a route, not a section
   e.preventDefault();setReadingMode('deep');
   window.setTimeout(()=>document.querySelector(href)?.scrollIntoView({behavior:'smooth',block:'start'}),50);
  };
  return <main className={`casePage case-${id} ${readingMode==='skim'?'isSkim':'isDeep'}`} onClick={openDeepSection}><AuraField tone={id}/><div className="caseReadingBar"><button className="backBtn" onClick={onBack}>← Selected work</button><div className="caseReadingControl"><div className="caseReadingToggle" role="group" aria-label="Case study reading depth"><button type="button" aria-pressed={readingMode==='skim'} onClick={()=>setReadingMode('skim')}><b>Skim</b></button><button type="button" aria-pressed={readingMode==='deep'} onClick={()=>setReadingMode('deep')}><b>In depth</b></button></div></div></div><section className="caseLead"><header className="caseHeader"><CaseCompanyBar id={id} fallback={p.company}/><h1>{p.title}</h1><div className="caseIntro">{p.summary}</div>{id==='bookclub'&&<a className="bookclubLiveLink" href={BOOKCLUB_LIVE_URL} target="_blank" rel="noreferrer" aria-label="Open the live Bookclub app in a new tab">Open live app ↗</a>}</header><div className="caseHeroMedia casePreviewHero"><ProjectVisual type={p.media}/></div>{metrics[id]&&<MetricStrip items={metrics[id]}/>}<ToolLogoStrip id={id}/></section>
- {caseAnswers[id]&&<CaseAnswer key={id} {...caseAnswers[id]}/>}
- {readingMode==='skim'&&<><CaseSkimDemo id={id}/><div className="caseSkimFinish"><button type="button" onClick={()=>setReadingMode('deep')}>Read the in-depth case ↓</button></div></>}
+ {caseAnswers[id]&&<CaseAnswer key={id} {...caseAnswers[id]} stat={metrics[id]?.some(([v])=>v===caseAnswers[id].stat?.value)?undefined:caseAnswers[id].stat}/>}
+ {readingMode==='skim'&&<><CaseSkimDemo id={id} setLightbox={setLightbox}/><div className="caseSkimFinish"><button type="button" onClick={()=>setReadingMode('deep')}>Read the in-depth case ↓</button></div></>}
  {readingMode==='deep'&&<>
  {id==='fcvf'&&<CarBand car="shelby" label="Shelby GT500 illustration that drives as you scroll"/>}
  {id==='finsimple'&&<CarBand car="mache" label="Mustang Mach-E illustration that drives as you scroll"/>}
@@ -857,6 +926,7 @@ function CaseStudy({id,onBack}){
  {id==='bookclub'&&<BookclubCase/>}
  {id==='marketExpansion'&&<MarketExpansionCase/>}
  {id!=='commute'&&!['fcvf','chat','estee','bookclub','marketExpansion','finsimple','scheduler','accenture'].includes(id)&&<CaseDecisionNotes id={id}/>}</>}
+ <CaseNav id={id}/>
  <ImageLightbox image={lightbox} onClose={()=>setLightbox(null)}/></main>
 }
 
@@ -962,7 +1032,7 @@ function SchedulerBrief(){return <section className="schedulerBriefSection scSta
 function SchedulerCase(){return <div className="schedulerStory"><LifecycleRoad stages={schedulerStages} vehicle="calendar"/>
   <section className="schedulerDemo"><SchedulerDemo/></section>
   <SchedulerBrief/>
-  <section id="sc-discover" className="schedulerProblemStage scStage"><div><h2>A heatmap did not finish the plan.</h2><p>Students could mark when they were free, but tentative availability was flattened into yes or no. Then the grid handed the rest back: read the shading yourself, work out which slot costs the fewest people, and settle the time, the place, and the invite somewhere else. Ranking a heatmap is a job the software can do.</p></div><SchedulerFlatten/></section>
+  <section id="sc-discover" className="schedulerProblemStage scStage"><h2 className="csTitle">A heatmap did not finish the plan.</h2><div><p>Students could mark when they were free, but tentative availability was flattened into yes or no. Then the grid handed the rest back: read the shading yourself, work out which slot costs the fewest people, and settle the time, the place, and the invite somewhere else. Ranking a heatmap is a job the software can do.</p></div><SchedulerFlatten/></section>
   <CaseSection title="What I learned from seven student interviews" className="schedulerResearchSection scStage" id="sc-research"><div className="schedulerResearchDesk"><aside className="schedulerInterviewIndex"><strong>7 students</strong><span>One-on-one conversations</span><span>Live task walkthroughs</span><SchedulerPeople/></aside><div className="schedulerNotebook"><div className="schedulerSessionNotes"><article><svg viewBox="0 0 64 40" aria-hidden="true"><circle cx="12" cy="20" r="9" fill="#b9d7c7"/><circle cx="32" cy="20" r="9"/><path d="M32 11a9 9 0 0 1 0 18z" fill="#e7d9ad"/><circle cx="52" cy="20" r="9"/></svg><b>Students wanted a way to say “maybe.”</b><p>Tentative availability was useful information, but the binary grid erased it.</p><span>Seen during availability entry</span></article><article><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M4 4h10v10H4zM18 4h10v10H18zM32 4h10v10H32zM4 18h10v10H4zM18 18h10v10H18zM32 18h10v10H32z"/><path d="M50 14a5 5 0 1 1 7 4.6c-1.3.6-2 1.6-2 3V24M55 30v.5"/></svg><b>The heatmap did not finish the task.</b><p>Groups opened another chat to interpret the overlap, choose a room, and confirm the plan.</p><span>Seen after comparing schedules</span></article><article><svg viewBox="0 0 64 40" aria-hidden="true"><rect x="4" y="8" width="16" height="22" rx="3"/><rect x="26" y="4" width="14" height="14" rx="3" transform="rotate(12 33 11)"/><rect x="44" y="18" width="16" height="16" rx="3" transform="rotate(-10 52 26)"/><path d="M22 20l3-2M41 20l3 2" strokeDasharray="2 3"/></svg><b>Event details split across tools.</b><p>Time, venue, participant status, and notes separated as soon as the group left the grid.</p><span>Seen during follow-through</span></article></div><footer><i aria-hidden="true">→</i><strong>Keep Maybe as its own answer, then recommend a time and carry that choice into venue and calendar setup.</strong></footer></div></div></CaseSection>
   <CaseSection title="From availability to a confirmed event" className="schedulerDecisionSection scStage" id="sc-design"><SchedulerDecisionDemo/></CaseSection>
   <CaseSection title="Everything When2meet left to the group chat" className="schedulerCompareSection scStage" id="sc-compare"><SchedulerCompare/></CaseSection>
@@ -978,7 +1048,7 @@ const chatStages=[
 function ChatCase(){return <div className="chatStory"><LifecycleRoad stages={chatStages} vehicle="bubble"/>
   <section className="sandboxSection"><ChatSandbox/></section>
   <CaseSection title="Why recreate iMessage" className="chatFrameSection chStage" id="ch-frame">
-   <p className="chatFrameLead">The brief was a feature list: a real-time chat room with messages and join and leave events. I made it a product by recreating iMessage. Every user already knew it by heart, so <em>their expectations became my spec</em>, and a design study of how Apple thinks.</p>
+   <div className="chatFrameLead">The brief was a feature list: a real-time chat room with messages and join and leave events. I made it a product by recreating iMessage. Every user already knew it by heart, so <em>their expectations became my spec</em>, and a design study of how Apple thinks.</div>
    <div className="chatFrameCols">
     <div><h3>What users expect</h3><ol>
      <li><b>Where did my message go?</b><span>Mine right and blue, theirs left and gray</span></li>
@@ -1000,7 +1070,7 @@ function ChatCase(){return <div className="chatStory"><LifecycleRoad stages={cha
     <div><dt>Next</dt><dd>Read receipts, the most expected thing still missing, then keeping history across a page reload.</dd></div>
    </dl>
   </CaseSection>
-  <section className="chatRuleStage chStage" id="ch-discover"><div><h2>Recreating the interaction rules behind iMessage</h2><p>I treated iMessage like a design study. I used it the way my users would, and wrote down what happened for every kind of event: sending, typing, reacting, someone arriving or leaving. The pattern was that iMessage never treats these the same way. Some change the conversation’s history; others only change what you see right now.</p></div><ChatAnatomyPhone/></section>
+  <section className="chatRuleStage chStage" id="ch-discover"><h2 className="csTitle">Recreating the interaction rules behind iMessage</h2><div><p>I treated iMessage like a design study. I used it the way my users would, and wrote down what happened for every kind of event: sending, typing, reacting, someone arriving or leaving. The pattern was that iMessage never treats these the same way. Some change the conversation’s history; others only change what you see right now.</p></div><ChatAnatomyPhone/></section>
   <CaseSection title="Persistent state and temporary state" className="chatStateSection chStage" id="ch-design"><div className="chatInk"><section className="chatInkStored"><h3><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>Stored state</h3><p className="chatInkLine"><strong>“did everyone push?”</strong><span>Message · stored and synchronized</span></p><p className="chatInkLine"><strong>❤️ on the same message</strong><span>Tapback · updates existing state</span></p></section><section className="chatInkTemp"><h3><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 22h14M5 2h14M17 22v-4.2a2 2 0 0 0-.6-1.4L12 12l-4.4 4.4a2 2 0 0 0-.6 1.4V22M7 2v4.2a2 2 0 0 0 .6 1.4L12 12l4.4-4.4a2 2 0 0 0 .6-1.4V2"/></svg>Temporary state</h3><p className="chatFade"><strong>typing…</strong><span>Times out</span></p><p className="chatFade chatFadeLate"><strong>Maya joined</strong><span>Room event</span></p></section></div></CaseSection>
   <CaseSection title="How I implemented those states" className="chatBuildSection chStage" id="ch-build"><ol className="chatPath"><li><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 11 21 3l-8 18-2-8z"/></svg></span><strong>Send</strong>Socket.IO broadcasts the message.</li><li><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-14 5M4 12a8 8 0 0 1 14-5M18 3v4h-4M6 21v-4h4"/></svg></span><strong>Sync</strong>Every client receives the same room state.</li><li><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 22h14M5 2h14M17 22v-4.2a2 2 0 0 0-.6-1.4L12 12l-4.4 4.4a2 2 0 0 0-.6 1.4V22M7 2v4.2a2 2 0 0 0 .6 1.4L12 12l4.4-4.4a2 2 0 0 0 .6-1.4V2"/></svg></span><strong>Expire</strong>Typing disappears instead of entering history.</li><li><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></span><strong>Update</strong>A Tapback changes the original message state.</li></ol></CaseSection>
  </div>}
@@ -1017,15 +1087,15 @@ const esteeStages=[
 function EsteeCase(){
  const [compact,setCompact]=useState(false);
  return <div className="elEditorial"><LifecycleRoad stages={esteeStages} vehicle="bottle"/>
-  <section className="elVanity elStage" id="el-discover">
+  <section className="elVanity elStage" id="el-discover"><h2 className="csTitle">Foundation is the hardest thing to buy without trying it on.</h2>
    <div className="elMirrorScene isVanity"><div className="elVanityFrame">{Array.from({length:14},(_,i)=><i key={i} className="elBulb" style={{'--i':i} as React.CSSProperties}/>)}<div className="elMirrorGlass"><div className="elReflection"/><p>Will this foundation<br/> <em>work for me?</em></p><span>The shopper question</span></div></div><div className="elVanityTable"/></div>
-   <div className="elProblem"><h2>Foundation is the hardest thing to buy without trying it on.</h2><p>At a counter, a shopper swatches a shade, feels the finish, and asks someone who knows. Online, the page has to do all of that work. When it does not, people guess or leave.</p><p>I went through Estée Lauder’s own pages alongside Sephora and Ulta, and they answer the same way: the product shot is the focal point, the copy is underneath it, and the shopper is left to work out fit on their own. That is a good promotional page and a poor answer to the only question I had when buying foundation myself.</p><p>So I read the brief as a job rather than a page type: build enough confidence in fit, finish, coverage, and shade to decide whether Double Wear is for them. That meant leading with their question instead of a product grid, then moving them toward a confident yes or no.</p></div>
+   <div className="elProblem"><p>At a counter, a shopper swatches a shade, feels the finish, and asks someone who knows. Online, the page has to do all of that work. When it does not, people guess or leave.</p><p>I went through Estée Lauder’s own pages alongside Sephora and Ulta, and they answer the same way: the product shot is the focal point, the copy is underneath it, and the shopper is left to work out fit on their own. That is a good promotional page and a poor answer to the only question I had when buying foundation myself.</p><p>So I read the brief as a job rather than a page type: build enough confidence in fit, finish, coverage, and shade to decide whether Double Wear is for them. That meant leading with their question instead of a product grid, then moving them toward a confident yes or no.</p></div>
   </section>
-  <section className="elInvitation elStage" id="el-design"><header><h2>Start with a question the shopper can answer.</h2></header><figure><img src={assetUrl('project-media/el-shop.webp')} alt="Original Double Wear screen asking what the shopper looks for in a foundation" loading="lazy"/><figcaption>The original opening screen. Familiar Double Wear imagery earns recognition; the question gives the shopper an easy first move.</figcaption></figure></section>
-  <section className="elProof"><header><h2>One benefit at a time.</h2></header><figure><img src={assetUrl('project-media/el-benefits.webp')} alt="Original benefits carousel showing finish, buildable coverage, and wear information" loading="lazy"/><figcaption>Actual project screen · Product benefits carousel</figcaption></figure></section>
-  <section className="elPurchase elStage" id="el-scope"><div className="elRetail"><h2>Know where the product ends.</h2><p>Nothing in the brief stopped me adding a cart, and a week was enough to fake one. I decided against it: rebuilding checkout would have meant inventory, payments, and accounts, real work that helps nobody decide, and shoppers already have a favorite place to buy beauty. So I spent the week on discovery and linked out to eight established retailers, letting people finish the purchase where they already trust.</p><figure><img src={assetUrl('project-media/el-shades.webp')} alt="Original purchase page showing foundation imagery and retailer links including Estée Lauder, Sephora, Ulta, and Nordstrom" loading="lazy"/><figcaption>Original retailer page with product and shade context.</figcaption></figure></div><aside className="elScope" ref={el=>{if(!el||el.dataset.io)return;el.dataset.io='1';const io=new IntersectionObserver(([e])=>{if(e.isIntersecting){el.classList.add('isIn');io.disconnect()}},{threshold:.3});io.observe(el)}} aria-label="Scope decisions: kept brand scale, imagery, and shade context; simplified dense product details into scannable benefits; handed checkout to eight established retailers"><h3>Where I drew the line</h3><div className="elBottleScene"><svg className="elBottle" viewBox="0 0 200 320" aria-hidden="true"><defs><linearGradient id="elCap" x1="0" x2="1"><stop offset="0" stopColor="#7d5a26"/><stop offset=".22" stopColor="#c9a25d"/><stop offset=".42" stopColor="#f3dfae"/><stop offset=".6" stopColor="#c19a55"/><stop offset="1" stopColor="#6f4f20"/></linearGradient><linearGradient id="elCapTop" x1="0" x2="1"><stop offset="0" stopColor="#a8823f"/><stop offset=".5" stopColor="#f6e6bd"/><stop offset="1" stopColor="#8e6a30"/></linearGradient><linearGradient id="elGlass" x1="0" x2="1"><stop offset="0" stopColor="#fff" stopOpacity=".95"/><stop offset=".12" stopColor="#f4efe8" stopOpacity=".6"/><stop offset=".85" stopColor="#efe8de" stopOpacity=".55"/><stop offset="1" stopColor="#d9cfc0" stopOpacity=".95"/></linearGradient><linearGradient id="elKeepFill" x1="0" x2="1"><stop offset="0" stopColor="#4a2a17"/><stop offset=".5" stopColor="#6e412a"/><stop offset="1" stopColor="#3f2313"/></linearGradient><linearGradient id="elSimplifyFill" x1="0" x2="1"><stop offset="0" stopColor="#7a4b2e"/><stop offset=".5" stopColor="#9a6441"/><stop offset="1" stopColor="#6c4128"/></linearGradient><radialGradient id="elShadow"><stop offset="0" stopColor="#3b2a1a" stopOpacity=".28"/><stop offset="1" stopColor="#3b2a1a" stopOpacity="0"/></radialGradient><clipPath id="elInside"><path d="M44 112q0-10 10-10h92q10 0 10 10v176q0 8-8 8H52q-8 0-8-8z"/></clipPath></defs><ellipse cx="100" cy="312" rx="86" ry="8" fill="url(#elShadow)"/><rect x="66" y="6" width="68" height="62" rx="4" fill="url(#elCap)"/><rect x="66" y="6" width="68" height="7" rx="3" fill="url(#elCapTop)"/>{[74,82,90,98,106,114,122].map(x=><path key={x} d={`M${x} 14v50`} stroke="#5b3f14" strokeOpacity=".22" strokeWidth="1.2"/>)}<path d="M72 14v50" stroke="#fff" strokeOpacity=".5" strokeWidth="2"/><rect x="78" y="68" width="44" height="14" fill="#6f4f20"/><rect x="78" y="68" width="44" height="3" fill="#3e2a0e" fillOpacity=".5"/><path d="M26 108q0-26 26-26h96q26 0 26 26v186q0 20-20 20H46q-20 0-20-20z" fill="url(#elGlass)" stroke="#cbbba2" strokeWidth="1.6"/><g clipPath="url(#elInside)"><g className="elFill"><rect x="40" y="150" width="120" height="70" fill="url(#elSimplifyFill)"/><rect x="40" y="220" width="120" height="80" fill="url(#elKeepFill)"/><path d="M40 150q30-6 60 0t60 0v4q-30 6-60 0t-60 0z" fill="#b07a54"/></g></g><path d="M44 112q0-10 10-10h92q10 0 10 10v176q0 8-8 8H52q-8 0-8-8z" fill="none" stroke="#fff" strokeOpacity=".35" strokeWidth="1.2"/><path d="M34 118v160" stroke="#fff" strokeOpacity=".75" strokeWidth="5" strokeLinecap="round"/><path d="M166 124v120" stroke="#fff" strokeOpacity=".35" strokeWidth="2" strokeLinecap="round"/><text x="100" y="124" textAnchor="middle" className="elBottleBrand">ESTĒE LAUDER</text><text x="100" y="140" textAnchor="middle" className="elBottleName">Double Wear</text></svg><ol className="elScopeNotes"><li className="is-handoff"><b>Handed off</b><span>Checkout stays with 8 established retailers</span><span className="elBags" aria-hidden="true">{Array.from({length:8},(_,i)=><svg key={i} viewBox="0 0 24 28"><path d="M8.5 9V6.5a3.5 3.5 0 0 1 7 0V9" className="elBagHandle"/><path d="M3.5 9h17l-1.2 16.2a1.5 1.5 0 0 1-1.5 1.3H6.2a1.5 1.5 0 0 1-1.5-1.3z" className="elBagBody"/><path d="M3.5 9h17l-.3 3.4H3.8z" className="elBagFold"/><circle cx="8.5" cy="12" r=".9" className="elBagEyelet"/><circle cx="15.5" cy="12" r=".9" className="elBagEyelet"/></svg>)}</span></li><li className="is-simplify"><b>Simplified</b><span>Dense product details became scannable benefits</span></li><li className="is-keep"><b>Kept</b><span>Brand scale, product imagery, and shade context</span></li></ol></div></aside></section>
-  <section className="elResponsive elStage" id="el-build"><header><div><h2>An image-led site has to survive a phone.</h2></div><div><p>This product sells through imagery: bottles, textures, shades. Crop it badly on a small screen and the shade context disappears, so responsive layout was a core problem, not polish. I reused a small set of responsive patterns so images scaled intact and the story kept its order as the screen narrowed.</p><p className="elSmall">Toggle the width to see the original capture scale.</p></div></header><div className="elSizeToggle" role="group" aria-label="Compare image presentation widths"><button aria-pressed={!compact} onClick={()=>setCompact(false)}>Wide canvas</button><button aria-pressed={compact} onClick={()=>setCompact(true)}>Narrow canvas</button></div><div className={`elViewport ${compact?'elViewportCompact':''}`}><img src={assetUrl('project-media/el-home.webp')} alt="Original Double Wear homepage, scaled without cropping" loading="lazy"/></div><p className="elViewportCaption">The original imagery stays intact as the available width changes.</p></section>
-  <section className="elFinal elStage" id="el-present"><div className="elCompactScene"><EsteeCompact/></div><EsteeOutcome/></section>
+  <section className="elInvitation elStage" id="el-design"><h2 className="csTitle">Start with a question the shopper can answer.</h2><figure><img src={assetUrl('project-media/el-shop.webp')} width={1600} height={1015} alt="Original Double Wear screen asking what the shopper looks for in a foundation" loading="lazy"/><figcaption>The original opening screen. Familiar Double Wear imagery earns recognition; the question gives the shopper an easy first move.</figcaption></figure></section>
+  <section className="elProof"><header><h2>One benefit at a time.</h2></header><figure><img src={assetUrl('project-media/el-benefits.webp')} width={1600} height={1015} alt="Original benefits carousel showing finish, buildable coverage, and wear information" loading="lazy"/><figcaption>Actual project screen · Product benefits carousel</figcaption></figure></section>
+  <section className="elPurchase elStage" id="el-scope"><h2 className="csTitle">Know where the product ends.</h2><div className="elRetail"><p>Nothing in the brief stopped me adding a cart, and a week was enough to fake one. I decided against it: rebuilding checkout would have meant inventory, payments, and accounts, real work that helps nobody decide, and shoppers already have a favorite place to buy beauty. So I spent the week on discovery and linked out to eight established retailers, letting people finish the purchase where they already trust.</p><figure><img src={assetUrl('project-media/el-shades.webp')} width={955} height={1078} alt="Original purchase page showing foundation imagery and retailer links including Estée Lauder, Sephora, Ulta, and Nordstrom" loading="lazy"/><figcaption>Original retailer page with product and shade context.</figcaption></figure></div><aside className="elScope" ref={el=>{if(!el||el.dataset.io)return;el.dataset.io='1';const io=new IntersectionObserver(([e])=>{if(e.isIntersecting){el.classList.add('isIn');io.disconnect()}},{threshold:.3});io.observe(el)}} aria-label="Scope decisions: kept brand scale, imagery, and shade context; simplified dense product details into scannable benefits; handed checkout to eight established retailers"><h3>Where I drew the line</h3><div className="elBottleScene"><svg className="elBottle" viewBox="0 0 200 320" aria-hidden="true"><defs><linearGradient id="elCap" x1="0" x2="1"><stop offset="0" stopColor="#7d5a26"/><stop offset=".22" stopColor="#c9a25d"/><stop offset=".42" stopColor="#f3dfae"/><stop offset=".6" stopColor="#c19a55"/><stop offset="1" stopColor="#6f4f20"/></linearGradient><linearGradient id="elCapTop" x1="0" x2="1"><stop offset="0" stopColor="#a8823f"/><stop offset=".5" stopColor="#f6e6bd"/><stop offset="1" stopColor="#8e6a30"/></linearGradient><linearGradient id="elGlass" x1="0" x2="1"><stop offset="0" stopColor="#fff" stopOpacity=".95"/><stop offset=".12" stopColor="#f4efe8" stopOpacity=".6"/><stop offset=".85" stopColor="#efe8de" stopOpacity=".55"/><stop offset="1" stopColor="#d9cfc0" stopOpacity=".95"/></linearGradient><linearGradient id="elKeepFill" x1="0" x2="1"><stop offset="0" stopColor="#4a2a17"/><stop offset=".5" stopColor="#6e412a"/><stop offset="1" stopColor="#3f2313"/></linearGradient><linearGradient id="elSimplifyFill" x1="0" x2="1"><stop offset="0" stopColor="#7a4b2e"/><stop offset=".5" stopColor="#9a6441"/><stop offset="1" stopColor="#6c4128"/></linearGradient><radialGradient id="elShadow"><stop offset="0" stopColor="#3b2a1a" stopOpacity=".28"/><stop offset="1" stopColor="#3b2a1a" stopOpacity="0"/></radialGradient><clipPath id="elInside"><path d="M44 112q0-10 10-10h92q10 0 10 10v176q0 8-8 8H52q-8 0-8-8z"/></clipPath></defs><ellipse cx="100" cy="312" rx="86" ry="8" fill="url(#elShadow)"/><rect x="66" y="6" width="68" height="62" rx="4" fill="url(#elCap)"/><rect x="66" y="6" width="68" height="7" rx="3" fill="url(#elCapTop)"/>{[74,82,90,98,106,114,122].map(x=><path key={x} d={`M${x} 14v50`} stroke="#5b3f14" strokeOpacity=".22" strokeWidth="1.2"/>)}<path d="M72 14v50" stroke="#fff" strokeOpacity=".5" strokeWidth="2"/><rect x="78" y="68" width="44" height="14" fill="#6f4f20"/><rect x="78" y="68" width="44" height="3" fill="#3e2a0e" fillOpacity=".5"/><path d="M26 108q0-26 26-26h96q26 0 26 26v186q0 20-20 20H46q-20 0-20-20z" fill="url(#elGlass)" stroke="#cbbba2" strokeWidth="1.6"/><g clipPath="url(#elInside)"><g className="elFill"><rect x="40" y="150" width="120" height="70" fill="url(#elSimplifyFill)"/><rect x="40" y="220" width="120" height="80" fill="url(#elKeepFill)"/><path d="M40 150q30-6 60 0t60 0v4q-30 6-60 0t-60 0z" fill="#b07a54"/></g></g><path d="M44 112q0-10 10-10h92q10 0 10 10v176q0 8-8 8H52q-8 0-8-8z" fill="none" stroke="#fff" strokeOpacity=".35" strokeWidth="1.2"/><path d="M34 118v160" stroke="#fff" strokeOpacity=".75" strokeWidth="5" strokeLinecap="round"/><path d="M166 124v120" stroke="#fff" strokeOpacity=".35" strokeWidth="2" strokeLinecap="round"/><text x="100" y="124" textAnchor="middle" className="elBottleBrand">ESTĒE LAUDER</text><text x="100" y="140" textAnchor="middle" className="elBottleName">Double Wear</text></svg><ol className="elScopeNotes"><li className="is-handoff"><b>Handed off</b><span>Checkout stays with 8 established retailers</span><span className="elBags" aria-hidden="true">{Array.from({length:8},(_,i)=><svg key={i} viewBox="0 0 24 28"><path d="M8.5 9V6.5a3.5 3.5 0 0 1 7 0V9" className="elBagHandle"/><path d="M3.5 9h17l-1.2 16.2a1.5 1.5 0 0 1-1.5 1.3H6.2a1.5 1.5 0 0 1-1.5-1.3z" className="elBagBody"/><path d="M3.5 9h17l-.3 3.4H3.8z" className="elBagFold"/><circle cx="8.5" cy="12" r=".9" className="elBagEyelet"/><circle cx="15.5" cy="12" r=".9" className="elBagEyelet"/></svg>)}</span></li><li className="is-simplify"><b>Simplified</b><span>Dense product details became scannable benefits</span></li><li className="is-keep"><b>Kept</b><span>Brand scale, product imagery, and shade context</span></li></ol></div></aside></section>
+  <section className="elResponsive elStage" id="el-build"><header><div><h2>An image-led site has to survive a phone.</h2></div><div><p>This product sells through imagery: bottles, textures, shades. Crop it badly on a small screen and the shade context disappears, so responsive layout was a core problem, not polish. I reused a small set of responsive patterns so images scaled intact and the story kept its order as the screen narrowed.</p><p className="elSmall">Toggle the width to see the original capture scale.</p></div></header><div className="elSizeToggle" role="group" aria-label="Compare image presentation widths"><button aria-pressed={!compact} onClick={()=>setCompact(false)}>Wide canvas</button><button aria-pressed={compact} onClick={()=>setCompact(true)}>Narrow canvas</button></div><div className={`elViewport ${compact?'elViewportCompact':''}`}><img src={assetUrl('project-media/el-home.webp')} width={1600} height={1015} alt="Original Double Wear homepage, scaled without cropping" loading="lazy"/></div><p className="elViewportCaption">The original imagery stays intact as the available width changes.</p></section>
+  <section className="elFinal elStage" id="el-present"><h2 className="csTitle">Top 5 finalist and C-suite presentation.</h2><div className="elCompactScene"><EsteeCompact/></div><EsteeOutcome/></section>
  </div>
 }
 
@@ -1040,13 +1110,19 @@ const accentureStages=[
  {id:'ax-recommend',name:'Recommend',did:'Five ideas, each with a 90-day test'}
 ];
 function AccentureCase(){return <div className="accentureStory"><AccentureStagger/><LifecycleRoad stages={accentureStages} vehicle="cablecar"/>
-  <section className="axChapter accentureRelayStage axStage" id="ax-discover"><header><h2>How one request moved <em>through the process.</em></h2><p>At Accenture in San Francisco, I supported intake, trainer matching, and scheduling for an AI lab client. Every request crossed three tools before a trainer was booked for a training session.</p></header><AccentureRequestRelay/></section>
+  <CaseChapter id="ax-discover" className="axStage axDiscover" title={<>How one request moved <em>through the process.</em></>} lead="At Accenture in San Francisco, I supported intake, trainer matching, and scheduling for an AI lab client. Every request crossed three tools before a trainer was booked for a training session.">
+   <AccentureRequestRelay/>
+  </CaseChapter>
 
-  <section className="axChapter axRules axStage" id="ax-define"><header><h2>From repeated decisions <em>to rules I could test.</em></h2><p>The same checks came up on every request, so I wrote them into a 10-tab data contract: required inputs, matching logic, warnings, reason codes, and the cases that need a person.</p></header><AccentureWorkflowVisual/></section>
+  <CaseChapter id="ax-define" className="axStage axRules csChapter--split" title={<>From repeated decisions <em>to rules I could test.</em></>} lead="The same checks came up on every request, so I wrote them into a 10-tab data contract: required inputs, matching logic, warnings, reason codes, and the cases that need a person.">
+   <AccentureWorkflowVisual/>
+  </CaseChapter>
 
-  <section className="axChapter axBuild axStage" id="ax-build"><header><h2>Then a prototype <em>to try the rules.</em></h2><p>An early Codex-based prototype structured incoming requests, applied the rules, and flagged what still needed a coordinator.</p></header><AccentureToolRelay/></section>
+  <CaseChapter id="ax-build" className="axStage axBuild" title={<>Then a prototype <em>to try the rules.</em></>} lead="An early Codex-based prototype structured incoming requests, applied the rules, and flagged what still needed a coordinator.">
+   <AccentureToolRelay/>
+  </CaseChapter>
 
-  <div className="axChapter axHuman axStage" id="ax-test">
+  <div className="axStage csMoment" id="ax-test">
    <DecisionMoment
     statement={<>A free slot<br/>is not a yes.</>}
     sub="Rules handle what repeats. Anything uncertain stops at a gate for a coordinator, and one late-night test case is what drew the line."
@@ -1061,7 +1137,10 @@ function AccentureCase(){return <div className="accentureStory"><AccentureStagge
    </DecisionMoment>
   </div>
 
-  <section className="axChapter accentureEvidence axStage" id="ax-recommend"><header><h2>Using evidence <em>to decide what to test next.</em></h2></header><AccentureEvidenceFunnel/><p className="axClose">The clearest signal in the data was how unevenly the program was used: the heaviest-using teams ran <b>8x</b> the requests per trainer of the lightest. That gap is what the five recommendations are aimed at, and each one ships with a 90-day test so the program can tell whether it closed.</p></section>
+  <CaseChapter id="ax-recommend" className="axStage axRecommend" title={<>Using evidence <em>to decide what to test next.</em></>}>
+   <AccentureEvidenceFunnel/>
+   <div className="csPull"><p className="csPullFigure" aria-hidden="true">8x</p><p className="axClose">The clearest signal in the data was how unevenly the program was used: the heaviest-using teams ran <b>8x</b> the requests per trainer of the lightest. That gap is what the five recommendations are aimed at, and each one ships with a 90-day test so the program can tell whether it closed.</p></div>
+  </CaseChapter>
  </div>}
 
 const kohlerStages=[
@@ -1073,12 +1152,11 @@ const kohlerStages=[
 ];
 function KohlerCase(){
  return <div className="kohlerStory"><LifecycleRoad stages={kohlerStages} vehicle="box"/>
-  <section className="kxStatus" aria-label="Where this project stands">
-  </section>
+  <CaseChapter id="kx-discover" className="kxStage kxProblem" title="The order problem" lead="A product can be in stock and still not be ready to export. If the destination needs a different spec sheet, label, warranty, or translation, that material has to be prepared before the order can move.">
+   <KohlerOrderHold/>
+  </CaseChapter>
 
-  <CaseSection title="The order problem" className="kohlerRiskSection kxStage" id="kx-discover"><div><p className="kohlerSectionLead">A product can be in stock and still not be ready to export. If the destination needs a different spec sheet, label, warranty, or translation, that material has to be prepared before the order can move.</p><KohlerOrderHold/></div></CaseSection>
-
-  <div className="kxStage" id="kx-define">
+  <div className="kxStage csMoment" id="kx-define">
    <DecisionMoment
     statement={<>Center it on<br/>the order.</>}
     because={<p>The product record says what the item is. It cannot say what this shipment, to this market, still needs. Every hold we looked at came from work that only became visible once an order already existed, by which point someone was searching across systems to rebuild it.</p>}
@@ -1093,11 +1171,20 @@ function KohlerCase(){
    </DecisionMoment>
   </div>
 
-  <CaseSection title="The product in use" className="kohlerProductSection kxStage" id="kx-design"><div><p className="kohlerSectionLead">Change the destination to see the market packet update without touching the product record.</p><section className="kohlerProductStage"><KohlerProductSurface/></section><KohlerRoles/></div></CaseSection>
+  <CaseChapter id="kx-design" className="kxStage kxProduct" title="The product in use" lead="Change the destination to see the market packet update without touching the product record.">
+   <section className="kohlerProductStage"><KohlerProductSurface/></section>
+   <KohlerRoles/>
+  </CaseChapter>
 
-  <CaseSection title="How the packet gets made" className="kohlerArchitectureSection kxStage" id="kx-build"><div><p className="kohlerSectionLead">Rules check what is certain, an agent drafts what is market-specific, and a person approves the result.</p><KohlerAssembly/><h3 className="kxExceptionsTitle">What stops at the review gate</h3><KohlerExceptions/></div></CaseSection>
+  <CaseChapter id="kx-build" className="kxStage kxBuild" title="How the packet gets made" lead="Rules check what is certain, an agent drafts what is market-specific, and a person approves the result.">
+   <KohlerAssembly/>
+   <h3 className="kxExceptionsTitle">What stops at the review gate</h3>
+   <KohlerExceptions/>
+  </CaseChapter>
 
-  <CaseSection title="What we built and delivered" className="kohlerDeliverySection kxStage" id="kx-deliver"><KohlerDelivery/></CaseSection>
+  <CaseChapter id="kx-deliver" className="kxStage kxDeliver" title="What we built and delivered"><KohlerDelivery/></CaseChapter>
+
+  <CaseResults items={metrics.kohler.filter(([,,type])=>type==='outcome') as [string,string][]}/>
  </div>
 }
 
@@ -1131,8 +1218,8 @@ const grazeStages=[
  {id:'gz-deliver',name:'Deliver',did:'Hand off scorecard + rubric'}
 ];
 function MarketExpansionCase(){return <div className="grazeStory"><LifecycleRoad stages={grazeStages} vehicle="cheese"/>
-  <section id="gz-discover" className="grazeBrief gzStage"><header><h2>Compare candidate locations with the same criteria.</h2></header><div><p>Graze Craze wanted to evaluate new franchise locations and strengthen demand at its existing Okemos and Shelby Township branches.</p><GrazeBriefFacts/></div></section>
-  <section id="gz-define" className="grazeSection gzStage"><header className="grazeSectionHeading"><h2>Turn market research into a repeatable score.</h2><p>The rubric compared partnership potential, facility requirements, customer opportunity, and competition using the same scoring logic. Select a criterion to see an example.</p></header><GrazeRecipe/><GrazePrepSteps/><p className="grazeSourceNote">The deck provides Michigan criticality values and allows users to customize them for other markets. Baseline checks include 5,000 B2B and 100,000 B2C opportunities.</p></section>
+  <section id="gz-discover" className="grazeBrief gzStage"><h2 className="csTitle">Compare candidate locations with the same criteria.</h2><div><p>Graze Craze wanted to evaluate new franchise locations and strengthen demand at its existing Okemos and Shelby Township branches.</p><GrazeBriefFacts/></div></section>
+  <section id="gz-define" className="grazeSection gzStage"><h2 className="csTitle">Turn market research into a repeatable score.</h2><header className="grazeSectionHeading"><p>The rubric compared partnership potential, facility requirements, customer opportunity, and competition using the same scoring logic. Select a criterion to see an example.</p></header><GrazeRecipe/><GrazePrepSteps/><p className="grazeSourceNote">The deck provides Michigan criticality values and allows users to customize them for other markets. Baseline checks include 5,000 B2B and 100,000 B2C opportunities.</p></section>
   <section id="gz-analyze" className="grazeSection gzStage">
    <DecisionMoment
     statement={<>One point is<br/>not a decision.</>}
@@ -1147,7 +1234,7 @@ function MarketExpansionCase(){return <div className="grazeStory"><LifecycleRoad
     <GrazeLocations/>
    </DecisionMoment>
   </section>
-  <section id="gz-recommend" className="grazeSection gzStage"><header className="grazeSectionHeading"><h2>Recommendations for the two existing Michigan branches.</h2><p>The team linked softer early-year demand to post-holiday spending constraints and New Year health priorities. Its recommendations focused on community outreach, B2B relationships, and targeted paid marketing.</p></header><GrazeGrowth/></section>
+  <section id="gz-recommend" className="grazeSection gzStage"><h2 className="csTitle">Recommendations for the two existing Michigan branches.</h2><header className="grazeSectionHeading"><p>The team linked softer early-year demand to post-holiday spending constraints and New Year health priorities. Its recommendations focused on community outreach, B2B relationships, and targeted paid marketing.</p></header><GrazeGrowth/></section>
   <section id="gz-deliver" className="grazeSection grazeEvidence gzStage"><header className="grazeSectionHeading"><h2>What the client received</h2></header><GrazeArtifacts/><span className="grazeSourceNote">Source: Graze Craze Revenue Generation and Franchising Strategy · April 19, 2024</span></section>
   
  </div>}
@@ -1222,7 +1309,8 @@ function HobbyPopover({label,title,items,variant=''}){
   // Books fall onto the shelf the first time it opens; after that they're already there.
   const [dropped,setDropped]=useState('');
   if(variant==='shelf'){
-    const spines=[['#7d2f41','#f6e7c8',150],['#2f5a4f','#f3e6c4',168],['#b27639','#3a2616',140],['#353c66','#efe3c4',158],['#8f4432','#f6e7c8',146]];
+    // [bookcloth, foil, length]: oxblood, bottle green, ochre (stamped in dark foil), navy, rust
+    const spines=[['#6d2631','#d6b066',150],['#264a3f','#d3ad63',168],['#b6863a','#3b2612',140],['#28314f','#d4b06a',158],['#7c3a29','#d6b066',146]];
     return <span className="hobbyPopover" onMouseEnter={()=>setDropped(d=>d||'dropping')} onFocus={()=>setDropped(d=>d||'dropping')} onMouseLeave={()=>setDropped(d=>d==='dropping'?'done':d)} onBlur={()=>setDropped(d=>d==='dropping'?'done':d)}><button type="button" className="hobbyPopoverTrigger">{label}</button><span className={`hobbyShelf${dropped==='dropping'?' isDropping':dropped===''?' isFresh':''}`} role="tooltip"><strong>{title}</strong><span className="shelfBooks">{items.map((item,i)=>{const [bg,fg,h]=spines[i%spines.length];return <span key={item} className="shelfBook" style={{'--bg':bg,'--fg':fg,'--h':`${h}px`,'--k':i} as React.CSSProperties}><em>{item}</em></span>})}</span><span className="shelfBoard" aria-hidden="true"/></span></span>;
   }
   if(variant==='tv'){
@@ -1286,7 +1374,7 @@ function Home({openCase}){
  const [heroPointerActive,setHeroPointerActive]=useState(false);
  const [filmOpen,setFilmOpen]=useState(false);
  const [filmIndex,setFilmIndex]=useState(0);
- const serious=['finsimple','accenture','fcvf','kohler','marketExpansion','estee'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
+ const serious=['fcvf','accenture','finsimple','kohler','marketExpansion','estee'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
  const fun=['commute','bookclub','scheduler','chat'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
  const moveHeroAura=e=>{
    if(e.pointerType==='touch')return;
@@ -1310,20 +1398,20 @@ function Home({openCase}){
         <article className="smallBuild">
           <div className="techVisual game">
             <div className="spartanScene">
-              <img className="spartanBg" src="project-media/spartan-background.png" alt="Spartan Touchdown level"/>
+              <img className="spartanBg" src="project-media/spartan-background.png" alt="Spartan Touchdown level" width={2048} height={1024} loading="lazy" decoding="async"/>
               <div className="spartanGround"></div>
-              <img className="spartySprite" src="project-media/sparty.png" alt="Sparty"/>
-              <img className="enemySprite" src="project-media/um-enemy.png" alt="Michigan enemy"/>
+              <img className="spartySprite" src="project-media/sparty.png" alt="Sparty" loading="lazy" decoding="async"/>
+              <img className="enemySprite" src="project-media/um-enemy.png" alt="Michigan enemy" loading="lazy" decoding="async"/>
               </div>
               </div>
-              <h3>Spartan Touchdown</h3>
-              <p>C++ team game with player movement, collisions, enemies, scoring, and shared level state.</p>
+              <div className="moreBuildCopy"><span>MSU · CSE 335</span><h3>Spartan Touchdown</h3>
+              <p>A C++ team game with player movement, collisions, enemies, scoring, and a shared level state.</p></div>
               </article><article className="smallBuild">
                 <div className="techVisual fluids">
-                  <img src="project-media/stable-fluids.png" alt="Stable Fluids simulation"/>
+                  <img src="project-media/stable-fluids.png" alt="Stable Fluids simulation" width={1025} height={665} loading="lazy" decoding="async"/>
                   </div>
-                  <h3>Stable Fluids</h3>
-                  <p>Interactive 2D fluid simulation in C++ using the Stam method, with live emitters and obstacles.</p>
+                  <div className="moreBuildCopy"><span>MSU · CSE 476</span><h3>Stable Fluids</h3>
+                  <p>Interactive 2D fluid simulation in C++ using the Stam method, with live emitters and obstacles.</p></div>
                   </article>
                   </div>
                   </section>

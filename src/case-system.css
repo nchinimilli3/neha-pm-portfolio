@@ -1,0 +1,498 @@
+/* =========================================================================
+   Site system
+   -------------------------------------------------------------------------
+   One set of tokens and components for the home page and every case study.
+   Replaces case-typography.css and case-hero.css, which each set part of
+   this. The home page block is at the end of the file.
+
+   Imported last in main.tsx. The !important flags here exist only because
+   styles.css still states the same properties with !important; new rules
+   that do not compete with it are written without.
+
+   TYPE      display 64 · statement 64 · h2 44 · h3 22 · lead 21 · body 17
+             · small 15 · caption 14 · eyebrow 12   (desktop sizes)
+             Primary = ink, secondary = muted, accent = eyebrows, links
+             and the outcome numbers only.
+   SPACE     8px base: 8 16 24 32 48 64 96 128.
+             Within a block 8–24, header to body 48, chapter to chapter 128.
+   GRID      12 columns, 32px gutter, 1180px max. Headers always sit on
+             columns 1–8 at the left edge; bodies choose full (1–12),
+             split (7/5), or text (1–8).
+   COMPONENTS
+             Hero · At a glance (CaseAnswer) · Chapter (CaseChapter) ·
+             Decision moment (DecisionMoment) · Results (CaseResults)
+   ========================================================================= */
+
+:root{
+  --font-display:Poppins,sans-serif;
+  --font-serif:Inter,ui-sans-serif,-apple-system,sans-serif;
+  --font-ui:Inter,ui-sans-serif,-apple-system,"system-ui","Segoe UI",sans-serif;
+
+  --cs-display:clamp(40px,4.6vw,64px);
+  --cs-statement:clamp(38px,4.6vw,64px);
+  --cs-h2:clamp(30px,3.1vw,44px);
+  --cs-h3:clamp(19px,1.6vw,22px);
+  --cs-lead:clamp(18px,1.5vw,21px);
+  --cs-body:17px;
+  --cs-small:15px;
+  --cs-caption:14px;
+  --cs-eyebrow:12px;
+  --cs-stat:clamp(56px,7vw,104px);
+
+  --s-1:8px;--s-2:16px;--s-3:24px;--s-4:32px;--s-5:48px;--s-6:64px;--s-7:96px;--s-8:128px;
+  --cs-chapter:clamp(80px,9vw,128px);
+
+  /* Motion: three curves for the whole site. Decelerate for things arriving,
+     in-out for things travelling, spring only where something should land. */
+  --ease-out:cubic-bezier(.2,.8,.2,1);
+  --ease-in-out:cubic-bezier(.5,0,.3,1);
+  --ease-spring:cubic-bezier(.3,1.4,.5,1);
+
+  --cs-compact:16px;
+
+  --cs-max:1180px;
+  --cs-gutter:32px;
+  /* Same formula as every case sheet's own sections, so the hero, summary and
+     chapters share one left edge at every width, not only at 1440. */
+  --cs-w:min(var(--cs-max),calc(100% - 64px));
+}
+@media(max-width:860px){:root{--cs-gutter:20px}}
+
+.casePage{--case-font:var(--font-ui);font-family:var(--case-font)}
+
+/* ---- Type ------------------------------------------------------------- */
+
+/* The title is only as wide as its text, so the gradient (styles.css, V49)
+   runs from the first letter to the last on every case. */
+.casePage .caseHeader h1{width:fit-content!important;max-width:100%!important;--case-font:var(--font-display);font-family:var(--case-font)!important;font-size:var(--cs-display)!important;font-weight:500!important;line-height:1.08!important;letter-spacing:-.045em!important;padding-bottom:.08em!important;overflow:visible!important}
+.casePage .caseIntro{--case-font:var(--font-serif);font-family:var(--case-font)!important;font-size:var(--cs-lead)!important;line-height:1.5!important;max-width:34ch!important}
+.casePage h2:not(.caseLead h2,.toolLogoSection h2,.caseHeroMedia *,.sandboxSection *,.kohlerSurface *,.iphoneDemoStage *,.fvSurveyExperiment *,.aiOpsWorkbench *,.elMirrorScene *){--case-font:var(--font-display);font-family:var(--case-font)!important;font-size:var(--cs-h2)!important;font-weight:500!important;line-height:1.08!important;letter-spacing:-.03em!important}
+
+.casePage h3:not(.caseLead *,.chatFrameCols *,.caseHeroMedia *,.sandboxSection *,.kohlerSurface *,.requestApp *,.iphoneDemoStage *,.fvSurveyExperiment *,.aiOpsWorkbench *,.accentureSchemaWindow *,.schedulerDecisionCanvas *,.elMirrorScene *){--case-font:var(--font-display);font-family:var(--case-font)!important;font-size:var(--cs-h3)!important;font-weight:600!important;line-height:1.25!important;letter-spacing:-.01em!important}
+
+
+
+/* Running prose: lead paragraphs and body copy only. Captions, notes and
+   annotations keep their smaller sizes. */
+.casePage :is(.csBody>p,.caseSectionBody>p,.bcProblemCopy>p,.cmProblemCopy>p,.caseSectionBody>div>p,.axProof>p,.chatRuleStage p,.cmSectionIntro>p,.cmLearning>header>p,.cmLoop>header>p:not(.cmLoopEyebrow),.elInvitation p,.elProblem>p,.elProof p,.elResponsive p:not(.elSmall),.elRetail>p,.fseBuild>header p,.fseStage aside>p:not(.fseOwnership),.fseDelivery>div>p,.fseReturn>div>p,.fvBrief>div>p,.fvLogic>div>p,.fvResearchNotes>p,.fvResearchNotes article>p,.fvSurveySection>header>p,.fvWorkbench>header>p,.grazeBrief>div>p,.grazeSectionHeading>p,.kxDelivery>p,.schedulerProblemStage p){--case-font:var(--font-serif);font-family:var(--case-font)!important;font-size:var(--cs-body)!important;line-height:1.65!important}
+
+/* Display-size statements and figures drawn by individual case sheets. */
+.casePage .cdCallStatement,.casePage .cdStatement,
+.casePage .kxAfter,
+.casePage .fseOpsStat strong,
+.casePage .elFinalRecognition strong,
+.casePage .grazeMath b,.casePage .grazeBriefFacts b,
+.casePage .csStats dd{--case-font:var(--font-display);font-family:var(--case-font)!important}
+
+/* Eyebrow: the stage name above each chapter title, stamped by LifecycleRoad.
+   It matches the sticky road's readout, so the page and the map agree. */
+.casePage [data-eyebrow]::before{content:attr(data-eyebrow);display:block;margin:0 0 var(--s-2);font:600 var(--cs-eyebrow)/1.2 var(--font-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--cd-accent)}
+
+/* Sequenced reveal used by every case study (see useCaseReveal in main.tsx). */
+.revealItem{opacity:0;translate:0 18px;transition:opacity .65s ease,translate .7s var(--ease-out);transition-delay:var(--rd,0ms)}
+.revealItem.isRevealed{opacity:1;translate:none}
+@media(prefers-reduced-motion:reduce){.revealItem{opacity:1;translate:none;transition:none}}
+
+/* ---- Craft --------------------------------------------------------------
+   Details that apply everywhere and should never be re-decided per case. */
+
+/* One focus ring for every control, on every page: the case accent, 2px, set
+   3px off the edge so it never sits on top of a border or a fill. Individual
+   sheets had drawn purple rings on green cases and white rings on white. */
+:is(.casePage,.homePage,.siteHeader,.siteFooter) :is(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:2px solid var(--cd-accent,#2f4d45)!important;outline-offset:3px!important;box-shadow:none!important}
+
+/* Line breaking: headings balance, prose avoids a one-word last line. */
+.casePage :is(h1,h3,.cdStatement,.cdCallStatement),.homePage :is(h1,h3){text-wrap:balance}
+.casePage p,.homePage p{text-wrap:pretty}
+
+/* Legibility floor for annotation text outside the product mockups: dense
+   diagram labels (axes, ticks) stop at 11px, captions and notes at 12px.
+   Phone, watch and chat UI keep their real interface sizes. */
+.casePage :is(.mlabStop em,.mlabLegSrc b,.mlabCut b,.cmRoutineInterval small,.cmDepartureMoment small,.cmLoopEquation small,.schedulerDecisionDays b,.schedulerDecisionRows span){font-size:11px!important}
+.casePage :is(.schedulerPeople figcaption,.schedulerRecommendationGrid footer,.fvInterviewRoom footer,.fvBuildNav span,.bcJob em,.isTop em,.cmReplayRoute span,.mlabDecisionNote b,.mlabRisk b){font-size:12px!important}
+
+/* Motion safety net: whatever an individual sheet forgot, reduced motion
+   means no travel and no loops. */
+@media(prefers-reduced-motion:reduce){
+  :is(.casePage,.homePage) *,:is(.casePage,.homePage) *::before,:is(.casePage,.homePage) *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+
+/* Elevation: three levels, tinted with the case ink rather than grey.
+   1 = small controls, 2 = paper and cards, 3 = windows, browsers and product
+   surfaces. Each object sheet used to invent its own shadow. Declared on both
+   so the home page gets the scale and each case tints it with its own ink. */
+:root,.casePage{
+  --elev-1:0 1px 2px color-mix(in srgb,var(--cd-ink,#232a27) 8%,transparent),0 2px 8px color-mix(in srgb,var(--cd-ink,#232a27) 6%,transparent);
+  --elev-2:0 1px 2px color-mix(in srgb,var(--cd-ink,#232a27) 6%,transparent),0 14px 32px -12px color-mix(in srgb,var(--cd-ink,#232a27) 22%,transparent);
+  --elev-3:0 0 0 1px color-mix(in srgb,var(--cd-ink,#232a27) 7%,transparent),0 2px 4px color-mix(in srgb,var(--cd-ink,#232a27) 6%,transparent),0 32px 64px -24px color-mix(in srgb,var(--cd-ink,#232a27) 32%,transparent);
+}
+.casePage :is(.fvInterviewRoom,.grazePaper,.axRideNow){box-shadow:var(--elev-2)!important}
+.casePage :is(.fseBrowser,.kohlerProductStage>.kohlerSurface,.schedulerBriefWindow,.accentureSchemaWindow,.sx){box-shadow:var(--elev-3)!important}
+
+/* Text tokens, enforced. Prose is one of four styles: lead 21/1.55, body
+   17/1.65, compact 16/1.55 (summary and decision columns), small 15/1.6. */
+.casePage :is(.cdRowText p,.cdMomentCol p,.cdMomentCol>div){font-size:var(--cs-compact)!important;line-height:1.55!important}
+.casePage .cdMomentSub{font-size:var(--cs-lead)!important;line-height:1.55!important}
+.casePage :is(.mlabHead p,.axEdgeWhen,.grazeRecipeDetail .grazeCriterionDetail){font-size:var(--cs-body)!important;line-height:1.65!important}
+.casePage.casePage :is(.axStagger p,.axRideNow,.grazeCourses p,.kxLineSteps p,.cdSupportingNote,.bcValidate p:not(.bcRulesHead),.bcPhase p,.fseFreewayNote,.grazeAction,.grazeRecipeDetail p:not(.grazeCriterionDetail),.grazeExample,.grazePlate p,.grazeNext,.bcTradeoff){font-size:var(--cs-small)!important;line-height:1.6!important}
+
+/* Labels: every small uppercase label outside a diagram is the eyebrow token. */
+.casePage.casePage :is(.kxIntentLabel,.cdEvidenceLabel,.cdSupportingTitle,.scCompareHead .scCompareThem,.scCompareHead .scCompareMine,.fseOpsStat b,.bcRulesHead,.chatFrameCols h3){font:600 var(--cs-eyebrow)/1.2 var(--font-ui)!important;letter-spacing:.14em!important;text-transform:uppercase}
+
+/* ---- Hero ---------------------------------------------------------------
+   Title left, visual right, outcome metrics underneath on the title's edge.
+   The hero sits on the same 1180 column as every chapter below it. */
+.casePage .caseReadingBar{width:var(--cs-w)!important;max-width:var(--cs-max)!important;margin-left:auto!important;margin-right:auto!important}
+.casePage .caseLead{width:var(--cs-w)!important;max-width:var(--cs-max)!important;margin-left:auto!important;margin-right:auto!important;align-items:start!important;column-gap:clamp(48px,6vw,96px)!important;row-gap:0!important}
+/* One hero grid for all ten cases: text on columns 1-6, image on 7-12, so the
+   image edge lands on the same grid line everywhere (it had drifted to six
+   different x positions from per-case column ratios). */
+.casePage .caseLead{grid-template-columns:repeat(12,minmax(0,1fr))!important;column-gap:var(--cs-gutter)!important}
+.casePage .caseLead>.caseHeader{grid-column:1 / 7!important;grid-row:1!important;max-width:none!important;margin:0!important;padding:0!important}
+/* The title block centres against the 460px image stage, so a short intro
+   never leaves a dead band between it and the metrics. */
+@media(min-width:1001px){.casePage .caseLead>.caseHeader{align-self:center!important}}
+.casePage .caseLead>.caseHeroMedia{grid-column:7 / 13!important;grid-row:1!important;justify-self:stretch!important;max-width:none!important;margin:0!important}
+/* One hero stage: every case's visual sits centred in the same 460px box, so
+   the metrics, tech stack and summary start at the same height on every page
+   (they had ranged over ~200px because each visual set its own height).
+   Visuals taller than the stage are scaled down to fit, not cropped. */
+@media(min-width:1001px){
+  .casePage .caseLead>.caseHeroMedia{height:460px!important;min-height:0!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:visible!important}
+  .casePage .caseLead>.caseHeroMedia>*{flex:0 1 auto;width:100%;max-height:none}
+  .case-scheduler .caseLead>.caseHeroMedia>*{zoom:.86}
+  /* These two size from their width (fixed aspect), so they scale by width. */
+  .case-marketExpansion .caseLead>.caseHeroMedia>*,.case-bookclub .caseLead>.caseHeroMedia>*{width:92%!important}
+}
+.casePage .caseHeader h1+.caseIntro{margin-top:var(--s-3)!important}
+.casePage .caseLead>.metricStrip{grid-column:1 / -1!important;justify-self:start!important;width:100%!important;max-width:none!important;margin:var(--s-5) 0 0!important;padding:0!important}
+@media(min-width:1100px){
+  .casePage{padding-top:16px!important}
+  .casePage .backBtn{margin-bottom:24px!important}
+  .casePage .caseLead{margin-top:16px!important;margin-bottom:var(--s-6)!important}
+  .casePage .caseLead .caseHeroMedia img:not(.bcHero img):not(.caseHeroLogoWrap img){width:100%!important;height:auto!important;max-height:none!important;object-fit:cover!important}
+  .casePage .caseLead .caseHeroMedia :is(.homepageMockup,.esteeHeroMockup,.commuteHeroCover) img:not(.bcHero img):not(.caseHeroLogoWrap img){height:100%!important}
+}
+main.casePage>.caseLead,main.casePage .caseLead{padding-bottom:0!important}
+
+/* Metrics: one size, one weight, one colour for every metric in every case,
+   so the strip reads as a single row of evidence and no case's numbers look
+   larger or smaller than another's. */
+.casePage .caseLead>.metricStrip{grid-template-columns:none!important;grid-auto-flow:column!important;grid-auto-columns:max-content!important;justify-content:start!important;align-items:start!important;column-gap:clamp(32px,4vw,64px)!important}
+.casePage .caseLead .metric strong{font-size:clamp(30px,2.8vw,40px)!important;line-height:1!important;letter-spacing:-.03em!important;font-weight:600!important;font-variant-numeric:tabular-nums;color:var(--cd-accent)!important}
+.casePage .caseLead .metric span{display:block;margin-top:var(--s-1);max-width:22ch;font-size:var(--cs-caption)!important;line-height:1.4!important;color:var(--cd-muted)!important;white-space:normal!important}
+@media(max-width:860px){
+  .casePage .caseLead>.metricStrip{grid-auto-flow:row!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;column-gap:var(--s-3)!important;row-gap:var(--s-3)!important}
+}
+
+
+/* ---- At a glance (CaseAnswer) -------------------------------------------
+   Same column as the hero. Row labels let the block be read as a list of
+   answers instead of three unlabelled paragraphs. */
+.casePage .cdAnswer{width:var(--cs-w);max-width:var(--cs-max);margin:var(--s-5) auto 0}
+.casePage .cdRowText>b,.casePage .cdCallLabel,.casePage .cdRole b,.casePage .cdMomentCol>b{font:600 var(--cs-eyebrow)/1.2 var(--font-ui);letter-spacing:.14em;text-transform:uppercase}
+.casePage .cdRowText>b{color:var(--cd-muted)}
+.casePage .cdRow-result .cdRowText>b{color:var(--cd-accent)}
+.casePage .cdRole b{display:block;margin-bottom:var(--s-1);color:var(--cd-muted)}
+
+/* ---- Chapters ------------------------------------------------------------
+   Space does the grouping: 128 between chapters, 48 between a chapter's
+   header and its body, 8–24 inside a block. No rules or boxes between
+   ordinary chapters; the decision moment is the one that earns a rule. */
+main.casePage :is(.axStage,.bcStage,.chStage,.cmStage,.elStage,.fvStage,.fseStage,.kxStage,.gzStage,.scStage){padding-top:clamp(64px,7vw,96px)!important;padding-bottom:var(--s-4)!important}
+main.casePage :is(.elProof,.fvSurveySection){padding-top:clamp(64px,7vw,96px)!important;padding-bottom:var(--s-4)!important}
+main.casePage{padding-bottom:var(--s-6)!important}
+main.casePage :is(.sandboxSection,.schedulerDemo,.chatRuleStage,.schedulerProblemStage){margin-bottom:var(--s-5)!important;padding-bottom:0!important}
+main.casePage .cdSupporting:last-child{margin-bottom:0;padding-bottom:0!important}
+
+/* After the 20-second summary: a demo or illustration gets 64px of air, a
+   chapter gets 96. The Scheduler and Chat demos were sitting 0-8px under it. */
+.casePage .chatStory>.sandboxSection{margin-top:var(--s-6)!important}
+.casePage .schedulerStory>.schedulerDemo{margin-top:56px!important}  /* the demo draws 8px of its own inset */
+.casePage .cdAnswer+.carBand{margin-top:40px!important}              /* the car art sits 24px inside its band */
+.casePage .cmEditorial>.cmShowcase{margin-top:var(--s-2)!important}  /* the train sits 48px inside its band */
+.casePage .accentureStory{margin-top:0!important;padding-top:0!important}
+
+/* Several case sections are 12-column grids; a decision moment dropped into
+   one spans the whole track. Harmless where the parent is not a grid. */
+.casePage .cdMoment,.casePage .cdSupporting,.casePage .cdAnswer{grid-column:1 / -1}
+
+.csChapter,.csMoment{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--cs-gutter);width:var(--cs-w);max-width:var(--cs-max);margin:0 auto;scroll-margin-top:112px}
+.csChapter>.csHead{grid-column:1 / -1;display:grid;gap:var(--s-3)}
+.csChapter>.csHead h2{margin:0;color:var(--cd-ink)}
+.casePage .csLead{margin:0;max-width:60ch;font:400 var(--cs-lead)/1.55 var(--font-serif);color:var(--cd-muted)}
+.csChapter>.csBody{grid-column:1 / -1;min-width:0;margin-top:var(--s-5)}
+.csMoment>*{grid-column:1 / -1}
+
+/* Split chapter: for text + one artifact that should be read side by side.
+   The header keeps the left edge (columns 1–5); the artifact takes 7–12. */
+.csChapter--split{align-items:start}
+.csChapter--split>.csHead{display:contents}
+.csChapter--split>.csHead>h2{grid-column:1 / -1;grid-row:1}
+.csChapter--split>.csHead>.csLead{grid-column:1 / span 5;grid-row:2;margin-top:var(--s-5)}
+.csChapter--split>.csBody{grid-column:7 / -1;grid-row:2;margin-top:var(--s-5)}
+.csChapter--split>.csHead .csLead{font-size:var(--cs-body);line-height:1.65}
+@media(max-width:1000px){.csChapter--split>.csHead>.csLead,.csChapter--split>.csBody{grid-column:1 / -1;grid-row:auto}}
+
+/* Pull stat: one finding set at display size beside the sentence that
+   explains it. Figure on columns 1–4, prose on 5–12, no box. */
+.csPull{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--cs-gutter);align-items:start;margin-top:var(--s-7);padding-top:var(--s-4);border-top:2px solid var(--cd-accent)}
+.casePage .csPullFigure{grid-column:1 / span 4;margin:0;font:500 var(--cs-stat)/.9 var(--font-display);letter-spacing:-.05em;color:var(--cd-accent)}
+.casePage .csPull>p:not(.csPullFigure){grid-column:5 / -1;margin:0;max-width:56ch;font:400 var(--cs-lead)/1.55 var(--font-serif)!important;color:var(--cd-ink)}
+.casePage .csPull b{font-weight:600;color:var(--cd-accent)}
+@media(max-width:860px){.casePage .csPullFigure,.casePage .csPull>p:not(.csPullFigure){grid-column:1 / -1}.casePage .csPullFigure{margin-bottom:var(--s-3)}}
+
+/* Decision moment: the page's key beat. Its statement is set at the same
+   size as the page title (never larger), with a full chapter of space on
+   both sides and the only heavy rule on the page. */
+.casePage .cdStatement{font-size:var(--cs-statement)!important;line-height:1.04!important;font-weight:500!important;letter-spacing:-.04em!important;max-width:18ch}
+/* Every decision moment gets the same extra room: 32 more than a chapter
+   break above and below (160 total), wherever the case places it. */
+.casePage .cdMoment{margin:var(--s-4) 0!important;padding:var(--s-5) 0 0!important}
+.casePage .cdMomentGrid{margin-top:var(--s-5);padding-top:var(--s-4);gap:var(--s-4)}
+.casePage .cdMomentCol{gap:var(--s-2)}
+.casePage .cdMomentCol>b{color:var(--cd-muted)}
+.casePage .cdMomentEvidence{margin-top:var(--s-5)}
+
+/* Chapter titles are the primary level: one ink colour per case, whatever
+   colour a case sheet gave an individual section. Accent stays on the <em>. */
+/* Chapter titles run the full width of the grid on one line where they fit:
+   no measure caps and no balancing into two equal stacked lines. */
+.casePage h2[data-eyebrow]{color:var(--cd-ink)!important;max-width:none!important;text-wrap:pretty!important}
+/* A chapter title owns the first row of its section, across the full grid;
+   whatever two-column layout the chapter uses starts underneath it. */
+.casePage .csTitle{grid-column:1 / -1!important;grid-row:1!important;width:100%;margin:0 0 var(--s-5)!important;position:static!important}
+/* Under a title: exactly 48px to the content, and the text top-aligned with
+   its image so the eye goes straight from the heading into the copy. */
+@media(min-width:1001px){.casePage :has(>.csTitle){row-gap:0!important;align-items:start!important}}
+.casePage .csTitle+*{margin-top:0!important}
+.casePage .caseSection>h2[data-eyebrow]{grid-column:1 / -1!important;position:static!important;margin-bottom:var(--s-5)!important}
+.casePage .caseSection:has(>h2[data-eyebrow])>.caseSectionBody{grid-column:1 / -1!important}
+
+/* ---- Pull quote (CasePull) -----------------------------------------------
+   The breath between dense chapters: 96 above, the next chapter's own spacing below, left edge, one line
+   at display size under a short accent rule. */
+.casePage .csPullQuote{display:block;width:var(--cs-w);max-width:var(--cs-max);margin:0 auto;padding:var(--s-7) 0 var(--s-4)}
+.casePage .csPullQuote>p{position:relative;max-width:24ch;margin:0;padding-top:var(--s-4);font:400 clamp(28px,3.6vw,48px)/1.16 var(--font-display)!important;letter-spacing:-.035em;color:var(--cd-ink);text-wrap:balance;opacity:0;translate:0 24px;transition:opacity .5s ease-out,translate .6s var(--ease-out)}
+.csPullQuote>p:before{content:'';position:absolute;left:0;top:0;width:56px;height:3px;border-radius:4px;background:var(--cd-accent)}
+.csPullQuote>p em{font-style:normal;color:var(--cd-accent)}
+.casePage .csPullQuote.isIn>p{opacity:1;translate:none}
+@media(prefers-reduced-motion:reduce){.casePage .csPullQuote>p{opacity:1;translate:none;transition:none}}
+
+/* ---- Results (CaseResults) -----------------------------------------------
+   The payoff the hero promised, at the largest numeric size on the page, with
+   room around it. Numbers sit on the grid: one per half. */
+.csResults{padding-top:var(--cs-chapter);padding-bottom:var(--s-4)}
+.csStats{grid-column:1 / -1;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));column-gap:var(--cs-gutter);row-gap:var(--s-5);margin:0}
+.csStats>div{display:flex;flex-direction:column-reverse;justify-content:flex-end;gap:var(--s-2);padding-top:var(--s-3);border-top:2px solid var(--cd-accent)}
+.csStats dd{margin:0;font-size:var(--cs-stat);line-height:.95;font-weight:500;letter-spacing:-.05em;font-variant-numeric:tabular-nums;color:var(--cd-accent);white-space:nowrap}
+.csStats dt{max-width:26ch;font:500 var(--cs-lead)/1.4 var(--font-serif);color:var(--cd-ink)}
+.csResultsNote{grid-column:1 / span 8;margin:var(--s-5) 0 0;max-width:60ch;font-size:var(--cs-small);line-height:1.6;color:var(--cd-muted)}
+
+/* ---- Tech stack -----------------------------------------------------------
+   Stays in the hero, directly under the metrics on the title's left edge:
+   a small label over one row of marks. */
+.casePage .caseLead>.toolLogoSection{grid-column:1 / -1!important;justify-self:start!important;display:block!important;width:100%!important;max-width:none!important;margin:var(--s-3) 0 0!important;padding:0!important;border:0!important}
+.casePage .caseLead>.toolLogoSection .toolLogoHeading{display:flex!important;align-items:baseline!important;gap:16px!important;margin-bottom:var(--s-2)!important}
+.casePage .caseLead>.toolLogoSection .toolLogoHeading h2{margin:0!important}
+.casePage .caseLead>.toolLogoSection .toolLogoHeading p{max-width:60ch!important;margin:0!important}
+.casePage .caseLead>.toolLogoSection .toolLogoRow{display:flex!important;flex-wrap:nowrap!important;align-items:center!important;justify-content:flex-start!important;gap:clamp(8px,1.8vw,24px)!important;overflow:visible!important}
+@media(max-width:860px){
+  .casePage .caseLead>.toolLogoSection .toolLogoHeading{display:block!important}
+  .casePage .caseLead>.toolLogoSection .toolLogoRow{flex-wrap:wrap!important}
+}
+
+/* ---- Screenshot frame -----------------------------------------------------
+   Every screenshot of real software gets the same frame, on the image itself:
+   12px corners, a hairline edge and window elevation. No mats, no padding, no
+   bare captures. (Estee floated raw, FinSimple sat on white cards, FCVF mixed
+   a padded mat with a bare shadow.) Graze's taped printouts are a deliberate
+   paper metaphor and keep their own treatment. */
+.casePage :is(.fvEvidence,.fseDeckCard,.elInvitation figure,.elProof figure,.elRetail figure,.elViewport){padding:0!important;background:transparent!important;box-shadow:none!important;border:0!important;border-radius:0!important;filter:none!important}
+.casePage :is(.fvEvidence button,.fseDeckCard){background:transparent!important;padding:0!important;border:0!important}
+.casePage :is(.fvEvidence img,.fseDeckCard img,.elInvitation figure img,.elProof figure img,.elRetail figure img,.elViewport img){display:block;border-radius:12px!important;box-shadow:var(--elev-3)!important;background:#fff}
+
+/* ---- Images ---------------------------------------------------------------
+   One caption style everywhere: small, muted, left-aligned under the image. */
+.casePage figure>figcaption{margin-top:var(--s-2);font:400 var(--cs-caption)/1.5 var(--font-ui);color:var(--cd-muted);text-align:left}
+
+/* ===========================================================================
+   Kohler: the reference composition
+   ---------------------------------------------------------------------------
+   Discover  header · full-width illustration                  (medium)
+   Define    decision moment, heavy rule, full space            (key beat)
+   Design    header · full-width product surface · roles        (dense)
+   Build     header · assembly line · 3-up exceptions           (dense)
+   Deliver   header · split 7/5: statement + shipped list       (light)
+   Results   two outcome numbers, one per half                  (key beat)
+   =========================================================================== */
+.case-kohler .kohlerProductStage{width:100%;margin:0}
+.case-kohler .kxProduct .kxRoles{margin-top:var(--s-7)}
+.case-kohler .kxProduct .kxRoles h3{margin:0 0 var(--s-4)!important;color:var(--cd-ink)!important}
+.case-kohler .kxBuild .kxExceptionsTitle{margin:var(--s-7) 0 var(--s-3)!important;color:var(--kx-rust)!important}
+.case-kohler .kxDeliver .kxDelivery{grid-template-columns:minmax(0,7fr) minmax(0,5fr);column-gap:var(--cs-gutter);row-gap:var(--s-5)}
+.case-kohler .csMoment .cdMoment{border-top-color:var(--cd-ink)}
+@media(max-width:860px){.case-kohler .kxDeliver .kxDelivery{grid-template-columns:1fr}}
+
+/* ===========================================================================
+   Accenture
+   ---------------------------------------------------------------------------
+   Discover   header · three-tool request relay, full width        (dense)
+   Define     split: header left, code contract right              (medium)
+   Build      header · four-tool relay line                        (light)
+   Test       decision moment                                      (key beat)
+   Recommend  header · evidence funnel · 8x pull stat              (key beat)
+   =========================================================================== */
+.case-accenture .csHead h2 em{font-style:normal;color:var(--ax-violet)}
+.case-accenture .axRules .accentureSchemaWindow{max-width:none}
+
+/* ===========================================================================
+   Home page
+   ---------------------------------------------------------------------------
+   Same tokens and the same 1180 column as the case studies, so the header,
+   hero, logo strip, every section title and the footer share one left edge.
+   Hero        name · credentials · thesis, portrait right          (light)
+   Built for   logo strip, full bleed                               (tertiary)
+   Selected    two lead projects, then four                         (dense)
+   Experience  accordion      \  one group: 96 between them,
+   Education   rows           /   128 around the pair               (dense)
+   Fun builds  playful grid                                          (medium)
+   About       copy left, photo right                               (light)
+   =========================================================================== */
+.homePage{--home-edge:max(32px,calc((100% - var(--cs-max)) / 2))}
+.homePage .sectionTitle h2{font-family:var(--font-display)!important;font-size:var(--cs-h2)!important;font-weight:500!important;line-height:1.08!important;letter-spacing:-.03em!important}
+
+/* Text tokens on the home page: the same four prose styles as the case
+   studies, plus caption (14/1.5) for card and list blurbs, which used 13px. */
+.homePage .aboutCopy p,.homePage .heroThesis{line-height:1.65!important}
+.homePage .educationCopy p{font-size:var(--cs-small)!important;line-height:1.6!important}
+.homePage .balancedProjectGrid>.projectCardReveal:nth-child(-n+2) .projectCardBody>p{line-height:1.6!important}
+.homePage :is(.balancedProjectGrid>.projectCardReveal:nth-child(n+3) .projectCardBody>p,.experienceSummary p,.moreBuildBlurb,.smallBuild>p){font-size:var(--cs-caption)!important;line-height:1.5!important}
+
+/* Project cards: no outlines, glows or border changes. Hover lifts the image
+   2px onto elevation 2 and tints the title; keyboard focus draws the shared
+   ring around the image only. Replaces six stacked hover/focus layers. */
+.homePage :is(.projectCard,.moreBuildCard),.homePage :is(.projectCard,.moreBuildCard):is(:hover,:focus-within){outline:none!important;border-color:transparent!important;box-shadow:none!important;filter:none!important;transform:none!important}
+.homePage :is(.projectCardAction,.moreBuildAction):focus-visible{outline:none!important}
+.homePage :is(.projectCardMedia,.moreBuildVisual){transition:transform .35s var(--ease-out),box-shadow .35s var(--ease-out)!important}
+.homePage :is(.projectCardAction,.moreBuildAction):hover :is(.projectCardMedia,.moreBuildVisual){transform:translateY(-2px)!important;box-shadow:var(--elev-2)!important}
+.homePage :is(.projectCardAction,.moreBuildAction):focus-visible :is(.projectCardMedia,.moreBuildVisual){box-shadow:0 0 0 3px var(--surf-page),0 0 0 5px #2f4d45!important}
+.homePage .projectCard h3{transition:color .2s var(--ease-out)}
+.homePage .projectCardAction:hover h3{color:#2f4d45!important}
+
+@media(min-width:1001px){
+  /* One column for the whole page. */
+  .siteHeader{padding-inline:max(32px,calc((100% - var(--cs-max)) / 2))!important}
+  .homePage .heroInner{width:min(var(--cs-max),calc(100% - 64px))!important;max-width:none!important;margin-inline:auto!important}
+  .homePage .heroPortrait{right:var(--home-edge)!important;left:auto!important}
+  .homePage .companyBanner{padding-inline:var(--home-edge)!important}
+  /* Each section's divider (its border-top) sits midway in the 128px gap:
+     64 of air under the content above, 64 before the next title. */
+  .homePage>.section{width:min(var(--cs-max),calc(100% - 64px))!important;max-width:none!important;margin:var(--s-6) auto 0!important;padding:var(--s-6) 0 0!important}
+  .homePage>.section :is(.sectionTitle,.balancedProjectGrid,.experienceAccordion,.educationRows,.funBuildGrid){width:100%!important;max-width:none!important;margin-inline:0!important}
+  .homePage>.section .sectionTitle{margin-bottom:var(--s-5)!important}
+  /* Experience and Education read as one group, so they sit closer together
+     than any other pair of sections. */
+  .homePage>.educationSection{margin-top:var(--s-5)!important;padding-top:var(--s-5)!important}
+  .siteFooter{width:min(var(--cs-max),calc(100% - 64px))!important;max-width:none!important;margin:var(--cs-chapter) auto 0!important}
+
+  /* Selected work: two lead projects at half width, then four at a quarter.
+     One image ratio for every card, so size carries rank and nothing else. */
+  .homePage .balancedProjectGrid{grid-template-columns:repeat(12,minmax(0,1fr))!important;column-gap:var(--cs-gutter)!important;row-gap:var(--s-6)!important}
+  .homePage .balancedProjectGrid>.projectCardReveal{grid-column:span 3!important}
+  .homePage .balancedProjectGrid>.projectCardReveal:nth-child(-n+2){grid-column:span 6!important}
+  .homePage .balancedProjectGrid>.projectCardReveal:nth-child(-n+2) .projectCard h3{font-size:clamp(24px,2.2vw,30px)!important}
+  .homePage .balancedProjectGrid>.projectCardReveal:nth-child(-n+2) .projectCardBody>p{font-size:var(--cs-small)!important;max-width:52ch!important}
+  .homePage .balancedProjectGrid>.projectCardReveal:nth-child(n+3) .projectCard h3{font-size:20px!important}
+  .homePage .balancedProjectGrid .projectCardBody{padding-top:var(--s-2)!important}
+
+  /* About: copy holds the left edge like every other section; the photo and
+     film viewer sit beside it. */
+  .homePage .aboutSection{grid-template-columns:repeat(12,minmax(0,1fr))!important;column-gap:var(--cs-gutter)!important;padding-bottom:0!important}
+  .homePage .aboutSection>.aboutCopy{grid-column:1 / 8!important;grid-row:1!important;justify-self:start!important}
+  .homePage .aboutSection>.aboutPhoto{grid-column:9 / 13!important;grid-row:1!important;width:100%!important;max-width:none!important;margin:0!important}
+}
+/* Inner spacing on the home page, on the same 4pt scale as the cases.
+   Card: image 16 company 8 title 8 text. Hero: name 32 credential 16 thesis
+   32 links. Experience rows: 24 between logo, copy and date. */
+@media(min-width:1001px){
+  .homePage .balancedProjectGrid .projectCardTop{margin:0 0 var(--s-1)!important}
+  .homePage .balancedProjectGrid .projectCard h3{margin:0 0 var(--s-1)!important}
+  .homePage .heroThesis{margin-top:0!important}
+  .homePage .heroTagline{margin-top:var(--s-2)!important}
+  .homePage .heroLinks{margin-top:var(--s-4)!important}
+  .homePage .experienceSummary{column-gap:var(--s-3)!important;padding-inline:0!important}
+  .homePage .aboutCopy p+p{margin-top:var(--s-2)!important}
+  /* Fun builds: every card is image, label, title, text, all flush with the
+     image edge, so labels, titles and descriptions line up across the row. */
+  .homePage .v28Fun .moreBuildCopy{padding:var(--s-2) 0 0!important}
+  .homePage .v28Fun .moreBuildCopy>span{display:block;margin:0 0 var(--s-1)!important;min-height:0!important}
+  .homePage .v28Fun .funBuildGrid .moreBuildCopy h3{margin:0 0 var(--s-1)!important;font-size:var(--t-lead)!important;line-height:1.05!important}
+  .homePage .v28Fun .funBuildGrid .moreBuildCopy p{margin:0!important;font-size:var(--cs-caption)!important;line-height:1.5!important}
+}
+@media(min-width:1001px) and (max-width:1200px){
+  .homePage .balancedProjectGrid>.projectCardReveal:nth-child(n+3){grid-column:span 6!important}
+}
+
+/* ---- Hero photos ------------------------------------------------------------
+   The two laptop photographs (FinSimple, Estee) fill the stage with the same
+   16px corners and window elevation. Estee's had 2px corners and letterboxed
+   at 398px inside the 460 stage. */
+@media(min-width:1001px){
+  .casePage .caseHeroMedia>:is(.homepageMockup,.esteeHeroMockup){width:100%!important;height:100%!important;max-height:none!important;aspect-ratio:auto!important;margin:0!important;border-radius:16px!important;overflow:hidden!important;box-shadow:var(--elev-3)!important}
+  .casePage .caseHeroMedia>:is(.homepageMockup,.esteeHeroMockup) img{width:100%!important;height:100%!important;object-fit:cover!important;border-radius:0!important}
+}
+
+/* ---- Chat hero: Messages on macOS --------------------------------------------- */
+.macMsgs{display:grid;grid-template-columns:188px minmax(0,1fr);width:100%;height:400px;border-radius:12px;overflow:hidden;background:#fff;box-shadow:var(--elev-3);font:13px/1.35 -apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,sans-serif;color:#1d1d1f;text-align:left}
+.macMsgsSide{display:flex;flex-direction:column;gap:12px;padding:12px 8px;background:#ececef;border-right:1px solid rgba(0,0,0,.08)}
+.macMsgsLights{display:flex;gap:8px;padding:0 4px 4px}
+.macMsgsLights i{width:12px;height:12px;border-radius:50%;background:#ff5f57;box-shadow:inset 0 0 0 .5px rgba(0,0,0,.12)}
+.macMsgsLights i:nth-child(2){background:#febc2e}.macMsgsLights i:nth-child(3){background:#28c840}
+.macMsgsSearch{padding:4px 8px;border-radius:8px;background:rgba(0,0,0,.06);color:#86868b;font-size:12px}
+.macMsgsSide ul{display:grid;gap:4px;margin:0;padding:0;list-style:none}
+.macMsgsSide li{display:grid;grid-template-columns:32px minmax(0,1fr);gap:8px;align-items:center;padding:8px;border-radius:8px}
+.macMsgsSide li.isActive{background:#0a84ff;color:#fff}
+.macMsgsSide li b{display:block;font-size:13px;font-weight:600}
+.macMsgsSide li small{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:12px;opacity:.8}
+.macMsgsAvatar{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:linear-gradient(#a5acb8,#858c99);color:#fff;font-size:12px;font-weight:600}
+.macMsgsSide li.isGhost .macMsgsAvatar{background:rgba(0,0,0,.08)}
+.macMsgsSide li.isGhost b,.macMsgsSide li.isGhost small{height:8px;margin:4px 0;border-radius:4px;background:rgba(0,0,0,.08)}
+.macMsgsSide li.isGhost b{width:64%}.macMsgsSide li.isGhost small{width:88%}
+.macMsgsMain{display:grid;grid-template-rows:auto minmax(0,1fr) auto;min-width:0}
+.macMsgsMain header{display:flex;align-items:baseline;gap:8px;padding:12px 16px;border-bottom:1px solid rgba(0,0,0,.08)}
+.macMsgsMain header span,.macMsgsMain header small{color:#86868b;font-size:12px}
+.macMsgsMain header b{font-weight:600}
+.macMsgsThread{display:flex;flex-direction:column;gap:4px;padding:16px;overflow:auto}
+.macMsgsThread p{max-width:72%;margin:0;padding:8px 12px;border-radius:18px;background:#e9e9eb;font-size:13px}
+.macMsgsThread p.mine{align-self:flex-end;background:#0a84ff;color:#fff}
+.macMsgsThread p.theirs{align-self:flex-start}
+.macMsgsThread p+p.mine,.macMsgsThread p.mine+p.theirs{margin-top:8px}
+.macMsgsCompose{display:flex;gap:8px;align-items:center;padding:12px 16px}
+.macMsgsCompose input{flex:1;min-width:0;height:32px;padding:0 12px;border:1px solid rgba(0,0,0,.14);border-radius:16px;background:#fff;font:inherit;color:inherit}
+.macMsgsCompose button{width:28px;height:28px;border:0;border-radius:50%;background:#0a84ff;color:#fff;font-weight:700;cursor:pointer}
+
+/* FinSimple Skim: the build deck (prototype, AEM component, customer release)
+   with the stage notes beside it, instead of repeating the hero photo. */
+.casePage .fseSkimDeck .fseBuild{display:block!important;padding:0!important}
+@media(min-width:1001px){
+  .casePage .fseSkimDeck .fseEvolution{grid-column:auto!important;grid-row:auto!important;margin:0!important;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);column-gap:var(--cs-gutter);align-items:center}
+  .casePage .fseSkimDeck .fseEvolutionNotes{grid-template-columns:1fr!important;row-gap:var(--s-3)}
+}
+
+/* Skim demos sit on the same 1180 column as the hero and summary (they were
+   inset to 1120 at x=160). */
+.casePage .caseSkimDemo,.casePage .caseSkimFinish{width:var(--cs-w)!important;max-width:var(--cs-max)!important;margin-left:auto!important;margin-right:auto!important}
+
+/* ---- Previous / next case ---------------------------------------------------
+   The end of every case: two quiet links on the 1180 column, previous on the
+   left edge and next on the right, under a hairline. Eyebrow, title, company. */
+.casePage .csCaseNav{display:grid;grid-template-columns:1fr 1fr;column-gap:var(--cs-gutter);width:var(--cs-w);max-width:var(--cs-max);margin:var(--s-7) auto 0;padding-top:var(--s-4);border-top:1px solid var(--cd-rule)}
+.casePage .csCaseNavLink{display:grid;gap:var(--s-1);align-content:start;padding:var(--s-2) 0;color:var(--cd-ink);text-decoration:none}
+.casePage .csCaseNavLink.is-next{justify-items:end;text-align:right;grid-column:2}
+.casePage .csCaseNavDir{font:600 var(--cs-eyebrow)/1.2 var(--font-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--cd-accent)}
+.casePage .csCaseNavLink strong{font:500 var(--cs-h3)/1.2 var(--font-display);letter-spacing:-.02em;transition:color .2s var(--ease-out)}
+.casePage .csCaseNavLink small{font-size:var(--cs-caption);color:var(--cd-muted)}
+.casePage .csCaseNavLink:hover strong{color:var(--cd-accent)}
+.casePage .csCaseNavLink:hover .csCaseNavDir{text-decoration:underline;text-underline-offset:4px}
+@media(max-width:700px){.casePage .csCaseNav{grid-template-columns:1fr;row-gap:var(--s-3)}.casePage .csCaseNavLink.is-next{grid-column:1;justify-items:start;text-align:left}}

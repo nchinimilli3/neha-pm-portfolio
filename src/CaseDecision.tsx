@@ -95,9 +95,9 @@ export function CaseAnswer({
     : call;
 
   const rows: {key: keyof typeof icons; body: Node}[] = [
-    {key: 'problem', body: <p>{problem}</p>},
-    {key: 'evidence', body: <p>{evidence}</p>},
-    {key: 'result', body: <>
+    {key: 'problem', body: <><b>Problem</b><p>{problem}</p></>},
+    {key: 'evidence', body: <><b>Evidence</b><p>{evidence}</p></>},
+    {key: 'result', body: <><b>Result</b>
       {stat && <p className="cdStat"><strong><CountUp value={stat.value} run={phase === 'in'}/></strong><span>{stat.label}</span></p>}
       <p>{result}</p>
     </>}
@@ -113,7 +113,7 @@ export function CaseAnswer({
       </ol>
 
       <div className="cdCall">
-        <p className="cdCallLabel"><span className="cdMedal cdMedalCall" aria-hidden="true">{icons.call}</span></p>
+        <p className="cdCallLabel"><span className="cdMedal cdMedalCall" aria-hidden="true">{icons.call}</span>The decision</p>
         {/* --n lets the underline and arrow wait until the last word has landed. */}
         <p className="cdCallStatement" style={{'--n': split ? split.length : 1} as React.CSSProperties}>
           {callHref ? <a href={callHref} onClick={e => {
@@ -124,7 +124,7 @@ export function CaseAnswer({
             target.scrollIntoView({behavior: 'smooth', block: 'start'});
           }}>{words}<i aria-hidden="true">↓</i></a> : words}
         </p>
-        <p className="cdRole"><span className="cdRoleIcon" aria-hidden="true">{icons.role}</span><span>{owned}</span></p>
+        <p className="cdRole"><span className="cdRoleIcon" aria-hidden="true">{icons.role}</span><span><b>My role</b>{owned}</span></p>
       </div>
 
     </div>
@@ -148,7 +148,8 @@ export function CausalChain({
 }
 
 /* The page's loudest element. `statement` is the decision in one sentence;
-   because / tradeoff / result follow it in that order, unlabelled. Evidence
+   because / tradeoff / result follow it in that order, each with a small
+   label so a skimmer can read the three columns without the prose. Evidence
    that belongs to the decision goes in children so it reads as part of the
    moment rather than as the next section. */
 export function DecisionMoment({
@@ -183,9 +184,9 @@ export function DecisionMoment({
     <p className="cdStatement">{statement}</p>
     {sub && <p className="cdMomentSub">{sub}</p>}
     <div className="cdMomentGrid">
-      <div className="cdMomentCol"><div>{because}</div></div>
-      <div className="cdMomentCol"><div>{tradeoff}</div></div>
-      <div className="cdMomentCol"><div>{result}</div></div>
+      <div className="cdMomentCol"><b>Why</b><div>{because}</div></div>
+      <div className="cdMomentCol"><b>Tradeoff</b><div>{tradeoff}</div></div>
+      <div className="cdMomentCol"><b>Outcome</b><div>{result}</div></div>
     </div>
     {children && <div className="cdMomentEvidence">{children}</div>}
   </section>;
@@ -215,5 +216,67 @@ export function Supporting({
   return <section className="cdSupporting">
     <header><p className="cdSupportingTitle">{title}</p>{note && <p className="cdSupportingNote">{note}</p>}</header>
     <div className="cdSupportingBody">{children}</div>
+  </section>;
+}
+
+/* ---- Case system components ------------------------------------------
+   Every chapter of a case study is one CaseChapter: the same header (eyebrow,
+   title, optional lead) on the same left edge, over a body whose layout is
+   free to change. Variety comes from the body, never from moving the header,
+   so a reader scanning down the left edge always finds the next chapter.
+   The eyebrow ("02 · Define") is stamped by LifecycleRoad from its stage list. */
+export function CaseChapter({
+  id,
+  title,
+  lead,
+  className = '',
+  children
+}: {
+  id?: string;
+  title: Node;
+  lead?: Node;
+  className?: string;
+  children: Node;
+}) {
+  return <section id={id} className={`csChapter ${className}`}>
+    <header className="csHead"><h2>{title}</h2>{lead && <p className="csLead">{lead}</p>}</header>
+    <div className="csBody">{children}</div>
+  </section>;
+}
+
+/* A pull quote: one line at display size with a chapter of space on both
+   sides, the page's breath between two dense chapters. Left edge, accent rule
+   above, the same on every case. */
+export function CasePull({children}: {children: Node}) {
+  const ref = React.useRef<HTMLElement>(null);
+  const [seen, setSeen] = React.useState(false);
+  React.useEffect(() => {
+    const n = ref.current;
+    if (!n || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setSeen(true); return; }
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setSeen(true); io.disconnect(); } }, {threshold: .4});
+    io.observe(n);
+    return () => io.disconnect();
+  }, []);
+  return <section ref={ref} className={`csPullQuote${seen ? ' isIn' : ''}`}><p>{children}</p></section>;
+}
+
+/* The results beat: the outcome numbers at full size with room around them.
+   Values come from the case's metric list, so the page cannot drift from it. */
+export function CaseResults({items, note}: {items: [string, string, string?][]; note?: Node}) {
+  const ref = React.useRef<HTMLElement>(null);
+  const [run, setRun] = React.useState(false);
+  React.useEffect(() => {
+    const n = ref.current;
+    if (!n || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setRun(true); io.disconnect(); } }, {threshold: .4});
+    io.observe(n);
+    return () => io.disconnect();
+  }, []);
+  return <section ref={ref} className="csChapter csResults" aria-labelledby="cs-results-title">
+    <header className="csHead"><h2 id="cs-results-title" data-eyebrow="Outcome">Results</h2></header>
+    <div className="csBody">
+      <dl className="csStats">{items.map(([value, label]) => <div key={label}><dt>{label}</dt><dd><CountUp value={value} run={run}/></dd></div>)}</dl>
+      {note && <p className="csResultsNote">{note}</p>}
+    </div>
   </section>;
 }

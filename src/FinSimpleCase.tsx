@@ -121,10 +121,25 @@ function OnboardingHub(){
  </div>;
 }
 
-export default function FinSimpleCase({setLightbox}){
- const root=useRef<HTMLDivElement>(null);
+/* Prototype -> AEM component -> customer release, as a fanned deck. Shared by the
+   Build chapter and the Skim view, so both show the same three real artifacts. */
+export function FinSimpleBuildDeck({setLightbox}:{setLightbox:(img:{src:string,alt:string})=>void}){
  const [build,setBuild]=useState(2);
  const current=builds[build];
+ return <>
+  <div className="fseEvolution">
+   {/* The three artifacts fan out like a deck; the selected stage comes to the front. */}
+   <div className="fseDeck">{builds.map((item,i)=>{const depth=(i-build+3)%3;return <button type="button" key={item.stage} className={`fseDeckCard depth${depth}`} onClick={e=>{e.stopPropagation();if(depth===0){setLightbox({src:asset(item.src),alt:item.alt})}else setBuild(i)}} aria-label={depth===0?`Expand ${item.alt}`:`Show ${item.stage}`}><img src={asset(item.src)} alt={item.alt} loading="lazy"/></button>})}</div>
+   <div className="fseEvolutionNotes">
+    <ol className="fseStageList" data-stagger>{builds.map((item,i)=><li key={item.stage}><button type="button" aria-pressed={build===i} onClick={()=>setBuild(i)}><i aria-hidden="true"/>{item.stage}</button></li>)}</ol>
+    <div aria-live="polite"><h3>{current.title}</h3><p>{current.copy}</p></div>
+   </div>
+  </div>
+ </>;
+}
+
+export default function FinSimpleCase({setLightbox}){
+ const root=useRef<HTMLDivElement>(null);
  useFinSimpleMotion(root);
  const expand=(src:string,alt:string)=>(e:React.MouseEvent)=>{e.stopPropagation();setLightbox({src:asset(src),alt})};
  // Route for the in-car navigation strip: 90 × 300 box, stops at y = 50, 150, 250.
@@ -133,7 +148,7 @@ export default function FinSimpleCase({setLightbox}){
  const iso=(cy:number)=>`matrix(.866 .28 -.866 .28 260 ${cy})`;
  return <div className="fseEditorial" ref={root}>
  <LifecycleRoad stages={stages} vehicle="mache"/>
- <section className="fseReturn fseStage" id="fs-discover"><div><h2>Find an earlier estimate.<br/><em>Continue from there.</em></h2><p>Customers had already spent time building vehicle estimates. Previous Estimates gave them a way back to that work inside the FinSimple experience they already used.</p>
+ <section className="fseReturn fseStage" id="fs-discover"><h2 className="csTitle">Find an earlier estimate. <em>Continue from there.</em></h2><div><p>Customers had already spent time building vehicle estimates. Previous Estimates gave them a way back to that work inside the FinSimple experience they already used.</p>
   {/* In-car navigation: a car follows the route through three stops. */}
   <div className="fseNav">
    <svg className="fseNavRoute" viewBox="0 0 90 300" data-loop aria-hidden="true">
@@ -187,19 +202,12 @@ export default function FinSimpleCase({setLightbox}){
   </DecisionMoment>
  </section>
 
- <section className="fseBuild fseStage" id="fs-build"><header><h2>Built into<br/><em>the real thing.</em></h2><p>As the sole intern embedded on FinSimple, I took the feature from synthetic data to a customer release.</p></header>
-  <div className="fseEvolution">
-   {/* The three artifacts fan out like a deck; the selected stage comes to the front. */}
-   <div className="fseDeck">{builds.map((item,i)=>{const depth=(i-build+3)%3;return <button type="button" key={item.stage} className={`fseDeckCard depth${depth}`} onClick={e=>{e.stopPropagation();if(depth===0){setLightbox({src:asset(item.src),alt:item.alt})}else setBuild(i)}} aria-label={depth===0?`Expand ${item.alt}`:`Show ${item.stage}`}><img src={asset(item.src)} alt={item.alt} loading="lazy"/></button>})}</div>
-   <div className="fseEvolutionNotes">
-    <ol className="fseStageList" data-stagger>{builds.map((item,i)=><li key={item.stage}><button type="button" aria-pressed={build===i} onClick={()=>setBuild(i)}><i aria-hidden="true"/>{item.stage}</button></li>)}</ol>
-    <div aria-live="polite"><h3>{current.title}</h3><p>{current.copy}</p></div>
-   </div>
-  </div>
+ <section className="fseBuild fseStage" id="fs-build"><h2 className="csTitle">Built into <em>the real thing.</em></h2><header><p>As the sole intern embedded on FinSimple, I took the feature from synthetic data to a customer release.</p></header>
+  <FinSimpleBuildDeck setLightbox={setLightbox}/>
  </section>
 
 
- <section className="fseDelivery fseStage" id="fs-launch"><div><h2>The handoffs were<br/><em>part of the product.</em></h2><p>Five workstreams each held something the feature could not ship without. Coordinating them was the work, not overhead around it.</p>
+ <section className="fseDelivery fseStage" id="fs-launch"><h2 className="csTitle">The handoffs were <em>part of the product.</em></h2><div><p>Five workstreams each held something the feature could not ship without. Coordinating them was the work, not overhead around it.</p>
  </div>
   {/* Five workstreams merge like on-ramps into one release freeway. */}
   <figure className="fseFreeway">
@@ -230,8 +238,8 @@ export default function FinSimpleCase({setLightbox}){
    result={<p>Previous Estimates made its release window, and the workflow I documented outlived my internship.</p>}
   />
  </section>
- <section className="fseOperate fseStage" id="fs-operate">
-  <header><h2>Shipping was the start.<br/><em>Running it was the job.</em></h2><p>After launch I monitored live incidents with the Payment, DevOps, and QA teams, looked for patterns in what broke, and turned repeat problems into reusable fixes.</p></header>
+ <section className="fseOperate fseStage" id="fs-operate"><h2 className="csTitle">Shipping was the start. <em>Running it was the job.</em></h2>
+  <header><p>After launch I monitored live incidents with the Payment, DevOps, and QA teams, looked for patterns in what broke, and turned repeat problems into reusable fixes.</p></header>
   {/* Three numbers, stated as the chain they actually were: what broke, what I
       wrote because of it, what changed as a result. */}
   <ol className="fseOps" data-stagger>
