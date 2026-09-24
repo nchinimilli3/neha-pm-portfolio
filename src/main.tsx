@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './styles.css';
 import './estee.css';
 import EsteeCompact from './EsteeCompact';
+import EsteeDemo from './EsteeDemo';
 import FCVFCase from './FCVFCase';
 import { SurveyDemo } from './FCVFResearch';
 import { KohlerAssembly, KohlerBoxOpen, KohlerDelivery, KohlerExceptions, KohlerOrderHold, KohlerPrinciples, KohlerRoles } from './KohlerVisuals';
@@ -869,9 +870,7 @@ function CaseSkimDemo({id,setLightbox}:{id:string,setLightbox:(img:{src:string,a
  if(id==='marketExpansion')return <section className="caseSkimDemo" aria-label="Explore the market comparison"><header><h2>Try the scorecard</h2></header><GrazeScorecardDemo/></section>;
  if(id==='fcvf')return <section className="caseSkimDemo" aria-label="Try the assessment decision"><header><h2>Try the key decision</h2></header><SurveyDemo/></section>;
  if(id==='accenture')return <section className="caseSkimDemo" aria-label="Try the request workflow"><header><h2>Try the workflow</h2></header><AccentureRequestRelay/></section>;
- // No interaction to offer here: the deliverable was the released experience, so the skim
- // view shows the actual screens rather than a decorative compact.
- if(id==='estee')return <section className="caseSkimDemo esteeSkimShots" aria-label="See the released Double Wear experience"><header><h2>See the product</h2></header><EsteeVisual/></section>;
+ if(id==='estee')return <section className="caseSkimDemo esteeSkimShots" aria-label="Explore the Double Wear experience"><header><h2>Explore the product</h2></header><EsteeDemo/></section>;
  if(id==='bookclub')return <section className="caseSkimDemo" aria-label="See the live Bookclub product"><header><h2>See the product</h2></header><BookclubEditorialHero/></section>;
  if(id==='finsimple')return <section className="caseSkimDemo" aria-label="Try Previous Estimates"><header><h2>Try the shipped feature</h2></header><FinSimpleEstimateDemo/></section>;
  return null;
