@@ -1,0 +1,80 @@
+/* Case studies as maximized windows, each in its company's palette and type voice.
+   One palette per case, set on <body> so the maximize ghost (added to body
+   before the case mounts) and the case page read the same values.
+   --b-band / --b-page: the tinted page, deeper at the top
+   --b-title-*: the case title set in that brand's type voice */
+body:has(.case-fcvf){--b-band:#d9e4f4;--b-page:#eef3f9;--b-title-font:Inter,system-ui,sans-serif;--b-title-weight:700;--b-title-track:-.035em}
+body:has(.case-finsimple){--b-band:#d6e8f2;--b-page:#edf5f8;--b-title-font:Inter,system-ui,sans-serif;--b-title-weight:600;--b-title-track:-.03em}
+body:has(.case-accenture){--b-band:#eadcfb;--b-page:#f6f1fc;--b-title-font:Inter,system-ui,sans-serif;--b-title-weight:700;--b-title-track:-.04em}
+body:has(.case-kohler){--b-band:#e3e8e6;--b-page:#f3f4f3;--b-title-font:Inter,system-ui,sans-serif;--b-title-weight:300;--b-title-track:-.02em}
+body:has(.case-marketExpansion){--b-band:#f1e1e8;--b-page:#faf4f1;--b-title-font:Poppins,Inter,sans-serif;--b-title-weight:700;--b-title-track:-.03em}
+body:has(.case-estee){--b-band:#e1e4ef;--b-page:#f6f3ee;--b-title-font:'Instrument Serif',Georgia,serif;--b-title-weight:400;--b-title-track:.01em}
+body:has(.case-commute){--b-band:#e6dff5;--b-page:#f9f0ea;--b-title-font:-apple-system,BlinkMacSystemFont,Inter,sans-serif;--b-title-weight:700;--b-title-track:-.03em}
+body:has(.case-bookclub){--b-band:#dde8df;--b-page:#f4f1e8;--b-title-font:'Instrument Serif',Georgia,serif;--b-title-weight:400;--b-title-track:-.01em}
+body:has(.case-scheduler){--b-band:#e9efd0;--b-page:#f7f7ea;--b-title-font:Poppins,Inter,sans-serif;--b-title-weight:600;--b-title-track:-.03em}
+body:has(.case-chat){--b-band:#d9e8fb;--b-page:#f1f6fd;--b-title-font:-apple-system,BlinkMacSystemFont,Inter,sans-serif;--b-title-weight:700;--b-title-track:-.03em}
+
+body:has(.casePage){background:var(--b-page,#f3ede3)}
+.casePage{position:relative;--cw-bar:46px}
+.caseWinSpacer{height:78px}
+.casePage>.caseBackdrop{position:absolute;top:-400px;bottom:-200px;left:50%;width:100vw;margin-left:-50vw;z-index:0;pointer-events:none;
+ background:linear-gradient(180deg,var(--b-band) 0,var(--b-band) 820px,var(--b-page) 1500px)}
+@media(forced-colors:active){.casePage>.caseBackdrop{display:none}}
+
+
+/* Neha OS window bar */
+.caseWinBar{position:fixed;left:0;right:0;top:0;height:46px;z-index:60;display:flex;align-items:center;gap:14px;padding:0 16px;background:rgba(238,233,226,.84);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);border-bottom:.5px solid rgba(0,0,0,.14);font:500 13px/1 Inter,system-ui,sans-serif;color:#3a312a}
+.caseWinLights{display:flex;gap:8px;align-items:center}
+.caseWinLights>*{display:block;width:12px;height:12px;border-radius:50%;border:0;padding:0;background:#febc2e}
+.caseWinLights>*:last-child{background:#28c840}
+.caseWinLights .cwRed{position:relative;background:#ff5f57;cursor:pointer}
+.caseWinLights .cwRed::after{content:"×";position:absolute;inset:0;display:grid;place-items:center;font:700 10px/1 system-ui;color:#7a1712;opacity:0}
+.caseWinLights:hover .cwRed::after,.cwRed:focus-visible::after{opacity:1}
+.caseWinBack{border:0;background:none;font:inherit;color:inherit;cursor:pointer;padding:6px 9px;border-radius:7px}
+.caseWinBack:hover{background:rgba(0,0,0,.07)}
+.caseWinFile{position:absolute;left:50%;transform:translateX(-50%);font-weight:400;color:#6d6258;white-space:nowrap;pointer-events:none}
+.caseWinRight{margin-left:auto}
+/* Skim / In depth as a macOS segmented control, native to the window bar */
+.caseWinBar .caseReadingToggle{gap:0;padding:2px;border-radius:8px;background:rgba(0,0,0,.075);box-shadow:inset 0 0 0 .5px rgba(0,0,0,.06)}
+.caseWinBar .caseReadingToggle button{padding:4px 14px;border-radius:6px;color:#4a423b;background:transparent;box-shadow:none}
+.caseWinBar .caseReadingToggle button:hover{color:#1d1d1f}
+.caseWinBar .caseReadingToggle button[aria-pressed="true"]{background:#fff;color:#1d1d1f;box-shadow:0 1px 2px rgba(0,0,0,.14),0 0 0 .5px rgba(0,0,0,.06)}
+.caseWinBar .caseReadingToggle b{font-size:12px;font-weight:500;letter-spacing:0}
+
+/* The window that grows into the case: a native view transition. The desktop
+   window's snapshot scales up to the full-screen frame and fades as the case
+   underneath fades in; the small title bar grows into the case's window bar. */
+.casePage>.caseFrame{position:fixed;inset:0;z-index:0;pointer-events:none;view-transition-name:case-window}
+.caseWinBar{view-transition-name:case-bar}
+::view-transition-group(case-window),::view-transition-group(case-bar){animation-duration:.52s;animation-timing-function:cubic-bezier(.3,.7,.2,1)}
+::view-transition-old(case-bar),::view-transition-new(case-bar){animation-duration:.52s;height:100%;object-fit:none;object-position:left center}
+/* Maximize: the window's picture grows and fades late; the case fades in under it */
+html[data-vt=max]::view-transition-old(case-window){animation:cwFadeLate .62s linear both;object-fit:cover;width:100%;height:100%}
+html[data-vt=max]::view-transition-new(case-window){animation:none;opacity:0}
+html[data-vt=max]::view-transition-old(root){animation:cwFadeOut .3s ease both}
+html[data-vt=max]::view-transition-new(root){animation:cwFadeIn .3s .32s ease both}
+/* Minimize: the case's frame (in its brand color) shrinks into the window, which fades back in */
+html[data-vt=min] .casePage>.caseFrame{background:linear-gradient(180deg,var(--b-band),var(--b-page))}
+html[data-vt=min]::view-transition-group(case-window),html[data-vt=min]::view-transition-group(case-bar){animation-timing-function:cubic-bezier(.5,0,.2,1)}
+html[data-vt=min]::view-transition-old(case-window){animation:cwFadeOut .5s .08s ease-in both;object-fit:cover;width:100%;height:100%}
+html[data-vt=min]::view-transition-new(case-window){animation:cwFadeIn .3s .22s ease both;object-fit:cover;width:100%;height:100%}
+html[data-vt=min]::view-transition-old(root){animation:cwFadeOut .22s ease both}
+html[data-vt=min]::view-transition-new(root){animation:cwFadeIn .34s .12s ease both}
+@keyframes cwFadeLate{0%,70%{opacity:1}100%{opacity:0}}
+@keyframes cwFadeOut{to{opacity:0}}
+@keyframes cwFadeIn{from{opacity:0}}
+
+/* Fallback for browsers without view transitions */
+.maxGhost{position:fixed;z-index:1000;overflow:hidden;border-radius:12px;background:var(--b-band,#f3ede3);box-shadow:0 30px 60px -20px rgba(0,0,0,.45),0 0 0 .5px rgba(0,0,0,.15);pointer-events:none;
+ transition:left .5s cubic-bezier(.65,0,.25,1),top .5s cubic-bezier(.65,0,.25,1),width .5s cubic-bezier(.65,0,.25,1),height .5s cubic-bezier(.65,0,.25,1),border-radius .5s,opacity .34s ease}
+.maxGhost.isMax{border-radius:0}
+.maxGhost.isGone{opacity:0}
+.maxGhostBar{position:relative;height:30px;display:flex;align-items:center;gap:7px;padding:0 12px;background:rgba(238,233,226,.97);font:400 12px/1 Inter,system-ui,sans-serif;color:#6d6258;transition:height .5s cubic-bezier(.65,0,.25,1)}
+.maxGhostBar i{width:11px;height:11px;border-radius:50%;background:#ff5f57}.maxGhostBar i:nth-child(2){background:#febc2e}.maxGhostBar i:nth-child(3){background:#28c840}
+.maxGhostBar span{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap}
+.maxGhost.isMax .maxGhostBar{height:46px}
+.maxGhost.isMax 
+@media(max-width:760px){
+ .caseWinFile{display:none}
+ .caseWinBar{gap:8px;padding:0 10px}
+}

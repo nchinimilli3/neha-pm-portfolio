@@ -28,14 +28,10 @@ body{font-size:18px!important}
 
 /* Home experience selections now have a real, softly changing aura behind them. */
 html,body{overflow-x:clip}
-.homePage{position:relative;background:var(--surf-page);transition:background .55s ease}
+.homePage{position:relative;background:var(--surf-paper)}
+body:has(.homePage){background:var(--surf-paper)}
 .homePage>.auraField{position:fixed!important;inset:-14vh -10vw!important;z-index:0!important;opacity:.62!important;pointer-events:none!important;filter:saturate(.92)!important}.homePage>.auraField .auraBloom{width:62vmax!important;height:62vmax!important;filter:blur(60px)!important;opacity:.85!important;mix-blend-mode:normal!important;animation:homeRoamA calc(20s - 13s * var(--aura-p,1)) ease-in-out infinite alternate!important}.homePage .v28Hero{background:transparent!important}
 .homePage>*:not(.auraField){position:relative;z-index:1}
-.homeAura-accenture{background:linear-gradient(135deg,#f8f3fa,#f3eef9 50%,#f7f2f6)}.homeAura-accenture>.auraField .bloom1,.homeAura-accenture>.auraField .bloom4{background:radial-gradient(circle,rgba(129,63,185,.52),transparent 68%)!important}.homeAura-accenture>.auraField .bloom2{background:radial-gradient(circle,rgba(211,111,154,.38),transparent 68%)!important}
-.homeAura-fordcredit{background:linear-gradient(135deg,#f1f5fa,#f2f7f7 54%,#f7f1eb)}.homeAura-fordcredit>.auraField .bloom1,.homeAura-fordcredit>.auraField .bloom5{background:radial-gradient(circle,rgba(45,89,143,.44),transparent 68%)!important}
-.homeAura-pwc{background:linear-gradient(135deg,#fbf4ec,#f7f0fa 54%,#f0f6f1)}.homeAura-pwc>.auraField .bloom2{background:radial-gradient(circle,rgba(210,130,61,.4),transparent 68%)!important}
-.homeAura-ford{background:linear-gradient(135deg,#eef6f8,#edf2fa 52%,#f6f2ea)}.homeAura-ford>.auraField .bloom1,.homeAura-ford>.auraField .bloom3{background:radial-gradient(circle,rgba(50,110,157,.42),transparent 68%)!important}
-.homeAura-palmer,.homeAura-spectrum{background:linear-gradient(135deg,#f4f7f0,#f7f4ed 50%,#eef6f2)}
 
 /* A quiet lavender-blue band preserves contrast and makes every supplied mark visible. */
 
@@ -121,7 +117,6 @@ html,body{overflow-x:clip}
 
 /* Home theme, 60/30/10: a lilac-mist canvas (the desaturated tint of the aura's dominant violet),
    pastel blue/pink/mint blooms as the 30, and plum ink with a violet accent as the 10. */
-.homePage{background:var(--surf-page)}
 .homePage>.auraField.tone-default{opacity:calc(.34 + .46 * var(--aura-p,1))!important}
 /* Warm home aura: warm pink/coral/peach/light orange; no purple, which muddies against orange so overlaps stay clean, not muddy */
 .homePage>.auraField.tone-default .bloom1{background:radial-gradient(circle,rgba(245,150,180,.8),transparent 68%)!important}.homePage>.auraField.tone-default .bloom2{background:radial-gradient(circle,rgba(255,140,120,.78),transparent 68%)!important}.homePage>.auraField.tone-default .bloom3{background:radial-gradient(circle,rgba(255,190,140,.75),transparent 68%)!important}.homePage>.auraField.tone-default .bloom4{background:radial-gradient(circle,rgba(255,200,170,.72),transparent 68%)!important}.homePage>.auraField.tone-default .bloom5{background:radial-gradient(circle,rgba(250,130,130,.7),transparent 68%)!important}.homePage>.auraField.tone-default .bloom6{background:radial-gradient(circle,rgba(240,160,190,.65),transparent 68%)!important}.homePage>.auraField.tone-default .bloom7{background:radial-gradient(circle,rgba(255,175,150,.72),transparent 68%)!important}
@@ -150,14 +145,13 @@ html,body{overflow-x:clip}
 @media (prefers-reduced-motion:reduce){.homePage>.auraField .auraBloom{animation:none!important}}
 
 /* Type: the tokens in case-system.css — Poppins titles, Inter for prose and UI. */
-.homePage h1{font-family:var(--font-display)!important;font-weight:500!important;letter-spacing:-.035em!important;white-space:nowrap;max-width:none!important;font-size:var(--t-display)!important}
-.homePage h2{font-family:var(--font-display)!important;font-weight:400!important;letter-spacing:-.03em!important}
-.homePage h3{font-family:var(--font-display)!important;font-weight:600!important;letter-spacing:-.015em!important}
+.homePage .section h2{font-family:'Instrument Serif',Georgia,serif!important;font-weight:400!important;letter-spacing:-.01em!important}
+.homePage .section h3{font-family:var(--font-display)!important;font-weight:600!important;letter-spacing:-.015em!important}
 .homePage .projectCardBody>p,.homePage .expStory p,.homePage .smallBuild p,.homePage .aboutCopy p{font-family:var(--font-serif)!important}
 /* Warm espresso ink to match the peach/coral aura */
 .homePage{color:#22160F!important}
-.homePage h1,.homePage h2,.homePage h3{color:#22160F!important}
-.homePage p,.homePage .heroTagline,.homePage .projectCard p,.homePage .experienceCard p{color:#4F3E36!important}
+.homePage .section h2,.homePage .section h3{color:#22160F!important}
+.homePage .section p,.homePage .heroTagline,.homePage .projectCard p,.homePage .experienceCard p{color:#4F3E36!important}
 .homePage .heroThesis{color:#2E1F18!important}
 
 /* Hero portrait: a circle that sits inside the aura, haloed by the same pink/coral/peach blooms */
@@ -237,6 +231,50 @@ html,body{overflow-x:clip}
 .coffeeCup .s2{animation-delay:1.1s}
 @keyframes coffeeSteam{0%{stroke-dashoffset:8;opacity:0}20%{opacity:1}55%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:-8;opacity:0}}
 @media(prefers-reduced-motion:reduce){.coffeeCup .steam{animation:none;stroke-dashoffset:0}}
+/* "traveling": two paper planes take off from the word on a 7s loop, drawing a
+   dotted trail that fades behind them. Flight 0 loops the loop off the end of
+   the word; flight 1 glides over the top a beat later. */
+.travelWord{position:relative;display:inline-block}
+.travelSky{position:absolute;left:0;top:-24px;width:120px;height:40px;pointer-events:none}
+.travelTrails{position:absolute;inset:0;overflow:visible}
+.travelTrail{fill:none;stroke:#d9587e;stroke-width:1.2;stroke-linecap:round;stroke-dasharray:.1 3.4;opacity:.6;animation:travelTrailFade0 7s linear infinite}
+.travelReveal{fill:none;stroke:#fff;stroke-width:8;stroke-dasharray:1;stroke-dashoffset:1;animation:travelDraw0 7s linear infinite}
+.travelPlane{position:absolute;left:0;top:0;width:13px;height:9.3px;offset-rotate:auto;offset-anchor:center;offset-distance:0;opacity:0;
+ filter:drop-shadow(0 1.5px 1px rgba(120,40,70,.18));animation:travelFly0 7s linear infinite,travelFade0 7s linear infinite}
+.travelPlane svg{display:block;width:100%;height:100%;overflow:visible}
+.travelPlane .planeWing{fill:#fffaf6;stroke:#d9587e;stroke-width:1.1;stroke-linejoin:round}
+.travelPlane .planeFold{fill:none;stroke:#d9587e;stroke-width:.9;stroke-linecap:round;stroke-linejoin:round;opacity:.75}
+.travelFlight1.travelTrail{animation-name:travelTrailFade1}
+.travelFlight1.travelReveal{animation-name:travelDraw1}
+.travelFlight1.travelPlane{animation-name:travelFly1,travelFade1}
+@keyframes travelFly0{0%{offset-distance:0;animation-timing-function:cubic-bezier(.4,0,.3,1)}38%,100%{offset-distance:100%}}
+@keyframes travelDraw0{0%{stroke-dashoffset:1;animation-timing-function:cubic-bezier(.4,0,.3,1)}38%,100%{stroke-dashoffset:0}}
+@keyframes travelFade0{0%{opacity:0;scale:.6}4%,30%{opacity:1;scale:1}38%,100%{opacity:0;scale:.75}}
+@keyframes travelTrailFade0{0%,38%{opacity:.6}56%,100%{opacity:0}}
+@keyframes travelFly1{0%,45%{offset-distance:0;animation-timing-function:cubic-bezier(.4,0,.3,1)}80%,100%{offset-distance:100%}}
+@keyframes travelDraw1{0%,45%{stroke-dashoffset:1;animation-timing-function:cubic-bezier(.4,0,.3,1)}80%,100%{stroke-dashoffset:0}}
+@keyframes travelFade1{0%,45%{opacity:0;scale:.6}49%,72%{opacity:1;scale:1}80%,100%{opacity:0;scale:.7}}
+@keyframes travelTrailFade1{0%{opacity:0}1%,80%{opacity:.6}96%,100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.travelSky{display:none}}
+/* "baking": sprinkles burst from the top of the word on a 5s loop. Each one
+   drifts sideways at a steady pace (outer span) while rising and falling
+   (inner i) and tumbling (b), so together they trace a real arc. */
+.bakeWord{position:relative;display:inline-block}
+.bakeSky{position:absolute;left:50%;top:22%;width:0;height:0;pointer-events:none}
+.bakeSprinkle,.bakeSprinkle i,.bakeSprinkle b{position:absolute;left:0;top:0;display:block}
+.bakeSprinkle{animation:bakeDrift 5s linear infinite;animation-delay:calc(var(--k) * 30ms)}
+.bakeSprinkle i{animation:bakeHop 5s linear infinite;animation-delay:inherit}
+.bakeSprinkle b{width:7.5px;height:2.8px;margin:-1.4px 0 0 -3.75px;border-radius:2px;background:var(--c);box-shadow:inset 0 -.6px 0 rgba(0,0,0,.12);animation:bakeSpin 5s linear infinite;animation-delay:inherit}
+@keyframes bakeDrift{0%{transform:translateX(0)}28%,100%{transform:translateX(var(--dx))}}
+@keyframes bakeHop{0%{transform:translateY(0);opacity:0;animation-timing-function:cubic-bezier(.2,.7,.4,1)}2%{opacity:1}12%{transform:translateY(var(--up));animation-timing-function:cubic-bezier(.55,0,.8,.4)}22%{opacity:1}28%,100%{transform:translateY(var(--down));opacity:0}}
+@keyframes bakeSpin{0%{transform:rotate(0)}28%,100%{transform:rotate(var(--spin))}}
+.bakeFlour{position:absolute;left:0;top:2px}
+.bakeFlour i{position:absolute;left:-7px;top:-7px;width:14px;height:14px;border-radius:50%;background:radial-gradient(closest-side,rgba(232,208,190,.75),rgba(240,222,208,.35) 55%,rgba(240,222,208,0));opacity:0;animation:bakePuff 5s ease-out infinite}
+.bakeFlour i:nth-child(2){left:-15px;top:-4px;animation-delay:.06s}.bakeFlour i:nth-child(3){left:1px;top:-5px;animation-delay:.1s}
+@keyframes bakePuff{0%{opacity:0;transform:scale(.3) translateY(0)}4%{opacity:.95}20%,100%{opacity:0;transform:scale(1.8) translateY(-6px)}}
+@media(prefers-reduced-motion:reduce){.bakeSky{display:none}}
+
+
 
 /* Book rec: an open line on the page, no card. Serif prompt, underline input, espresso send pill */
 .aboutCopy .bookRecForm{margin:32px 0 0;max-width:460px}

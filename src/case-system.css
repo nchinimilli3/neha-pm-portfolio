@@ -64,7 +64,7 @@
 
 /* The title is only as wide as its text, so the gradient (styles.css, V49)
    runs from the first letter to the last on every case. */
-.casePage .caseHeader h1{width:fit-content!important;max-width:100%!important;--case-font:var(--font-display);font-family:var(--case-font)!important;font-size:var(--cs-display)!important;font-weight:500!important;line-height:1.08!important;letter-spacing:-.045em!important;padding-bottom:.08em!important;overflow:visible!important}
+.casePage .caseHeader h1{width:fit-content!important;max-width:100%!important;--case-font:var(--b-title-font,var(--font-display));font-family:var(--case-font)!important;font-size:var(--cs-display)!important;font-weight:var(--b-title-weight,500)!important;line-height:1.08!important;letter-spacing:var(--b-title-track,-.045em)!important;padding-bottom:.08em!important;overflow:visible!important}
 .casePage .caseIntro{--case-font:var(--font-serif);font-family:var(--case-font)!important;font-size:var(--cs-lead)!important;line-height:1.5!important;max-width:34ch!important}
 .casePage h2:not(.caseLead h2,.toolLogoSection h2,.caseHeroMedia *,.sandboxSection *,.kohlerSurface *,.iphoneDemoStage *,.fvSurveyExperiment *,.aiOpsWorkbench *,.elMirrorScene *){--case-font:var(--font-display);font-family:var(--case-font)!important;font-size:var(--cs-h2)!important;font-weight:500!important;line-height:1.08!important;letter-spacing:-.03em!important}
 
@@ -360,7 +360,7 @@ main.casePage .cdSupporting:last-child{margin-bottom:0;padding-bottom:0!importan
    About       copy left, photo right                               (light)
    =========================================================================== */
 .homePage{--home-edge:max(32px,calc((100% - var(--cs-max)) / 2))}
-.homePage .sectionTitle h2{font-family:var(--font-display)!important;font-size:var(--cs-h2)!important;font-weight:500!important;line-height:1.08!important;letter-spacing:-.03em!important}
+.homePage .sectionTitle h2{font-family:'Instrument Serif',Georgia,serif!important;font-size:calc(var(--cs-h2) * 1.25)!important;font-weight:400!important;line-height:1!important;letter-spacing:-.01em!important}
 
 /* Text tokens on the home page: the same four prose styles as the case
    studies, plus caption (14/1.5) for card and list blurbs, which used 13px. */

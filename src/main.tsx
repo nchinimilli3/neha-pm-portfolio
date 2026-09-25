@@ -16,6 +16,11 @@ import './accenture-v2.css';
 import SchedulerPlannerHero from './SchedulerPlannerHero';
 import AccentureRequestRelay from './AccentureRequestRelay';
 import AccentureSFHero from './AccentureSFHero';
+import DeskHero,{DeskGoodnight} from './DeskHero';
+import StableFluids from './StableFluids';
+import SpartanGame from './SpartanGame';
+import AboutCorner from './AboutCorner';
+import {CASE_FILES,CaseWindowBar,maximizeInto,minimizeTo} from './CaseWindow';
 import { ChatAnatomyPhone } from './ChatVisuals';
 import { SchedulerDemo, SchedulerFlatten, SchedulerSync } from './SchedulerVisuals';
 import LifecycleRoad from './LifecycleRoad';
@@ -26,7 +31,6 @@ import './fcvf.css';
 import './annotation-fixes.css';
 import './annotation-final.css';
 import './chat.css';
-import './case-auras.css';
 import CommuteBARTStory from './CommuteBARTStory';
 import CommuteCase from './CommuteCase';
 import { CommutePhoneDemo, useMorning } from './CommuteSurfaces';
@@ -97,47 +101,6 @@ const metrics = {
 
 
 
-/* The aura belongs to the hero. It is at full pigment and full speed over the
-   first screen, then falls away as the reader reaches the sections that are
-   actually made of text, so nothing colourful sits behind a case study. One
-   rAF-throttled listener writes a single 1→0 progress variable; the opacity
-   and the drift speed are both derived from it in CSS. */
-function useAuraFalloff(){
-  useEffect(() => {
-    const root = document.documentElement;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-      root.style.setProperty('--aura-p', '0.35');
-      return;
-    }
-    let frame = 0;
-    const apply = () => {
-      frame = 0;
-      /* Eased over nearly two screens rather than one: a linear ramp over a
-         single viewport dropped to bare white the moment the hero left, which
-         read as two different pages stitched together. */
-      const span = Math.max(1, window.innerHeight * 1.8);
-      const t = Math.max(0, Math.min(1, window.scrollY / span));
-      const p = 1 - t * t * (3 - 2 * t);   // smoothstep: leaves slowly, settles slowly
-      root.style.setProperty('--aura-p', p.toFixed(3));
-    };
-    const onScroll = () => { if (!frame) frame = requestAnimationFrame(apply); };
-    apply();
-    window.addEventListener('scroll', onScroll, {passive: true});
-    window.addEventListener('resize', onScroll);
-    return () => {
-      if (frame) cancelAnimationFrame(frame);
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-    };
-  }, []);
-}
-
-function AuraField({tone='default'}){
-  useAuraFalloff();
-  return <div className={`auraField tone-${tone}`} aria-hidden="true">
-    <span className="auraBloom bloom1"/><span className="auraBloom bloom2"/><span className="auraBloom bloom3"/><span className="auraBloom bloom4"/><span className="auraBloom bloom5"/><span className="auraBloom bloom6"/><span className="auraBloom bloom7"/>
-  </div>
-}
 
 const projects = [
   {
@@ -915,7 +878,7 @@ function CaseStudy({id,onBack}){
   if(readingMode==='skim')setReadingMode('deep');
   window.setTimeout(()=>document.getElementById(href.slice(1))?.scrollIntoView({behavior:'smooth',block:'start'}),readingMode==='skim'?50:0);
  };
- return <main className={`casePage case-${id} ${readingMode==='skim'?'isSkim':'isDeep'}`} onClick={openDeepSection}><AuraField tone={id}/><div className="caseReadingBar"><button className="backBtn" onClick={onBack}>← Selected work</button><div className="caseReadingControl"><div className="caseReadingToggle" role="group" aria-label="Case study reading depth"><button type="button" aria-pressed={readingMode==='skim'} onClick={()=>setReadingMode('skim')}><b>Skim</b></button><button type="button" aria-pressed={readingMode==='deep'} onClick={()=>setReadingMode('deep')}><b>In depth</b></button></div></div></div><section className="caseLead"><header className="caseHeader"><CaseCompanyBar id={id} fallback={p.company}/><h1>{p.title}</h1><div className="caseIntro">{p.summary}</div>{id==='bookclub'&&<a className="bookclubLiveLink" href={BOOKCLUB_LIVE_URL} target="_blank" rel="noreferrer" aria-label="Open the live Bookclub app in a new tab">Open live app ↗</a>}</header><div className="caseHeroMedia casePreviewHero"><ProjectVisual type={p.media}/></div>{metrics[id]&&<MetricStrip items={metrics[id]}/>}<ToolLogoStrip id={id}/></section>
+ return <main className={`casePage case-${id} ${readingMode==='skim'?'isSkim':'isDeep'}`} onClick={openDeepSection}><div className="caseBackdrop" aria-hidden="true"/><div className="caseFrame" aria-hidden="true"/><CaseWindowBar id={id} onBack={()=>minimizeTo(id,onBack)}><div className="caseReadingControl"><div className="caseReadingToggle" role="group" aria-label="Case study reading depth"><button type="button" aria-pressed={readingMode==='skim'} onClick={()=>setReadingMode('skim')}><b>Skim</b></button><button type="button" aria-pressed={readingMode==='deep'} onClick={()=>setReadingMode('deep')}><b>In depth</b></button></div></div></CaseWindowBar><div className="caseWinSpacer" aria-hidden="true"/><section className="caseLead"><header className="caseHeader"><CaseCompanyBar id={id} fallback={p.company}/><h1>{p.title}</h1><div className="caseIntro">{p.summary}</div>{id==='bookclub'&&<a className="bookclubLiveLink" href={BOOKCLUB_LIVE_URL} target="_blank" rel="noreferrer" aria-label="Open the live Bookclub app in a new tab">Open live app ↗</a>}</header><div className="caseHeroMedia casePreviewHero"><ProjectVisual type={p.media}/></div>{metrics[id]&&<MetricStrip items={metrics[id]}/>}<ToolLogoStrip id={id}/></section>
  {caseAnswers[id]&&<CaseAnswer key={id} {...caseAnswers[id]} stat={metrics[id]?.some(([v])=>v===caseAnswers[id].stat?.value)?undefined:caseAnswers[id].stat}/>}
  {readingMode==='skim'&&<><CaseSkimDemo id={id} setLightbox={setLightbox}/><div className="caseSkimFinish"><button type="button" onClick={()=>setReadingMode('deep')}>Read the in-depth case ↓</button></div></>}
  {readingMode==='deep'&&<>
@@ -1260,8 +1223,12 @@ function TechnicalCard({title,subtitle,kind,description}){
   </article>
 }
 
+// The fun builds sit in the same window chrome as the Neha OS desktop in the hero.
+function OsWindow({file,id=undefined,children}){
+  return <div className="osWin" data-case={id}><div className="osWinBar" aria-hidden="true"><i/><i/><i/><span>{file}</span></div>{children}</div>
+}
 function MoreProjectCard({project,onOpen}){
-  return <article className={`moreBuildCard clickable project-${project.id}`}><a className="moreBuildAction" href={`#/projects/${project.id}`} onClick={(event)=>{event.preventDefault();onOpen(project.id)}} aria-label={`Open ${project.title}`}><div className="moreBuildVisual"><ProjectCover type={project.media}/></div><div className="moreBuildCopy"><span>{project.company}</span><h3>{project.title}</h3>{project.blurb&&<p className="moreBuildBlurb">{project.blurb}</p>}<span className="projectTextLink">Learn more ↗</span></div></a></article>
+  return <article className={`moreBuildCard clickable project-${project.id}`}><a className="moreBuildAction" href={`#/projects/${project.id}`} onClick={(event)=>{event.preventDefault();maximizeInto(event.currentTarget.querySelector('.osWin'),project.id,()=>onOpen(project.id))}} aria-label={`Open ${project.title}`}><OsWindow file={CASE_FILES[project.id]||project.id} id={project.id}><div className="moreBuildVisual"><ProjectCover type={project.media}/></div></OsWindow><div className="moreBuildCopy"><span>{project.company}</span><h3>{project.title}</h3>{project.blurb&&<p className="moreBuildBlurb">{project.blurb}</p>}<span className="projectTextLink">Learn more ↗</span></div></a></article>
 }
 function MoreTechnicalCard({title,subtitle,kind,description}){
   return <article className="moreBuildCard"><div className="moreBuildVisual technicalCompact"><TechnicalCard title={title} subtitle={subtitle} kind={kind} description={description}/></div></article>
@@ -1271,33 +1238,20 @@ function CompanyLogo({src='',alt='',label=''}){const [failed,setFailed]=useState
 
 
 const experienceItems=[
- {id:'accenture',caseStudy:'accenture',company:'Accenture',role:'Technology Summer Analyst',location:'San Francisco, CA',dates:'Summer 2026',logo:'company-logos/accenture-v31.png',short:'Built and launched an AI workflow for a frontier AI lab that cuts ~60 min of coordinator work per request, after supporting 21 live enablement requests and writing the rules into a 10-tab data contract.',detail:<div className="expStory"><p>I worked inside a live customer-enablement operation supporting 21 requests. I used the repeated checks and exceptions I saw to document matching rules, build and launch the request workflow, and recommend what the program should improve next.</p><div className="expMetricRow"><span><b>~60 min</b> saved per request</span><span><b>21</b> live requests</span><span><b>10-tab</b> data contract</span><span><b>3,862</b> user responses</span></div><div className="expColumns"><div><strong>Live requests</strong><span>Supported intake, validation, trainer fit, scheduling, status management, global coverage across six regions, and closeout.</span></div><div><strong>Automation requirements</strong><span>Documented required inputs, matching rules, warnings, reason codes, QA cases, and human-review points so repeated checks could be tested before automation.</span></div><div><strong>Research and recommendations</strong><span>Analyzed 3,862 user responses and researched ~20 providers, narrowing the work into 27 metrics, 12 patterns, five recommendations, and a 90-day test plan.</span></div></div></div>},
- {id:'palmer',company:'Russell Palmer Career Management Center',role:'Peer Coach',location:'East Lansing, MI',dates:'May 2025-May 2026',logo:'company-logos/palmer-v31.png',short:'Ran 20+ coaching sessions a week at MSU’s career center for 200+ undergraduates, and generated 40% of the positive feedback on a 25-coach team.',detail:<div className="expStory"><p>As a peer coach in MSU’s Russell Palmer Career Management Center, I met one-on-one with students for resume reviews, interview preparation, recruiting strategy, networking, and case prep. Each session ended with specific edits or next steps the student could use right away.</p><div className="expMetricRow"><span><b>20+</b> sessions weekly</span><span><b>200+</b> undergraduates coached</span><span><b>25</b> coaches on team</span><span><b>40%</b> of the team’s positive feedback</span></div></div>},
- {id:'fordcredit',caseStudy:'finsimple',company:'Ford Credit',role:'Software Engineering Intern',location:'Dearborn, MI',dates:'Summers 2024-2025',logo:'company-logos/ford-credit-v31.png',short:'Owned a customer-facing Ford Credit feature from requirements through production, improved delivery 15%, and turned recurring incidents into four playbooks that cut restoration time 50%.',detail:<div className="expStory"><p>As the sole intern embedded on FinSimple, I worked on customer-facing feature delivery and the systems around it: AEM, Salesforce APIs, QA and production environments, release coordination, incidents, and onboarding.</p><div className="expMetricRow"><span><b>15%</b> faster delivery</span><span><b>25</b> issues investigated</span><span><b>50%</b> faster restoration</span><span><b>4</b> recovery playbooks</span><span><b>50</b> people across 5 teams</span></div><div className="expColumns"><div><strong>Product</strong><span>Built AEM components and Salesforce-backed workflows from customer and business requirements; worked across UI behavior, REST/GraphQL integration, Postman validation, and testing through development, QA, and production.</span></div><div><strong>Delivery quality</strong><span>Reviewed QA security-scan findings and PR compliance, documented release and environment-tagging workflows, and researched OAuth/API error patterns to support reliable deployments.</span></div><div><strong>Production operations</strong><span>Monitored live incidents, analyzed customer-impacting failure patterns, and coordinated with Payment, DevOps, and QA teams while turning recurring issues into four reusable recovery playbooks.</span></div></div><div className="expNote">I also built a centralized onboarding hub from 15 technical resources across 3 teams, cutting intern ramp-up from ~2 weeks to 3 days.</div></div>},
- {id:'pwc',company:'PwC × Arc of Indiana',role:'Consulting Extern',location:'',dates:'Aug-Oct 2024',logo:'company-logos/pwc-v31.png',short:'Benchmarked five peer nonprofits for The Arc of Indiana on a seven-category scorecard I built, and all five recommendations were adopted.',detail:<div className="expStory"><p>Over a five-week externship, I independently researched The Arc of Indiana and peer organizations it could learn from. I defined the comparison criteria, built a weighted seven-category scorecard, benchmarked five organizations across 10+ engagement and innovation metrics, and turned the findings into recommendations for the client.</p><div className="expMetricRow"><span><b>7</b> scorecard categories</span><span><b>5</b> peer organizations</span><span><b>10+</b> metrics</span><span><b>5</b> recommendations adopted</span></div></div>},
- {id:'ford',caseStudy:'fcvf',company:'Ford Motor Company',role:'Software Engineering Intern',location:'Dearborn, MI',dates:'Summer 2023',logo:'company-logos/ford.png',short:'Built Ford’s Customer Value Framework as a web app, led four user interviews, and changed the interaction model based on them. Feedback volume went up 25%.',detail:<div className="expStory"><p>My first internship put me close to both the code and the user. On a 10-person team, I helped build the full-stack Customer Value Framework, interviewed users, and used what we learned to change the product and implementation.</p><div className="expMetricRow"><span><b>4</b> user interviews</span><span><b>100+</b> Git commits</span><span><b>7</b> legacy CSS files replaced</span><span><b>+25%</b> feedback volume</span></div><div className="expColumns two"><div><strong>What I owned</strong><span>Frontend and backend implementation, accessibility improvements, refactoring, user interviews, Agile planning, and turning product feedback into interface changes, including pagination and score-visibility changes.</span></div><div><strong>What changed</strong><span>We moved toward a multi-page experience, removed the in-progress score, and replaced seven legacy CSS files with a more maintainable Material-UI approach while feedback volume increased 25%.</span></div></div></div>},
- {id:'spectrum',caseStudy:'marketExpansion',company:'Spectrum Consulting Group',role:'Consultant',location:'East Lansing, MI',dates:'2022–May 2026',logo:'company-logos/spectrum-v31.png',short:'Seven client projects across consumer services, utilities, hospitality, automotive, and private equity: a location scorecard the client can rerun, 19 KPIs for a utility software selection, and a market-penetration strategy for a portfolio company in insurance tech.',detail:<div className="expStory"><div className="expMetricRow"><span><b>3,000+</b> data points</span><span><b>19</b> utility KPIs</span><span><b>3</b> locations compared</span><span><b>2</b> analysts mentored</span></div><div className="expColumns spectrumColumns"><div><strong>Consumer services</strong><span>Built an interactive Excel scorecard and rubric so the team could compare candidate locations using the same market and operating criteria. The team also developed community, partnership, and paid-media recommendations for existing branches.</span></div><div><strong>Utilities</strong><span>Built a criticality/feasibility rubric, defined 19 KPIs, and evaluated three software options for a multimillion-dollar utility.</span></div><div><strong>Hospitality</strong><span>Found engagement gaps across 3,000+ responses and recommended three digital initiatives that increased social interaction by 20%.</span></div><div><strong>Automotive SaaS</strong><span>Led the analysis workstream: combined customer pain points with funnel evidence, redesigned lead-management workflows, and defined target accounts, buyer roles, outreach sequences, CRM handoffs, and demo guidance tied to the workflow problems behind them.</span></div><div><strong>Private equity</strong><span>Built a market-penetration strategy for a private equity client’s portfolio company in insurance tech, and supported the value-creation work around integration and process rollout.</span></div></div></div>},
+ {id:'accenture',caseStudy:'accenture',note:'~60 min saved / request',company:'Accenture',role:'Technology Summer Analyst',location:'San Francisco, CA',dates:'Summer 2026',logo:'company-logos/accenture-v31.png',short:'Built and launched an AI workflow for a frontier AI lab that cuts ~60 min of coordinator work per request, after supporting 21 live enablement requests and writing the rules into a 10-tab data contract.',detail:<div className="expStory"><p>I worked inside a live customer-enablement operation supporting 21 requests. I used the repeated checks and exceptions I saw to document matching rules, build and launch the request workflow, and recommend what the program should improve next.</p><div className="expMetricRow"><span><b>~60 min</b> saved per request</span><span><b>21</b> live requests</span><span><b>10-tab</b> data contract</span><span><b>3,862</b> user responses</span></div><div className="expColumns"><div><strong>Live requests</strong><span>Supported intake, validation, trainer fit, scheduling, status management, global coverage across six regions, and closeout.</span></div><div><strong>Automation requirements</strong><span>Documented required inputs, matching rules, warnings, reason codes, QA cases, and human-review points so repeated checks could be tested before automation.</span></div><div><strong>Research and recommendations</strong><span>Analyzed 3,862 user responses and researched ~20 providers, narrowing the work into 27 metrics, 12 patterns, five recommendations, and a 90-day test plan.</span></div></div></div>},
+ {id:'palmer',note:'200+ students coached',company:'Russell Palmer Career Management Center',role:'Peer Coach',location:'East Lansing, MI',dates:'May 2025-May 2026',logo:'company-logos/palmer-v31.png',short:'Ran 20+ coaching sessions a week at MSU’s career center for 200+ undergraduates, and generated 40% of the positive feedback on a 25-coach team.',detail:<div className="expStory"><p>As a peer coach in MSU’s Russell Palmer Career Management Center, I met one-on-one with students for resume reviews, interview preparation, recruiting strategy, networking, and case prep. Each session ended with specific edits or next steps the student could use right away.</p><div className="expMetricRow"><span><b>20+</b> sessions weekly</span><span><b>200+</b> undergraduates coached</span><span><b>25</b> coaches on team</span><span><b>40%</b> of the team’s positive feedback</span></div></div>},
+ {id:'fordcredit',caseStudy:'finsimple',note:'50% faster restoration',company:'Ford Credit',role:'Software Engineering Intern',location:'Dearborn, MI',dates:'Summers 2024-2025',logo:'company-logos/ford-credit-v31.png',short:'Owned a customer-facing Ford Credit feature from requirements through production, improved delivery 15%, and turned recurring incidents into four playbooks that cut restoration time 50%.',detail:<div className="expStory"><p>As the sole intern embedded on FinSimple, I worked on customer-facing feature delivery and the systems around it: AEM, Salesforce APIs, QA and production environments, release coordination, incidents, and onboarding.</p><div className="expMetricRow"><span><b>15%</b> faster delivery</span><span><b>25</b> issues investigated</span><span><b>50%</b> faster restoration</span><span><b>4</b> recovery playbooks</span><span><b>50</b> people across 5 teams</span></div><div className="expColumns"><div><strong>Product</strong><span>Built AEM components and Salesforce-backed workflows from customer and business requirements; worked across UI behavior, REST/GraphQL integration, Postman validation, and testing through development, QA, and production.</span></div><div><strong>Delivery quality</strong><span>Reviewed QA security-scan findings and PR compliance, documented release and environment-tagging workflows, and researched OAuth/API error patterns to support reliable deployments.</span></div><div><strong>Production operations</strong><span>Monitored live incidents, analyzed customer-impacting failure patterns, and coordinated with Payment, DevOps, and QA teams while turning recurring issues into four reusable recovery playbooks.</span></div></div><div className="expNote">I also built a centralized onboarding hub from 15 technical resources across 3 teams, cutting intern ramp-up from ~2 weeks to 3 days.</div></div>},
+ {id:'pwc',note:'5 of 5 recs adopted',company:'PwC × Arc of Indiana',role:'Consulting Extern',location:'',dates:'Aug-Oct 2024',logo:'company-logos/pwc-v31.png',short:'Benchmarked five peer nonprofits for The Arc of Indiana on a seven-category scorecard I built, and all five recommendations were adopted.',detail:<div className="expStory"><p>Over a five-week externship, I independently researched The Arc of Indiana and peer organizations it could learn from. I defined the comparison criteria, built a weighted seven-category scorecard, benchmarked five organizations across 10+ engagement and innovation metrics, and turned the findings into recommendations for the client.</p><div className="expMetricRow"><span><b>7</b> scorecard categories</span><span><b>5</b> peer organizations</span><span><b>10+</b> metrics</span><span><b>5</b> recommendations adopted</span></div></div>},
+ {id:'ford',caseStudy:'fcvf',note:'+25% feedback',company:'Ford Motor Company',role:'Software Engineering Intern',location:'Dearborn, MI',dates:'Summer 2023',logo:'company-logos/ford.png',short:'Built Ford’s Customer Value Framework as a web app, led four user interviews, and changed the interaction model based on them. Feedback volume went up 25%.',detail:<div className="expStory"><p>My first internship put me close to both the code and the user. On a 10-person team, I helped build the full-stack Customer Value Framework, interviewed users, and used what we learned to change the product and implementation.</p><div className="expMetricRow"><span><b>4</b> user interviews</span><span><b>100+</b> Git commits</span><span><b>7</b> legacy CSS files replaced</span><span><b>+25%</b> feedback volume</span></div><div className="expColumns two"><div><strong>What I owned</strong><span>Frontend and backend implementation, accessibility improvements, refactoring, user interviews, Agile planning, and turning product feedback into interface changes, including pagination and score-visibility changes.</span></div><div><strong>What changed</strong><span>We moved toward a multi-page experience, removed the in-progress score, and replaced seven legacy CSS files with a more maintainable Material-UI approach while feedback volume increased 25%.</span></div></div></div>},
+ {id:'spectrum',caseStudy:'marketExpansion',note:'7 client projects',company:'Spectrum Consulting Group',role:'Consultant',location:'East Lansing, MI',dates:'2022–May 2026',logo:'company-logos/spectrum-v31.png',short:'Seven client projects across consumer services, utilities, hospitality, automotive, and private equity: a location scorecard the client can rerun, 19 KPIs for a utility software selection, and a market-penetration strategy for a portfolio company in insurance tech.',detail:<div className="expStory"><div className="expMetricRow"><span><b>3,000+</b> data points</span><span><b>19</b> utility KPIs</span><span><b>3</b> locations compared</span><span><b>2</b> analysts mentored</span></div><div className="expColumns spectrumColumns"><div><strong>Consumer services</strong><span>Built an interactive Excel scorecard and rubric so the team could compare candidate locations using the same market and operating criteria. The team also developed community, partnership, and paid-media recommendations for existing branches.</span></div><div><strong>Utilities</strong><span>Built a criticality/feasibility rubric, defined 19 KPIs, and evaluated three software options for a multimillion-dollar utility.</span></div><div><strong>Hospitality</strong><span>Found engagement gaps across 3,000+ responses and recommended three digital initiatives that increased social interaction by 20%.</span></div><div><strong>Automotive SaaS</strong><span>Led the analysis workstream: combined customer pain points with funnel evidence, redesigned lead-management workflows, and defined target accounts, buyer roles, outreach sequences, CRM handoffs, and demo guidance tied to the workflow problems behind them.</span></div><div><strong>Private equity</strong><span>Built a market-penetration strategy for a private equity client’s portfolio company in insurance tech, and supported the value-creation work around integration and process rollout.</span></div></div></div>},
 ];
 
 
-function ExperienceSection({onAura,onOpen}){
+function ExperienceSection({onOpen}){
  const [openIds,setOpenIds]=useState([]);
  const itemRefs=useRef({});
- const toneFor={accenture:'accenture',palmer:'palmer',spectrum:'spectrum',fordcredit:'fordcredit',pwc:'pwc',ford:'ford'};
- useEffect(()=>{
-   const update=()=>{
-     if(!openIds.length){onAura?.('default');return;}
-     const center=window.innerHeight/2;
-     const nearest=openIds.map(id=>{const el=itemRefs.current[id];if(!el)return null;const rect=el.getBoundingClientRect();const nearViewport=rect.bottom>-window.innerHeight*.12&&rect.top<window.innerHeight*1.12;if(!nearViewport)return null;return {id,distance:Math.abs((rect.top+rect.bottom)/2-center)}}).filter(Boolean).sort((a,b)=>a.distance-b.distance)[0];
-     onAura?.(nearest?toneFor[nearest.id]||'default':'default');
-   };
-   update();
-   window.addEventListener('scroll',update,{passive:true});
-   window.addEventListener('resize',update);
-   return ()=>{window.removeEventListener('scroll',update);window.removeEventListener('resize',update)};
- },[openIds,onAura]);
  const toggle=id=>setOpenIds(current=>current.includes(id)?current.filter(x=>x!==id):[...current,id]);
- return <section id="experience" className="section experienceSection v28Experience"><div className="sectionTitle compactTitle"><h2>Experience</h2></div><div className="experienceAccordion">{experienceItems.map(x=>{const isOpen=openIds.includes(x.id);return <article ref={el=>{if(el)itemRefs.current[x.id]=el}} className={`experienceItem experience-${x.id} ${isOpen?'open':''}`} key={x.id}><button className="experienceSummary" onClick={()=>toggle(x.id)} aria-expanded={isOpen} aria-label={`${x.company}: ${isOpen?'collapse details':'expand details'}`}><CompanyLogo src={x.logo} alt={x.company}/><div><h3>{x.company}</h3><span className="experienceRole">{x.role}</span>{x.location&&<span className="experienceLocation">{x.location}</span>}<p>{x.short}</p></div><time>{x.dates}</time><b className="expToggle" aria-hidden="true">{isOpen?'−':'+'}</b></button><div className="experienceDetail" aria-hidden={!isOpen} hidden={!isOpen}><div>{x.detail}{x.caseStudy&&<button type="button" className="expCaseStudyLink" onClick={()=>onOpen?.(x.caseStudy)}>Learn more ↗</button>}</div></div></article>})}</div></section>
+ return <section id="experience" className="section experienceSection v28Experience"><div className="sectionTitle compactTitle"><h2>Experience</h2></div><div className="experienceAccordion">{experienceItems.map(x=>{const isOpen=openIds.includes(x.id);return <article ref={el=>{if(el)itemRefs.current[x.id]=el}} className={`experienceItem experience-${x.id} ${isOpen?'open':''}`} key={x.id}><button className="experienceSummary" onClick={()=>toggle(x.id)} aria-expanded={isOpen} aria-label={`${x.company}: ${isOpen?'collapse details':'expand details'}`}><CompanyLogo src={x.logo} alt={x.company}/><div><div className="expHead"><h3>{x.company}</h3>{x.note&&<em className="expNote">{x.note}</em>}</div><span className="experienceRole">{x.role}</span>{x.location&&<span className="experienceLocation">{x.location}</span>}<p>{x.short}</p></div><time>{x.dates}</time><b className="expToggle" aria-hidden="true">{isOpen?'−':'+'}</b></button><div className="experienceDetail" aria-hidden={!isOpen} hidden={!isOpen}><div>{x.detail}{x.caseStudy&&<button type="button" className="expCaseStudyLink" onClick={()=>onOpen?.(x.caseStudy)}>Learn more ↗</button>}</div></div></article>})}</div></section>
 }
 
 
@@ -1337,9 +1291,44 @@ const tvShows:TvShow[]=[
   {title:'Real Housewives',kicker:'The newest season',from:'#d8c2f2',to:'#6f4db3',doodle:'diamond'}
 ];
 
+/* Two paper planes take off from "traveling" on a loop, each leaving a dotted
+   trail: one loops the loop off the end of the word, one glides over the top.
+   The trails and the flight paths share the same curves (px, word-relative). */
+const TRAVEL_FLIGHTS=[
+ 'M50 26C60 18 71 6 65-1C59-7 48 2 57 8C67 14 84 4 106-4',
+ 'M2 29C9 13 24 3 40 5S72 17 92 8'
+];
+function TravelPlanes(){
+ return <span className="travelSky" aria-hidden="true">
+  <svg className="travelTrails" viewBox="0 0 120 40" width="120" height="40">
+   <defs>{TRAVEL_FLIGHTS.map((d,i)=><mask key={i} id={`travelReveal${i}`} maskUnits="userSpaceOnUse" x="-20" y="-40" width="180" height="100"><path className={`travelReveal travelFlight${i}`} d={d} pathLength={1}/></mask>)}</defs>
+   {TRAVEL_FLIGHTS.map((d,i)=><path key={i} className={`travelTrail travelFlight${i}`} d={d} mask={`url(#travelReveal${i})`}/>)}
+  </svg>
+  {TRAVEL_FLIGHTS.map((d,i)=><span key={i} className={`travelPlane travelFlight${i}`} style={{offsetPath:`path('${d}')`}}>
+   <svg viewBox="0 0 14 10"><path className="planeWing" d="M.6 5 13.4.6 8 9.4 6.3 6.1Z"/><path className="planeFold" d="M13.4.6 6.3 6.1 4.8 8.6"/></svg>
+  </span>)}
+ </span>;
+}
+
+/* "baking": a pinch of sprinkles scatters off the top of the word, tumbles, and
+   falls back through a soft puff of flour, every few seconds. The hops stay low
+   so they never land on the line above. [x drift, peak, landing, spin, colour] */
+const BAKE_SPRINKLES:[number,number,number,number,string][]=[
+ [-30,-9,12,300,'#f4a6bd'],[-18,-12,9,-260,'#ffc857'],[-6,-13,11,220,'#7fcdb0'],[8,-12,8,-320,'#a98ee8'],
+ [21,-10,12,280,'#f5846f'],[-40,-5,14,-200,'#7fcdb0'],[2,-14,7,360,'#f4a6bd'],[-12,-11,13,-300,'#a98ee8'],
+ [32,-8,10,-240,'#ffc857'],[42,-4,15,200,'#f4a6bd']
+];
+function BakeSprinkles(){
+ return <span className="bakeSky" aria-hidden="true">
+  <span className="bakeFlour"><i/><i/><i/></span>
+  {BAKE_SPRINKLES.map(([dx,up,down,spin,c],i)=><span key={i} className="bakeSprinkle" style={{'--dx':`${dx}px`,'--up':`${up}px`,'--down':`${down}px`,'--spin':`${spin}deg`,'--c':c,'--k':i} as React.CSSProperties}><i><b/></i></span>)}
+ </span>;
+}
+
 function BookRecForm(){
  const [book,setBook]=useState('');
  const [status,setStatus]=useState('idle');
+ const [sentBook,setSentBook]=useState('');
  const inputRef=useRef<HTMLInputElement>(null);
  const submit=async(e)=>{
    e.preventDefault();
@@ -1358,6 +1347,7 @@ function BookRecForm(){
        })
      });
      if(!response.ok)throw new Error('Submission failed');
+     setSentBook(value);
      setBook('');
      setStatus('sent');
    }catch{
@@ -1367,22 +1357,16 @@ function BookRecForm(){
  return <form className={`bookRecForm ${status}`} onSubmit={submit}>
   <p className="bookRecTitle"><svg className="bookRecIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10 5 7 4.6 3.5 5v13c3.5-.4 6.5 0 8.5 1.5 2-1.5 5-1.9 8.5-1.5V5C17 4.6 14 5 12 6.5z"/><path d="M12 6.5v13"/></svg>Reading anything good? Send me a rec.</p>
   {status==='sent' ? <div className="bookRecConfirmation" role="status">
-   <span className="bookRecConfirmCopy"><strong>Thanks! I’ll add it to my list :)</strong></span>
+   <span className="bookRecConfirmCopy"><strong className="brThanks">got it, thank you!</strong>{sentBook&&<span>“{sentBook}” is going on my list.</span>}</span>
    <button type="button" onClick={()=>{setStatus('idle');requestAnimationFrame(()=>inputRef.current?.focus())}}>Send another</button>
-   <svg className="bookRecScene" viewBox="0 0 100 76" aria-hidden="true" focusable="false">
-    <defs>
-     <linearGradient id="bookRecCoverFill" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#c87491"/><stop offset="1" stopColor="#8d3c5d"/></linearGradient>
-     <linearGradient id="bookRecPaperFill" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#fffdf8"/><stop offset="1" stopColor="#e9d9d5"/></linearGradient>
-    </defs>
-    <ellipse className="bookRecShadow" cx="50" cy="67" rx="42" ry="5"/>
-    <path className="bookRecCover" d="M50 17C39 11 24 11 8 17v43c15-5 30-4 42 4 12-8 27-9 42-4V17c-16-6-31-6-42 0Z"/>
-    <path className="bookRecPageEdge" d="M12 55c15-4 27-2 38 5 11-7 23-9 38-5v4c-15-4-27-2-38 5-11-7-23-9-38-5Z"/>
-    <path className="bookRecLeftPage" d="M50 19C40 13 26 13 12 18v36c14-4 27-2 38 6V19Z"/>
-    <path className="bookRecRightPage" d="M50 19c10-6 24-6 38-1v36c-14-4-27-2-38 6V19Z"/>
-    <path className="bookRecTurningPage" d="M50 19c10-6 24-6 38-1v36c-14-4-27-2-38 6V19Z"/>
-    <path className="bookRecPrint" d="M19 28c9-2 17-1 24 3M19 35c9-2 17-1 24 3M57 31c7-4 15-5 24-3M57 38c7-4 15-5 24-3"/>
-    <path className="bookRecSpine" d="M50 18v43"/>
-    <path className="bookRecBookmark" d="M67 16v17l-4-4-4 5V17"/>
+   <svg className="bookRecScene brMail" viewBox="0 0 120 90" aria-hidden="true" focusable="false">
+    <ellipse cx="60" cy="84" rx="52" ry="4" fill="#3a2a1c" opacity=".12"/>
+    <g className="brBox"><rect x="84" y="48" width="6" height="36" rx="1.5" fill="#7a5a3c"/><path d="M68 34a19 19 0 0 1 38 0v18H68Z" fill="#2c4a8a"/><rect x="68" y="44" width="38" height="8" fill="#23407a"/><rect x="74" y="31" width="20" height="3.4" rx="1.7" fill="#0f1f3d"/>
+     <g className="brFlag"><rect x="104" y="26" width="2.4" height="20" rx="1" fill="#6b6b6b"/><rect x="106" y="26" width="10" height="6.5" rx="1" fill="#d9483b"/></g></g>
+    <g className="brLetter">
+     <g className="brNote"><rect x="10" y="22" width="44" height="34" rx="2" fill="#fffdf8" stroke="#e1d6c6"/><path d="M16 32h26M16 38h32M16 44h22" stroke="#b9c7da" strokeWidth="1.4"/><path d="M40 47c3-4 6-4 8 0" stroke="#b0452f" fill="none" strokeWidth="1.4"/></g>
+     <g className="brEnv"><rect x="8" y="30" width="48" height="30" rx="2" fill="#f1e2c6" stroke="#d7c09a"/><path d="M8 60l20-15 4 3 4-3 20 15" fill="none" stroke="#d7c09a"/><path className="brFlap" d="M8 30l24 17 24-17Z" fill="#e9d4ae" stroke="#d7c09a"/></g>
+    </g>
    </svg>
   </div> : <div className="bookRecRow">
    <input ref={inputRef} id="book-rec" aria-label="Leave me a book rec" value={book} onChange={e=>{setBook(e.target.value);if(status==='error')setStatus('idle')}} placeholder="Title and author" autoComplete="off" disabled={status==='sending'}/>
@@ -1393,14 +1377,12 @@ function BookRecForm(){
 }
 
 function Home({openCase}){
- const [auraTone,setAuraTone]=useState('default');
  // Phone nav: every link lives in a sheet behind a menu button.
  const [navOpen,setNavOpen]=useState(false);
  const navRef=useRef(null);const [activeSection,setActiveSection]=useState('');const [navInd,setNavInd]=useState<React.CSSProperties>({opacity:0});
  useEffect(()=>{const ids=['projects','experience','fun'];const onScroll=()=>{const y=window.innerHeight*.35;let cur='';for(const id of ids){const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<y)cur=id}const about=document.getElementById('about');if(about&&about.getBoundingClientRect().top<y)cur='';setActiveSection(cur)};onScroll();window.addEventListener('scroll',onScroll,{passive:true});return()=>window.removeEventListener('scroll',onScroll)},[]);
  useEffect(()=>{const nav=navRef.current;if(!nav)return;const a=activeSection&&nav.querySelector(`a[href="#${activeSection}"]`);if(!a){setNavInd(v=>({...v,opacity:0}));return}setNavInd({opacity:1,width:`${a.offsetWidth}px`,transform:`translateX(${a.offsetLeft}px)`})},[activeSection]);
  useEffect(()=>{if(!navOpen)return;const k=e=>{if(e.key==='Escape')setNavOpen(false)};window.addEventListener('keydown',k);return()=>window.removeEventListener('keydown',k)},[navOpen]);
- const [heroPointerActive,setHeroPointerActive]=useState(false);
  // The About photo can be taken over by the film camera, the bookshelf, or the TV: one at a time.
  const [aboutView,setAboutView]=useState<'photo'|'film'|'books'|'tv'>('photo');
  const [filmIndex,setFilmIndex]=useState(0);
@@ -1413,47 +1395,30 @@ function Home({openCase}){
  const closeAbout=useCallback(()=>setAboutView('photo'),[]);
  const serious=['fcvf','accenture','finsimple','kohler','marketExpansion','estee'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
  const fun=['commute','bookclub','scheduler','chat'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
- const moveHeroAura=e=>{
-   if(e.pointerType==='touch')return;
-   const rect=e.currentTarget.getBoundingClientRect();
-   e.currentTarget.style.setProperty('--hero-mouse-x',`${e.clientX-rect.left}px`);
-   e.currentTarget.style.setProperty('--hero-mouse-y',`${e.clientY-rect.top}px`);
- };
  return <>
  <header className={`siteHeader${navOpen?' navIsOpen':''}`}><a className="wordmark" href="#top">Neha Chinimilli</a><button type="button" className="navToggle" aria-expanded={navOpen} aria-controls="primaryNav" aria-label={navOpen?'Close menu':'Open menu'} onClick={()=>setNavOpen(o=>!o)}><span/><span/></button><nav id="primaryNav" ref={navRef} aria-label="Primary" onClick={e=>{if((e.target as HTMLElement).closest('a'))setNavOpen(false)}}><i className="navIndicator" aria-hidden="true" style={navInd}/><a href="#projects" className={activeSection==='projects'?'isActive':''}>Selected work</a><a href="#experience" className={activeSection==='experience'?'isActive':''}>Experience</a><a href="#fun" className={activeSection==='fun'?'isActive':''}>Fun things I’ve built</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume</a><a href="mailto:chinimi2@msu.edu">Email</a><a className="headerLinkedIn" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on LinkedIn"><img src={assetUrl('linkedin.svg')} alt="LinkedIn"/></a></nav></header>
- <main id="main-content" className={`homePage homeAura-${auraTone}`}>
-  <AuraField tone={auraTone}/>
-  <section id="top" className={`hero v28Hero ${heroPointerActive?'heroPointerActive':''}`} onPointerMove={moveHeroAura} onPointerEnter={e=>{if(e.pointerType!=='touch')setHeroPointerActive(true)}} onPointerLeave={()=>setHeroPointerActive(false)}><div className="heroMouseAura" aria-hidden="true"/><figure className="heroPortrait"><span className="heroPortraitGlow" aria-hidden="true"><i/><i/><i/></span><span className="heroPortraitFrame"><img src={assetUrl('headshot.jpg')} alt="Neha Chinimilli"/></span></figure><div className="heroInner"><h1>Neha Chinimilli</h1><p className="heroThesis">Dual degree in Computer Science and Supply Chain Management · Michigan State</p><p className="heroTagline">Product-minded technical builder who turns customer and operating problems into shipped solutions at Ford, Ford Credit, and Accenture.</p><div className="heroLinks"><a className="primaryHeroLink" href="#projects">View selected work ↓</a><a href="#about">Learn more about me ↓</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></div></div></section>
+ <main id="main-content" className="homePage">
+  <DeskHero projects={serious} openCase={openCase}/>
   <CompanyBanner/>
-  <section id="projects" className="section projectsSection v28Projects"><div className="sectionTitle compactTitle"><h2>Selected work</h2></div><div className="balancedProjectGrid">{serious.map((p,i)=><ProjectCard project={p} index={i} key={p.id} featured={i===0} onOpen={openCase}/>)}</div></section>
-  <ExperienceSection onAura={setAuraTone} onOpen={openCase}/><EducationSection/>
+  <ExperienceSection onOpen={openCase}/><EducationSection/>
   <section id="fun" className="section moreSection v28Fun">
     <div className="sectionTitle compactTitle">
       <h2>Fun things I’ve built</h2>
       </div>
       <div className="funBuildGrid">{fun.map(p=><MoreProjectCard key={p.id} project={p} onOpen={openCase}/>)}
         <article className="smallBuild">
-          <div className="techVisual game">
-            <div className="spartanScene">
-              <img className="spartanBg" src="project-media/spartan-background.png" alt="Spartan Touchdown level" width={2048} height={1024} loading="lazy" decoding="async"/>
-              <div className="spartanGround"></div>
-              <img className="spartySprite" src="project-media/sparty.png" alt="Sparty" loading="lazy" decoding="async"/>
-              <img className="enemySprite" src="project-media/um-enemy.png" alt="Michigan enemy" loading="lazy" decoding="async"/>
-              </div>
-              </div>
+          <OsWindow file="spartan-touchdown.exe"><div className="techVisual game"><SpartanGame/></div></OsWindow>
               <div className="moreBuildCopy"><span>MSU · CSE 335</span><h3>Spartan Touchdown</h3>
               <p>A C++ team game with player movement, collisions, enemies, scoring, and a shared level state.</p></div>
               </article><article className="smallBuild">
-                <div className="techVisual fluids">
-                  <img src="project-media/stable-fluids.png" alt="Stable Fluids simulation" width={1025} height={665} loading="lazy" decoding="async"/>
-                  </div>
+                <OsWindow file="stable-fluids — live"><div className="techVisual fluids"><StableFluids/></div></OsWindow>
                   <div className="moreBuildCopy"><span>MSU · CSE 476</span><h3>Stable Fluids</h3>
                   <p>Interactive 2D fluid simulation in C++ using the Stam method, with live emitters and obstacles.</p></div>
                   </article>
                   </div>
                   </section>
   <section id="about" className="section aboutSection">
-    <div className="aboutPhoto" ref={aboutPhotoRef}>{aboutView==='books'?<AboutBookshelf books={shelfBooks} onClose={closeAbout}/>:aboutView==='tv'?<AboutRealityTV shows={tvShows} onClose={closeAbout}/>:<AboutFilmCamera photos={aboutFilmPhotos} open={aboutView==='film'} index={filmIndex} onClose={closeAbout} onChange={setFilmIndex}/>}</div><div className="aboutCopy"><h2>About me</h2><p>I’m Neha, finishing <strong>two degrees at Michigan State in Computer Science and Supply Chain Management</strong>. I’m drawn to work where I can understand why a system is hard to use, decide what should change, and help ship a better version. I’m a <span className="creativeWord" tabIndex={0} aria-label="creative">{"creative".split("").map((c,i)=><span key={i} aria-hidden="true" style={{"--i":i} as React.CSSProperties}>{c}</span>)}<svg className="creativeLine" viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path d="M3 9 C 18 3, 30 13, 46 7 S 74 3, 88 8 S 108 12, 117 5"/></svg><svg className="creativeWash" viewBox="-130 -70 260 140" aria-hidden="true">
+    <div className="aboutPhoto" ref={aboutPhotoRef}>{aboutView==='books'?<AboutBookshelf books={shelfBooks} onClose={closeAbout}/>:aboutView==='tv'?<AboutRealityTV shows={tvShows} onClose={closeAbout}/>:aboutView==='film'?<AboutFilmCamera photos={aboutFilmPhotos} open index={filmIndex} onClose={closeAbout} onChange={setFilmIndex}/>:<AboutCorner onOpen={v=>{openAbout(v);if(v==='film')setFilmIndex(0)}}/>}</div><div className="aboutCopy"><h2>About me</h2><p>I’m Neha, finishing <strong>two degrees at Michigan State in Computer Science and Supply Chain Management</strong>. I’m drawn to work where I can understand why a system is hard to use, decide what should change, and help ship a better version. I’m a <span className="creativeWord" tabIndex={0} aria-label="creative">{"creative".split("").map((c,i)=><span key={i} aria-hidden="true" style={{"--i":i} as React.CSSProperties}>{c}</span>)}<svg className="creativeLine" viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path d="M3 9 C 18 3, 30 13, 46 7 S 74 3, 88 8 S 108 12, 117 5"/></svg><svg className="creativeWash" viewBox="-130 -70 260 140" aria-hidden="true">
  <defs>
   <filter id="wcBleed" x="-30%" y="-30%" width="160%" height="160%">
    <feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="3" seed="7" result="n"/>
@@ -1469,7 +1434,8 @@ function Home({openCase}){
   {[[-70,-8,34,'wcRose'],[-22,-30,28,'wcPeach'],[34,-22,32,'wcCoral'],[78,6,26,'wcGold'],[-40,26,24,'wcPeach'],[22,30,27,'wcRose'],[-98,14,15,'wcCoral'],[100,-28,13,'wcRose']].map(([x,y,r,f],i)=><circle key={i} className="wcPool" cx={x} cy={y} r={r} fill={`url(#${f})`} style={{"--k":i} as React.CSSProperties}/>)}
   {[[-112,-34,2.6,'#d9587e'],[-86,-48,1.6,'#e8844f'],[112,32,2.2,'#d9604f'],[92,48,1.4,'#e0a13a'],[-60,50,1.8,'#d9587e'],[58,-50,2,'#e8844f'],[124,-6,1.3,'#d9587e'],[-124,40,1.2,'#e0a13a']].map(([x,y,r,c],i)=><circle key={'d'+i} className="wcDrop" cx={x} cy={y} r={r} fill={c as string} style={{"--k":i} as React.CSSProperties}/>)}
  </g>
-</svg></span> at heart, so I care about how a product feels, not only whether it works. I’ve built customer-facing software at Ford and Ford Credit and worked on product and business problems at Accenture and Spectrum. That mix is why I’m pursuing product management.</p><p className="hobbyLine">Outside of work, I’m usually trying a new coffee shop<span className="coffeeCup" aria-hidden="true"><svg viewBox="0 0 24 24"><path className="steam s1" d="M9.5 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/><path className="steam s2" d="M13 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/><path className="cupLine" d="M5 11h13v3.5A5.5 5.5 0 0 1 12.5 20h-2A5.5 5.5 0 0 1 5 14.5z"/><path className="cupLine" d="M18 12.2h.9a2.2 2.2 0 0 1 0 4.4h-1.3"/><path className="cupLine" d="M4 22h15"/></svg></span>, traveling, <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>openAbout('books')} aria-expanded={aboutView==='books'}>reading</button><span className="filmPhotoHint" role="tooltip">click to see my shelf</span></span>, keeping up with <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>openAbout('tv')} aria-expanded={aboutView==='tv'}>reality TV</button><span className="filmPhotoHint" role="tooltip">click to turn it on</span></span>, baking, hiking, painting, or taking <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>{openAbout('film');setFilmIndex(0)}} aria-expanded={aboutView==='film'}>film photos</button><span className="filmPhotoHint" role="tooltip">click to see my photos</span></span>.</p><div className="aboutActions"><BookRecForm/></div></div></section>
+</svg></span> at heart, so I care about how a product feels, not only whether it works. I’ve built customer-facing software at Ford and Ford Credit and worked on product and business problems at Accenture and Spectrum. That mix is why I’m pursuing product management.</p><p className="hobbyLine">Outside of work, I’m usually trying a new coffee shop<span className="coffeeCup" aria-hidden="true"><svg viewBox="0 0 24 24"><path className="steam s1" d="M9.5 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/><path className="steam s2" d="M13 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/><path className="cupLine" d="M5 11h13v3.5A5.5 5.5 0 0 1 12.5 20h-2A5.5 5.5 0 0 1 5 14.5z"/><path className="cupLine" d="M18 12.2h.9a2.2 2.2 0 0 1 0 4.4h-1.3"/><path className="cupLine" d="M4 22h15"/></svg></span>, <span className="travelWord">traveling<TravelPlanes/></span>, <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>openAbout('books')} aria-expanded={aboutView==='books'}>reading</button><span className="filmPhotoHint" role="tooltip">click to see my shelf</span></span>, keeping up with <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>openAbout('tv')} aria-expanded={aboutView==='tv'}>reality TV</button><span className="filmPhotoHint" role="tooltip">click to turn it on</span></span>, <span className="bakeWord">baking<BakeSprinkles/></span>, hiking, painting, or taking <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>{openAbout('film');setFilmIndex(0)}} aria-expanded={aboutView==='film'}>film photos</button><span className="filmPhotoHint" role="tooltip">click to see my photos</span></span>.</p><div className="aboutActions"><BookRecForm/></div></div></section>
+  <DeskGoodnight/>
  </main><footer className="siteFooter"><span>© 2026 Neha Chinimilli</span><nav aria-label="Footer"><a href="mailto:chinimi2@msu.edu">Email</a><a className="linkedinLink" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Visit Neha Chinimilli on LinkedIn (opens in a new tab)"><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M19.5 3h-15A1.5 1.5 0 0 0 3 4.5v15A1.5 1.5 0 0 0 4.5 21h15a1.5 1.5 0 0 0 1.5-1.5v-15A1.5 1.5 0 0 0 19.5 3ZM8.25 18.25H5.75v-8h2.5v8ZM7 9.15a1.45 1.45 0 1 1 0-2.9 1.45 1.45 0 0 1 0 2.9Zm11.25 9.1h-2.5v-3.9c0-.93-.02-2.12-1.29-2.12-1.3 0-1.5 1.01-1.5 2.05v3.97h-2.5v-8h2.4v1.09h.04c.33-.64 1.15-1.32 2.37-1.32 2.54 0 3.01 1.67 3.01 3.84v4.39Z"/></svg><span>LinkedIn</span><span aria-hidden="true">↗</span></a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></nav></footer>
  </>
 }
@@ -1487,13 +1453,16 @@ function App(){
  const homeScroll=useRef(0);
  const restoreHomeScroll=useRef(false);
  useEffect(()=>{const onHash=()=>setCurrent(route());window.addEventListener('hashchange',onHash);return()=>window.removeEventListener('hashchange',onHash)},[]);
- useEffect(()=>{
+ // Restore during layout, before paint (and before a closing view transition
+ // snapshots the page); once more a frame later in case late layout moved it.
+ useLayoutEffect(()=>{
   if(current.type!=='home'||!restoreHomeScroll.current)return;
   restoreHomeScroll.current=false;
-  requestAnimationFrame(()=>requestAnimationFrame(()=>window.scrollTo(0,homeScroll.current)));
+  const go=()=>window.scrollTo({top:homeScroll.current,behavior:'instant' as ScrollBehavior});
+  go();requestAnimationFrame(go);
  },[current]);
  const transition=(fn)=>fn();
- const openCase=(id)=>{homeScroll.current=window.scrollY;transition(()=>{window.location.hash=`/projects/${id}`;setCurrent({type:'case',id});requestAnimationFrame(()=>window.scrollTo(0,0))})};
+ const openCase=(id)=>{homeScroll.current=window.scrollY;transition(()=>{window.location.hash=`/projects/${id}`;setCurrent({type:'case',id});requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'instant' as ScrollBehavior}))})};
  const closeRoute=()=>transition(()=>{restoreHomeScroll.current=true;history.pushState(null,'',window.location.pathname+window.location.search);setCurrent({type:'home'})});
  if(current.type==='case')return <><CaseStudy id={current.id} onBack={closeRoute}/><ScrollToTopButton/></>;
  return <><Home openCase={openCase}/><ScrollToTopButton/></>;

@@ -1,7 +1,7 @@
 /* Mach-E wheel spokes spin around their own center wherever the car is drawn */
 .meWheel{transform-box:fill-box;transform-origin:center}
 /* Shared sticky lifecycle road. Colors come from --lc-* tokens set by each case study. */
-.lcRoad{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:230px minmax(0,1fr);gap:48px;align-items:center;width:100%;margin:0 0 -80px;padding:8px max(24px,calc((100% - 1184px)/2)) 8px;background:none;opacity:0;transform:translateY(-100%);pointer-events:none;transition:opacity .35s,transform .45s var(--ease-out)}
+.lcRoad{position:sticky;top:var(--cw-bar,0px);z-index:30;display:grid;grid-template-columns:230px minmax(0,1fr);gap:48px;align-items:center;width:100%;margin:0 0 -80px;padding:8px max(24px,calc((100% - 1184px)/2)) 8px;background:none;opacity:0;transform:translateY(-100%);pointer-events:none;transition:opacity .35s,transform .45s var(--ease-out)}
 .lcRoad:before{content:'';position:absolute;z-index:-1;top:0;bottom:0;left:calc(50% - 50vw);width:100vw;background:linear-gradient(var(--lc-tint),var(--lc-tint)),var(--lc-glass,#f4f1ea);-webkit-backdrop-filter:blur(22px) saturate(1.2);backdrop-filter:blur(22px) saturate(1.2);border:0;box-shadow:none;pointer-events:none}
 /* The surface is solid so page text never shows through the stage labels.
    Its edge is a soft cast shadow rather than a translucent fade, which read as
@@ -170,7 +170,7 @@
 
 /* Fixed, not sticky: a sticky bar sits in the page flow when undocked, so scrolling
    up showed it mid-screen while it faded out. Fixed keeps it pinned to the top edge. */
-.lcRoad{position:fixed;left:0;right:0;top:0;width:auto;margin:0;padding-left:max(24px,calc((100vw - 1184px)/2));padding-right:max(24px,calc((100vw - 1184px)/2));transform:translateY(-110%);transition:opacity .5s var(--ease-out),transform .6s var(--ease-out),visibility 0s linear .6s;visibility:hidden}
+.lcRoad{position:fixed;left:0;right:0;top:var(--cw-bar,0px);width:auto;margin:0;padding-left:max(24px,calc((100vw - 1184px)/2));padding-right:max(24px,calc((100vw - 1184px)/2));transform:translateY(-110%);transition:opacity .5s var(--ease-out),transform .6s var(--ease-out),visibility 0s linear .6s;visibility:hidden}
 .lcRoad.isShown{visibility:visible;transition:opacity .5s var(--ease-out),transform .6s var(--ease-out),visibility 0s}
 .lcRoad:before,.lcRoad:after{left:0;width:100%}
 .lcRoad[data-traveler=bottle] .lcCar{width:34px;top:-7px}.lcRoad[data-traveler=bottle] .lcCar svg{width:34px;height:38px}
