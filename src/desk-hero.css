@@ -17,7 +17,10 @@
 .dhAnchor{position:absolute;left:0;width:1px;height:1px;pointer-events:none}
 
 .dhPin{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--wallB);isolation:isolate}
-.dhScene{position:absolute;inset:0}
+.dhScene{position:absolute;inset:0;clip-path:inset(0)}
+/* Safari lets the desk's 3D-tilted planes (desk top, keyboard, mouse) escape overflow:hidden,
+   so the scene clips with clip-path; once Neha OS covers the room it isn't drawn at all. */
+.dhTrack.osCovers .dhPin>.dhScene{visibility:hidden}
 .dhScene::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse 75% 70% at 55% 50%,transparent 60%,rgba(40,24,10,.16))}
 .isStatic .dhScene::after{display:none}
 .dhStage{position:absolute;left:0;top:0;width:1600px;height:1000px;transform-origin:0 0;will-change:transform}
@@ -51,6 +54,10 @@
 .dhSucculent{position:absolute;left:36px;bottom:20px;width:44px;height:34px}
 .dhSucculent i{position:absolute;bottom:26px;width:14px;height:26px;border-radius:50% 50% 40% 40%/70% 70% 30% 30%;transform-origin:50% 100%}
 .dhSucculent i:nth-child(1){left:14px;transform:rotate(-4deg)}.dhSucculent i:nth-child(2){left:6px;transform:rotate(-38deg)}.dhSucculent i:nth-child(3){left:22px;transform:rotate(36deg)}.dhSucculent i:nth-child(4){left:0;transform:rotate(-66deg) scale(.8)}.dhSucculent i:nth-child(5){left:28px;transform:rotate(64deg) scale(.8)}
+.dhTicket{position:absolute;left:-30px;bottom:30px;width:150px;height:62px;display:flex;transform:rotate(-8deg);background:#f7f2e7;border:1px dashed #b3a58f;box-shadow:0 6px 10px -5px rgba(0,0,0,.35);filter:brightness(var(--printDim))}
+.dhTicket div{flex:1;padding:6px 9px;font:500 9px/1.2 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#1c6fb8}
+.dhTicket b{display:block;font:400 25px/1.05 'Instrument Serif',serif;letter-spacing:0;text-transform:none;color:#221d19}
+.dhTicket em{width:34px;background:#1c6fb8}
 
 .dhView .sky1{stop-color:var(--sky1)}.dhView .sky2{stop-color:var(--sky2)}.dhView .sky3{stop-color:var(--sky3)}
 .dhView .bay1{stop-color:var(--bay1)}.dhView .bay2{stop-color:var(--bay2)}
@@ -195,11 +202,16 @@
 .dhBracketR{left:auto;right:60px}
 .dhBooks,.dhStack,.dhCanvas{filter:drop-shadow(-6px 4px 5px rgba(60,40,20,.28))}
 
+.dhFrame::after{content:"";position:absolute;left:8%;right:8%;bottom:-4px;height:10px;border-radius:50%;background:rgba(36,22,10,.35);filter:blur(4px);z-index:-1}
+.dhFrameFace,.dhFrameBack{position:absolute;inset:9px;-webkit-backface-visibility:hidden;backface-visibility:hidden;transition:transform .7s cubic-bezier(.3,.7,.2,1)}
 /* My headshot in a 5×7 frame, left of the iMac */
 .dhFrame{left:456px;top:498px;width:156px;height:218px;z-index:17;border-radius:3px;background:linear-gradient(135deg,#d9b98a,#b88a55 40%,#9c6e3d 70%,#c9a06a)}
 .dhFrameFace{position:absolute;inset:11px}
 .dhFrameFace{padding:8px;background:#f7f2e8;box-shadow:inset 0 1px 3px rgba(0,0,0,.25)}
 .dhFrameFace img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 16%;filter:brightness(var(--printDim))}
+.dhFrameBack b{font-weight:500;font-size:15px;color:#5a3d22}
+.dhFrame.isFlipped .dhFrameFace{transform:rotateY(-180deg)}
+.dhFrame.isFlipped .dhFrameBack{transform:rotateY(0)}
 
 /* Cookie on a napkin, and the watercolor tin (drawn top-down; the desk plane foreshortens them) */
 .dhCookie{left:1396px;top:26px;width:150px;height:130px;filter:drop-shadow(-4px 6px 5px rgba(40,24,10,.28));padding:0;border:0;background:none;cursor:pointer;pointer-events:auto}
@@ -218,6 +230,7 @@
 .dhCappa,.dhCamera{z-index:16}
 .dhFlask{left:1196px;top:540px;width:56px;height:166px;z-index:13}
 .dhFlask svg,.dhCappa>svg:last-child{width:100%;height:100%;display:block;overflow:visible}
+.dhFlask::after,.dhCappa::after,.dhCamera::after{content:"";position:absolute;left:8%;right:8%;bottom:-3px;height:11px;border-radius:50%;background:rgba(36,22,10,.38);filter:blur(4px);z-index:-1}
 .dhFlask::after,.dhCappa::after,.dhCamera::after,.dhFrame::after{content:"";position:absolute;left:8%;right:4%;bottom:-3px;height:7px;border-radius:50%;background:rgba(30,18,8,.5);filter:blur(2.5px);z-index:-1;pointer-events:none}
 .dhFlask::before,.dhCappa::before,.dhCamera::before,.dhFrame::before{content:"";position:absolute;left:4%;right:10%;top:calc(100% - 3px);height:var(--castL,24px);border-radius:50%;background:radial-gradient(ellipse 70% 100% at 62% 0,rgba(40,24,10,.4),transparent 72%);filter:blur(4px);transform:skewX(50deg);transform-origin:50% 0;opacity:var(--castOp);z-index:-1;pointer-events:none}
 .dhFlask{--castL:46px}.dhFrame{--castL:48px}.dhCappa{--castL:22px}.dhCamera{--castL:26px}
@@ -349,8 +362,15 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 .dhTrack:is(.isAway,.osCovers) .dhStage *{animation-play-state:paused}
 
 /* Below the hero: fun builds wear the same window chrome as Neha OS; each role gets a margin note. */
+.osWin{border-radius:12px;overflow:hidden;background:#fffdf8;box-shadow:0 22px 40px -22px rgba(40,24,14,.45),0 0 0 .5px rgba(0,0,0,.14);transition:box-shadow .25s,transform .25s}
+.osWinBar{height:28px;display:flex;align-items:center;gap:6px;padding:0 11px;background:linear-gradient(#f4efe8,#ebe4da);font:400 11.5px/1 Inter,sans-serif;color:#6d6258}
+.osWinBar i{width:10px;height:10px;border-radius:50%;background:#ff5f57}.osWinBar i:nth-child(2){background:#febc2e}.osWinBar i:nth-child(3){background:#28c840;margin-right:6px}
+.osWinBar span{flex:1;text-align:center;margin-right:36px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.homePage .osWin>:is(.moreBuildVisual,.techVisual){border-radius:0!important;border:0!important;box-shadow:none!important}
+.homePage :is(.moreBuildCard,.smallBuild):hover .osWin{transform:translateY(-4px);box-shadow:0 30px 50px -22px rgba(40,24,14,.55),0 0 0 .5px rgba(0,0,0,.16)}
 
 .expHead{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:14px}
+.expNote{font:500 22px/1 Caveat,cursive;font-style:normal;color:#b0452f;transform:rotate(-2deg);white-space:nowrap}
 .expChip{font:500 22px/1 Caveat,cursive;font-style:normal;color:#b0452f;transform:rotate(-2deg);white-space:nowrap}
 
 /* Live Stable Fluids in its window */
@@ -429,6 +449,7 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 /* About me: the other corner of the room */
 .aboutCorner{position:relative;width:100%;aspect-ratio:4/5;border-radius:18px;overflow:hidden;background:#e4d4bd;box-shadow:0 24px 50px -24px rgba(40,24,10,.45)}
 .aboutCorner svg{display:block;width:100%;height:100%}
+.aboutCorner .acScreen{animation:acFlicker 5s ease-in-out infinite}
 .aboutCorner .acTvScreen{animation:acFlicker 5s ease-in-out infinite}
 .aboutCorner .acGlow{animation:acFlicker 5s ease-in-out infinite}
 @keyframes acFlicker{0%,100%{opacity:1}40%{opacity:.9}43%{opacity:.97}70%{opacity:.92}}

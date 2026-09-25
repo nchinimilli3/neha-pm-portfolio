@@ -36,11 +36,17 @@
 @media(max-width:700px){.case-commute .commuteBeforeAfter{grid-template-columns:1fr}.case-commute .commuteBeforeAfter>i{transform:rotate(90deg);justify-self:center}}
 
 /* Choices I made: numbered like the scope and measurement cards below it, not a plain list. */
+.case-commute .decisionEditorial .principleList{display:grid!important;grid-template-columns:repeat(2,1fr)!important;gap:12px;border:0!important;counter-reset:principle}
+.case-commute .decisionEditorial .principleList>div{display:block!important;position:relative;grid-template-columns:none!important;border:1px solid rgba(23,25,23,.13)!important;background:#fff!important;padding:32px 16px 16px!important;counter-increment:principle}
+.case-commute .decisionEditorial .principleList>div:before{content:counter(principle,decimal-leading-zero);position:absolute;top:14px;right:16px;font:800 11px ui-monospace,monospace;color:#9aa39d}
+.case-commute .decisionEditorial .principleList strong{display:block;margin-bottom:8px;font-size:16px}
+.case-commute .decisionEditorial .principleList span{font-size:14px;color:#59645e;line-height:1.5}
 
 /* Inputs converge into one decision engine and two calm outputs. */
 .case-commute .dataSourceList{position:relative;display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:8px!important;padding:64px 0 112px!important}.case-commute .dataSourceList:before{content:"CONTEXT INPUTS";position:absolute;top:24px;left:0;color:#537078;font:800 10px ui-monospace,monospace;letter-spacing:.14em}.case-commute .dataSourceList:after{content:"DECISION ENGINE  →  WAKE TIME + LEAVE TIME";position:absolute;left:0;right:0;bottom:22px;padding:20px;background:linear-gradient(100deg,#173f53,#295e70);color:#fff;text-align:center;font:800 12px ui-monospace,monospace;letter-spacing:.11em}.case-commute .dataSourceList>div{display:block!important;min-height:130px;padding:16px!important;border:1px solid rgba(28,71,88,.14)!important;background:rgba(255,255,255,.72)!important}.case-commute .dataSourceList>div strong,.case-commute .dataSourceList>div span{display:block;text-align:left}.case-commute .dataSourceList>div strong{color:#173f53;font-size:14px}.case-commute .dataSourceList>div span{margin-top:8px;color:#617178;font-size:12px;line-height:1.45}
 
 /* Bottom sections become scannable product artifacts instead of text bands. */
+.case-commute .scopeLine .caseSectionBody{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.case-commute .scopeLine p{position:relative;min-height:200px;margin:0!important;padding:64px 20px 24px!important;border:1px solid rgba(42,71,80,.14);background:#fff!important;font-size:14px!important;line-height:1.55}.case-commute .scopeLine p:before{position:absolute;left:20px;top:18px;display:grid;width:36px;height:36px;place-items:center;border-radius:50%;color:#fff;font:800 11px ui-monospace,monospace}.case-commute .scopeLine p:nth-child(1):before{content:"01";background:#2d8d81}.case-commute .scopeLine p:nth-child(2):before{content:"02";background:#7558bc}.case-commute .scopeLine p:nth-child(3):before{content:"·";background:#586467}.case-commute .scopeLine p strong{display:block;margin-bottom:8px;font-size:17px}
 
 .case-commute .measureLine .caseSectionBody{width:100%}
 .case-commute .metricDefinitionLine{display:grid!important;grid-template-columns:repeat(4,1fr);width:100%!important;margin:0!important;padding:0!important}

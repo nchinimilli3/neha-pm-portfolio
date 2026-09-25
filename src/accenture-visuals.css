@@ -2,6 +2,7 @@
 .case-accenture{--ax-ink:#1f1628;--ax-body:#3a3043;--ax-plum:#4e1b78;--ax-violet:#7b2fd0;--ax-accent:#a100ff;--ax-rose:#8c2f58}
 
 /* Header copy needs darker ink to read over the purple blooms. */
+.case-accenture .caseHeader .ownershipLine span{color:#3a2352!important}
 
 .case-accenture .caseHeader .toolLogoHeading p{color:var(--ax-body)!important}
 
@@ -164,6 +165,10 @@
 
 /* Connective tissue: each chapter hands the investigation to the next one
    instead of ending as its own deliverable. */
+.accentureStory .axSpine{padding-bottom:0}
+.accentureStory .axHandoff{display:grid;gap:8px;justify-items:start;max-width:52ch;margin:32px 0 0;font-size:16px;line-height:1.5;color:var(--lc-muted)}
+.accentureStory .axHandoff i{font-style:normal;font-size:15px;color:var(--lc-accent)}
+.accentureStory .axBecause{margin:0 0 16px;max-width:56ch;font-size:15px;line-height:1.5;color:var(--lc-muted)}
 
 /* The live readout belongs to the ride, not under it: a transit placard pinned
    inside the scene's top-left sky, so the number and the car read together. */

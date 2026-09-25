@@ -1,12 +1,20 @@
 /* Final annotation overrides stay last in the cascade. */
 
+.siteHeader nav a:after,.navProjects>a:after{background:currentColor!important}
 .siteHeader nav a:after{background:currentColor!important}
 .siteHeader .headerLinkedIn img{filter:none!important}
 .case-fcvf .fcvfHeroMark{min-height:420px!important;background:#00095b!important;border-radius:0!important}
 .case-fcvf .fcvfHeroMark img{position:static!important;width:min(48%,270px)!important;height:auto!important;max-width:270px!important;clip-path:none!important;transform:none!important;filter:none!important}
 .fcvfRoadStage{display:flex!important;flex-direction:column!important;align-items:flex-start!important;min-height:0!important;padding:40px 0 48px!important;overflow:hidden!important}
+.fcvfRoadStage .shelbyScene{position:relative!important;inset:auto!important;order:1!important;width:52%!important;max-width:620px!important;margin:0!important}
+.fcvfRoadCopy{position:relative!important;inset:auto!important;order:2!important;width:100%!important;margin-top:16px!important;padding-top:32px!important;border-top:1px solid rgba(18,63,93,.15)!important}
+.fcvfRoadCopy strong{max-width:720px!important;font-size:clamp(34px,4.5vw,62px)!important}
 
+.accentureEvidenceFunnel{padding:0!important;background:#f8f5f8!important;border-color:#bdaec5!important;box-shadow:0 24px 58px #3f1a4f1a!important}.accentureEvidenceFunnel:after{display:none!important}.accentureEvidenceFunnel>header{display:grid;grid-template-columns:150px 1fr;gap:24px;padding:24px 32px;background:#3c1850;color:#fff}.accentureEvidenceFunnel>header span{color:#e0c6ea;font-size:10px;font-weight:800;letter-spacing:.13em}.accentureEvidenceFunnel>header strong{font-size:22px}.accentureEvidenceSource{gap:0!important;border-bottom:1px solid #d7ccdb!important}.accentureEvidenceSource article{padding:32px!important;border:0!important;box-shadow:none!important;background:#fff!important}.accentureEvidenceSource article+article{border-left:1px solid #d7ccdb!important}.accentureEvidenceSource small{display:block;margin-bottom:8px;color:#87509c;font-size:9px;font-weight:800;letter-spacing:.12em}.accentureEvidenceSource strong{font-size:46px!important}.accentureEvidenceSource span{font-size:13px!important}.accentureSynthesisSteps{grid-template-columns:1fr 44px 1fr 44px 1fr!important;margin:0!important;padding:32px!important;background:#eee9f0!important}.accentureSynthesisSteps article{min-height:130px;padding:20px!important;box-shadow:none!important}.accentureSynthesisSteps article b{font-size:46px!important}.accentureSynthesisSteps article span{font-size:10px!important}.accentureEvidenceFunnel>footer{grid-template-columns:150px 1fr 100px!important;gap:24px!important;margin:0!important;padding:24px 32px!important;border:0!important;background:#6b2a87!important}.accentureEvidenceFunnel>footer span,.accentureEvidenceFunnel>footer strong{color:#fff!important}.accentureEvidenceFunnel>footer>div i{background:#e4b8ef!important}
+.case-accenture .accentureEvidenceFunnel{padding:0!important;background:#f8f5f8!important;border-color:#bdaec5!important}.case-accenture .accentureEvidenceSource{gap:0!important;background:#fff!important}.case-accenture .accentureEvidenceSource article,.case-accenture .accentureSynthesisSteps article{box-shadow:none!important}.case-accenture .accentureEvidenceFunnel>footer{margin:0!important;padding:24px 32px!important;background:#6b2a87!important;color:#fff!important}.case-accenture .accentureEvidenceFunnel>footer:before{display:none!important}.case-accenture .accentureEvidenceFunnel>footer span,.case-accenture .accentureEvidenceFunnel>footer strong{color:#fff!important}
+.v28Fun .funLeadGrid>.moreBuildCard:nth-child(n){grid-column:auto!important}.v28Fun .funLeadGrid>.moreBuildCard:nth-child(n) .moreBuildVisual{aspect-ratio:4/3!important}.v28Fun .funLeadGrid>.moreBuildCard:nth-child(n) .moreBuildCopy h3{font-size:var(--t-title)!important}
 .aboutFilmFrame{height:auto!important;min-height:0!important;aspect-ratio:1066/1599!important}.aboutHeadshot{height:auto!important;aspect-ratio:1066/1599!important;object-fit:cover!important;background:transparent!important}
+@media(max-width:700px){.fcvfRoadStage .shelbyScene{width:92%!important}.accentureEvidenceFunnel>header,.accentureEvidenceFunnel>footer{grid-template-columns:1fr!important}.accentureEvidenceSource,.accentureSynthesisSteps{grid-template-columns:1fr!important}.accentureEvidenceSource article+article{border-left:0!important;border-top:1px solid #d7ccdb!important}.accentureSynthesisSteps>i{transform:rotate(90deg)}}
 
 /* Browser feedback consolidation: the rules below intentionally win over prior annotation passes. */
 body{font-size:18px!important}
@@ -14,6 +22,7 @@ body{font-size:18px!important}
 /* Home experience selections now have a real, softly changing aura behind them. */
 html,body{overflow-x:clip}
 .homePage{position:relative;background:var(--surf-paper)}
+body:has(.homePage){background:var(--surf-paper)}
 /* The canvas behind the header and footer matches the page, so nothing on the home page sits on cool white. */
 html:not([data-view="simple"]):has(.homeKeep:not([data-parked]) .homePage){--page-canvas:var(--surf-paper)}
 /* Home sections off screen pause their looping decoration (main.tsx sets data-offscreen). */
@@ -26,6 +35,8 @@ html:not([data-view="simple"]):has(.homeKeep:not([data-parked]) .homePage){--pag
 .companyBanner img.companyBannerLogo{height:38px!important;max-width:145px!important;filter:brightness(0) sepia(48%) saturate(260%) hue-rotate(338deg) brightness(.42) contrast(1.05)!important;mix-blend-mode:normal!important;opacity:.82!important;transition:filter .4s ease,transform .4s ease}.companyBanner img.companyBannerLogo:hover{filter:drop-shadow(0 0 10px rgba(255,255,255,.95)) drop-shadow(0 0 18px rgba(255,190,200,.8))!important;opacity:1!important;transform:translateY(-1px) scale(1.04)}.companyBanner .companyBannerLogo-est-e-lauder{width:146px!important;max-width:146px!important;object-fit:contain!important}
 
 /* The requested two-feature-plus-four-small build hierarchy. */
+.v28Fun .funBuildGrid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:32px 24px!important;align-items:start!important}
+.v28Fun .funBuildGrid>.moreBuildCard:nth-child(1),.v28Fun .funBuildGrid>.moreBuildCard:nth-child(2){grid-column:span 2!important}.v28Fun .funBuildGrid>.moreBuildCard:nth-child(n+3),.v28Fun .funBuildGrid>.smallBuild{grid-column:span 1!important}.v28Fun .funBuildGrid>.moreBuildCard:nth-child(n+3) .moreBuildVisual,.v28Fun .funBuildGrid>.smallBuild .techVisual{aspect-ratio:4/3!important;height:auto!important;min-height:0!important}.v28Fun .funBuildGrid>.smallBuild{background:transparent!important;padding:0!important}.v28Fun .funBuildGrid>.smallBuild h3{margin:12px 0 4px!important;font-size:var(--t-lead)!important}.v28Fun .funBuildGrid>.smallBuild p{display:-webkit-box!important;overflow:hidden!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:3!important;font-size:var(--t-meta)!important;line-height:1.45!important}.v28Fun .funBuildGrid .moreBuildCopy h3{font-size:var(--t-title)!important}
 
 /* Let the portrait determine the film frame height; never reserve an empty lower panel. */
 .aboutFilmFrame{display:block!important;height:auto!important;min-height:0!important;aspect-ratio:auto!important;line-height:0!important;background:transparent!important}.aboutFilmFrame>.aboutHeadshot{display:block!important;width:100%!important;height:auto!important;aspect-ratio:auto!important;object-fit:cover!important;object-position:center top!important;background:transparent!important}
@@ -54,17 +65,23 @@ html:not([data-view="simple"]):has(.homeKeep:not([data-parked]) .homePage){--pag
 /* FCVF: use the supplied transparent Ford mark and make the scroll scene fill the full road. */
 .case-fcvf .fcvfHeroMark{min-height:clamp(250px,30vw,340px)!important;padding:32px!important;background:#071a72!important}.case-fcvf .fcvfHeroMark img{width:min(76%,560px)!important;max-width:560px!important;max-height:none!important;filter:none!important}.case-fcvf .fcvfRoadStage{display:block!important;position:relative!important;width:100vw!important;min-height:0!important;height:auto!important;margin:0 0 24px calc(50% - 50vw)!important;padding:0!important;overflow:visible!important}
 
+@media(max-width:700px){.case-fcvf .fcvfRoadStage{width:100%!important;margin:0 0 40px!important;padding-top:8px!important}.case-fcvf .fcvfRoadStage .shelbyScene{left:4%!important;bottom:auto!important;width:82%!important}.case-fcvf .fcvfRoadStage .fvReplay{left:50%!important;transform:translateX(-50%)!important}}
 @media(max-width:700px){.case-fcvf .fcvfRoadStage{width:100%!important;margin:0 0 40px!important;padding-top:8px!important}}
 
 /* V45 — browser annotation pass: artifacts live directly in each case aura. */
 
 .case-commute .caseHeroMedia,.case-commute .caseArtifactHero,.case-commute .casePreviewHero,.case-commute .casePreviewHero .commutePreviewStatic{background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;padding:0!important}
+.case-commute .scopeLine .caseSectionBody{display:grid!important;grid-template-columns:1fr!important;gap:0!important;border-top:1px solid #18445240}.case-commute .scopeLine p{display:grid!important;grid-template-columns:72px 130px 1fr;align-items:center;min-height:0!important;padding:24px 0!important;border:0!important;border-bottom:1px solid #18445233!important;background:transparent!important;color:#365560!important}.case-commute .scopeLine p:before{position:static!important;grid-column:1;width:38px!important;height:38px!important}.case-commute .scopeLine p strong{grid-column:2;margin:0!important;color:#153d50;font-size:20px}
 .case-commute .dataSourceList{gap:0 32px!important;padding:56px 0 96px!important}.case-commute .dataSourceList>div{min-height:118px!important;padding:20px 0!important;border:0!important;border-top:1px solid #173f4f3d!important;background:transparent!important}.case-commute .dataSourceList:after{left:0!important;right:0!important;background:#164b62!important;box-shadow:none!important}
 
 .case-commute .metricDefinitionLine{gap:0!important;border-top:1px solid #18445242!important}.case-commute .metricDefinitionLine strong{position:relative;min-height:210px!important;padding:32px 24px 24px!important;border-left:0!important;border-right:1px solid #18445233!important;background:transparent!important;color:#153d50!important}.case-commute .metricDefinitionLine strong:last-child{border-right:0!important}.case-commute .metricDefinitionLine strong:after{content:"TARGET";position:absolute;right:20px;top:31px;color:#55727c;font:800 9px ui-monospace,monospace;letter-spacing:.13em}.case-commute .metricDefinitionLine strong:before{color:#247f87!important;font-size:clamp(34px,4vw,54px)!important}
+.case-scheduler .schedulerResearchVisual,.case-scheduler .schedulerResearchGrid,.case-scheduler .schedulerDecisionSection,.case-scheduler .schedulerCommitment{background:transparent!important;border:0!important;box-shadow:none!important}.case-scheduler .schedulerResearchGrid>article{background:transparent!important;box-shadow:none!important}.case-scheduler .schedulerEventCard{background:#faf9f4a8!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important}.case-scheduler .schedulerCommitment:before,.case-scheduler .schedulerCommitment:after{display:none!important}
 .case-scheduler .schedulerDecisionSection{background:transparent!important;border:0!important;box-shadow:none!important}
 
 .case-accenture .caseHeader{position:relative}.case-accenture .caseHeader:after{content:"";position:absolute;z-index:-1;left:-12vw;right:-12vw;bottom:-60px;height:210px;background:linear-gradient(180deg,transparent,#ffffff80 55%,transparent);filter:blur(18px);pointer-events:none}
+.case-accenture .accentureRequestRelay{gap:32px!important}
+.case-accenture .accentureClock{border-color:#481f5c4d!important;box-shadow:none!important}.case-accenture .accentureClock:before{border-color:#481f5c33!important}.case-accenture .accentureClock span{color:#321843!important}.case-accenture .accentureClock small{color:#7e426f!important}
+.case-accenture .accentureBoundaryMap{background:transparent!important;border:0!important;box-shadow:none!important}.case-accenture .accentureBoundaryMap>header{padding-left:0!important;padding-right:0!important;background:transparent!important;color:#3c1850!important}.case-accenture .accentureBoundaryMap>header span{color:#8b4aa4!important}.case-accenture .accentureBoundaryFlow{padding:32px 0!important;background:transparent!important}.case-accenture .accentureBoundaryFlow article{background:#ffffff59!important;border:0!important;border-top:2px solid #662a8457!important}.case-accenture .accentureBoundaryFlow article.isGate{background:#efdce080!important;border-top-color:#a6505a!important}.case-accenture .accentureBoundaryFlow article.isHuman{background:#e2d3e885!important}.case-accenture .accentureBoundaryMap>footer{padding:32px 0!important;border-color:#53277533!important}.case-accenture .accentureBoundaryMap>footer p{color:#514758!important}.case-accenture .accentureBoundaryProof{border-color:#53277533!important}
 
 .homePage .educationSection{padding-bottom:32px!important}.homePage .v28Fun{padding-top:32px!important}
 
@@ -77,6 +94,8 @@ html:not([data-view="simple"]):has(.homeKeep:not([data-parked]) .homePage){--pag
 @media(max-width:1000px){.case-accenture .requestStep>header{min-height:0!important;margin-bottom:20px!important}}
 
 /* V45.2 — polish the edge-case diagram after removing its presentation panel. */
+.case-accenture .accentureClock{width:148px!important;height:148px!important;border:2px solid #54206f!important;background:rgba(255,248,252,.34)!important;box-shadow:0 0 0 9px rgba(84,32,111,.07)!important}.case-accenture .accentureClock:before{border-color:#6d3386!important}.case-accenture .accentureClock i,.case-accenture .accentureClock b,.case-accenture .accentureClock i:after{background:#b13f75!important}.case-accenture .accentureClock i,.case-accenture .accentureClock b{left:72px!important;bottom:72px!important}.case-accenture .accentureClock span{bottom:28px!important;color:#321343!important;font-size:18px!important}.case-accenture .accentureClock small{bottom:13px!important;color:#713081!important;font-size:9px!important;font-weight:800!important}
+@media(max-width:1000px){.case-accenture .accentureClock{width:132px!important;height:132px!important}.case-accenture .accentureClock i,.case-accenture .accentureClock b{left:64px!important;bottom:64px!important}}
 
 /* V45.3 — the Commute hero screenshot was rendering at its raw portrait size (over 1100px tall,
    nearly triple every other case's hero), leaving a huge dead gap before the tech-stack section.
@@ -90,8 +109,10 @@ html:not([data-view="simple"]):has(.homeKeep:not([data-parked]) .homePage){--pag
 
 /* Home theme, 60/30/10: a lilac-mist canvas (the desaturated tint of the aura's dominant violet),
    pastel blue/pink/mint blooms as the 30, and plum ink with a violet accent as the 10. */
+.homePage>.auraField.tone-default{opacity:calc(.34 + .46 * var(--aura-p,1))!important}
 
 /* Warm home aura: warm pink/coral/peach/light orange; no purple, which muddies against orange so overlaps stay clean, not muddy */
+.homePage>.auraField.tone-default .bloom1{background:radial-gradient(circle,rgba(245,150,180,.8),transparent 68%)!important}.homePage>.auraField.tone-default .bloom2{background:radial-gradient(circle,rgba(255,140,120,.78),transparent 68%)!important}.homePage>.auraField.tone-default .bloom3{background:radial-gradient(circle,rgba(255,190,140,.75),transparent 68%)!important}.homePage>.auraField.tone-default .bloom4{background:radial-gradient(circle,rgba(255,200,170,.72),transparent 68%)!important}.homePage>.auraField.tone-default .bloom5{background:radial-gradient(circle,rgba(250,130,130,.7),transparent 68%)!important}.homePage>.auraField.tone-default .bloom6{background:radial-gradient(circle,rgba(240,160,190,.65),transparent 68%)!important}.homePage>.auraField.tone-default .bloom7{background:radial-gradient(circle,rgba(255,175,150,.72),transparent 68%)!important}
 
 .siteHeader{background:rgba(243,237,227,.74)!important;-webkit-backdrop-filter:blur(20px) saturate(1.5);backdrop-filter:blur(20px) saturate(1.5);border-bottom:1px solid rgba(65,56,44,.14)!important;border-image:none!important;box-shadow:none!important}
 .siteHeader,.siteHeader .wordmark{color:#22160F!important}
@@ -104,14 +125,23 @@ html:not([data-view="simple"]):has(.homeKeep:not([data-parked]) .homePage){--pag
 .companyBanner>span{color:#5E4B42!important;letter-spacing:.14em;text-transform:uppercase;font-size:var(--t-micro)!important}
 
 /* Home aura: smaller blooms that roam across the page so each one is visible in motion */
+.homePage>.auraField .bloom2,.homePage>.auraField .bloom4,.homePage>.auraField .bloom6{animation-name:homeRoamB!important}
+.homePage>.auraField .bloom2{animation-duration:calc(17.0s - 8.0s * var(--aura-p,1))!important}
+.homePage>.auraField .bloom3{animation-duration:calc(20.0s - 11.0s * var(--aura-p,1))!important}
+.homePage>.auraField .bloom4{animation-duration:calc(16.5s - 7.5s * var(--aura-p,1))!important}
+.homePage>.auraField .bloom5{animation-duration:calc(19.0s - 10.0s * var(--aura-p,1))!important}
+.homePage>.auraField .bloom6{animation-duration:calc(17.5s - 8.5s * var(--aura-p,1))!important}
+.homePage>.auraField .bloom7{animation-duration:calc(21.0s - 12.0s * var(--aura-p,1))!important}
 
 /* Type: the tokens in case-system.css — Poppins titles, Inter for prose and UI. */
 .homePage .section h2{font-family:'Instrument Serif',Georgia,serif!important;font-weight:400!important;letter-spacing:-.01em!important}
 .homePage .section h3{font-family:var(--font-display)!important;font-weight:600!important;letter-spacing:-.015em!important}
+.homePage .projectCardBody>p,.homePage .expStory p,.homePage .smallBuild p,.homePage .aboutCopy p{font-family:var(--font-serif)!important}
 .homePage .expStory p,.homePage .aboutCopy p{font-family:var(--font-serif)!important}
 /* Warm espresso ink to match the peach/coral aura */
 .homePage{color:#22160F!important}
 .homePage .section h2,.homePage .section h3{color:#22160F!important}
+.homePage .section p,.homePage .heroTagline,.homePage .projectCard p,.homePage .experienceCard p{color:#4F3E36!important}
 .homePage .section p,.homePage .heroTagline{color:#4F3E36!important}
 .homePage .heroThesis{color:#2E1F18!important}
 
@@ -248,6 +278,14 @@ html:not([data-view="simple"]):has(.homeKeep:not([data-parked]) .homePage){--pag
 .aboutCopy .bookRecRow button:disabled{opacity:.35;cursor:default}
 .aboutCopy .bookRecConfirmation{display:grid;grid-template-columns:minmax(0,1fr) 96px;column-gap:14px;row-gap:4px;align-items:center;margin-top:10px;padding-top:8px;border-top:1.5px solid rgba(46,33,28,.22)}
 .bookRecScene{grid-column:2;grid-row:1/3;display:block;width:96px;height:72px;overflow:visible;animation:bookRecArrive .55s var(--ease-out) both}
+.bookRecShadow{fill:#6e334533;filter:blur(2px)}
+.bookRecCover{fill:url(#bookRecCoverFill);stroke:#7d3654;stroke-width:1.5;stroke-linejoin:round;filter:drop-shadow(1px 2px 2px #60283c40)}
+.bookRecPageEdge{fill:#e5cbc9;stroke:#ad7884;stroke-width:1;stroke-linejoin:round}
+.bookRecLeftPage,.bookRecRightPage{fill:url(#bookRecPaperFill);stroke:#ad7884;stroke-width:1.1;stroke-linejoin:round}
+.bookRecTurningPage{fill:#f5e7e2;stroke:#bc8d97;stroke-width:1;transform-box:fill-box;transform-origin:left center;animation:bookRecTurn .8s .3s ease-in-out both}
+.bookRecPrint{fill:none;stroke:#bd9da2;stroke-width:1;stroke-linecap:round;animation:bookRecPrintIn .35s .9s both}
+.bookRecSpine{fill:none;stroke:#ad7884;stroke-width:1.2;stroke-linecap:round}
+.bookRecBookmark{fill:#b15376;stroke:#8f3f60;stroke-width:.8;stroke-linejoin:round;animation:bookRecBookmarkIn .4s .8s both}
 
 @keyframes bookRecArrive{from{opacity:0;transform:translateY(12px) rotate(-5deg)}to{opacity:1;transform:none}}
 
@@ -256,6 +294,7 @@ html:not([data-view="simple"]):has(.homeKeep:not([data-parked]) .homePage){--pag
 .aboutCopy .bookRecConfirmation button{grid-column:1;grid-row:2;justify-self:start;padding:4px 0;border:0;border-bottom:1px solid #9b4a68;background:transparent;color:#9b4a68;font:600 12px/1.2 Inter,sans-serif;white-space:nowrap;cursor:pointer}
 .aboutCopy .bookRecConfirmation button:hover{color:#22160F;border-color:#22160F}
 @media(max-width:520px){.aboutCopy .bookRecConfirmation{grid-template-columns:minmax(0,1fr) 82px;column-gap:8px}.bookRecScene{width:82px;height:62px}.bookRecConfirmCopy strong{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.bookRecScene,.bookRecTurningPage,.bookRecPrint,.bookRecBookmark{animation:none}.bookRecTurningPage{transform:scaleX(-1)}}
 @media(prefers-reduced-motion:reduce){.bookRecScene{animation:none}}
 .aboutCopy .bookRecStatus{display:block;margin-top:8px;font-size:var(--t-meta);color:#b8455e}
 /* White-source logos glow in their real brand color on hover */
@@ -270,14 +309,38 @@ html:not([data-view="simple"]):has(.homeKeep:not([data-parked]) .homePage){--pag
  .homePage .v28Projects{padding-top:48px!important;padding-bottom:56px!important}
  .homePage :is(.v28Projects,.v28Experience,.educationSection,.v28Fun)>.sectionTitle{width:calc(100% - 64px)!important;margin-inline:auto!important;margin-bottom:32px!important}
  .homePage :is(.v28Projects,.v28Experience,.educationSection,.v28Fun)>.sectionTitle h2,
+ .homePage .aboutCopy h2{font-size:var(--t-h2)!important;line-height:1.02!important;letter-spacing:-.045em!important;font-weight:500!important}
+ .homePage .v28Experience .experienceAccordion,.homePage .educationSection .educationRows{width:calc(100% - 36px)!important;margin-inline:auto!important}
  .homePage .aboutCopy h2,.homePage .ahIntro h2{font-family:'Instrument Serif',Georgia,serif!important;font-size:calc(var(--cs-h2) * 1.25)!important;line-height:1!important;letter-spacing:-.01em!important;font-weight:400!important}
  .homePage .v28Experience .experienceAccordion{width:calc(100% - 36px)!important;margin-inline:auto!important}
  .homePage .v28Experience .experienceSummary>div:nth-child(2){width:100%!important;max-width:none!important}
  .homePage .v28Experience .experienceSummary p{width:100%!important;max-width:none!important;text-align:left!important}
+ .homePage .balancedProjectGrid{display:grid!important;width:calc(100% - 64px)!important;margin-inline:auto!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;column-gap:32px!important;row-gap:32px!important}
+ .homePage .balancedProjectGrid .projectCardReveal,.homePage .balancedProjectGrid .projectCardReveal.featured{grid-column:auto!important}
+ .homePage .balancedProjectGrid .projectCardAction,.homePage .balancedProjectGrid .projectCardReveal.featured .projectCardAction{display:block!important}
+ .homePage .balancedProjectGrid .projectCardMedia,.homePage .balancedProjectGrid .projectCardReveal.featured .projectCardMedia{width:100%!important;height:auto!important;min-height:0!important;aspect-ratio:1.98/1!important}
+ .homePage .balancedProjectGrid .projectCardBody,.homePage .balancedProjectGrid .projectCardReveal.featured .projectCardBody{display:block!important;padding:12px 2px 0!important}
+ .homePage .balancedProjectGrid .projectCardTop{margin-bottom:2px!important}
+ .homePage .balancedProjectGrid .projectCardTop span{font-size:var(--t-micro)!important;min-height:14px!important}
+ .homePage .balancedProjectGrid .projectCard h3{margin:4px 0 8px!important;font-size:var(--t-title)!important;line-height:1.02!important}
+ .homePage .balancedProjectGrid .projectCardBody>p{display:block!important;overflow:visible!important;margin:0!important;font-size:var(--t-meta)!important;line-height:1.5!important;max-width:none!important}
+ .homePage .balancedProjectGrid .projectTextLink{display:none!important}
 
  .homePage .v28Fun{padding-top:48px!important;padding-bottom:64px!important}
+ .homePage .v28Fun .funBuildGrid{width:calc(100% - 64px)!important;margin-inline:auto!important;column-gap:32px!important;row-gap:40px!important}
+ .homePage .v28Fun .funBuildGrid>.moreBuildCard:nth-child(-n+2){width:100%!important;max-width:500px!important;padding-inline:16px!important}
+ .homePage .v28Fun .funBuildGrid>.moreBuildCard:nth-child(1){justify-self:end!important}
+ .homePage .v28Fun .funBuildGrid>.moreBuildCard:nth-child(2){justify-self:start!important}
+ .homePage .v28Fun .funBuildGrid>.moreBuildCard:nth-child(-n+2) .moreBuildVisual{aspect-ratio:16/9!important}
+ .homePage .v28Fun .funBuildGrid>.smallBuild .techVisual{aspect-ratio:16/9!important}
 
  .homePage .v28Fun .moreBuildCopy{padding:12px 2px 0!important}
+ .homePage .v28Fun .funBuildGrid .moreBuildCopy>span:first-child{font-size:var(--t-micro)!important;min-height:14px!important}
+ .homePage .v28Fun .funBuildGrid .moreBuildCopy h3{margin:4px 0 8px!important;font-size:var(--t-lead)!important;line-height:1.05!important}
+ .homePage .v28Fun .funBuildGrid>.smallBuild p{display:block!important;overflow:visible!important;margin:8px 0 0!important;font-size:var(--t-meta)!important;line-height:1.48!important;-webkit-line-clamp:unset!important}
+ .homePage .v28Fun .funBuildGrid>.smallBuild p{font-family:var(--font-serif)!important;font-weight:400!important}
+ .homePage .v28Fun .funBuildGrid .projectTextLink{display:none!important}
+ .homePage .v28Fun .funBuildGrid>.smallBuild h3{margin:8px 0 4px!important;font-size:var(--t-body)!important;line-height:1.08!important}
 }
 
 /* Back-to-top ring takes the open case's title colors; the button sits outside

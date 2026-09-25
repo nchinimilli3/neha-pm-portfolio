@@ -26,6 +26,7 @@
 @media(min-width:1700px){
   .homePage{--cs-max:1480px}
   .siteHeader{padding-inline:max(48px,calc((100% - 1480px)/2))!important}
+  .siteFooter{width:min(1480px,calc(100% - 96px))!important;max-width:1480px!important}
 
   main.casePage{width:100%!important;max-width:none!important}
 }

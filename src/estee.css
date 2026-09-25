@@ -22,6 +22,8 @@
 .elMirrorGlass p{position:relative;z-index:2;font:400 clamp(27px,3vw,43px)/1.2 Georgia,serif;margin:0 8px 24px;text-shadow:0 1px 12px #fff}
 .elMirrorGlass p em{font-weight:400}
 .elMirrorGlass>span{z-index:2;font-size:13px;color:#5c5146}
+.elMirrorStem{height:55px;width:16px;margin:auto;background:linear-gradient(90deg,#7d6441,#f5e4c4 40%,#8e744c);box-shadow:8px 4px 12px #33261922}
+.elMirrorBase{height:25px;width:58%;border-radius:50%;margin:auto;background:linear-gradient(175deg,#e9d8b8,#9b825b 60%,#705b3e);box-shadow:0 17px 18px #33261930,inset 0 2px 1px #fff9}
 
 .elInvitation{display:grid;grid-template-columns:1fr;gap:56px;align-items:center}
 .elInvitation>figure{max-width:880px}.elInvitation figure{transform:rotate(-1deg);filter:drop-shadow(0 20px 15px #2c201c18)}

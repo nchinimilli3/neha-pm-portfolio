@@ -110,6 +110,7 @@
 
 /* Location trail with the bus */
 
+@keyframes cmSpeed{0%{opacity:0;transform:translateX(6px)}40%{opacity:1}100%{opacity:0;transform:translateX(-8px)}}
 .cmEditorial .cmTrailKey{margin:8px 0 0;font-size:12.5px;text-align:center;color:var(--cm-muted)}
 
 /* Lock screen in the app's blush and mist */
@@ -308,6 +309,7 @@
 
 /* A disruption learned at 8:27 cannot rewrite a 7:30 alarm. Completed steps
    stay visibly locked while the reachable future is recalculated. */
+@keyframes cmTryCue{0%,70%,100%{box-shadow:0 0 0 0 #4a417000}82%{box-shadow:0 0 0 8px #4a41701d}}
 
 @media(max-width:700px){.cmLateUpdate{grid-template-columns:1fr;gap:8px}}
 @media(prefers-reduced-motion:reduce){.cmItinToggle:not([aria-pressed=true]){animation:none}}
@@ -361,6 +363,7 @@
 @media(max-width:900px){.cmMathStage>h2{white-space:normal}}
 
 /* The model is one inspectable decision system, not a decorative simulation. */
+@keyframes cmConfidenceIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 
 @media(max-width:760px){.cmModelFormula{display:block}.cmModelFormula span{display:block;margin-top:8px}.cmCandidateTest header{display:none}.cmCandidateTest>div{grid-template-columns:62px 1fr 44px}.cmCandidateTest>div em{grid-column:2}.cmModelChoice{grid-template-columns:1fr;gap:8px}.cmModelChoice i{transform:rotate(90deg);width:max-content}.cmModelLearning{grid-template-columns:1fr;gap:32px}.cmModelLearning li{grid-template-columns:116px 1fr 58px}}
 

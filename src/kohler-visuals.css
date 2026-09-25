@@ -97,6 +97,20 @@
 
 /* Hero: the order as a shipping tag */
 .case-kohler .caseHeroMedia{display:grid;place-items:center;background:none!important;border:0!important;box-shadow:none!important;min-height:0!important}
+.kxTagScene{display:grid;place-items:center;padding:32px 20px 32px 112px}
+.kxTag{position:relative;padding:32px 32px 32px 64px;background:linear-gradient(160deg,#f7efd9,#e9dcba);clip-path:polygon(40px 0,100% 0,100% 100%,40px 100%,0 50%);color:var(--kx-ink)}
+.kxTagScene{filter:drop-shadow(0 24px 26px #1f2b2630)}
+@keyframes kxSway{0%,100%{rotate:0deg}50%{rotate:2deg}}
+.kxTagHole{position:absolute;left:24px;top:50%;width:16px;height:16px;margin-top:-8px;border-radius:50%;background:#e8e2d3;box-shadow:inset 0 0 0 3px #b8935a}
+.kxTagString{position:absolute;left:-96px;top:40%;width:120px;height:60px;overflow:visible}.kxTagString path{fill:none;stroke:#8a6a3b;stroke-width:2}
+.kxTagLogo{display:block;width:108px;height:auto;margin-bottom:16px}
+.kxTag small{display:block;font-size:13px;color:var(--kx-muted)}
+.kxTag>strong{display:block;margin:2px 0 16px;font-size:44px;font-weight:600;letter-spacing:-.03em;color:#1f4e3d}
+.kxTagRoute{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600}.kxTagRoute i{flex:1;height:2px;background:repeating-linear-gradient(90deg,#245b48 0 6px,transparent 6px 11px)}
+.kxTagDocs{display:flex;gap:8px;margin:16px 0 16px}.kxTagDocs i{width:26px;height:32px;border-radius:4px;background:#fbf8ef;box-shadow:0 2px 0 #d9cfb8}.kxTagDocs i:last-child{box-shadow:inset 0 0 0 2px #a0482f}
+.kxTagTrail{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--kx-muted)}.kxTagTrail svg{width:16px;height:16px;fill:none;stroke:#245b48;stroke-width:2;stroke-linecap:round}
+.kxTagWrap{position:relative;width:min(100%,380px);transform:rotate(-5deg);transform-origin:0 50%;animation:kxSway 6s ease-in-out infinite}
+.kxTagStamp{position:absolute;right:-26px;top:-16px;font-size:12px;background:#f6efe2e6}
 
 /* Decision and principles, directly under the problem they answer */
 
@@ -123,8 +137,10 @@
  .kxLineStage,.kxLineSteps{grid-template-columns:1fr}
 
  .kxRoles ol{grid-template-columns:1fr 1fr;row-gap:32px}.kxRoles ol:before,.kxRolesCore{display:none}
+ .kxTagScene{padding:20px 0 20px 64px}
 
  .kxBelt,.kxCargo{display:none}.kxInputs{padding-bottom:0}.kxGateStamp{position:static;margin-top:12px}
+ .kxTagWrap{transform:rotate(-3deg)}
 }
 @media(prefers-reduced-motion:reduce){.kxBelt i,.kxCargo{animation:none}}
 
