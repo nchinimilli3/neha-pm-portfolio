@@ -22,13 +22,6 @@ const drive=[
 const lanes=['Requirements','AEM component','API integration','QA & validation','Production release'];
 // What each workstream had to hand over before the release could move. The
 // point of this section is the dependency, not the headcount.
-const handoffs=[
- {lane:'Requirements',gate:'What the feature had to do',blocked:'Nothing could be built until customer and business requirements agreed on what a previous estimate meant.'},
- {lane:'AEM component',gate:'Where it lived',blocked:'The experience had to become a reusable component before it could enter the existing product.'},
- {lane:'API integration',gate:'What data it could see',blocked:'Estimate and customer context had to cross the integration boundary before the interface meant anything.'},
- {lane:'QA & validation',gate:'Whether it was allowed through',blocked:'Security-scan findings and PR compliance had to clear before the release train would take it.'},
- {lane:'Production release',gate:'When customers got it',blocked:'The release window belonged to the platform, not to the feature.',mine:'This is the one I chased. The component was ready before the release was. Which environments had to be tagged, and in what order, lived with the release and DevOps side rather than with the feature \u2014 so I traced the sequence myself to get Previous Estimates onto the train, and wrote the release and environment-tagging workflow down.'}
-];
 const stages=[
  {id:'fs-discover',name:'Discover',did:'Customers lose their saved work'},
  {id:'fs-define',name:'Define',did:'Fit a live platform'},
@@ -156,7 +149,7 @@ export default function FinSimpleCase({setLightbox}){
     {[62,162,262].map((y,i)=><g key={y} className={`fsePin ${i===2?'isGoal':''}`}><circle cx={i===1?60:i===0?60:45} cy={y} r="9"/></g>)}
     <g><TopCar/><animateMotion dur="7s" repeatCount="indefinite" rotate="auto" keyPoints="0;.2;.2;.53;.53;.86;.86" keyTimes="0;.14;.3;.46;.62;.78;1" calcMode="linear" path={route}/></g>
    </svg>
-   <ol className="fseNavStops" data-stagger>{drive.map((d,i)=><li key={d.title}><strong>{d.title}</strong><span>{d.copy}</span></li>)}</ol>
+   <ol className="fseNavStops" data-stagger>{drive.map(d=><li key={d.title}><strong>{d.title}</strong><span>{d.copy}</span></li>)}</ol>
   </div>
  </div>
   <figure className="fseBrowser"><div className="fseBrowserBar" aria-hidden="true"><i/><i/><i/><span>fordcredit.com/finsimple</span></div><button type="button" onClick={expand('project-media/finsimple-live.png','Released FinSimple Previous Estimates interface')} aria-label="Expand the released FinSimple Previous Estimates interface"><img src={asset('project-media/finsimple-live.png')} alt="Released FinSimple Previous Estimates interface" loading="lazy"/><span>View full size ↗</span></button></figure>

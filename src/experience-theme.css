@@ -1,0 +1,117 @@
+/* A quiet editorial bridge between the illustrated desk and the case studies. */
+.v28Experience{position:relative;padding-bottom:clamp(58px,8vw,110px)!important}
+.v28Experience .experienceIntro{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,410px);gap:clamp(24px,5vw,80px);align-items:end;margin-bottom:clamp(28px,4vw,50px)}
+.v28Experience .experienceIntro .sectionTitle{margin:0!important}
+.v28Experience .experienceIntro .sectionTitle{display:block!important;text-align:left!important;justify-self:start!important;width:auto!important}
+.v28Experience .experienceIntro .sectionTitle h2{margin:0!important;text-align:left!important}
+
+.v28Experience .experienceIntro p{margin:0 0 5px;color:#4b514b;font-size:clamp(15px,1.35vw,18px);line-height:1.55;max-width:39ch}
+.v28Experience .experienceAccordion{border-top:1px solid rgba(65,56,44,.25)}
+.v28Experience .experienceItem{border-bottom:1px solid rgba(65,56,44,.2)!important}
+.v28Experience .experienceItem.open{border-top:0!important;border-bottom:1px solid rgba(65,56,44,.3)!important}
+.v28Experience .experienceSummary{grid-template-columns:34px 58px minmax(0,1fr) minmax(90px,auto) 30px!important;gap:clamp(12px,1.8vw,26px)!important;align-items:start!important;padding:clamp(22px,3vw,36px) 8px!important;transition:background .2s ease!important}
+.v28Experience .experienceSummary:hover{background:rgba(255,253,247,.42)!important}
+.v28Experience .experienceIndex{padding-top:7px;color:#aa745d!important;font:600 12px/1.2 ui-monospace,SFMono-Regular,monospace!important;letter-spacing:.04em}
+.v28Experience .experienceSummary .companyLogo{align-self:start;width:58px!important;height:44px!important}
+.v28Experience .experienceSummary .companyLogo img{width:100%!important;height:100%!important;object-fit:contain}
+.v28Experience .experienceSummary .expHead{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px 16px}
+.v28Experience .experienceSummary .expHead h3{margin:0!important}
+/* The headline metric as a brand-tinted chip, so a closed list can be scanned for outcomes. */
+.v28Experience .experienceSummary .expHead .expChip{display:inline-flex;align-items:center;padding:3px 9px;border-radius:999px;background:color-mix(in srgb,var(--exp-accent,#89523d) 10%,transparent);color:var(--exp-accent,#89523d)!important;font:650 12px/1.3 Inter,system-ui,sans-serif!important;font-style:normal;letter-spacing:.01em;transform:none!important;white-space:nowrap}
+.v28Experience .experienceSummary .experienceRole{display:block;margin-top:5px;color:#29312c!important;font-size:14px!important;font-weight:600!important}
+.v28Experience .experienceSummary .experienceLocation{display:block;margin-top:2px;color:#68716a!important}
+.v28Experience .experienceSummary p{margin-top:12px!important;max-width:76ch!important;color:#4b514b!important;line-height:1.52!important}
+.v28Experience .experienceSummary time{padding-top:6px;color:#626960!important;white-space:nowrap}
+.v28Experience .expToggle{display:grid;place-items:center;width:30px;height:30px;padding:0!important;border:1px solid rgba(65,56,44,.25);border-radius:50%;font:400 18px/1 Inter,system-ui,sans-serif!important;color:#6b5a4c!important;transition:background-color .2s,border-color .2s,color .2s}
+.v28Experience .experienceSummary:hover .expToggle{border-color:var(--exp-accent,#9b5c42);color:var(--exp-accent,#9b5c42)!important}
+.v28Experience .experienceSummary:hover .expHead h3{color:var(--exp-accent,inherit)!important}
+.v28Experience .experienceDetail>div{padding-left:calc(34px + 58px + clamp(12px,1.8vw,26px) * 2 + 8px)!important}
+.v28Experience .expCaseStudyLink{font-weight:650}
+.educationSection>.sectionTitle,.v28Fun>.sectionTitle{display:block!important;text-align:left!important;max-width:none!important;margin-bottom:clamp(24px,3vw,40px)!important}
+.educationSection>.sectionTitle h2,.v28Fun>.sectionTitle h2{text-align:left!important;margin:0!important}
+.educationSection>.sectionTitle p,.v28Fun>.sectionTitle p{max-width:58ch;margin:12px 0 0;color:#4b514b;font-size:clamp(15px,1.3vw,18px);line-height:1.5}
+
+/* Branded roles: the page stays cream. An open role brings in its company colour
+   as a thin rule on the left edge, the headline number, and one desk object. */
+.v28Experience .experienceItem.expBranded{position:relative}
+.v28Experience .experienceItem.expBranded::before{content:"";position:absolute;left:-18px;top:clamp(22px,3vw,36px);bottom:clamp(22px,3vw,36px);width:3px;border-radius:3px;background:var(--exp-accent);opacity:0;transition:opacity .3s ease}
+.v28Experience .experienceItem.expBranded.open::before{opacity:1}
+.v28Experience .expBranded.open .experienceSummary:hover{background:transparent!important}
+.v28Experience .expBranded.open .experienceIndex{color:var(--exp-accent)!important}
+.v28Experience .expBranded.open .expToggle{background:var(--exp-accent);border-color:var(--exp-accent);color:#fff!important}
+/* Open, the big number replaces the chip. */
+.v28Experience .expBranded.open .expHead .expChip{display:none}
+.v28Experience .expBranded.open .expHead h3{color:var(--exp-ink)!important}
+/* The number and object float up into the empty space beside the role summary, so the
+   detail text keeps the full width and every open role fits one desktop screen. */
+.v28Experience .expBranded .experienceDetail>div{display:flow-root!important;padding-bottom:22px!important;max-width:none!important;border-top-color:color-mix(in srgb,var(--exp-accent) 22%,transparent)!important}
+.v28Experience .expBranded .expStory{display:block!important}
+.v28Experience .expBranded .expStory>*+*{margin-top:16px!important}
+.v28Experience .expBranded .expStory>p{max-width:62ch!important;font-size:15px!important;line-height:1.6!important;color:#3d443f!important}
+.v28Experience .expBranded .expColumns{clear:right;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))!important}
+.v28Experience .expBranded .expColumns>div{line-height:1.5!important}
+.v28Experience .expBranded .expColumns span{display:block;margin-top:6px;font-size:13px!important;line-height:1.5!important;color:#4b514b!important}
+/* Keep the summary sentence clear of the floated number. */
+.v28Experience .expBranded.open .experienceSummary p{max-width:calc(100% - 170px)!important}
+.expBrandHero{position:relative;z-index:2;float:right;display:grid;gap:10px;width:clamp(240px,21vw,280px);margin:calc(78px - var(--sumH,228px)) 0 10px clamp(28px,3vw,48px)}
+.expBrandHero>p{margin:0;display:grid;gap:5px}
+.expBrandHero b{font-family:var(--font-serif,Georgia,serif);font-size:clamp(48px,4.4vw,64px);font-weight:400;line-height:.95;letter-spacing:-.04em;color:var(--exp-accent)}
+.expBrandHero>p span{max-width:30ch;font-size:13px;line-height:1.4;color:var(--exp-ink)}
+.expBrandHero .expArt{position:relative;display:block;margin:4px 0 0}
+/* Accenture: the OpenAI API window, in OpenAI's black and white with Accenture purple on the answer. */
+.expApi{overflow:hidden;border-radius:12px;background:#0f0f10;color:#e9e9ea;box-shadow:0 22px 34px -20px #1b0a2c99,0 4px 10px -6px #0006;font:12px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace}
+.expApiBar{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #ffffff14;font:600 11px/1.2 Inter,system-ui,sans-serif}
+.expApi .expApiBar span{color:#cfcfd2!important}
+.expApiBar img{width:15px;height:15px;filter:invert(1)}
+.expApiBar i{width:7px;height:7px;margin-left:auto;border-radius:50%;background:#3ddc84;box-shadow:0 0 0 3px #3ddc8422}
+.expApiBody{display:grid;gap:3px;padding:12px 14px 14px}
+.expApi .expApiBody p{display:flex;gap:10px;margin:0!important;font:12px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace!important;color:#e9e9ea!important}
+.expApi .expApiBody p span{width:64px;color:#8e8e93!important}
+.expApi .expApiBody p em{font-style:normal;color:#8e8e93!important}
+.expApiOut{display:grid;gap:3px;margin-top:10px;padding:10px 12px;border-radius:8px;background:#1c1c1f;border-left:3px solid #a100ff}
+.expApiOut b{justify-self:start;padding:2px 7px;border-radius:4px;background:#a100ff;color:#fff;font-size:10px;letter-spacing:.06em}
+.expApi .expApiOut strong{font-weight:600;color:#fff!important}
+.expApi .expApiOut small{font-size:10.5px;color:#9fe3b8!important}
+/* Palmer: Sparty with a coach's speech bubble. */
+.expSparty{display:flex!important;align-items:flex-start;gap:6px}
+.expSparty img{width:auto;height:150px;filter:drop-shadow(0 10px 10px #12352c33)}
+.expSparty .expSpartyBubble{position:relative;margin-top:14px;padding:9px 12px;border-radius:14px 14px 14px 4px;background:#18453b;color:#fff;font:500 18px/1.1 Caveat,cursive;transform:rotate(-3deg)}
+/* Drawn objects (slide, map) and the Shelby share one footprint. */
+.expSvg{display:block;width:100%;height:auto;max-height:140px}
+.expSvg.expSlide{max-height:none;width:calc(100% + 20px)}
+.expShelby{width:100%}
+.expShelby .lcMarkCar{display:block;width:100%;height:auto}/* Ford Credit: the Mach-E with a dealership hang tag on the mirror. */
+.expCar{width:calc(100% + 40px);margin:-28px 0 0 -20px!important}
+.expCar .expCarBody{display:block;width:100%;height:auto}
+.expCar .meTrails{display:none}
+.expCarTag{position:absolute;left:50%;top:56%;display:grid;gap:1px;padding:6px 9px 7px;border-radius:4px 4px 10px 10px;background:#fffdf6;border-top:5px solid #1f4d8c;box-shadow:0 12px 20px -12px #0c244777,0 2px 6px -3px #0c244744;transform:rotate(3deg);transform-origin:50% -12px}
+.expCarTag::before{content:"";position:absolute;left:50%;top:-17px;width:1px;height:12px;background:#5b6470}
+.expCarTag span{font:700 7px/1.2 ui-monospace,SFMono-Regular,monospace;letter-spacing:.12em;text-transform:uppercase;color:#1f4d8c}
+.expCarTag strong{font:650 11.5px/1.2 Inter,system-ui,sans-serif;color:#123466}
+.expCarTag small{display:none}
+/* Narrow enough to sit beside the floated number instead of dropping below it. */
+.v28Experience .expBranded .expMetricRow{max-width:calc(100% - clamp(240px,21vw,280px) - clamp(28px,3vw,48px))!important;grid-template-columns:repeat(auto-fit,minmax(110px,1fr))!important}
+.v28Experience .expBranded .expMetricRow span{font-size:12px!important;line-height:1.35!important;color:#5b635d!important}
+.v28Experience .expBranded .expMetricRow b{display:block;margin-bottom:3px;font-family:var(--font-serif,Georgia,serif);font-size:24px;font-weight:400;line-height:1.1;color:var(--exp-ink)}
+.v28Experience .expBranded .expNote{clear:both;max-width:72ch;margin-top:18px!important;padding-top:14px!important;font-size:13px!important;color:#4b514b!important}
+.v28Experience .expBranded .expColumns strong{color:var(--exp-ink)}
+.v28Experience .expBranded .expCaseStudyLink{display:inline-flex;align-items:center;gap:6px;margin-top:20px;padding:11px 20px!important;border:0!important;border-radius:999px!important;background:var(--exp-accent)!important;color:#fff!important;text-decoration:none!important;cursor:pointer}
+.v28Experience .expBranded .expCaseStudyLink:hover{background:var(--exp-ink)!important}
+@media(prefers-reduced-motion:reduce){.v28Experience .experienceItem.expBranded::before,.v28Experience .expToggle{transition:none}}
+@media(max-width:900px){
+ .v28Experience .expBranded .expMetricRow{max-width:none!important}
+ .expBrandHero{float:none;width:auto;margin:0 0 12px;grid-template-columns:auto auto;align-items:center;justify-content:space-between}
+ .expBrandHero .expArt{margin:0}.expApi{width:250px}.expSvg{width:220px}.expSparty img{height:120px}.expShelby{width:230px;margin:0!important}.expCar{width:220px;margin:0!important}
+}
+@media(max-width:760px){
+ .v28Experience .experienceIntro{grid-template-columns:1fr;gap:12px}
+ .v28Experience .experienceIntro p{max-width:54ch}
+ .v28Experience .experienceSummary{grid-template-columns:24px 44px minmax(0,1fr) 25px!important;gap:11px!important;padding:24px 2px!important}
+ .v28Experience .experienceIndex{grid-column:1;grid-row:1}
+ .v28Experience .experienceSummary .companyLogo{grid-column:2;grid-row:1}
+ .v28Experience .experienceSummary>div:not(.companyLogo){grid-column:3;grid-row:1}
+ .v28Experience .experienceSummary time{grid-column:3!important;grid-row:2!important;margin:0!important;padding:0}
+ .v28Experience .expToggle{grid-column:4;grid-row:1}
+ .v28Experience .experienceDetail>div{padding-left:0!important;padding-right:0!important}
+}
+

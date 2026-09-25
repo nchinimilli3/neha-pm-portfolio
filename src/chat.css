@@ -1,7 +1,6 @@
 /* Chat case: iMessage anatomy, stored vs. disappearing state, and a message path. */
 .case-chat{--chat-blue:#0a84ff;--chat-gray:#e5e5ea;--chat-ink:#18243a;--chat-muted:#434b56}
 
-
 /* Stored ink vs. disappearing ink */
 .chatInk{display:grid;grid-template-columns:1.2fr .8fr;gap:64px}
 .chatInk h3{display:flex;align-items:center;gap:12px;margin:0 0 24px;font-size:24px;color:var(--chat-ink)}

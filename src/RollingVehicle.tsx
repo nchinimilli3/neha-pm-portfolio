@@ -1,4 +1,3 @@
-import React from 'react';
 import './rolling-vehicle.css';
 
 // A real vehicle image that can drive. Each wheel is the same pixels cut out of the source

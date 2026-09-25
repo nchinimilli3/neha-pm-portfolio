@@ -15,8 +15,6 @@
 .lcCar{position:absolute;z-index:2;top:2px;left:var(--pos);width:76px;translate:-50% 0;transition:left .18s linear}
 .lcCar svg{display:block;width:76px;height:31.5px;overflow:visible}
 
-
-
 .lcRoad.isMoving .lcWheel{animation:lcSpin .35s linear infinite}
 @keyframes lcSpin{to{transform:rotate(360deg)}}
 .lcRoad.isMoving[data-traveler=car] .lcCar svg,.lcRoad.isMoving[data-traveler=ev] .lcCar svg,.lcRoad.isMoving[data-traveler=train] .lcCar svg,.lcRoad.isMoving[data-traveler=cablecar] .lcCar svg{animation:lcRumble .18s ease-in-out infinite}

@@ -4,8 +4,21 @@
     {
       "name": "dev",
       "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "npx vite --port ${PORT:-5173} --strictPort"],
+      "runtimeArgs": [
+        "-c",
+        "npx vite --port ${PORT:-5173} --strictPort"
+      ],
       "port": 5173,
+      "autoPort": true
+    },
+    {
+      "name": "prod",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "npx vite preview --port ${PORT:-4173} --strictPort"
+      ],
+      "port": 4173,
       "autoPort": true
     }
   ]

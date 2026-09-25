@@ -6,7 +6,6 @@ import './case-brand.css';
    Neha OS chrome (red closes it); inside, the page takes on that company's
    palette and type voice, which live in case-brand.css. */
 
-const asset=(src:string)=>{const clean=src.replace(/^\/+/,'');return import.meta.env.DEV?`/${clean}`:`${import.meta.env.BASE_URL}${clean}`};
 
 export const CASE_FILES:Record<string,string>={
  fcvf:'customer-value-framework',accenture:'trainer-matching.app',finsimple:'previous-estimates',kohler:'ship-anywhere',
@@ -14,18 +13,24 @@ export const CASE_FILES:Record<string,string>={
  scheduler:'scheduler.html',chat:'imessage.html'
 };
 
+/* Home stays mounted under an open case, parked with content-visibility:hidden
+   so it keeps its layout; closing a case then uncovers the desktop instead of
+   rebuilding it inside the transition. Home's scroll-driven scenes skip their
+   work while parked and redraw on HOME_SHOWN, which fires synchronously as home
+   comes back (before the closing transition takes its snapshot). */
+export const isParked=(el:Element|null|undefined)=>!!el?.closest('[data-parked]');
+export const HOME_SHOWN='homeshown';
+
 /* Grow a desktop window (or a fun-build window) into the full-screen case,
    then hand off to the router. */
 export function maximizeInto(from:Element|null|undefined,id:string,go:()=>void){
  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  if(!from||reduce){go();return}
  // Preferred: a native view transition. The browser morphs the window into the
- // full-screen case (and its title bar into the case's bar) on the compositor.
+ // full-screen case on the compositor.
  const vt=(document as Document&{startViewTransition?:(update:()=>void)=>unknown}).startViewTransition;
  if(typeof vt==='function'){
-  const win=from as HTMLElement,bar=win.querySelector<HTMLElement>('.dhWinBar,.osWinBar');
-  win.style.viewTransitionName='case-window';
-  if(bar)bar.style.viewTransitionName='case-bar';
+  setInsets(from.getBoundingClientRect());
   const t=vt.call(document,()=>{flushSync(go);window.scrollTo({top:0,behavior:'instant' as ScrollBehavior})});
   tagTransition(t,'max');
   return;
@@ -48,11 +53,24 @@ export function maximizeInto(from:Element|null|undefined,id:string,go:()=>void){
  window.setTimeout(finish,800);
 }
 
-type VT={finished:Promise<unknown>};
+type VT={finished:Promise<unknown>;ready:Promise<unknown>};
+// The window's rect, so the case page zooms out of (and back into) exactly that window.
+// They're set on the transition's own pseudo tree: a custom property on <html>
+// would restyle the whole page just as the transition starts.
+let insetSheet:HTMLStyleElement|null=null;
+function setInsets(r:DOMRect){
+ const px=(v:number)=>`${Math.max(0,v).toFixed(1)}px`;
+ if(!insetSheet)insetSheet=document.head.appendChild(document.createElement('style'));
+ insetSheet.textContent=`html::view-transition{--vt-t:${px(r.top)};--vt-l:${px(r.left)};--vt-sx:${(r.width/window.innerWidth).toFixed(4)};--vt-sy:${(r.height/window.innerHeight).toFixed(4)}}`;
+}
 // Direction lives on <html> so the CSS can play the transition forwards or backwards.
+// Closing becomes 'fade' mid-flight when its window is off screen.
 function tagTransition(t:unknown,dir:'max'|'min'){
  const root=document.documentElement;root.dataset.vt=dir;
- (t as VT)?.finished?.finally(()=>{if(root.dataset.vt===dir)delete root.dataset.vt});
+ // A skipped transition (hidden tab, a second click mid-flight) still navigates; it just shouldn't log an error.
+ (t as VT)?.ready?.catch(()=>{});
+ const mine=dir==='min'?['min','fade']:[dir];
+ (t as VT)?.finished?.finally(()=>{if(mine.includes(root.dataset.vt||''))delete root.dataset.vt});
 }
 
 /* Closing a case: the page shrinks back into the window it came from (the
@@ -62,7 +80,6 @@ export function minimizeTo(id:string,back:()=>void){
  const vt=(document as Document&{startViewTransition?:(update:()=>void)=>unknown}).startViewTransition;
  if(typeof vt!=='function'||window.matchMedia('(prefers-reduced-motion: reduce)').matches){back();return}
  document.documentElement.dataset.vt='min';
- let named:HTMLElement[]=[];
  const t=vt.call(document,()=>{
   // Animation frames are paused while the browser captures the transition, so
   // everything here is synchronous: home restores its scroll and draws the
@@ -70,14 +87,10 @@ export function minimizeTo(id:string,back:()=>void){
   flushSync(back);
   const win=document.querySelector<HTMLElement>(`[data-case="${id}"]`);
   const r=win?.getBoundingClientRect();
-  if(win&&r&&r.bottom>0&&r.top<window.innerHeight&&r.width>0){
-   const bar=win.querySelector<HTMLElement>('.dhWinBar,.osWinBar');
-   win.style.viewTransitionName='case-window';named.push(win);
-   if(bar){bar.style.viewTransitionName='case-bar';named.push(bar)}
-  }
+  if(win&&r&&r.bottom>0&&r.top<window.innerHeight&&r.width>0)setInsets(r);
+  else document.documentElement.dataset.vt='fade';
  });
  tagTransition(t,'min');
- (t as VT)?.finished?.finally(()=>{named.forEach(el=>{el.style.viewTransitionName=''});named=[]});
 }
 
 export function CaseWindowBar({id,onBack,children}:{id:string;onBack:()=>void;children?:React.ReactNode}){

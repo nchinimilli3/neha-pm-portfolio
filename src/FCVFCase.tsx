@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { InterviewRoom, SurveyDemo } from './FCVFResearch';
 import LifecycleRoad from './LifecycleRoad';
-import { DecisionMoment, Supporting } from './CaseDecision';
+import { DecisionMoment } from './CaseDecision';
 import './fcvf-visuals.css';
 
 const asset = (src: string) => `${import.meta.env.BASE_URL}${src}`;

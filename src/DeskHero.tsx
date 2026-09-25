@@ -1,6 +1,6 @@
 import React,{useCallback,useEffect,useRef,useState} from 'react';
 import './desk-hero.css';
-import {CASE_FILES,maximizeInto} from './CaseWindow';
+import {CASE_FILES,HOME_SHOWN,isParked,maximizeInto} from './CaseWindow';
 import {ShelbyMark} from './CarArt';
 
 /* The home hero is my desk. Scrolling pins the room, the camera walks into the
@@ -24,7 +24,8 @@ const WINDOWS:Record<string,{img:string;note:string;pos?:string}>={
  estee:{img:'project-media/estee-home-mockup.png',note:'Top 5 finalist'}
 };
 // Where each window lands on the desktop, in viewport percent.
-const SLOTS=[[2.5,7],[30.5,9.5],[58.5,6],[4.5,48],[32.5,50.5],[60.5,47]];
+// Second row stays above the dock: the middle window sits directly over it.
+const SLOTS=[[2.5,7],[30.5,9.5],[58.5,6],[4.5,47],[32.5,48.5],[60.5,46]];
 
 const BOOKS=[
  {t:'A Thousand Splendid Suns',c:'#6d2631',f:'#d6b066',h:118,w:26},
@@ -64,14 +65,25 @@ function GoldenGateView(){
    <linearGradient id={`dhBay${u}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" className="bay1"/><stop offset="1" className="bay2"/></linearGradient>
    <clipPath id={`dhHangClip${u}`}><path d="M-6 196Q40 222 82 118Q150 214 222 136Q256 196 306 212L306 226L-6 232Z"/></clipPath>
    <filter id={`dhFogBlur${u}`} x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="7"/></filter>
+   <radialGradient id={`dhHalo${u}`}><stop offset="0" className="halo1"/><stop offset="1" className="halo2"/></radialGradient>
+   <linearGradient id={`dhHaze${u}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" className="haze0"/><stop offset=".86" className="haze1"/><stop offset="1" className="haze2"/></linearGradient>
+   <linearGradient id={`dhSheen${u}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" className="sheen1"/><stop offset="1" className="sheen2"/></linearGradient>
+   <linearGradient id={`dhRefFade${u}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#fff" stopOpacity=".5"/><stop offset="1" stopColor="#fff" stopOpacity="0"/></linearGradient>
+   <mask id={`dhRefMask${u}`}><rect y="232" width="300" height="80" fill={`url(#dhRefFade${u})`}/></mask>
   </defs>
   <rect width="300" height="330" fill={`url(#dhSky${u})`}/>
-  <circle className="dhSunDisc" cx="226" cy="92" r="17"/>
+  <g className="dhSunDisc"><circle cx="226" cy="92" r="46" fill={`url(#dhHalo${u})`}/><circle cx="226" cy="92" r="17"/></g>
   <g className="dhStars">{[[30,40],[70,22],[120,52],[180,30],[250,46],[280,20],[150,14],[210,70]].map(([x,y],i)=><circle key={i} cx={x} cy={y} r={i%3?0.9:1.3}/>)}</g>
+  {/* Distant ridge, far shore, then the near headland: each step back is paler and bluer. */}
+  <path className="dhRidge" d="M150 224C176 206 200 200 226 204C252 208 276 196 300 192V236H150Z"/>
   <path className="dhHillFar" d="M0 214C30 196 58 180 96 186C120 190 136 204 160 210L160 236H0Z"/>
-  <path className="dhHillNear" d="M0 226C22 208 44 200 70 206C88 210 98 222 112 232L112 250H0Z"/>
   <path className="dhHillFar" d="M300 206C274 200 250 206 232 216C218 224 208 232 196 236H300Z"/>
+  <rect y="186" width="300" height="52" fill={`url(#dhHaze${u})`}/>
+  <path className="dhHillNear" d="M0 226C22 208 44 200 70 206C88 210 98 222 112 232L112 250H0Z"/>
   <rect y="234" width="300" height="96" fill={`url(#dhBay${u})`}/>
+  {/* The sky's reflection brightens the water toward the horizon. */}
+  <rect y="234" width="300" height="34" fill={`url(#dhSheen${u})`}/>
+  <g className="dhBridgeRef" mask={`url(#dhRefMask${u})`}><rect x="77" y="232" width="15" height="70"/><rect x="218" y="230" width="12.4" height="44"/><path d="M-6 232L306 222L306 226L-6 237Z"/></g>
   <g className="dhWaves">{[246,262,280,300,318].map((y,i)=><path key={y} d={`M-40 ${y}q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0`} style={{animationDuration:`${7+i*1.6}s`,opacity:.18+i*.03}}/>)}</g>
   <g className="dhGlint">{[[40,258,30],[130,270,44],[210,262,26],[90,292,36],[240,300,40]].map(([x,y,w],i)=><rect key={i} x={x} y={y} width={w} height="1.4" rx=".7"/>)}</g>
   {/* The bridge, International Orange, receding from the Presidio side */}
@@ -79,8 +91,8 @@ function GoldenGateView(){
    <path className="dhCable" d="M-6 196Q40 222 82 118Q150 214 222 136Q256 196 306 212"/>
    <g className="dhHangers" clipPath={`url(#dhHangClip${u})`}>{Array.from({length:34},(_,i)=>{const x=-2+i*9;return <line key={i} x1={x} x2={x} y1="0" y2="226"/>})}</g>
    <path className="dhDeck" d="M-6 224L306 214L306 219L-6 230Z"/>
-   <g className="dhTower"><rect x="77" y="116" width="4" height="118"/><rect x="88" y="120" width="4" height="114"/><rect x="77" y="130" width="15" height="3"/><rect x="77" y="156" width="15" height="3"/><rect x="77" y="182" width="15" height="3"/><rect x="77" y="206" width="15" height="3"/></g>
-   <g className="dhTower"><rect x="218" y="134" width="3.4" height="94"/><rect x="227" y="137" width="3.4" height="91"/><rect x="218" y="146" width="12.4" height="2.6"/><rect x="218" y="166" width="12.4" height="2.6"/><rect x="218" y="186" width="12.4" height="2.6"/><rect x="218" y="204" width="12.4" height="2.6"/></g>
+   <g className="dhTower"><rect x="77" y="116" width="4" height="118"/><rect x="88" y="120" width="4" height="114"/><rect x="77" y="130" width="15" height="3"/><rect x="77" y="156" width="15" height="3"/><rect x="77" y="182" width="15" height="3"/><rect x="77" y="206" width="15" height="3"/><rect className="dhTowerShade" x="79.4" y="116" width="1.6" height="118"/><rect className="dhTowerShade" x="90.4" y="120" width="1.6" height="114"/></g>
+   <g className="dhTower dhTowerFar"><rect x="218" y="134" width="3.4" height="94"/><rect x="227" y="137" width="3.4" height="91"/><rect x="218" y="146" width="12.4" height="2.6"/><rect x="218" y="166" width="12.4" height="2.6"/><rect x="218" y="186" width="12.4" height="2.6"/><rect x="218" y="204" width="12.4" height="2.6"/></g>
    <g className="dhBridgeLights">{Array.from({length:18},(_,i)=><circle key={i} cx={-2+i*18} cy={225-i*.55} r="1.2"/>)}<circle cx="84" cy="116" r="1.8"/><circle cx="224" cy="134" r="1.6"/></g>
   </g>
   <g className="dhFog" filter={`url(#dhFogBlur${u})`}><ellipse cx="60" cy="214" rx="90" ry="14"/><ellipse cx="220" cy="224" rx="110" ry="12"/><ellipse cx="150" cy="196" rx="70" ry="8"/></g>
@@ -97,7 +109,9 @@ function CanonAE1({onShoot}:{onShoot:()=>void}){
     <pattern id="aeLeather" width="3" height="3" patternUnits="userSpaceOnUse"><rect width="3" height="3" fill="#1b1b1c"/><circle cx="1.5" cy="1.5" r=".7" fill="#262628"/></pattern>
     <radialGradient id="aeGlass" cx=".4" cy=".35" r=".7"><stop offset="0" stopColor="#6d7fb8"/><stop offset=".25" stopColor="#2b2f55"/><stop offset=".6" stopColor="#101118"/><stop offset="1" stopColor="#050506"/></radialGradient>
    </defs>
+   <path d="M14 118Q100 140 186 118" fill="none" stroke="#060607" strokeWidth="7"/>
    {/* top plate, dials, prism */}
+   <path d="M88 7V3H113V7M92 3V0H109V3" fill="#55565a" stroke="#bdbdbb" strokeWidth="1.2"/>
    <rect x="22" y="30" width="22" height="10" rx="2" fill="url(#aeChromeV)"/><rect x="26" y="25" width="14" height="6" rx="2" fill="#1b1b1c"/>
    <rect x="148" y="28" width="28" height="12" rx="3" fill="url(#aeChromeV)"/><rect x="140" y="33" width="10" height="6" rx="2" fill="#2a2a2b"/>
    <circle cx="132" cy="36" r="4" fill="url(#aeChromeV)" stroke="#6b6b69" strokeWidth=".6"/>
@@ -112,11 +126,15 @@ function CanonAE1({onShoot}:{onShoot:()=>void}){
    <rect x="8" y="116" width="184" height="10" rx="5" fill="url(#aeChrome)" opacity=".9"/>
    <rect x="158" y="60" width="16" height="7" rx="2" fill="#2d2d2f" stroke="#555" strokeWidth=".5"/>
    <rect x="2" y="56" width="7" height="6" rx="1.5" fill="url(#aeChromeV)"/><rect x="191" y="56" width="7" height="6" rx="1.5" fill="url(#aeChromeV)"/>
+   <circle cx="28" cy="75" r="6" fill="url(#aeChromeV)"/><path d="M28 74l-3 17" stroke="#b9b9b6" strokeWidth="3"/>
+   {[16,184].map(x=><g key={x}><circle cx={x} cy="47" r="1.5" fill="#686868"/><path d={`M${x-1} 47h2`} stroke="#d9d9d4" strokeWidth=".5"/></g>)}
+   <ellipse cx="103" cy="95" rx="39" ry="36" fill="#070708"/>
    {/* FD 50mm f/1.8 */}
    <circle cx="100" cy="90" r="35" fill="#101011"/>
    <circle cx="100" cy="90" r="35" fill="none" stroke="#2c2c2e" strokeWidth="5" strokeDasharray="1.4 1.4"/>
    <circle cx="100" cy="90" r="28.5" fill="#18181a" stroke="url(#aeChromeV)" strokeWidth="2.2"/>
    <circle cx="100" cy="90" r="21" fill="url(#aeGlass)"/>
+   <path d="M99 81l8 3 3 8-6 7-9-1-5-8 4-7Z" fill="#03050b" opacity=".7"/><path d="M85 82q11-13 23-4" stroke="#98aecb" strokeOpacity=".4" fill="none"/>
    <circle cx="100" cy="90" r="13.5" fill="none" stroke="#3a4274" strokeOpacity=".7"/>
    <ellipse cx="93" cy="82" rx="6" ry="3.6" fill="#fff" opacity=".28" transform="rotate(-30 93 82)"/>
    <circle cx="108" cy="98" r="1.8" fill="#fff" opacity=".18"/>
@@ -130,12 +148,16 @@ function HydroFlask(){
  // Black powder-coat bottle, flex cap, with the Accenture mark. Tap it and it wobbles.
  const [n,setN]=useState(0);
  return <div className={`dhFlask dh3d ${n?'isWobble':''}`} key={n} title="Stay hydrated" onClick={()=>setN(v=>v+1)}><svg viewBox="0 0 60 176" aria-hidden="true">
-  <defs><linearGradient id="hfBody" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#0d0d0f"/><stop offset=".3" stopColor="#2a2a2e"/><stop offset=".48" stopColor="#3c3c41"/><stop offset=".7" stopColor="#1d1d20"/><stop offset="1" stopColor="#0a0a0b"/></linearGradient></defs>
+  <defs><linearGradient id="hfBody" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#1a1b1e"/><stop offset=".08" stopColor="#0b0b0d"/><stop offset=".4" stopColor="#1e1e22"/><stop offset=".66" stopColor="#3e3e44"/><stop offset=".8" stopColor="#26262a"/><stop offset="1" stopColor="#0a0a0b"/></linearGradient>
+  <linearGradient id="hfCap" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#111113"/><stop offset=".65" stopColor="#35353a"/><stop offset="1" stopColor="#141416"/></linearGradient>
+  <linearGradient id="hfSteel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#5d5f62"/><stop offset=".6" stopColor="#d9dadb"/><stop offset=".75" stopColor="#f4f4f4"/><stop offset="1" stopColor="#6b6d70"/></linearGradient></defs>
   <path d="M22 8Q30 -6 38 8" fill="none" stroke="#1b1b1d" strokeWidth="4" strokeLinecap="round"/>
-  <rect x="15" y="6" width="30" height="20" rx="4" fill="#1b1b1d"/><rect x="15" y="6" width="30" height="4" rx="2" fill="#2e2e32"/>
-  <rect x="18" y="26" width="24" height="6" fill="#b9b9bd"/>
+  <rect x="15" y="6" width="30" height="20" rx="4" fill="url(#hfCap)"/><rect x="15" y="6" width="30" height="4" rx="2" fill="#2e2e32"/>
+  {Array.from({length:12},(_,i)=><path key={i} d={`M${17+i*2.3} 12v10`} stroke="#55545a" strokeOpacity=".45" strokeWidth=".7"/>)}
+  <rect x="18" y="26" width="24" height="6" fill="url(#hfSteel)"/>
+  <path d="M19 27h22" stroke="#fff" strokeOpacity=".5" strokeWidth=".8"/>
   <path d="M18 32Q4 38 4 54V164Q4 174 14 174H46Q56 174 56 164V54Q56 38 42 32Z" fill="url(#hfBody)"/>
-  <path d="M12 58V160" stroke="#fff" strokeOpacity=".12" strokeWidth="4" strokeLinecap="round"/>
+  <path d="M7 162q23 9 46 0" fill="none" stroke="#5c5c60" strokeOpacity=".5"/><path d="M41 60V158" stroke="#fff" strokeOpacity=".16" strokeWidth="5" strokeLinecap="round"/><path d="M44 64V150" stroke="#fff" strokeOpacity=".22" strokeWidth="1.2" strokeLinecap="round"/><path d="M6.5 60V160" stroke="#8fa0b8" strokeOpacity=".22" strokeWidth="1.2"/><path d="M22 33Q30 30 38 33" stroke="#fff" strokeOpacity=".18" fill="none"/>
   <path d="M26 88L36 96L26 104" fill="none" stroke="#a100ff" strokeWidth="4.2" strokeLinejoin="miter"/>
   <text x="30" y="120" textAnchor="middle" fontFamily="Helvetica,Arial,sans-serif" fontSize="7.4" fontWeight="600" fill="#f5f5f5">accenture</text>
  </svg></div>
@@ -146,17 +168,23 @@ function MsuCappuccino(){
  const [sip,setSip]=useState(0);
  return <div className={`dhCappa dh3d ${sip?'isSip':''}`} key={sip} title="Take a sip" onClick={()=>setSip(v=>v+1)}><svg className="dhSteam" viewBox="0 0 60 80" aria-hidden="true"><path d="M20 76c-9-11 9-18 0-31s4-20 4-27"/><path d="M36 76c-9-11 9-18 0-31s4-20 4-27"/></svg>
   <svg viewBox="0 0 120 104" aria-hidden="true">
-   <defs><linearGradient id="msuBody" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#0f3a2f"/><stop offset=".4" stopColor="#1f5b4a"/><stop offset=".62" stopColor="#2a6b58"/><stop offset="1" stopColor="#0e3429"/></linearGradient>
+   <defs><linearGradient id="msuBody" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#0b3026"/><stop offset=".3" stopColor="#154a3c"/><stop offset=".66" stopColor="#2c7560"/><stop offset=".8" stopColor="#1c5646"/><stop offset="1" stopColor="#0c3228"/></linearGradient>
+   <linearGradient id="msuHandle" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#24664f"/><stop offset="1" stopColor="#0f3a2f"/></linearGradient>
+   <radialGradient id="msuSaucer" cx=".6" cy=".35" r=".7"><stop offset="0" stopColor="#ffffff"/><stop offset=".6" stopColor="#efece5"/><stop offset="1" stopColor="#cfcac0"/></radialGradient>
    <radialGradient id="foam" cx=".5" cy=".5" r=".6"><stop offset="0" stopColor="#f3e6cf"/><stop offset=".7" stopColor="#dcbf92"/><stop offset="1" stopColor="#9a6a3d"/></radialGradient></defs>
-   <ellipse cx="56" cy="92" rx="54" ry="10" fill="#e9e6df"/><ellipse cx="56" cy="90" rx="44" ry="7" fill="#f7f5f0"/>
-   <path d="M90 34q20 2 18 20t-20 16" fill="none" stroke="#174c3e" strokeWidth="8" strokeLinecap="round"/>
+   <ellipse cx="56" cy="93" rx="54" ry="10" fill="#bdb7ac"/><ellipse cx="56" cy="91.5" rx="54" ry="9.5" fill="url(#msuSaucer)"/><ellipse cx="56" cy="90" rx="42" ry="6.5" fill="#f4f1ea"/>
+   <ellipse cx="56" cy="91" rx="33" ry="5" fill="none" stroke="#c6c1b5" strokeWidth="1.3"/>
+   <ellipse cx="50" cy="90" rx="34" ry="3.2" fill="#0e2a20" opacity=".22"/>
+   <path d="M90 34q20 2 18 20t-20 16" fill="none" stroke="url(#msuHandle)" strokeWidth="8" strokeLinecap="round"/>
+   <path d="M92 35q16 3 13.5 18" fill="none" stroke="#0a2a21" strokeOpacity=".5" strokeWidth="1.2"/>
    <path d="M16 20H96L91 80Q90 90 80 90H32Q22 90 21 80Z" fill="url(#msuBody)"/>
-   <ellipse cx="56" cy="20" rx="40" ry="8" fill="#0d3228"/>
+   <path d="M99 37q9 5 7 17" fill="none" stroke="#8cc0a8" strokeOpacity=".8" strokeWidth="1.4" strokeLinecap="round"/><ellipse cx="56" cy="20" rx="40" ry="8" fill="#f0eee2"/><path d="M17 20a39 7.6 0 0 0 78 0" fill="none" stroke="#fff" strokeOpacity=".7" strokeWidth="1"/><ellipse cx="56" cy="21" rx="38" ry="7" fill="#724b2d"/>
    <ellipse cx="56" cy="21" rx="36" ry="6.4" fill="url(#foam)"/>
    <path d="M56 26c-6-3-9-5-9-8a4 4 0 0 1 9-1 4 4 0 0 1 9 1c0 3-3 5-9 8Z" fill="#fbf5ea" opacity=".95"/>
    <text x="56" y="55" textAnchor="middle" fontFamily="Helvetica,Arial,sans-serif" fontWeight="800" fontSize="15" fill="#f4efe4" letterSpacing="1">MSU</text>
    <text x="56" y="67" textAnchor="middle" fontFamily="Helvetica,Arial,sans-serif" fontSize="6.2" fill="#d9e6df" letterSpacing="1.6">SPARTANS</text>
-   <path d="M24 26V76" stroke="#fff" strokeOpacity=".1" strokeWidth="4" strokeLinecap="round"/>
+   <path d="M80 30L77 78" stroke="#fff" strokeOpacity=".2" strokeWidth="5" strokeLinecap="round"/><path d="M84 31L81.5 70" stroke="#fff" strokeOpacity=".45" strokeWidth="1.2" strokeLinecap="round"/>
+   <ellipse cx="56" cy="22" rx="36" ry="6.4" fill="none" stroke="#3b2413" strokeOpacity=".35" strokeWidth="1.4"/>
   </svg>
  </div>
 }
@@ -164,63 +192,90 @@ function MsuCappuccino(){
 function Lamp({on,onToggle}:{on:boolean;onToggle:()=>void}){
  return <button type="button" className={`dhLamp ${on?'isOn':''}`} tabIndex={-1} title={on?'Lamp off':'Lamp on'} onClick={onToggle} aria-pressed={on} aria-label={on?'Turn the desk lamp off':'Turn the desk lamp on'}>
   <svg viewBox="0 0 200 320" aria-hidden="true">
-   <ellipse cx="150" cy="306" rx="40" ry="9" fill="#1c1a19" opacity=".35"/>
-   <rect x="112" y="290" width="76" height="16" rx="7" fill="#2f2e2c"/>
-   <defs><linearGradient id="lampShade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#1e1d1c"/><stop offset=".45" stopColor="#4a4745"/><stop offset="1" stopColor="#191817"/></linearGradient></defs>
+   <defs>
+    <linearGradient id="lampShade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#141312"/><stop offset=".55" stopColor="#3c3a38"/><stop offset=".78" stopColor="#5a5754"/><stop offset="1" stopColor="#1c1b1a"/></linearGradient>
+    <linearGradient id="lampBase" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#121212"/><stop offset=".62" stopColor="#3d3b39"/><stop offset=".8" stopColor="#6a6763"/><stop offset="1" stopColor="#1a1919"/></linearGradient>
+    <radialGradient id="lampInner" cx=".5" cy=".9" r=".9"><stop offset="0" stopColor="#fff3cf"/><stop offset=".5" stopColor="#e9c98a"/><stop offset="1" stopColor="#8c7450"/></radialGradient>
+    <filter id="lampBlur" x="-30%" y="-100%" width="160%" height="300%"><feGaussianBlur stdDeviation="3"/></filter>
+   </defs>
+   <ellipse className="dhLampShadow" cx="124" cy="308" rx="52" ry="8" fill="#1c1a19" opacity=".38" filter="url(#lampBlur)"/>
+   <ellipse cx="150" cy="298" rx="39" ry="10" fill="#141414"/><ellipse cx="150" cy="294" rx="38" ry="8" fill="url(#lampBase)"/><ellipse cx="150" cy="292" rx="30" ry="5" fill="#3a3836"/><path d="M160 288.5a30 5 0 0 0 18 -1.6" stroke="#9b978f" strokeOpacity=".7" fill="none"/>
    <path d="M150 292L126 176L64 104" fill="none" stroke="#3a3836" strokeWidth="6.5" strokeLinecap="round" strokeLinejoin="round"/>
+   <path d="M160 290L137 176L73 103" fill="none" stroke="#242423" strokeWidth="4"/><path d="M152 282L131 182L69 111" fill="none" stroke="#797772" strokeWidth="1"/>
    <path d="M142 280L122 186M118 170L74 118" fill="none" stroke="#8d8a86" strokeWidth="1.6" strokeDasharray="1.2 1.6"/>
    <circle cx="126" cy="176" r="7" fill="#2f2e2c" stroke="#5a5754"/><circle cx="126" cy="176" r="2.4" fill="#8d8a86"/>
    <circle cx="150" cy="290" r="5" fill="#2f2e2c"/><circle cx="66" cy="106" r="5" fill="#2f2e2c"/>
-   <g transform="rotate(-38 58 98)"><path d="M40 78h36l2 8H38Z" fill="#2f2e2c"/><path d="M36 86h44l22 40H14Z" fill="url(#lampShade)"/><ellipse cx="58" cy="126" rx="44" ry="7" className="dhBulb"/></g>
+   <g transform="rotate(-38 58 98)"><path d="M40 78h36l2 8H38Z" fill="#2f2e2c"/><path d="M36 86h44l22 40H14Z" fill="url(#lampShade)"/><path d="M78 87l21 37" stroke="#8d8a86" strokeOpacity=".55" strokeWidth="1.2"/><ellipse cx="58" cy="126" rx="44" ry="7" fill="#1b1a19"/><ellipse cx="58" cy="126" rx="41" ry="5.8" className="dhShadeInner" fill="url(#lampInner)"/><ellipse cx="58" cy="126.5" rx="14" ry="3.2" className="dhBulb"/></g>
   </svg>
  </button>
 }
 
 function PhotoFrame({eager=true}:{eager?:boolean}){
- // A 5×7 frame. Click it and it turns around to show what's written on the back.
- const [flip,setFlip]=useState(false);
- return <div className={`dhFrame dh3d ${flip?'isFlipped':''}`} title={flip?'Turn it back':'Turn it over'} onClick={()=>setFlip(f=>!f)}>
+ // A 5×7 frame with my headshot. It is just a photo on the desk.
+ return <div className="dhFrame" aria-hidden="true">
   <div className="dhFrameFace"><img src={asset('headshot.jpg')} alt="" loading={eager?'eager':'lazy'} decoding="async"/></div>
-  <div className="dhFrameBack"><span>hi! thanks for<br/>poking around :)</span><b>— n.c.</b></div>
  </div>
 }
 function Mustang(){
  const [rev,setRev]=useState(0);
- return <div className={`dhMustang dh3d ${rev?'isRev':''}`} key={rev} title="’67 Shelby GT500" onClick={()=>setRev(v=>v+1)}><ShelbyMark/>{rev>0&&<span className="dhVroom">vroom!</span>}</div>
+ return <div className={`dhMustang dh3d ${rev?'isRev':''}`} key={rev} title="’67 Shelby GT500" onClick={()=>setRev(v=>v+1)}><ShelbyMark/><img className="dhFordScript" src={asset('company-logos/ford-white-source.png')} alt="" aria-hidden="true"/>{rev>0&&<span className="dhVroom">vroom!</span>}</div>
 }
 
+// Where each click's bite lands, as [angle in degrees, depth] around the cookie's edge.
+const BITES:[number,number][]=[[-40,1],[25,1.05],[150,.95],[210,1.1],[95,1],[290,1.15]];
+// A slightly lumpy outline, so it reads as baked rather than stamped.
+const COOKIE_EDGE=(()=>{const n=22,pts=Array.from({length:n},(_,i)=>{const a=i/n*Math.PI*2,r=41+Math.sin(i*2.7)*1.6+Math.cos(i*1.3)*1.1;return [50+Math.cos(a)*r,50+Math.sin(a)*r*.97]});
+ return pts.map((p,i)=>{const q=pts[(i+1)%n],m=[(p[0]+q[0])/2,(p[1]+q[1])/2];return `${i?'':`M${((pts[n-1][0]+p[0])/2).toFixed(1)} ${((pts[n-1][1]+p[1])/2).toFixed(1)}`}Q${p[0].toFixed(1)} ${p[1].toFixed(1)} ${m[0].toFixed(1)} ${m[1].toFixed(1)}`}).join('')+'Z'})();
+const biteCircles=(k:number)=>BITES.slice(0,k).flatMap(([deg,d])=>{const a=deg*Math.PI/180,cx=50+Math.cos(a)*44,cy=50+Math.sin(a)*44,tx=-Math.sin(a),ty=Math.cos(a);
+ return [[cx,cy,11*d],[cx+tx*9,cy+ty*9,8.5*d],[cx-tx*9,cy-ty*9,8.5*d]] as [number,number,number][]});
+
 function CookieNapkin(){
- // Top-down: a folded paper napkin, crumbs, and a chocolate-chunk cookie with a bite out of it.
- return <div className="dhCookie"><svg viewBox="0 0 150 130" aria-hidden="true">
+ // A chocolate-chunk cookie on a napkin. Every click takes a bite; when it is gone, a fresh one appears.
+ const [bites,setBites]=useState(0);
+ const [chomp,setChomp]=useState(0);
+ const bite=()=>{setChomp(c=>c+1);setBites(b=>b>=BITES.length?0:b+1)};
+ const gone=bites>=BITES.length;
+ const cut=biteCircles(bites);
+ const last=bites>0&&!gone?BITES[bites-1]:null;
+ return <button type="button" className={`dhCookie ${gone?'isGone':''}`} onClick={bite} aria-label={gone?'Get a fresh cookie':'Take a bite of the cookie'} title={gone?'Another one?':'Take a bite'}>
+  <svg viewBox="0 0 150 130" aria-hidden="true">
   <defs>
-   <radialGradient id="ckBody" cx=".45" cy=".42" r=".62"><stop offset="0" stopColor="#e9c48c"/><stop offset=".55" stopColor="#d8a765"/><stop offset=".86" stopColor="#bf8546"/><stop offset="1" stopColor="#9c6531"/></radialGradient>
-   <mask id="ckBite"><rect width="100" height="100" fill="#fff"/><circle cx="86" cy="22" r="11"/><circle cx="92" cy="34" r="9"/><circle cx="78" cy="14" r="8"/></mask>
+   <radialGradient id="ckBody" cx=".42" cy=".38" r=".66"><stop offset="0" stopColor="#ecc991"/><stop offset=".45" stopColor="#dcae6c"/><stop offset=".78" stopColor="#c48a48"/><stop offset=".94" stopColor="#a86c33"/><stop offset="1" stopColor="#8a5424"/></radialGradient>
+   <radialGradient id="ckDome" cx=".38" cy=".3" r=".55"><stop offset="0" stopColor="#fff3d6" stopOpacity=".55"/><stop offset="1" stopColor="#fff3d6" stopOpacity="0"/></radialGradient>
+   <radialGradient id="ckChunk" cx=".35" cy=".3" r=".8"><stop offset="0" stopColor="#6b4027"/><stop offset=".5" stopColor="#3d2314"/><stop offset="1" stopColor="#24130a"/></radialGradient>
+   <filter id="ckTex" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".55" numOctaves="3" seed="11"/><feColorMatrix values="0 0 0 0 .45 0 0 0 0 .27 0 0 0 0 .1 0 0 0 1.4 -.62"/><feComposite in2="SourceGraphic" operator="in"/></filter>
+   <filter id="ckSoft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3.5"/></filter>
+   <clipPath id="ckClip"><path d={COOKIE_EDGE}/></clipPath>
+   <mask id="ckBite"><rect x="-20" y="-20" width="140" height="140" fill="#fff"/>{cut.map(([x,y,r],i)=><circle key={i} cx={x} cy={y} r={r} fill="#000"/>)}</mask>
   </defs>
   <g transform="rotate(-12 75 65)">
    <rect x="10" y="8" width="130" height="114" rx="3" fill="#fbfaf6"/>
    <rect x="16" y="14" width="118" height="102" rx="2" fill="none" stroke="#e9e4da" strokeWidth="1.2" strokeDasharray="2 2"/>
    <path d="M75 8V122M10 65H140" stroke="#ece7dd" strokeWidth="1"/>
-   <path d="M75 8V122" stroke="#fff" strokeWidth=".8" transform="translate(1 0)"/>
   </g>
-  {[[30,98,1.6],[112,34,1.3],[120,96,1.1],[36,30,1],[104,108,1.4],[24,70,.9]].map(([x,y,r],i)=><ellipse key={i} cx={x} cy={y} rx={r*1.3} ry={r} fill="#c48c50"/>)}
+  {[[30,98,1.6],[112,34,1.3],[120,96,1.1],[36,30,1],[104,108,1.4],[24,70,.9]].slice(0,2+bites).map(([x,y,r],i)=><ellipse key={i} cx={x} cy={y} rx={r*1.3} ry={r} fill="#c48c50"/>)}
   <g transform="translate(25 15)">
-   <ellipse cx="51" cy="54" rx="41" ry="39" fill="#3a2410" opacity=".22" filter="blur(3px)"/>
-   <g mask="url(#ckBite)">
-    <path d="M89.2 50.0 L87.5 58.6 L86.6 67.6 L79.8 73.8 L75.0 81.4 L67.1 85.5 L58.5 87.1 L50.0 90.0 L41.6 87.0 L32.8 85.8 L26.2 79.8 L20.1 73.8 L14.3 67.2 L9.6 59.2 L11.7 50.0 L12.2 41.4 L13.5 32.4 L17.2 23.8 L24.8 18.5 L32.8 14.4 L40.6 9.0 L50.0 12.0 L59.3 9.5 L67.0 14.8 L74.0 20.0 L80.0 26.1 L85.3 33.0 L90.4 40.8Z" fill="url(#ckBody)" stroke="#a86c35" strokeWidth=".8"/>
-    <path d="M28 44q8-6 16-2M50 64q7 4 14 1M36 72q4-5 10-5M62 40q6-4 12 0" fill="none" stroke="#f3dbb0" strokeWidth="1.1" strokeLinecap="round" opacity=".8"/>
-    <path d="M39.4 34.9 L36.1 39.3 L29.1 38.3 L29.9 33.0 L36.0 31.1Z" fill="#3b2213"/>
-    <path d="M62.4 30.2 L61.1 33.5 L55.6 32.7 L53.5 29.8 L56.5 26.0 L60.1 25.7Z" fill="#3b2213"/>
-    <path d="M71.0 54.0 L68.8 59.4 L60.5 57.7 L60.4 52.1 L69.1 49.0Z" fill="#3b2213"/>
-    <path d="M47.1 60.5 L44.2 63.7 L38.1 63.8 L36.7 60.1 L38.2 56.8 L45.5 55.8Z" fill="#3b2213"/>
-    <path d="M55.4 45.6 L53.2 48.2 L50.5 48.3 L49.2 46.6 L50.9 43.6 L53.2 43.3Z" fill="#3b2213"/>
-    <path d="M33.8 51.2 L32.2 55.5 L26.9 55.0 L26.1 52.4 L27.3 48.7 L32.5 50.0Z" fill="#3b2213"/>
-    <path d="M64.5 69.2 L62.8 73.5 L57.3 72.4 L56.0 68.5 L61.5 66.9Z" fill="#3b2213"/>
-    <path d="M77.4 40.3 L74.9 43.0 L71.5 42.7 L71.2 37.6 L75.5 37.6Z" fill="#3b2213"/>
-    {[[33,34],[57,28],[65,52],[41,58]].map(([x,y],i)=><ellipse key={i} cx={x} cy={y} rx="1.6" ry="1" fill="#8a5a3a" opacity=".9"/>)}
+   <g key={chomp} className="ckWhole" mask="url(#ckBite)">
+    <path d={COOKIE_EDGE} transform="translate(-3 5)" fill="#3a2410" opacity=".35" filter="url(#ckSoft)"/>
+    <path d={COOKIE_EDGE} fill="url(#ckBody)"/>
+    <path d={COOKIE_EDGE} fill="#fff" filter="url(#ckTex)" opacity=".55"/>
+    <g clipPath="url(#ckClip)">
+     <path d="M26 42q9-7 18-2M52 66q8 5 15 1M34 74q5-6 11-5M60 38q7-5 13 0M44 26q6 3 11 0" fill="none" stroke="#8a5424" strokeWidth="1.3" strokeLinecap="round" opacity=".55"/>
+     <path d="M26 43q9-7 18-2M52 67q8 5 15 1M60 39q7-5 13 0" fill="none" stroke="#f6dcae" strokeWidth=".9" strokeLinecap="round" opacity=".7"/>
+     {[[33,36,5.5,-8],[58,29,5,14],[66,55,5.8,30],[42,60,5.4,-20],[53,46,3.6,0],[29,53,4.6,40],[61,71,4.4,-10],[75,41,3.8,22],[45,78,3.2,8]].map(([x,y,r,rot],i)=><g key={i} transform={`rotate(${rot} ${x} ${y})`}>
+      <path d={`M${x-r} ${y-r*.3}l${r*.6} ${-r*.7}l${r*1.1} ${r*.15}l${r*.3} ${r*.9}l${-r*.7} ${r*.75}l${-r*.95} ${-r*.2}z`} fill="url(#ckChunk)"/>
+      <path d={`M${x-r*.5} ${y-r*.6}l${r*.8} ${r*.1}`} stroke="#9a6a48" strokeWidth=".8" strokeLinecap="round"/>
+     </g>)}
+     {[[38,47],[64,35],[50,58],[70,63]].map(([x,y],i)=><rect key={i} x={x} y={y} width="1.6" height="1.2" rx=".3" fill="#fffaf0" opacity=".9" transform={`rotate(${i*30} ${x} ${y})`}/>)}
+     <path d={COOKIE_EDGE} fill="url(#ckDome)"/>
+     {cut.map(([x,y,r],i)=><circle key={i} cx={x} cy={y} r={r+1.4} fill="none" stroke="#b77f45" strokeWidth="2.6" opacity=".9"/>)}
+     {cut.map(([x,y,r],i)=><circle key={`c${i}`} cx={x} cy={y} r={r+2.6} fill="none" stroke="#e8c48c" strokeWidth="1" strokeDasharray="1.5 2" opacity=".8"/>)}
+    </g>
    </g>
-   <path d="M76 12q6 6 5 12q6 2 9 9" fill="none" stroke="#b27a42" strokeWidth="1.2" opacity=".7"/>
+   {last&&<g key={`crumbs${chomp}`} className="ckCrumbs">{[0,1,2,3].map(i=>{const a=last[0]*Math.PI/180,x=50+Math.cos(a)*50+(i-1.5)*5,y=50+Math.sin(a)*50+(i%2)*4;return <ellipse key={i} cx={x} cy={y} rx={1.4+i%2} ry={1+i%2*.6} fill="#c48c50" style={{'--dx':`${Math.cos(a)*6+(i-1.5)*2}px`,'--dy':`${Math.sin(a)*6+3}px`} as React.CSSProperties}/>})}</g>}
   </g>
- </svg></div>
+  </svg>
+ </button>
 }
 
 function WatercolorTin(){
@@ -231,16 +286,25 @@ function WatercolorTin(){
   <rect x="4" y="10" width="112" height="112" rx="6" fill="#eeeae2" stroke="#c9c3b7"/>
   {[[26,36,'#2f86b8'],[64,40,'#c9352c'],[40,82,'#e2b33a'],[84,84,'#2a8f78']].map(([x,y,c],i)=><g key={i}><circle cx={x} cy={y} r="16" fill="#fff" stroke="#ddd6c9"/><circle cx={Number(x)+2} cy={Number(y)+1} r="10" fill={c as string} opacity=".28"/><circle cx={Number(x)-3} cy={Number(y)+3} r="5" fill={c as string} opacity=".35"/></g>)}
   <path d="M100 26q-10 14 -2 30" fill="none" stroke="#7a3c8c" strokeOpacity=".3" strokeWidth="4" strokeLinecap="round"/>
+  <rect x="8" y="14" width="104" height="104" rx="4" fill="none" stroke="#fffdf5" strokeWidth="2"/>
   <rect x="116" y="10" width="4" height="112" fill="#8d8a84"/>
+  {[28,88].map(y=><g key={y}><rect x="113" y={y} width="10" height="14" rx="2" fill="#b6b5b0" stroke="#72746f" strokeWidth=".6"/><path d={`M118 ${y}v14`} stroke="#f2f0e6"/></g>)}
   <rect x="120" y="10" width="116" height="112" rx="6" fill="url(#wcTin)"/>
   {pans.map((c,i)=>{const col=i%6,row=Math.floor(i/6),x=126+col*18.3,y=20+row*50;return <g key={c}><rect x={x} y={y} width="15" height="40" rx="2.5" fill="#f4f1ea"/><rect x={x+1.5} y={y+1.5} width="12" height="37" rx="2" fill={c}/><ellipse cx={x+7.5} cy={y+14+(i%3)*5} rx="4.5" ry="7" fill="#fff" opacity=".22"/><path d={`M${x+3} ${y+28}q4 -4 9 0`} stroke="#000" strokeOpacity=".18" fill="none"/></g>})}
   <g transform="rotate(-24 150 70)">
    <rect x="60" y="66" width="150" height="5" rx="2.5" fill="#b0452f"/>
+   <path d="M66 67h140" stroke="#f1b394" strokeOpacity=".5" strokeWidth=".8"/>
    <rect x="210" y="65.5" width="16" height="6" rx="1" fill="#c9c5bd"/>
+   <path d="M211 67h14M214 66v5M223 66v5" stroke="#f9f7ed" strokeWidth=".7"/>
    <path d="M226 65.5q14 1.5 20 3.5q-6 2 -20 3.5Z" fill="#2a1a12"/>
    <path d="M238 67.8q6 .8 8 1.2q-2 .6 -8 1.2Z" fill="#2d4f9e"/>
   </g>
  </svg></div>
+}
+
+function DeskKeyboard(){
+ const rows=[['esc','☀','☀','▦','⌕','◉','◀','▶','▶','◁','◁','▷','⏻'],['`','1','2','3','4','5','6','7','8','9','0','−','=','delete'],['tab','Q','W','E','R','T','Y','U','I','O','P','[',']','\\'],['caps','A','S','D','F','G','H','J','K','L',';',"'",'return'],['shift','Z','X','C','V','B','N','M',',','.','/','shift'],['fn','control','option','⌘','space','⌘','option','◀','▲','▼','▶']];
+ return <div className="dhKeyboard" aria-hidden="true">{rows.map((row,r)=><div className="dhKeyRow" key={r}>{row.map((key,i)=><span key={i} className={key==='space'?'dhSpace':key.length>1?'dhModifier':''}>{key==='space'?'':key}</span>)}</div>)}</div>;
 }
 
 function Glyph({d}:{d:string}){return <svg viewBox="0 0 24 24" aria-hidden="true"><path d={d}/></svg>}
@@ -277,7 +341,7 @@ function WaveWallpaper({id}:{id:string}){
  </svg>
 }
 
-export default function DeskHero({projects,openCase}:{projects:Project[];openCase:(id:string)=>void}){
+export default function DeskHero({projects,openCase,onSimple}:{projects:Project[];openCase:(id:string)=>void;onSimple?:()=>void}){
  const trackRef=useRef<HTMLElement>(null),stageRef=useRef<HTMLDivElement>(null),sceneRef=useRef<HTMLDivElement>(null);
  const copyRef=useRef<HTMLDivElement>(null),osRef=useRef<HTMLDivElement>(null);
  const helloRef=useRef<HTMLDivElement>(null),progRef=useRef<HTMLDivElement>(null),dockRef=useRef<HTMLElement>(null),toastRef=useRef<HTMLDivElement>(null);
@@ -285,7 +349,10 @@ export default function DeskHero({projects,openCase}:{projects:Project[];openCas
  const drag=useRef<{x:number,y:number}[]>(projects.map(()=>({x:0,y:0})));
  const zTop=useRef(10);
 
- const [isStatic,setStatic]=useState(false);
+ // Decided before the first paint, so a phone never flashes the pinned desktop layout.
+ const [isStatic,setStatic]=useState(()=>window.matchMedia('(max-width: 900px), (max-aspect-ratio: 23/20), (prefers-reduced-motion: reduce)').matches);
+ // Reduced-motion visitors get the same plain-text offer, worded for them.
+ const [reduced]=useState(()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches);
  const [tod,setTod]=useState<Tod>(()=>{
   const q=new URLSearchParams(window.location.search).get('tod');
   return (['morning','day','evening','night'] as Tod[]).includes(q as Tod)?q as Tod:todFor(new Date().getHours());
@@ -306,8 +373,11 @@ export default function DeskHero({projects,openCase}:{projects:Project[];openCas
  // The scroll-driven camera. Everything is written straight to styles; no re-renders per frame.
  useEffect(()=>{
   const stage=stageRef.current,track=trackRef.current;if(!stage||!track)return;
-  let raf=0,lastKey='',warmed=false,toastAt=0,toastGone=false;
-  let SH=262,SY=334,CX0=740;
+  let raf=0,lastKey='',warmed=false,toastAt=0,toastGone=false,toastTimer=0;
+  // The camera eases toward the scroll position instead of jumping with it, so a
+  // mouse wheel's notches read as one glide. Big jumps (skip, resize) snap.
+  let shown=-1,lastT=0,snap=true;
+  let SH=262,SY=334,CX0=740,HELLO_DY=0;
   const measure=()=>{
    const vw=window.innerWidth,vh=window.innerHeight;
    SH=isStatic?262:Math.max(220,Math.min(285,SW*vh/vw));SY=SCREEN_BOTTOM-SH;
@@ -316,6 +386,9 @@ export default function DeskHero({projects,openCase}:{projects:Project[];openCas
    const copy=copyRef.current,s0=Math.max(vw/1600,vh/1000)*ROOM_ZOOM;
    const copyRight=copy?copy.offsetLeft+copy.offsetWidth:vw*.4;
    CX0=Math.min(vw/vh>1.9?800:760,468-(copyRight+28-vw/2)/s0);
+   // How far the hello note drops so it shrinks into the middle of the dock (it scales from its bottom edge).
+   const hello=helloRef.current,dock=dockRef.current;
+   if(hello&&dock)HELLO_DY=dock.offsetTop+dock.offsetHeight/2-(hello.offsetTop+hello.offsetHeight)+hello.offsetHeight*.06/2;
    lastKey='';
   };
   const setOsLive=(v:boolean)=>document.documentElement.classList.toggle('deskOsLive',v);
@@ -325,19 +398,31 @@ export default function DeskHero({projects,openCase}:{projects:Project[];openCas
    const w=scene.clientWidth,h=scene.clientHeight,s=Math.max(w/1400,h/760);
    stage.style.transform=`translate(${w/2-900*s}px,${h/2-520*s}px) scale(${s})`;
   };
-  const frame=()=>{raf=requestAnimationFrame(frame);update()};
-  const update=()=>{
+  // Draw only when something can have changed: a scroll, a resize, or the toast's timer.
+  // A loop that ran every frame forced a layout read on every frame of the whole page.
+  const frame=(now:number)=>{raf=0;update(now)};
+  const request=()=>{if(!raf)raf=requestAnimationFrame(frame)};
+  const update=(now=performance.now())=>{
+   // Parked under an open case: the case page is what's scrolling.
+   if(isParked(track)){snap=true;return}
    const vw=window.innerWidth,vh=window.innerHeight;
    const r=track.getBoundingClientRect(),total=track.offsetHeight-vh;
    const away=r.bottom<-50||r.top>vh+50;
    if(progRef.current&&away){progRef.current.style.opacity='0';progRef.current.style.visibility='hidden'}
-   if(away)return;
-   const p=cl(-r.top/total);
+   // Offscreen, the room's water, fog and steam stop drawing.
+   track.classList.toggle('isAway',away);
+   if(away){snap=true;return}
+   const target=cl(-r.top/total),dt=Math.min(.05,Math.max(0,(now-lastT)/1000));lastT=now;
+   if(snap||shown<0||Math.abs(target-shown)>.25)shown=target;
+   else{shown+=(target-shown)*(1-Math.exp(-dt/.085));if(Math.abs(target-shown)<.0004)shown=target}
+   snap=false;
+   if(shown!==target)request();
+   const p=shown;
    // Start fetching the case images once the visitor starts walking in.
    if(!warmed&&p>.05){warmed=true;winRefs.current.forEach(w=>{const img=w?.querySelector('img');if(img)img.loading='eager'})}
    // Like a real notification, the toast slides in, then gets out of the way.
    const toast=toastRef.current;
-   if(toast){if(p<.86)toastAt=0;else if(p>=.91&&!toastAt)toastAt=performance.now();toastGone=!!toastAt&&performance.now()-toastAt>5000&&!toast.matches(':hover')}
+   if(toast){if(p<.86)toastAt=0;else if(p>=.91&&!toastAt){toastAt=performance.now();window.clearTimeout(toastTimer);toastTimer=window.setTimeout(request,5050)}toastGone=!!toastAt&&performance.now()-toastAt>5000&&!toast.matches(':hover')}
    const key=`${toastGone?1:0}|${p.toFixed(4)}|${vw}x${vh}`;if(key===lastKey)return;lastKey=key;
 
    // Camera: the visible part of the room shrinks from the whole set to exactly the screen.
@@ -356,12 +441,14 @@ export default function DeskHero({projects,openCase}:{projects:Project[];openCas
    // Neha OS takes over once the screen fills the view.
    const ot=cl((p-.38)/.05),os=osRef.current;
    if(os){os.style.opacity=String(ot);os.style.visibility=ot>0?'visible':'hidden';os.classList.toggle('isLive',ot>.9)}
+   // Once the OS fully covers the room, the room's ambient loops pause underneath it.
+   track.classList.toggle('osCovers',ot>=1);
    setOsLive(ot>.5&&p<.999);
    const dockY=(1-out3(cl((p-.43)/.06)))*140;
    if(dockRef.current)dockRef.current.style.transform=`translate(-50%,${dockY}px)`;
    // The hello note minimizes into the dock before the work opens.
    const hm=io(cl((p-.51)/.06)),hello=helloRef.current;
-   if(hello){hello.style.transform=`translateY(${hm*vh*.55}px) scale(${L(1,.06,hm)})`;hello.style.opacity=String(1-cl((hm-.7)/.3))}
+   if(hello){hello.style.transform=`translateY(${hm*(HELLO_DY||vh*.5)}px) scale(${L(1,.06,hm)})`;hello.style.opacity=String(1-cl((hm-.7)/.3))}
    winRefs.current.forEach((w,i)=>{if(!w)return;const t=cl((p-.56-i*.05)/.06),b=back(t),d=drag.current[i];
     w.style.opacity=String(cl(t*3));w.style.visibility=t>0?'visible':'hidden';
     w.style.transform=`translate(${d.x}px,${d.y+(1-b)*110}px) scale(${L(.55,1,b)})`});
@@ -374,12 +461,15 @@ export default function DeskHero({projects,openCase}:{projects:Project[];openCas
    // Clear anything the scroll version wrote.
    for(const el of [copyRef.current,osRef.current,helloRef.current,dockRef.current,toastRef.current,...winRefs.current,...iconRefs.current])if(el){el.style.opacity='';el.style.transform='';el.style.visibility=''}
    return()=>window.removeEventListener('resize',onR)}
-  window.addEventListener('resize',measure);
+  const onResize=()=>{measure();snap=true;request()};
+  // Back from a case: draw now, so the closing transition shrinks into the window where it sits.
+  const onShown=()=>{measure();snap=true;update()};
+  const toastEl=toastRef.current;
+  window.addEventListener('resize',onResize);window.addEventListener('scroll',request,{passive:true});window.addEventListener(HOME_SHOWN,onShown);toastEl?.addEventListener('mouseleave',request);
   // Draw the first frame now, not on the next animation frame, so a view
   // transition back to the desktop snapshots the windows in place.
   update();
-  raf=requestAnimationFrame(frame);
-  return()=>{cancelAnimationFrame(raf);window.removeEventListener('resize',measure);setOsLive(false)};
+  return()=>{cancelAnimationFrame(raf);window.clearTimeout(toastTimer);window.removeEventListener('resize',onResize);window.removeEventListener('scroll',request);window.removeEventListener(HOME_SHOWN,onShown);toastEl?.removeEventListener('mouseleave',request);track.classList.remove('isAway','osCovers');setOsLive(false)};
  },[isStatic]);
 
  // Windows drag by their title bar, like the real thing.
@@ -403,7 +493,8 @@ export default function DeskHero({projects,openCase}:{projects:Project[];openCas
   stage.addEventListener('pointermove',move);stage.addEventListener('pointerout',out);
   return()=>{stage.removeEventListener('pointermove',move);stage.removeEventListener('pointerout',out)};
  },[isStatic]);
- const jumpTo=(p:number)=>{const t=trackRef.current;if(t)window.scrollTo({top:t.offsetTop+(t.offsetHeight-window.innerHeight)*p,behavior:'instant' as ScrollBehavior})};
+ // Measured from the document, not the offset parent, so p=1 lands exactly on the sequence's last frame.
+ const jumpTo=(p:number)=>{const t=trackRef.current;if(t)window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY+(t.offsetHeight-window.innerHeight)*p,behavior:'instant' as ScrollBehavior})};
  // Links to the work fly through the walk-in in ~1.1s instead of the browser's slow smooth scroll.
  useEffect(()=>{
   if(isStatic)return;
@@ -433,10 +524,11 @@ export default function DeskHero({projects,openCase}:{projects:Project[];openCas
   {!isStatic&&<span id="projects" className="dhAnchor" style={{top:`${ANCHOR_P*(TRACK_VH-100)}vh`}} aria-hidden="true"/>}
   <div className="dhPin">
    <div className="dhCopy" ref={copyRef}>
-    <span className="dhEyebrow">Product management · Michigan State&nbsp;’27</span>
     <h1>Neha<br/><em>Chinimilli</em></h1>
-    <p>I turn customer and operations problems into shipped software, most recently at Accenture, Ford Credit, and Ford. Computer Science and Supply Chain Management, both at MSU.</p>
+    <p><b>Product-minded engineer</b> who turns customer and operations problems into shipped software, most recently at Accenture, Ford Credit, and Ford.</p>
+    <p className="dhEdu"><i aria-hidden="true"/><span>Computer Science + Supply Chain Management<br/>Michigan State University · 2027</span></p>
     <div className="dhLinks"><a href="#projects">See my work <span aria-hidden="true">↓</span></a><a href="#about">About me</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume <span aria-hidden="true">↗</span></a></div>
+    {onSimple&&<p className="dhQuick">{reduced?'Reduced motion is on.':'Short on time?'} <button type="button" onClick={onSimple}>Switch to Simple view</button></p>}
     <span className="dhPoke" aria-hidden="true">this is my desk. poke around <i>↘</i></span>
    </div>
 
@@ -449,7 +541,6 @@ export default function DeskHero({projects,openCase}:{projects:Project[];openCas
       <div className="dhGlass"><GoldenGateView/><div className="dhMuntins"/><div className="dhReflect"/></div>
       <div className="dhCurtain"/>
       <div className="dhSill"><div className="dhSucculent"><i/><i/><i/><i/><i/></div></div>
-      <div className="dhTicket"><div><small>BART · Commute</small><b>8:42 am</b></div><em/></div>
      </div>
 
      <div className="dhString">
@@ -462,24 +553,23 @@ export default function DeskHero({projects,openCase}:{projects:Project[];openCas
       <div className="dhBooks">{BOOKS.map((b,i)=><i key={i} style={{'--c':b.c,'--f':b.f,height:b.h,width:b.w} as React.CSSProperties}>{b.t&&<span>{b.t}</span>}</i>)}<i className="dhLean" style={{'--c':'#e3a88f','--f':'#6b2d1f',height:100,width:20} as React.CSSProperties}/></div>
       <b className="dhCanvas"/>
       <div className="dhStack"><i style={{'--c':'#3d5a80'} as React.CSSProperties}/><i style={{'--c':'#e8dcc4'} as React.CSSProperties}/><Mustang/></div>
-      <div className="dhPothos"><svg viewBox="0 0 90 230" aria-hidden="true"><path className="dhVine" d="M40 30C44 70 30 96 36 130S52 180 44 222"/><path className="dhVine" d="M52 30C62 60 66 84 60 110"/>{[[36,48,-30],[44,70,40],[32,94,-40],[40,120,30],[38,148,-35],[48,172,35],[42,198,-30],[46,220,20],[62,56,40],[64,84,-20],[58,106,30]].map(([x,y,r],i)=><path key={i} className="dhLeaf" transform={`translate(${x} ${y}) rotate(${r})`} d="M0 0C-12-4-14-18 0-24C14-18 12-4 0 0Z"/>)}</svg><div className="dhPot"/></div>
+      <div className="dhPothos"><svg viewBox="0 0 90 230" aria-hidden="true"><path className="dhVine" d="M40 30C44 70 30 96 36 130S52 180 44 222"/><path className="dhVine" d="M52 30C62 60 66 84 60 110"/>{[[36,48,-30],[44,70,40],[32,94,-40],[40,120,30],[38,148,-35],[48,172,35],[42,198,-30],[46,220,20],[62,56,40],[64,84,-20],[58,106,30]].map(([x,y,r],i)=><path key={i} className="dhLeaf" transform={`translate(${x} ${y}) rotate(${r})`} d="M0 0C-15-6-16-24-5-23Q-1-23 0-18Q5-29 12-20C18-10 7-3 0 0Z"/>)}</svg><div className="dhPot"/></div>
       <div className="dhPlank"/><i className="dhBracket"/><i className="dhBracket dhBracketR"/>
      </div>
 
      <div className="dhGlow"/>
      <div className="dhImac"><div className="dhImacFace"><i className="dhImacCam"/></div><div className="dhImacChin"/><div className="dhImacStand"/><div className="dhImacFoot"/></div>
 
-     <div className="dhDesk"><div className="dhDeskEdge"/></div>
+     <div className="dhDesk"><div className="dhDeskEdge"/></div><div className="dhWood"/>
      <div className="dhLampPool"/>
      {/* Everything lying on the desk shares one plane, seen in perspective */}
      <div className="dhTop">
       <div className="dhDaylight"/>
-      <div className="dhMat"><div className="dhKeyboard"><i/></div><div className="dhMouse"/></div>
+      <div className="dhMat"><DeskKeyboard/><div className="dhMouse"/></div>
       <div className="dhNotebook"><span>ship-it list<br/>✓ commute<br/>✓ book club<br/>☐ your team?</span></div>
       <div className="dhPen"/>
       <WatercolorTin/>
       <CookieNapkin/>
-      <div className="dhCable"/>
      </div>
      <PhotoFrame/>
      <HydroFlask/>
@@ -501,7 +591,7 @@ export default function DeskHero({projects,openCase}:{projects:Project[];openCas
    {!isStatic&&<div className="dhProgress" ref={progRef} data-chapter="0">
     <span className="dhChapter" aria-hidden="true"><b>scroll to walk in</b><b>walking in</b><b>hello</b><b>the work</b></span>
     <div className="dhRail" onClick={scrub} role="presentation"><i/>{[.07,.42,.56].map(t=><em key={t} style={{left:`${t*100}%`}}/>)}</div>
-    <button type="button" className="dhSkip" onClick={()=>jumpTo(.93)}>Skip to the work ↓</button>
+    <button type="button" className="dhSkip" onClick={()=>jumpTo(1)}>Skip to the work ↓</button>
    </div>}
 
    <div className="dhOs" ref={osRef}>
@@ -509,7 +599,7 @@ export default function DeskHero({projects,openCase}:{projects:Project[];openCas
     <nav className="dhMenuBar" aria-label="Neha OS">
      <a href="#top" className="dhMenuLogo"><img src={asset('favicon.svg')} alt=""/><b>Neha</b></a>
      <a href="#projects">Selected work</a><a href="#experience">Experience</a><a href="#fun">Fun builds</a><a href="#about">About</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume</a>
-     <span className="dhMenuRight"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9a15 15 0 0 1 20 0M5.5 12.5a10 10 0 0 1 13 0M9 16a5 5 0 0 1 6 0M12 19.5h.01"/></svg><svg viewBox="0 0 30 16" aria-hidden="true"><rect x="1" y="2" width="24" height="12" rx="3.5"/><rect x="3.5" y="4.5" width="15" height="7" rx="1.6" className="dhBatt"/><path d="M27.5 6v4"/></svg><span>{day}</span><span>{time}</span></span>
+     <span className="dhMenuRight">{onSimple&&<button type="button" className="dhMenuView" onClick={onSimple}>Simple view</button>}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9a15 15 0 0 1 20 0M5.5 12.5a10 10 0 0 1 13 0M9 16a5 5 0 0 1 6 0M12 19.5h.01"/></svg><svg viewBox="0 0 30 16" aria-hidden="true"><rect x="1" y="2" width="24" height="12" rx="3.5"/><rect x="3.5" y="4.5" width="15" height="7" rx="1.6" className="dhBatt"/><path d="M27.5 6v4"/></svg><span>{day}</span><span>{time}</span></span>
     </nav>
     {isStatic&&<span id="projects" className="dhAnchor" aria-hidden="true"/>}
     <h2 className="dhOsTitle">Selected work</h2>
@@ -563,9 +653,9 @@ export function DeskGoodnight(){
     <div className="dhShelf"><div className="dhBooks">{BOOKS.map((b,i)=><i key={i} style={{'--c':b.c,'--f':b.f,height:b.h,width:b.w} as React.CSSProperties}>{b.t&&<span>{b.t}</span>}</i>)}</div><div className="dhStack"><i style={{'--c':'#3d5a80'} as React.CSSProperties}/><i style={{'--c':'#e8dcc4'} as React.CSSProperties}/><Mustang/></div><div className="dhPlank"/></div>
     <div className="dhImac"><div className="dhImacFace"><i className="dhImacCam"/></div><div className="dhImacChin"/><div className="dhImacStand"/><div className="dhImacFoot"/></div>
     <div className="dhScreen"/>
-    <div className="dhDesk"><div className="dhDeskEdge"/></div>
+    <div className="dhDesk"><div className="dhDeskEdge"/></div><div className="dhWood"/>
     <div className="dhLampPool"/>
-    <div className="dhTop"><div className="dhMat"><div className="dhKeyboard"><i/></div><div className="dhMouse"/></div></div>
+    <div className="dhTop"><div className="dhMat"><DeskKeyboard/><div className="dhMouse"/></div></div>
     <PhotoFrame eager={false}/>
     <MsuCappuccino/>
     <CanonAE1 onShoot={()=>{}}/>

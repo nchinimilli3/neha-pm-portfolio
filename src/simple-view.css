@@ -1,0 +1,113 @@
+/* View toggle: a quiet, reversible utility in the top-right of both homepage headers. */
+.homeHeader{gap:24px!important}
+.homeHeader>nav{margin-left:auto}
+.homeHeader>.viewModeToggle{flex:none}
+.viewModeToggle{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;padding:8px 13px;border:1px solid color-mix(in srgb,currentColor 30%,transparent);border-radius:999px;background:transparent;box-shadow:none;color:inherit;font:500 13px/1.2 Inter,system-ui,sans-serif;cursor:pointer;white-space:nowrap;transition:background .18s,border-color .18s}
+.viewModeToggle:hover{background:color-mix(in srgb,currentColor 7%,transparent);border-color:color-mix(in srgb,currentColor 55%,transparent)}
+.viewModeToggle svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+.viewModeToggle:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+/* First tab stop in both views: skip the animation (full) or skip to content (simple). */
+.viewSkip{position:fixed;left:16px;top:8px;z-index:1000;padding:12px 18px;border:0;border-radius:6px;background:#22302a;color:#fff;font:600 14px/1.2 Inter,system-ui,sans-serif;text-decoration:none;cursor:pointer;transform:translateY(-160%)}
+.viewSkip:focus{transform:none;outline:2px solid #fff;outline-offset:-5px}
+
+/* Simple view: everything a recruiter needs, on the page background, no motion. */
+html[data-view="simple"]{--page-canvas:var(--s-bg);--s-bg:#faf9f5;--s-ink:#1f2d25;--s-muted:#56614f;--s-soft:#747d6c;--s-rule:#d6dbcc;--s-hair:#e4e7dc;--s-accent:#2f5a3c;scroll-behavior:auto!important;background:var(--s-bg);color:var(--s-ink)}
+html[data-view="simple"] *{animation:none!important;transition-duration:0s!important}
+.simpleHeader,.simpleHome,.simpleFooter{width:min(1080px,calc(100% - 80px));margin-inline:auto;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--s-ink)}
+.simpleHome [id]{scroll-margin-top:84px}
+.simpleHome:focus{outline:none}
+.simpleHome a,.simpleFooter a,.simpleFooter button{color:var(--s-accent)}
+:is(.simpleHeader,.simpleHome,.simpleFooter) :is(a,button):focus-visible{outline:2px solid var(--s-accent);outline-offset:4px;border-radius:3px}
+.simpleHeader{position:sticky;top:0;z-index:50;display:flex;align-items:center;min-height:68px;padding:10px 0;background:var(--s-bg);border-bottom:1px solid var(--s-rule)}
+.simpleWordmark{font-size:16px;font-weight:650;letter-spacing:-.02em;text-decoration:none;color:var(--s-ink)}
+.simpleHeader nav{display:flex;flex-wrap:wrap;gap:10px 24px}.simpleHeader nav a{font-size:13.5px;color:var(--s-muted);text-decoration:none}
+.simpleHeader nav a:hover,.simpleHome a:hover,.simpleFooter a:hover{text-decoration:underline;text-underline-offset:4px}
+
+/* Above the fold: who, what, proof, and how to reach her. */
+.sLead{display:grid;grid-template-columns:minmax(0,1fr) 300px;align-items:end;gap:32px 72px;padding:52px 0 0}
+
+.sLead h1{margin:0;font:400 clamp(44px,5.4vw,70px)/1 Georgia,"Times New Roman",serif;letter-spacing:-.035em;color:var(--s-ink);background:linear-gradient(100deg,var(--s-ink) 35%,#4f7d54);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.sPitch{max-width:46ch;margin:18px 0 0;font-size:18px;line-height:1.55;color:var(--s-muted)}
+.sPitch b{font-weight:600;color:var(--s-ink,#1f2a22)}
+.sActions{display:flex;flex-wrap:wrap;align-items:center;gap:10px 24px;margin-top:24px}
+.sActions a{font-size:14.5px;font-weight:550;text-underline-offset:4px}
+.sActions .sPrimary{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 20px;border-radius:999px;background:var(--s-ink);color:#fff;text-decoration:none}
+.sActions .sPrimary:hover{background:var(--s-accent);text-decoration:none}
+.sFacts{display:grid;gap:16px;margin:0}
+.sFacts dt,.sSkills dt{font:600 11px/1.3 Inter,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--s-soft)}
+.sFacts dd{margin:4px 0 0;font-size:14.5px;line-height:1.5;color:var(--s-ink)}
+.sProof{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px 32px;margin:12px 0 0;padding:26px 0 44px;list-style:none;border-top:1px solid var(--s-rule)}
+.sProof li{display:grid;align-content:start;gap:6px}
+/* One metric style for the proof row and every case row. */
+.sProof b,.sMetric b{font:400 34px/1.05 Georgia,"Times New Roman",serif;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--s-ink);white-space:nowrap}
+.sProof span,.sMetric span{font-size:13.5px;line-height:1.4;color:var(--s-muted)}
+.sProof small{font:600 11px/1.3 Inter,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--s-soft)}
+
+/* Sections: label on the left, content on the right, for an easy F-pattern scan. */
+.sSection{display:grid;grid-template-columns:200px minmax(0,1fr);gap:40px;padding:44px 0;border-top:1px solid var(--s-rule)}
+.sHead h2{margin:0;font:400 27px/1.2 Georgia,"Times New Roman",serif;letter-spacing:-.03em;color:var(--s-ink)}
+.sHead p{margin:10px 0 0;font-size:13px;line-height:1.5;color:var(--s-soft)}
+.sRows>article{padding:22px 0;border-top:1px solid var(--s-hair)}.sRows>article:first-child{padding-top:2px;border-top:0}
+.sMeta{display:block;font-size:12.5px;line-height:1.4;color:var(--s-soft)}
+.sWork{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:36px}
+.sWork h3,.sRole h3,.sBuilds h3{margin:4px 0 6px;font:600 19px/1.3 Inter,system-ui,sans-serif;letter-spacing:-.02em;color:var(--s-ink)}
+.sWork h3 a,.sBuilds h3 a{color:var(--s-ink);text-decoration:none}
+.sWork h3 a span,.sBuilds h3 a span,.sMore span{color:var(--s-accent)}
+.sWork p,.sRole p,.sBuilds p{max-width:64ch;margin:0;font-size:14.5px;line-height:1.6;color:var(--s-muted)}
+.sMetric{display:grid;align-content:start;gap:6px;margin:0;padding-top:2px}
+.sRoleHead{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 24px;margin-bottom:8px}
+.sRoleHead h3{margin:0}.sRoleHead span{grid-column:1;font-size:14px;color:var(--s-ink)}
+.sRoleHead time{grid-column:2;grid-row:1;align-self:baseline;font-size:13px;color:var(--s-soft);white-space:nowrap}
+.sMore{display:inline-block;margin-top:10px;font-size:13.5px;font-weight:550;text-decoration:none}
+.sSkills{display:grid;gap:18px;margin:0}.sSkills>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:20px}
+.sSkills dt{padding-top:4px}.sSkills dd{margin:0;font-size:15px;line-height:1.65;color:var(--s-ink)}
+.sBuilds{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 44px}
+.sBuilds h3{margin-top:0}.sBuilds p{margin-top:6px;font-size:14px}
+.sProse p{max-width:62ch;margin:0 0 14px;font-size:15.5px;line-height:1.7;color:var(--s-muted)}
+.sProse .sEmail{margin:0;font:400 30px/1.2 Georgia,"Times New Roman",serif;letter-spacing:-.02em}
+.sProse .sEmail a{color:var(--s-ink);text-underline-offset:6px;text-decoration-thickness:1px}
+.sProse .sActions{margin-top:18px}
+.simpleFooter{display:flex;align-items:center;gap:24px;padding:24px 0 40px;border-top:1px solid var(--s-rule);font-size:13px;color:var(--s-soft)}
+.simpleFooter a,.simpleFooter button{text-decoration:none}.simpleFooter button{padding:0;border:0;background:none;font:inherit;cursor:pointer}.simpleFooter button:hover{text-decoration:underline;text-underline-offset:4px}
+.simpleFooter a{margin-left:auto}
+
+@media(max-width:900px){
+ /* Stacked, the proof row comes straight after the actions; facts follow. */
+ .sLead{grid-template-columns:1fr;gap:28px}
+ .sProof{order:1;grid-template-columns:repeat(2,minmax(0,1fr));margin:0;padding-bottom:0}
+ .sFacts{order:2;padding-bottom:36px}
+ .sSection{grid-template-columns:1fr;gap:20px}
+}
+@media(max-width:700px){
+ .simpleHeader,.simpleHome,.simpleFooter{width:calc(100% - 32px)}
+ .sLead{padding-top:36px}.sLead h1{font-size:clamp(40px,11vw,52px)}.sPitch{font-size:16.5px}
+ .sProof{gap:22px 20px}.sProof b,.sMetric b{font-size:28px}
+ .sSection{padding:34px 0}.sHead h2{font-size:25px}
+ .sWork{grid-template-columns:1fr;gap:12px}
+ .sRoleHead{grid-template-columns:1fr}.sRoleHead time{grid-column:1;grid-row:auto}
+ .sSkills>div{grid-template-columns:1fr;gap:6px}
+ .sBuilds{grid-template-columns:1fr;gap:24px}
+ .sProse .sEmail{font-size:clamp(22px,6.6vw,30px);overflow-wrap:anywhere}
+ .simpleFooter{flex-wrap:wrap;gap:12px 20px;padding-bottom:30px}
+}
+@media print{
+ .viewModeToggle,.navToggle,.simpleHeader nav,.scrollTopButton,.viewSkip,.simpleFooter button{display:none!important}
+ .simpleHome,.simpleHeader,.simpleFooter{width:100%}.simpleHeader{position:static}
+ .sLead h1{background:none;-webkit-text-fill-color:currentColor}
+ .sSection,.sRows>article{break-inside:avoid}
+}
+
+/* Move section links into a menu before either header becomes crowded.
+   The view action stays visible, with the same position in both modes. */
+@media(max-width:1100px){
+ .homeHeader{position:sticky;top:0;flex-wrap:nowrap!important;gap:10px!important;min-height:64px!important;z-index:50!important}
+ .homeHeader>.wordmark,.homeHeader>.simpleWordmark{margin-right:auto;white-space:nowrap}
+ .homeHeader>.viewModeToggle{order:2;min-height:44px;padding:8px 12px;font-size:12.5px}
+ .homeHeader>.navToggle{order:3;display:grid;place-content:center;gap:4px;flex:none;width:40px;height:44px;margin:0 -6px 0 0;padding:0;border:0;background:none;color:inherit;cursor:pointer}
+ .homeHeader>.navToggle span{display:block;width:20px;height:2px;border-radius:2px;background:currentColor}
+ .homeHeader>nav{position:absolute;top:100%;left:0;right:0;display:none!important;max-width:none!important;width:auto!important;margin:0!important;flex-direction:column;align-items:stretch;gap:0!important;padding:6px 20px 16px;background:#faf9f5;border-bottom:1px solid #daddd2;box-shadow:0 12px 22px #26362b0a}
+ .homeHeader.navIsOpen>nav{display:flex!important}
+ .homeHeader>nav a{display:flex!important;align-items:center;min-height:48px;padding:0!important;font-size:14px!important;border-bottom:1px solid #26362b12}
+ .homeHeader>nav .navIndicator,.homeHeader>nav a:after{display:none!important}
+}
+@media(max-width:400px){.homeHeader>.viewModeToggle svg{display:none}.homeHeader .wordmark,.homeHeader .simpleWordmark{font-size:14px!important}.homeHeader>.viewModeToggle{font-size:12px;padding-inline:10px}.homeHeader{gap:7px!important}}

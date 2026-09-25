@@ -22,8 +22,6 @@
 .elMirrorGlass p{position:relative;z-index:2;font:400 clamp(27px,3vw,43px)/1.2 Georgia,serif;margin:0 8px 24px;text-shadow:0 1px 12px #fff}
 .elMirrorGlass p em{font-weight:400}
 .elMirrorGlass>span{z-index:2;font-size:13px;color:#5c5146}
-.elMirrorStem{height:55px;width:16px;margin:auto;background:linear-gradient(90deg,#7d6441,#f5e4c4 40%,#8e744c);box-shadow:8px 4px 12px #33261922}
-.elMirrorBase{height:25px;width:58%;border-radius:50%;margin:auto;background:linear-gradient(175deg,#e9d8b8,#9b825b 60%,#705b3e);box-shadow:0 17px 18px #33261930,inset 0 2px 1px #fff9}
 
 .elInvitation{display:grid;grid-template-columns:1fr;gap:56px;align-items:center}
 .elInvitation>figure{max-width:880px}.elInvitation figure{transform:rotate(-1deg);filter:drop-shadow(0 20px 15px #2c201c18)}
@@ -31,15 +29,10 @@
 .elProof header{display:grid;grid-template-columns:1fr 1fr;gap:0 64px;align-items:end}.elProof h2{margin-bottom:32px}.elProof header p{margin-bottom:40px}.elProof figure{max-width:1080px;margin:0 auto}.elProof figure{filter:drop-shadow(0 30px 30px #1b1a2a2e)}
 .elPurchase{display:grid;grid-template-columns:1.1fr .8fr;gap:112px;align-items:center}.elRetail figure{max-width:540px;margin-top:32px;filter:drop-shadow(0 16px 16px #32231718)}
 
-
-
 .elResponsive header{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}.elSmall{font-size:14px;color:#62646c}.elSizeToggle{display:flex;justify-content:center;gap:8px;margin:24px 0}.elSizeToggle button{padding:8px 20px;border:1px solid #a8a39a;background:transparent;border-radius:30px;color:var(--el-ink);font-size:14px;cursor:pointer}.elSizeToggle button[aria-pressed=true]{background:var(--el-ink);color:white;border-color:var(--el-ink)}.elSizeToggle button:focus-visible{outline:3px solid #a8884f;outline-offset:3px}.elViewport{width:100%;max-width:980px;margin:0 auto;transition:max-width .65s var(--ease-out);filter:drop-shadow(0 20px 20px #33261920)}.elViewportCompact{max-width:390px}.elViewport img{display:block;width:100%;height:auto;cursor:zoom-in}.elEditorial .elViewportCaption{text-align:center;font-size:13px;max-width:none;margin:24px 0 0}
 .elEditorial .elFinal{display:grid;grid-template-columns:.7fr 1.3fr;gap:96px;align-items:center;padding-bottom:112px}
 @media(max-width:800px){.case-estee .caseLead{grid-template-columns:1fr!important;gap:32px!important}.elEditorial section{width:calc(100% - 40px);padding:56px 0}.elVanity,.elInvitation,.elPurchase,.elEditorial .elFinal{grid-template-columns:1fr;gap:40px}.elMirrorScene{width:min(420px,100%);margin:auto}.elMirrorGlass p{font-size:34px}.elProof header,.elResponsive header{grid-template-columns:1fr;gap:0}.elInvitation figure{transform:none}.elEditorial .elProof{padding:56px 20px}.elRetail figure{margin:32px auto 0}.elEditorial .elFinal{gap:40px}.elFinal h2{font-size:42px}.elEditorial h2{font-size:42px}}
 @media(prefers-reduced-motion:reduce){.elViewport{transition:none}}
-
-
-
 
 @media(max-width:500px){.elEditorial h2{font-size:38px}.elEditorial h2 br{display:none}.elFinal h2{font-size:38px}}
 

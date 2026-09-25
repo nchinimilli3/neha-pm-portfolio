@@ -1,7 +1,6 @@
 import React from 'react';
 import './kohler-visuals.css';
 
-const asset = (src: string) => `${import.meta.env.BASE_URL}${src}`;
 
 function Stamp({children, className = ''}: {children: React.ReactNode; className?: string}) {
  return <span className={`kxStamp ${className}`}>{children}</span>;
@@ -115,21 +114,6 @@ export function KohlerAssembly() {
  </div>;
 }
 
-// The order as a shipping tag: the hero object for Ship Anywhere.
-export function KohlerHeroTag() {
- return <div className="kxTagScene">
-  <div className="kxTagWrap"><div className="kxTag" aria-label="Kohler export order SO-28471, K-14402 to Bengaluru, India, packet ready for review">
-   <svg className="kxTagString" viewBox="0 0 120 60" aria-hidden="true"><path d="M2 8C40 2 70 50 118 30"/></svg>
-   <span className="kxTagHole" aria-hidden="true"/>
-   <img className="kxTagLogo" src={asset('company-logos/kohler.svg')} alt="Kohler" loading="lazy" decoding="async"/>
-   <small>Export order</small>
-   <strong>SO-28471</strong>
-   <div className="kxTagRoute"><span>K-14402</span><i aria-hidden="true"/><span>Bengaluru, IN</span></div>
-   <div className="kxTagDocs" aria-hidden="true"><i/><i/><i/><i/></div>
-   <div className="kxTagTrail"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>PIM · SAP · reviewed by ops</div>
-  </div><Stamp className="kxTagStamp">Ready for review</Stamp></div>
- </div>;
-}
 
 // The three product principles, pinned beside the decision they came from.
 export function KohlerPrinciples() {

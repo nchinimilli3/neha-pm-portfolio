@@ -1,4 +1,4 @@
-import React,{useEffect,useRef,useState} from 'react';
+import {useEffect,useRef,useState} from 'react';
 
 /* A live browser port of the CSE 476 project: Jos Stam's "Stable Fluids"
    (semi-Lagrangian advection, Gauss-Seidel diffusion, pressure projection)

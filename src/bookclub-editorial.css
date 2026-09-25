@@ -1,11 +1,8 @@
 /* A quiet reading journal: original screens, open space, and useful marginal notes. */
 .case-bookclub{--bc-ink:#203f3b;--bc-muted:#4c554e;--bc-rule:#d4d9ce;--bc-rust:#895846;}
 
-
-
-
 .case-bookclub .caseHeader h1{text-shadow:none!important}
-.case-bookclub .caseCompanyBar span,.case-bookclub .ownershipLine{color:#687269!important}
+.case-bookclub .caseCompanyBar span{color:#687269!important}
 .case-bookclub .caseLead{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)!important;gap:40px!important;align-items:center!important}
 .case-bookclub .caseLead .caseHeroMedia{border:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important}
 .case-bookclub .caseIntro{font-size:clamp(18px,1.65vw,23px)!important;line-height:1.55!important;color:#56655b!important}
@@ -21,37 +18,7 @@
 .bcHero:hover .bcHeroLeft{transform:translateX(-4px) rotate(-8deg)}.bcHero:hover .bcHeroRight{transform:translateX(4px) rotate(8deg)}
 .bcStory{--bc-ink:#203f3b;--bc-muted:#4c554e;--bc-rule:#d4d9ce;--bc-rust:#895846;position:relative;z-index:2;color:var(--bc-ink)}
 
-
-
-
 .bcStory p{font-size:16px;line-height:1.75;color:var(--bc-muted)}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .bcStory a:focus-visible,.bcStory input:focus-visible{outline:3px solid #b89862;outline-offset:6px}
 @media(max-width:1050px){.case-bookclub .caseLead{gap:32px!important}.bcHeroCaption{font-size:11px}}
@@ -62,74 +29,13 @@
 .bcHeroLeft{top:5%;width:26%;left:3%}.bcHeroCenter{top:0;width:35%;left:32%}.bcHeroRight{top:13%;width:29%;right:0}
 .bcHeroCaption{bottom:-2%}
 
-
-
-
-
-
-
-
-
-
-
-
 @media(max-width:760px){.bcHeroBooks{bottom:7%}}
 
 /* The checkpoint interaction becomes an open book, with a genuinely sealed note. */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* A small archive of things the group can bring back to the table. */
 
-
-
-
-
-
-
-
-
-
-
 /* Next steps as a research notebook and a library checkout card. */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* PM story: the problem in a real thread, three bets on real screens, and a validation plan. */
 .bcStory{--bc-choose:#3f6a55;--bc-pace:#b3874a;--bc-meet:#9d4f45}
@@ -212,14 +118,7 @@
 .bcTaskBar em{position:absolute;inset:0;background:var(--bc-choose);transform:scaleX(0);transform-origin:left;transition:transform 1.2s ease;transition-delay:calc(1s + var(--k) * .35s)}
 .bcPlan.isIn .bcTaskBar em{transform:scaleX(.8)}
 .bcTaskDots{display:flex;gap:4px}.bcTaskDots i{width:9px;height:9px;border-radius:50%;box-shadow:inset 0 0 0 1.5px #c9c2ae}.bcTaskDots i.ok{background:var(--bc-choose);box-shadow:none}
-.bcMatrix{position:relative;height:170px;margin:4px 0 0 24px;border-left:2px solid #b8b09a;border-bottom:2px solid #b8b09a}
-.bcQuad{position:absolute;right:0;top:0;width:50%;height:50%;background:#9d4f4514;border-radius:0 6px 0 0}
-.bcAxisY{position:absolute;left:-24px;bottom:0;font-size:11px;color:#8b928d;writing-mode:vertical-rl;rotate:180deg}
-.bcAxisX{position:absolute;right:0;bottom:-20px;font-size:11px;color:#8b928d}
-.bcMatrix b{position:absolute;width:12px;height:12px;margin:-8px;border-radius:50%;background:#b3a98f;opacity:0;transform:translateY(-30px);transition:opacity .4s,transform .6s var(--ease-spring);transition-delay:calc(1.6s + var(--k) * .2s)}
-.bcPlan.isIn .bcMatrix b{opacity:1;transform:none}
-.bcMatrix b.isTop{width:16px;height:16px;margin:-8px;background:var(--bc-meet);box-shadow:0 0 0 6px #9d4f4526}
-.bcMatrix b small{position:absolute;right:22px;top:-3px;white-space:nowrap;font-size:12px;font-weight:700;color:var(--bc-meet)}
+
 .bcRules{display:grid;gap:8px;margin-top:64px}
 .bcStory .bcRules p{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 8px;margin:0!important;font-size:17px!important;color:#3f4e45!important}
 .bcRules span{padding:1px 8px;border-radius:12px;background:#2f5244;color:#fff;font-size:12px;font-weight:700}
@@ -231,7 +130,7 @@
  .bcBetPhone{width:min(62%,240px)}
  .bcPlan:before{left:18px;right:auto;top:18px;bottom:18px;border-top:0;border-left:2px dashed #b39a73;transform:scaleY(0);transform-origin:top}
 }
-@media(prefers-reduced-motion:reduce){.bcMsg,.bcMsg>.bcJob,.bcPhase,.bcPeople figure,.bcTaskBar em,.bcMatrix b,.bcPlan:before{transition:none}.bcTyping i{animation:none}}
+@media(prefers-reduced-motion:reduce){.bcMsg,.bcMsg>.bcJob,.bcPhase,.bcPeople figure,.bcTaskBar em,.bcPlan:before{transition:none}.bcTyping i{animation:none}}
 
 /* Lifecycle road palette */
 .bcStory{--lc-ink:#203f3b;--lc-road:#2f5244;--lc-accent:#9d4f45;--lc-accent-2:#c9876f;--lc-muted:#5b625c;--lc-tint:#e6efe4f2;--lc-glass:#efe6d6}
@@ -298,19 +197,11 @@
 /* ── Rhythm pass ────────────────────────────────────────────────
    Breath between Build and Validate: one centred line at display size. */
 
-
-
-
-
-
-
 /* Validate: heading left, the lead set as a margin note on the right. */
 @media(min-width:1001px){
  .bcValidate>header{grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:0 clamp(40px,8vw,128px)}
  .bcStory .bcValidate>header p{padding-left:16px;border-left:2px solid var(--bc-meet);font-size:15px;line-height:1.55}
 }
-
-
 
 /* Lead bet: the claim and its proof side by side (F-pattern entry on the
    statement), the reasoning columns running full width beneath. */

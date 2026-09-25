@@ -66,11 +66,9 @@
    runs from the first letter to the last on every case. */
 .casePage .caseHeader h1{width:fit-content!important;max-width:100%!important;--case-font:var(--b-title-font,var(--font-display));font-family:var(--case-font)!important;font-size:var(--cs-display)!important;font-weight:var(--b-title-weight,500)!important;line-height:1.08!important;letter-spacing:var(--b-title-track,-.045em)!important;padding-bottom:.08em!important;overflow:visible!important}
 .casePage .caseIntro{--case-font:var(--font-serif);font-family:var(--case-font)!important;font-size:var(--cs-lead)!important;line-height:1.5!important;max-width:34ch!important}
-.casePage h2:not(.caseLead h2,.toolLogoSection h2,.caseHeroMedia *,.sandboxSection *,.kohlerSurface *,.iphoneDemoStage *,.fvSurveyExperiment *,.aiOpsWorkbench *,.elMirrorScene *){--case-font:var(--font-display);font-family:var(--case-font)!important;font-size:var(--cs-h2)!important;font-weight:500!important;line-height:1.08!important;letter-spacing:-.03em!important}
+.casePage h2:not(.caseLead h2,.toolLogoSection h2,.caseHeroMedia *,.sandboxSection *,.kohlerSurface *,.iphoneDemoStage *,.fvSurveyExperiment *,.elMirrorScene *){--case-font:var(--font-display);font-family:var(--case-font)!important;font-size:var(--cs-h2)!important;font-weight:500!important;line-height:1.08!important;letter-spacing:-.03em!important}
 
-.casePage h3:not(.caseLead *,.chatFrameCols *,.caseHeroMedia *,.sandboxSection *,.kohlerSurface *,.requestApp *,.iphoneDemoStage *,.fvSurveyExperiment *,.aiOpsWorkbench *,.accentureSchemaWindow *,.schedulerDecisionCanvas *,.elMirrorScene *){--case-font:var(--font-display);font-family:var(--case-font)!important;font-size:var(--cs-h3)!important;font-weight:600!important;line-height:1.25!important;letter-spacing:-.01em!important}
-
-
+.casePage h3:not(.caseLead *,.chatFrameCols *,.caseHeroMedia *,.sandboxSection *,.kohlerSurface *,.requestApp *,.iphoneDemoStage *,.fvSurveyExperiment *,.accentureSchemaWindow *,.schedulerDecisionCanvas *,.elMirrorScene *){--case-font:var(--font-display);font-family:var(--case-font)!important;font-size:var(--cs-h3)!important;font-weight:600!important;line-height:1.25!important;letter-spacing:-.01em!important}
 
 /* Running prose: lead paragraphs and body copy only. Captions, notes and
    annotations keep their smaller sizes. */
@@ -86,7 +84,6 @@
 
 /* Eyebrow: the stage name above each chapter title, stamped by LifecycleRoad.
    It matches the sticky road's readout, so the page and the map agree. */
-.casePage [data-eyebrow]::before{content:attr(data-eyebrow);display:block;margin:0 0 var(--s-2);font:600 var(--cs-eyebrow)/1.2 var(--font-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--cd-accent)}
 
 /* Sequenced reveal used by every case study (see useCaseReveal in main.tsx). */
 .revealItem{opacity:0;translate:0 18px;transition:opacity .65s ease,translate .7s var(--ease-out);transition-delay:var(--rd,0ms)}
@@ -168,7 +165,7 @@
 .casePage .caseLead>.metricStrip{grid-column:1 / -1!important;justify-self:start!important;width:100%!important;max-width:none!important;margin:var(--s-5) 0 0!important;padding:0!important}
 @media(min-width:1100px){
   .casePage{padding-top:16px!important}
-  .casePage .backBtn{margin-bottom:24px!important}
+
   .casePage .caseLead{margin-top:16px!important;margin-bottom:var(--s-6)!important}
   .casePage .caseLead .caseHeroMedia img:not(.bcHero img):not(.caseHeroLogoWrap img){width:100%!important;height:auto!important;max-height:none!important;object-fit:cover!important}
   .casePage .caseLead .caseHeroMedia :is(.homepageMockup,.esteeHeroMockup,.commuteHeroCover) img:not(.bcHero img):not(.caseHeroLogoWrap img){height:100%!important}
@@ -184,7 +181,6 @@ main.casePage>.caseLead,main.casePage .caseLead{padding-bottom:0!important}
 @media(max-width:860px){
   .casePage .caseLead>.metricStrip{grid-auto-flow:row!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;column-gap:var(--s-3)!important;row-gap:var(--s-3)!important}
 }
-
 
 /* ---- At a glance (CaseAnswer) -------------------------------------------
    Same column as the hero. Row labels let the block be read as a list of
@@ -365,8 +361,7 @@ main.casePage .cdSupporting:last-child{margin-bottom:0;padding-bottom:0!importan
 /* Text tokens on the home page: the same four prose styles as the case
    studies, plus caption (14/1.5) for card and list blurbs, which used 13px. */
 .homePage .aboutCopy p,.homePage .heroThesis{line-height:1.65!important}
-.homePage .educationCopy p{font-size:var(--cs-small)!important;line-height:1.6!important}
-.homePage .balancedProjectGrid>.projectCardReveal:nth-child(-n+2) .projectCardBody>p{line-height:1.6!important}
+
 .homePage :is(.balancedProjectGrid>.projectCardReveal:nth-child(n+3) .projectCardBody>p,.experienceSummary p,.moreBuildBlurb,.smallBuild>p){font-size:var(--cs-caption)!important;line-height:1.5!important}
 
 /* Project cards: no outlines, glows or border changes. Hover lifts the image
@@ -377,8 +372,6 @@ main.casePage .cdSupporting:last-child{margin-bottom:0;padding-bottom:0!importan
 .homePage :is(.projectCardMedia,.moreBuildVisual){transition:transform .35s var(--ease-out),box-shadow .35s var(--ease-out)!important}
 .homePage :is(.projectCardAction,.moreBuildAction):hover :is(.projectCardMedia,.moreBuildVisual){transform:translateY(-2px)!important;box-shadow:var(--elev-2)!important}
 .homePage :is(.projectCardAction,.moreBuildAction):focus-visible :is(.projectCardMedia,.moreBuildVisual){box-shadow:0 0 0 3px var(--surf-page),0 0 0 5px #2f4d45!important}
-.homePage .projectCard h3{transition:color .2s var(--ease-out)}
-.homePage .projectCardAction:hover h3{color:#2f4d45!important}
 
 @media(min-width:1001px){
   /* One column for the whole page. */
@@ -394,17 +387,9 @@ main.casePage .cdSupporting:last-child{margin-bottom:0;padding-bottom:0!importan
   /* Experience and Education read as one group, so they sit closer together
      than any other pair of sections. */
   .homePage>.educationSection{margin-top:var(--s-5)!important;padding-top:var(--s-5)!important}
-  .siteFooter{width:min(var(--cs-max),calc(100% - 64px))!important;max-width:none!important;margin:var(--cs-chapter) auto 0!important}
 
   /* Selected work: two lead projects at half width, then four at a quarter.
      One image ratio for every card, so size carries rank and nothing else. */
-  .homePage .balancedProjectGrid{grid-template-columns:repeat(12,minmax(0,1fr))!important;column-gap:var(--cs-gutter)!important;row-gap:var(--s-6)!important}
-  .homePage .balancedProjectGrid>.projectCardReveal{grid-column:span 3!important}
-  .homePage .balancedProjectGrid>.projectCardReveal:nth-child(-n+2){grid-column:span 6!important}
-  .homePage .balancedProjectGrid>.projectCardReveal:nth-child(-n+2) .projectCard h3{font-size:clamp(24px,2.2vw,30px)!important}
-  .homePage .balancedProjectGrid>.projectCardReveal:nth-child(-n+2) .projectCardBody>p{font-size:var(--cs-small)!important;max-width:52ch!important}
-  .homePage .balancedProjectGrid>.projectCardReveal:nth-child(n+3) .projectCard h3{font-size:20px!important}
-  .homePage .balancedProjectGrid .projectCardBody{padding-top:var(--s-2)!important}
 
   /* About: copy holds the left edge like every other section; the photo and
      film viewer sit beside it. */
@@ -416,8 +401,6 @@ main.casePage .cdSupporting:last-child{margin-bottom:0;padding-bottom:0!importan
    Card: image 16 company 8 title 8 text. Hero: name 32 credential 16 thesis
    32 links. Experience rows: 24 between logo, copy and date. */
 @media(min-width:1001px){
-  .homePage .balancedProjectGrid .projectCardTop{margin:0 0 var(--s-1)!important}
-  .homePage .balancedProjectGrid .projectCard h3{margin:0 0 var(--s-1)!important}
   .homePage .heroThesis{margin-top:0!important}
   .homePage .heroTagline{margin-top:var(--s-2)!important}
   .homePage .heroLinks{margin-top:var(--s-4)!important}
@@ -427,11 +410,6 @@ main.casePage .cdSupporting:last-child{margin-bottom:0;padding-bottom:0!importan
      image edge, so labels, titles and descriptions line up across the row. */
   .homePage .v28Fun .moreBuildCopy{padding:var(--s-2) 0 0!important}
   .homePage .v28Fun .moreBuildCopy>span{display:block;margin:0 0 var(--s-1)!important;min-height:0!important}
-  .homePage .v28Fun .funBuildGrid .moreBuildCopy h3{margin:0 0 var(--s-1)!important;font-size:var(--t-lead)!important;line-height:1.05!important}
-  .homePage .v28Fun .funBuildGrid .moreBuildCopy p{margin:0!important;font-size:var(--cs-caption)!important;line-height:1.5!important}
-}
-@media(min-width:1001px) and (max-width:1200px){
-  .homePage .balancedProjectGrid>.projectCardReveal:nth-child(n+3){grid-column:span 6!important}
 }
 
 /* ---- Hero photos ------------------------------------------------------------
@@ -476,11 +454,6 @@ main.casePage .cdSupporting:last-child{margin-bottom:0;padding-bottom:0!importan
 
 /* FinSimple Skim: the build deck (prototype, AEM component, customer release)
    with the stage notes beside it, instead of repeating the hero photo. */
-.casePage .fseSkimDeck .fseBuild{display:block!important;padding:0!important}
-@media(min-width:1001px){
-  .casePage .fseSkimDeck .fseEvolution{grid-column:auto!important;grid-row:auto!important;margin:0!important;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);column-gap:var(--cs-gutter);align-items:center}
-  .casePage .fseSkimDeck .fseEvolutionNotes{grid-template-columns:1fr!important;row-gap:var(--s-3)}
-}
 
 /* Skim demos sit on the same 1180 column as the hero and summary (they were
    inset to 1120 at x=160). */

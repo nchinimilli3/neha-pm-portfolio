@@ -21,7 +21,6 @@ body:has(.casePage){background:var(--b-page,#f3ede3)}
  background:linear-gradient(180deg,var(--b-band) 0,var(--b-band) 820px,var(--b-page) 1500px)}
 @media(forced-colors:active){.casePage>.caseBackdrop{display:none}}
 
-
 /* Neha OS window bar */
 .caseWinBar{position:fixed;left:0;right:0;top:0;height:46px;z-index:60;display:flex;align-items:center;gap:14px;padding:0 16px;background:rgba(238,233,226,.84);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);border-bottom:.5px solid rgba(0,0,0,.14);font:500 13px/1 Inter,system-ui,sans-serif;color:#3a312a}
 .caseWinLights{display:flex;gap:8px;align-items:center}
@@ -41,28 +40,28 @@ body:has(.casePage){background:var(--b-page,#f3ede3)}
 .caseWinBar .caseReadingToggle button[aria-pressed="true"]{background:#fff;color:#1d1d1f;box-shadow:0 1px 2px rgba(0,0,0,.14),0 0 0 .5px rgba(0,0,0,.06)}
 .caseWinBar .caseReadingToggle b{font-size:12px;font-weight:500;letter-spacing:0}
 
-/* The window that grows into the case: a native view transition. The desktop
-   window's snapshot scales up to the full-screen frame and fades as the case
-   underneath fades in; the small title bar grows into the case's window bar. */
-.casePage>.caseFrame{position:fixed;inset:0;z-index:0;pointer-events:none;view-transition-name:case-window}
-.caseWinBar{view-transition-name:case-bar}
-::view-transition-group(case-window),::view-transition-group(case-bar){animation-duration:.52s;animation-timing-function:cubic-bezier(.3,.7,.2,1)}
-::view-transition-old(case-bar),::view-transition-new(case-bar){animation-duration:.52s;height:100%;object-fit:none;object-position:left center}
-/* Maximize: the window's picture grows and fades late; the case fades in under it */
-html[data-vt=max]::view-transition-old(case-window){animation:cwFadeLate .62s linear both;object-fit:cover;width:100%;height:100%}
-html[data-vt=max]::view-transition-new(case-window){animation:none;opacity:0}
-html[data-vt=max]::view-transition-old(root){animation:cwFadeOut .3s ease both}
-html[data-vt=max]::view-transition-new(root){animation:cwFadeIn .3s .32s ease both}
-/* Minimize: the case's frame (in its brand color) shrinks into the window, which fades back in */
-html[data-vt=min] .casePage>.caseFrame{background:linear-gradient(180deg,var(--b-band),var(--b-page))}
-html[data-vt=min]::view-transition-group(case-window),html[data-vt=min]::view-transition-group(case-bar){animation-timing-function:cubic-bezier(.5,0,.2,1)}
-html[data-vt=min]::view-transition-old(case-window){animation:cwFadeOut .5s .08s ease-in both;object-fit:cover;width:100%;height:100%}
-html[data-vt=min]::view-transition-new(case-window){animation:cwFadeIn .3s .22s ease both;object-fit:cover;width:100%;height:100%}
-html[data-vt=min]::view-transition-old(root){animation:cwFadeOut .22s ease both}
-html[data-vt=min]::view-transition-new(root){animation:cwFadeIn .34s .12s ease both}
-@keyframes cwFadeLate{0%,70%{opacity:1}100%{opacity:0}}
+/* Opening a case zooms it out of its desktop window, like a macOS window
+   opening; closing zooms it back into that window. One layer only: the case page
+   scales from the window's rect (--vt-l/t, --vt-sx/sy, set from JS) to the full
+   screen, while the desktop holds still behind it. */
+html{--cw-open:.4s;--cw-close:.34s;--cw-ease:cubic-bezier(.25,.9,.3,1)}
+html[data-vt=max]::view-transition-old(root),html:is([data-vt=min],[data-vt=fade])::view-transition-new(root){animation:none}
+html[data-vt=max]::view-transition-new(root){transform-origin:0 0;animation:cwZoomIn var(--cw-open) var(--cw-ease) both}
+html:is([data-vt=min],[data-vt=fade])::view-transition-old(root){z-index:1;transform-origin:0 0}
+html[data-vt=min]::view-transition-old(root){animation:cwZoomOut var(--cw-close) var(--cw-ease) both}
+/* Closing to a window that isn't on screen: the case just fades away. */
+html[data-vt=fade]::view-transition-old(root){animation:cwFadeOut .24s ease both}
+/* Home while a case is open (see isParked in CaseWindow.tsx): kept, laid out, not drawn. */
+.homeKeep[data-parked]{content-visibility:hidden}
+@keyframes cwZoomIn{
+ from{transform:translate(var(--vt-l,30%),var(--vt-t,30%)) scale(var(--vt-sx,.4),var(--vt-sy,.4));opacity:0;border-radius:24px}
+ 12%{opacity:1}
+ to{transform:none;opacity:1;border-radius:0}}
+@keyframes cwZoomOut{
+ from{transform:none;opacity:1;border-radius:0}
+ 88%{opacity:1}
+ to{transform:translate(var(--vt-l,30%),var(--vt-t,30%)) scale(var(--vt-sx,.4),var(--vt-sy,.4));opacity:0;border-radius:24px}}
 @keyframes cwFadeOut{to{opacity:0}}
-@keyframes cwFadeIn{from{opacity:0}}
 
 /* Fallback for browsers without view transitions */
 .maxGhost{position:fixed;z-index:1000;overflow:hidden;border-radius:12px;background:var(--b-band,#f3ede3);box-shadow:0 30px 60px -20px rgba(0,0,0,.45),0 0 0 .5px rgba(0,0,0,.15);pointer-events:none;
@@ -73,7 +72,6 @@ html[data-vt=min]::view-transition-new(root){animation:cwFadeIn .34s .12s ease b
 .maxGhostBar i{width:11px;height:11px;border-radius:50%;background:#ff5f57}.maxGhostBar i:nth-child(2){background:#febc2e}.maxGhostBar i:nth-child(3){background:#28c840}
 .maxGhostBar span{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap}
 .maxGhost.isMax .maxGhostBar{height:46px}
-.maxGhost.isMax 
 @media(max-width:760px){
  .caseWinFile{display:none}
  .caseWinBar{gap:8px;padding:0 10px}

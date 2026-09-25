@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 /* The request relay, played twice. First by hand: the visitor is the
    coordinator and hits the same two traps the real process had, a required

@@ -16,7 +16,7 @@
 .grazeHeroMenu>small{display:block;margin-top:12px;color:#9a876b;font-size:10px}
 .grazeHeroSeal{position:absolute;left:5%;bottom:8%;display:grid;place-content:center;width:83px;height:83px;border:1px solid #8a4c5a;border-radius:50%;color:#783e50;text-align:center;font:700 11px/1.4 system-ui;letter-spacing:.1em;transform:rotate(-14deg)}
 .grazeHeroSeal i{font:italic 19px Georgia,serif}
-.project-marketExpansion .grazeHero{max-height:100%;aspect-ratio:1.3}.project-marketExpansion .grazeHeroMenu{bottom:3%;right:4%}.project-marketExpansion .grazeHeroSeal{bottom:8%}
+
 .grazeStory{--graze-ink:#254c42;--graze-plum:#6c394c}
 .grazeBrief,.grazeSection{width:min(1180px,calc(100% - 64px));margin:0 auto;padding:64px 0}
 .grazeBrief{display:grid;grid-template-columns:1fr;gap:64px;align-items:start}
@@ -61,8 +61,6 @@
 .grazeTape{position:absolute;top:-11px;left:50%;width:92px;height:24px;margin-left:-48px;background:#e9d9a8b3;transform:rotate(-3deg);box-shadow:0 1px 2px #3c332214}.isMap .grazeTape{left:22%;transform:rotate(-12deg)}
 .grazePrintNote{display:flex;gap:12px;align-items:flex-start;margin-top:20px}.grazePrintNote>b{flex:0 0 30px;display:grid;place-items:center;height:30px;border-radius:50%;background:#6c394c;color:#fff;font:400 14px var(--case-font)}.grazePrintNote strong{display:block;font:400 21px/1.2 var(--case-font);color:#2d5342}.grazePrintNote span{display:block;margin-top:4px;font-size:14px;line-height:1.5;color:#646b5c}
 
-
-@keyframes grazeSpin{to{transform:rotate(360deg)}}
 .grazeStory button:focus-visible{outline:3px solid #a27b36;outline-offset:5px}
 @keyframes grazeBoardArrive{from{opacity:0;transform:translateY(18px) rotate(3deg)}to{opacity:1;transform:none}}
 @media(max-width:1000px){.case-marketExpansion .caseLead{grid-template-columns:1fr!important}.case-marketExpansion .caseLead .caseHeroMedia{max-width:680px!important;margin:auto!important}.grazeBrief{gap:32px}.grazeLocations{gap:32px}.grazeRecipe{gap:32px}.grazeSectionHeading{gap:16px 32px}.grazeCourses{gap:32px}.grazeCourses h3{font-size:26px}}
@@ -79,7 +77,7 @@
    grid, 1.98:1 on a wide screen). The collage keeps its own 4:3 and is fitted
    inside that slot like a contained image — centred, never stretched — so the
    composition never distorts and never spills past the clipped edge. */
-.project-marketExpansion .projectCardMedia{container-type:size;display:grid;place-items:center;background:radial-gradient(ellipse at 68% 24%,#f5f6ef,transparent 65%),linear-gradient(145deg,#dadfd6,#e8e7dd)}
+
 .grazeProjectPreview{container-type:inline-size;position:relative;isolation:isolate;width:min(100cqw,133.333cqh);height:min(75cqw,100cqh);margin:0;overflow:hidden;background:radial-gradient(ellipse at 68% 24%,#f5f6ef,transparent 65%),linear-gradient(145deg,#dadfd6,#e8e7dd);color:#345744}
 
 .grazePreviewHeading{position:absolute;left:6cqw;right:6cqw;top:5cqw;display:flex;justify-content:space-between;gap:4cqw;align-items:flex-start}
@@ -105,7 +103,6 @@
 .grazePreviewWorkbook>footer{display:flex;gap:3.5cqw;align-items:center;padding:1.8cqw 2.8cqw;background:#f2f5ef;color:#778272;font-size:2cqw;line-height:1.2;border-top:.25cqw solid #d9e0d7}
 .grazePreviewWorkbook>footer>b{color:#2b6147}
 
-
 /* Lifecycle road in Graze plum, gold, and sage */
 .grazeStory{--lc-ink:#2d2226;--lc-road:#6c394c;--lc-accent:#d9a441;--lc-accent-2:#f0cf86;--lc-muted:#625a56;--lc-tint:#f4e6ecf2;--lc-glass:#f6ecef}
 .gzStage{scroll-margin-top:112px}
@@ -115,7 +112,7 @@
    Deliver leads with a left-aligned title into the printouts. */
 @media(min-width:1001px){
  #gz-analyze.grazeSection{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:32px;align-items:start}
- 
+
  #gz-analyze .grazeLocations{grid-column:6/13;grid-template-columns:1fr;gap:32px}
  #gz-recommend .grazeSectionHeading{grid-template-columns:1fr;gap:16px;max-width:760px;margin:0 0 48px}
 }

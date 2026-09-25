@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import {useEffect, useRef} from 'react';
 import './commute-bart.css';
 
 /* The reference render of car 3102, cut out of its white background with the rail removed, so

@@ -2,7 +2,7 @@
 .case-accenture{--ax-ink:#1f1628;--ax-body:#3a3043;--ax-plum:#4e1b78;--ax-violet:#7b2fd0;--ax-accent:#a100ff;--ax-rose:#8c2f58}
 
 /* Header copy needs darker ink to read over the purple blooms. */
-.case-accenture .caseHeader .ownershipLine span{color:#3a2352!important}
+
 .case-accenture .caseHeader .toolLogoHeading p{color:var(--ax-body)!important}
 
 /* Tool relay: a vertical hand-off line beside the rules it carried. */
@@ -49,11 +49,6 @@
 
 /* Chapters share one layout: heading beside its summary, then the visual. No divider lines. */
 
-
-
-
-
-
 .case-accenture .accentureSchemaWindow{margin:0!important}
 
 /* The 10:30 PM edge case lives beside the gate it justified. */
@@ -72,8 +67,6 @@
 .case-accenture .axEdgeAfter{display:flex;gap:12px;align-items:baseline;margin-top:12px!important;font-size:19px!important;font-weight:700;line-height:1.35!important;color:var(--ax-ink)!important}
 .case-accenture .axEdgeAfter i{font-style:normal;color:var(--ax-violet)}
 @media(max-width:800px){.case-accenture .axProof{grid-template-columns:1fr;gap:20px}.case-accenture .axClock{width:110px;height:110px}}
-
-
 
 /* The three request screens share one numbered hand-off line. */
 @media(min-width:1001px){
@@ -169,13 +162,8 @@
    Discover and Recommend keep it as bookends; Define sets a text rail beside the schema; Build centers a quiet
    header over the relay; Test stacks the header left, reading straight into the boundary track. */
 
-
 /* Connective tissue: each chapter hands the investigation to the next one
    instead of ending as its own deliverable. */
-.accentureStory .axSpine{padding-bottom:0}
-.accentureStory .axHandoff{display:grid;gap:8px;justify-items:start;max-width:52ch;margin:32px 0 0;font-size:16px;line-height:1.5;color:var(--lc-muted)}
-.accentureStory .axHandoff i{font-style:normal;font-size:15px;color:var(--lc-accent)}
-.accentureStory .axBecause{margin:0 0 16px;max-width:56ch;font-size:15px;line-height:1.5;color:var(--lc-muted)}
 
 /* The live readout belongs to the ride, not under it: a transit placard pinned
    inside the scene's top-left sky, so the number and the car read together. */
@@ -215,8 +203,6 @@
 
 /* Chapter sections are grids; the handoff line must span the whole track
    rather than drop into a single narrow column. */
-
-
 
 /* The page used to end on the cable-car illustration; close on the finding instead. */
 

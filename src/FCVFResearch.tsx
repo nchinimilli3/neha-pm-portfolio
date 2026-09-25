@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 function InterviewPortrait({ index }: { index: number }) {
   const skin = ['#c7906c', '#b97b58', '#edc4a0', '#885c46'][index];

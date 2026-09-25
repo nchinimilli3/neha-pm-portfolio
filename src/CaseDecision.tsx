@@ -6,7 +6,6 @@ import './case-decision.css';
 
    CaseAnswer   the 20-second read, above everything else
    DecisionMoment  the one consequential call, given more weight than any h2
-   CausalChain  observation -> decision -> consequence, stated as a chain
    Supporting   implementation detail, deliberately quieter
 
    None of these draw a box. They rank with type scale, rules and space so the
@@ -113,7 +112,6 @@ export function CaseAnswer({
       </ol>
 
       <div className="cdCall">
-        <p className="cdCallLabel"><span className="cdMedal cdMedalCall" aria-hidden="true">{icons.call}</span>The decision</p>
         {/* --n lets the underline and arrow wait until the last word has landed. */}
         <p className="cdCallStatement" style={{'--n': split ? split.length : 1} as React.CSSProperties}>
           {callHref ? <a href={callHref} onClick={e => {
@@ -129,22 +127,6 @@ export function CaseAnswer({
 
     </div>
   </section>;
-}
-
-/* observation -> insight -> decision -> tradeoff -> result, as an explicit
-   chain. Mark one step `emphasis` to make it the pivot. */
-export function CausalChain({
-  steps,
-  className = ''
-}: {
-  steps: { label: string; text: Node; emphasis?: boolean }[];
-  className?: string;
-}) {
-  return <ol className={`cdChain ${className}`}>
-    {steps.map(step => <li key={step.label} className={step.emphasis ? 'isPivot' : ''}>
-      <b>{step.label}</b><span>{step.text}</span>
-    </li>)}
-  </ol>;
 }
 
 /* The page's loudest element. `statement` is the decision in one sentence;

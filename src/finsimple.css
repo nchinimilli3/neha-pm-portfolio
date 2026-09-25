@@ -1,14 +1,8 @@
 /* FinSimple: electric blue atmosphere, saved context, connected systems. */
-.case-finsimple{--fs-ink:#0b3052;color:var(--fs-ink);isolation:isolate}.case-finsimple .caseLead{grid-template-columns:1fr 1.15fr!important;gap:32px!important;align-items:center!important}.fseEditorial{color:var(--fs-ink);font-size:17px;line-height:1.65}.fseEditorial *{box-sizing:border-box}.fseEditorial section{width:min(1180px,calc(100% - 64px));margin:auto;padding:clamp(56px,7vw,96px) 0 0}.fseEditorial section:last-child{padding-bottom:96px}.fseEditorial h2{font:500 clamp(38px,4.5vw,64px)/1.06 var(--case-font);letter-spacing:-.035em;margin:20px 0 32px}.fseEditorial h2 em{color:#4779a5;font-weight:400}.fseEditorial p{margin:0 0 24px;max-width:560px}.fseReturn,.fseDelivery{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}.fsePlatform>header,.fseTest>header{display:grid;grid-template-columns:1.2fr 1fr;gap:64px;align-items:end}.fseBuild>header,.fseOperate>header{display:grid;grid-template-columns:1fr;gap:24px}.fsePlatform>header p,.fseBuild>header p{margin-bottom:32px}.fseConnection{display:grid;grid-template-columns:1fr 70px 1fr;align-items:center;margin-top:32px}.fseEditorial button:focus-visible{outline:3px solid #398acd;outline-offset:5px}.fseEvidence{margin:0;min-width:0}.fseEvidence button{position:relative;display:block;width:100%;padding:0;border:0;background:#fff;cursor:zoom-in}.fseEvidence img{display:block;width:100%;height:500px;object-fit:contain;object-position:top}.fseEvidence button>span{position:absolute;bottom:12px;right:12px;padding:8px 12px;background:#173f65;color:white;font-size:11px;border-radius:4px}.fseEvidence figcaption{font:10px/1.5 var(--case-font);color:#5b7990;margin-top:16px}
+.case-finsimple{--fs-ink:#0b3052;color:var(--fs-ink);isolation:isolate}.case-finsimple .caseLead{grid-template-columns:1fr 1.15fr!important;gap:32px!important;align-items:center!important}.fseEditorial{color:var(--fs-ink);font-size:17px;line-height:1.65}.fseEditorial *{box-sizing:border-box}.fseEditorial section{width:min(1180px,calc(100% - 64px));margin:auto;padding:clamp(56px,7vw,96px) 0 0}.fseEditorial section:last-child{padding-bottom:96px}.fseEditorial h2{font:500 clamp(38px,4.5vw,64px)/1.06 var(--case-font);letter-spacing:-.035em;margin:20px 0 32px}.fseEditorial h2 em{color:#4779a5;font-weight:400}.fseEditorial p{margin:0 0 24px;max-width:560px}.fseReturn,.fseDelivery{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}.fsePlatform>header{display:grid;grid-template-columns:1.2fr 1fr;gap:64px;align-items:end}.fseBuild>header,.fseOperate>header{display:grid;grid-template-columns:1fr;gap:24px}.fsePlatform>header p,.fseBuild>header p{margin-bottom:32px}.fseEditorial button:focus-visible{outline:3px solid #398acd;outline-offset:5px}
 
-
-
-@media(max-width:850px){.case-finsimple .caseLead{grid-template-columns:1fr!important}.fseReturn,.fseDelivery{gap:32px}.fsePlatform>header,.fseBuild>header{gap:32px}.fseConnection{grid-template-columns:1fr 35px 1fr}}
-@media(max-width:650px){.fseEditorial section{width:calc(100% - 40px);padding:56px 0}.fseReturn,.fseDelivery,.fsePlatform>header,.fseBuild>header,.fseTest>header,.fseOperate>header{grid-template-columns:1fr;gap:24px}.fseEditorial h2{font-size:40px}.fseConnection{grid-template-columns:1fr;margin-top:8px}.fseEvidence img{height:360px}.case-finsimple .caseHeader{padding-right:0}}
-
-
-.fseCustomerSteps{list-style:none;margin:32px 0 0;padding:0}.fseCustomerSteps li{display:flex;gap:16px;align-items:start;padding:20px 0;border-top:1px solid #1b4b742e}.fseCustomerSteps li>b{display:grid;place-items:center;width:30px;height:30px;flex:none;border:1px solid #7099b9;border-radius:50%;font:10px var(--case-font)}.fseCustomerSteps strong{display:block;font-size:16px;font-weight:600}.fseCustomerSteps span{display:block;font-size:14px;color:#4b6d86;margin-top:4px}.fseReturnLiteral{align-items:start}
-
+@media(max-width:850px){.case-finsimple .caseLead{grid-template-columns:1fr!important}.fseReturn,.fseDelivery{gap:32px}.fsePlatform>header,.fseBuild>header{gap:32px}}
+@media(max-width:650px){.fseEditorial section{width:calc(100% - 40px);padding:56px 0}.fseReturn,.fseDelivery,.fsePlatform>header,.fseBuild>header,.fseOperate>header{grid-template-columns:1fr;gap:24px}.fseEditorial h2{font-size:40px}.case-finsimple .caseHeader{padding-right:0}}
 
 /* Return trip: an in-car navigation route beside the stops, and the released screen in a browser. */
 .fseNav{position:relative;display:grid;grid-template-columns:90px 1fr;gap:24px;margin-top:32px}
@@ -109,45 +103,16 @@
 .fseStage{scroll-margin-top:112px}
 
 /* Test: three environment gates */
-.fsePipeline{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin:48px 0 0;padding:0;list-style:none}
-.fsePipeline:before{content:'';position:absolute;left:30px;right:30px;top:30px;height:6px;border-radius:8px;background:linear-gradient(90deg,#9bb7cf,#2f8fe0)}
-.fsePipeline>li{position:relative}
-.fseGate{position:relative;z-index:1;display:grid;gap:4px;justify-items:center;width:60px;padding:8px 0;border-radius:16px;background:#0b3052;box-shadow:0 10px 20px #0b305233}
-.fseGate i{width:12px;height:12px;border-radius:50%;background:#2c4a64}
+
 /* Each gate is a working traffic light: red, then yellow, then green, on a loop */
-.fseGate i{animation:fseLight 3.6s steps(1,end) infinite;animation-delay:calc(var(--g,0) * -.4s)}
-.fseGate i:nth-child(1){--on:#ff5a5a;animation-name:fseRed}
-.fseGate i:nth-child(2){--on:#ffc53d;animation-name:fseAmber}
-.fseGate i:nth-child(3){--on:#5fd38a;animation-name:fseGreen}
-@keyframes fseRed{0%{background:#ff5a5a;box-shadow:0 0 10px #ff5a5a}33.33%,100%{background:#2c4a64;box-shadow:none}}
-@keyframes fseAmber{0%,33.33%{background:#2c4a64;box-shadow:none}33.34%{background:#ffc53d;box-shadow:0 0 10px #ffc53d}66.66%,100%{background:#2c4a64;box-shadow:none}}
-@keyframes fseGreen{0%,66.66%{background:#2c4a64;box-shadow:none}66.67%,100%{background:#5fd38a;box-shadow:0 0 10px #5fd38a}}
-.fsePipeline>li:nth-child(2) .fseGate i{--g:1}.fsePipeline>li:nth-child(3) .fseGate i{--g:2}.fsePipeline>li:nth-child(4) .fseGate i{--g:3}.fsePipeline>li:nth-child(5) .fseGate i{--g:4}
-@media(prefers-reduced-motion:reduce){.fseGate i{animation:none}.fseGate i:last-child{background:#5fd38a;box-shadow:0 0 10px #5fd38a}}
-.fsePipeline strong{display:block;margin-top:16px;font-size:22px;color:#0b3052}
-.fsePipeline ul{display:grid;gap:8px;margin:12px 0 0;padding:0;list-style:none}
-.fsePipeline ul li{display:flex;align-items:center;gap:8px;font-size:15px;color:#34546e}
-.fsePipeline ul svg{flex:none;width:16px;height:16px;fill:none;stroke:#2f8fe0;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 
 /* Operate: results, onboarding ramp, and takeaways */
 .fseOps{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:40px}
 .fseOpsStat svg{width:40px;height:40px;fill:none;stroke:#2f8fe0;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .fseOpsStat strong{display:block;margin-top:8px;font:500 clamp(46px,5vw,64px)/1 var(--case-font);letter-spacing:-.04em;color:#0b3052}
 .fseOpsStat span{display:block;margin-top:8px;font-size:15px;line-height:1.5;color:#34546e;max-width:30ch}
-.fseRamp{margin-top:56px;max-width:720px}
-.fseEditorial .fseRamp p{margin:0 0 16px;font-size:16px;color:#34546e}
-.fseRampRow{display:grid;grid-template-columns:64px 1fr;gap:16px;align-items:center;margin-top:8px}
-.fseRampRow span{font-size:13px;font-weight:600;color:#6d8aa3}
-.fseRampRow i{position:relative;display:block;width:var(--w);height:30px;border-radius:16px;background:#c9dbea}
-.fseRampRow.isAfter i{background:linear-gradient(90deg,#1d4f7a,#2f8fe0)}
-.fseRampRow b{position:absolute;left:14px;top:50%;translate:0 -50%;white-space:nowrap;font-size:13px;font-weight:600;color:#0b3052}
-.fseRampRow.isAfter b{left:calc(100% + 12px);color:#0b3052}
 
-
-
-
-
-@media(max-width:850px){.fsePipeline,.fseOps{grid-template-columns:1fr;gap:32px}.fsePipeline:before{left:27px;right:auto;top:30px;bottom:30px;width:6px;height:auto;background:linear-gradient(#9bb7cf,#2f8fe0)}.fsePipeline>li{display:grid;grid-template-columns:60px 1fr;column-gap:16px}.fsePipeline>li>.fseGate{grid-row:1/3}.fsePipeline strong{margin-top:0}}
+@media(max-width:850px){.fseOps{grid-template-columns:1fr;gap:32px}}
 
 /* Composition (desktop): 12 columns, every heading on the left edge (case-system.css); the bodies vary.
    Discover pairs narrow copy with a dominant browser; Define keeps its split header over the platform diagram;
@@ -162,12 +127,10 @@
  .fseEditorial .fseBuild>header p{margin:0}
  .fseEditorial .fseBuild>.fseEvolution{grid-column:5/13;grid-row:2;grid-template-columns:1fr;gap:40px;margin-top:0}
  .fseEditorial .fseEvolutionNotes{display:grid;grid-template-columns:1fr 1fr;column-gap:32px}
- .fseEditorial .fseTest>header{grid-template-columns:1fr;gap:16px;max-width:760px;margin:0 0 12px}
- .fseEditorial .fseTest>header p{margin:0}
+
  .fseEditorial .fseDelivery>div:first-of-type{grid-column:1/6;grid-row:2}
  .fseEditorial .fseDelivery>.fseFreeway{grid-column:6/13;grid-row:2}
  /* The dependency ledger is its own full-width row under the freeway. */
- 
 }
 /* Build stepper: a connected release track instead of loose radio dots. */
 .fseEditorial .fseStageList{position:relative;display:grid;gap:8px;margin:0;padding:0;list-style:none}
@@ -181,34 +144,21 @@
 /* Launch: the dependency ledger, not the headcount. Each lane names what it
    held and why the release could not move without it. */
 
-
-
-
-
-
 /* Operate: the three numbers are one chain, not three tiles. */
 .fseOps{position:relative}
 .fseOpsStat{position:relative}
 .fseOpsStat+.fseOpsStat:before{content:'→';position:absolute;left:-26px;top:10px;font-size:16px;color:#15609f}
 
-
-
 @media(max-width:760px){
- 
  .fseOpsStat+.fseOpsStat:before{display:none}
 }
 
 /* The one dependency I chased sits above the rest of the ledger. */
 
-
-
-
-
 /* Operate: the three numbers read left to right as one chain. */
 .fseOps{list-style:none;padding:0;align-items:start}
 .fseOpsStat>b{display:block;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(11,48,82,.18);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#42596b}
 .fseOpsStat+.fseOpsStat:before{top:42px}
-
 
 /* Onboarding hub illustration: scattered team pages funnel into one hub with
    a table of contents. No vendor marks — the tool is not the point. */
@@ -255,7 +205,4 @@
 @media(max-width:850px){.fseOperate .cdSupporting{grid-template-columns:1fr}}
 
 /* Launch: the freeway shows the five workstreams; only my own handoff gets words */
-.fseMine{grid-column:1/-1;max-width:820px;margin:40px 0 0;padding-left:24px;border-left:4px solid #15609f}
-.fseMine b{display:block;margin-bottom:8px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#15609f}
-.fseMine p{margin:0;font-size:21px;line-height:1.5;color:#0b3052}
-@media(max-width:760px){.fseMine{margin-top:24px;padding-left:16px}.fseMine p{font-size:18px}}
+

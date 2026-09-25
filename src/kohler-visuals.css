@@ -1,7 +1,6 @@
 /* Kohler Ship Anywhere: content sits on the case aura as drawn objects, stamps, and routes instead of panels. */
 .kohlerStory{--kx-green:#245b48;--kx-green-soft:#6c9383;--kx-brass:#927047;--kx-rust:#a0482f;--kx-paper:#fbf8ef;--kx-ink:#1f2b26;--kx-muted:#404b46}
 
-
 .kxStamp{display:inline-block;padding:8px 16px;border:2.5px solid var(--kx-rust);border-radius:8px;color:var(--kx-rust);font:800 13px/1 -apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:.08em;text-transform:uppercase;transform:rotate(-8deg);white-space:nowrap;mix-blend-mode:multiply;box-shadow:inset 0 0 0 1.5px #a0482f33}
 
 /* Order problem */
@@ -98,23 +97,8 @@
 
 /* Hero: the order as a shipping tag */
 .case-kohler .caseHeroMedia{display:grid;place-items:center;background:none!important;border:0!important;box-shadow:none!important;min-height:0!important}
-.kxTagScene{display:grid;place-items:center;padding:32px 20px 32px 112px}
-.kxTag{position:relative;padding:32px 32px 32px 64px;background:linear-gradient(160deg,#f7efd9,#e9dcba);clip-path:polygon(40px 0,100% 0,100% 100%,40px 100%,0 50%);color:var(--kx-ink)}
-.kxTagScene{filter:drop-shadow(0 24px 26px #1f2b2630)}
-@keyframes kxSway{0%,100%{rotate:0deg}50%{rotate:2deg}}
-.kxTagHole{position:absolute;left:24px;top:50%;width:16px;height:16px;margin-top:-8px;border-radius:50%;background:#e8e2d3;box-shadow:inset 0 0 0 3px #b8935a}
-.kxTagString{position:absolute;left:-96px;top:40%;width:120px;height:60px;overflow:visible}.kxTagString path{fill:none;stroke:#8a6a3b;stroke-width:2}
-.kxTagLogo{display:block;width:108px;height:auto;margin-bottom:16px}
-.kxTag small{display:block;font-size:13px;color:var(--kx-muted)}
-.kxTag>strong{display:block;margin:2px 0 16px;font-size:44px;font-weight:600;letter-spacing:-.03em;color:#1f4e3d}
-.kxTagRoute{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600}.kxTagRoute i{flex:1;height:2px;background:repeating-linear-gradient(90deg,#245b48 0 6px,transparent 6px 11px)}
-.kxTagDocs{display:flex;gap:8px;margin:16px 0 16px}.kxTagDocs i{width:26px;height:32px;border-radius:4px;background:#fbf8ef;box-shadow:0 2px 0 #d9cfb8}.kxTagDocs i:last-child{box-shadow:inset 0 0 0 2px #a0482f}
-.kxTagTrail{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--kx-muted)}.kxTagTrail svg{width:16px;height:16px;fill:none;stroke:#245b48;stroke-width:2;stroke-linecap:round}
-.kxTagWrap{position:relative;width:min(100%,380px);transform:rotate(-5deg);transform-origin:0 50%;animation:kxSway 6s ease-in-out infinite}
-.kxTagStamp{position:absolute;right:-26px;top:-16px;font-size:12px;background:#f6efe2e6}
 
 /* Decision and principles, directly under the problem they answer */
-
 
 .kxTagNotes{position:relative;display:grid;gap:24px;margin:0;padding:0 0 0 32px;list-style:none}
 .kxTagNotes:before{content:'';position:absolute;left:0;top:10px;bottom:10px;border-left:2px dashed #b8935a}
@@ -137,13 +121,12 @@
 
 @media(max-width:900px){
  .kxLineStage,.kxLineSteps{grid-template-columns:1fr}
- 
+
  .kxRoles ol{grid-template-columns:1fr 1fr;row-gap:32px}.kxRoles ol:before,.kxRolesCore{display:none}
- .kxTagScene{padding:20px 0 20px 64px}
+
  .kxBelt,.kxCargo{display:none}.kxInputs{padding-bottom:0}.kxGateStamp{position:static;margin-top:12px}
- .kxTagWrap{transform:rotate(-3deg)}
 }
-@media(prefers-reduced-motion:reduce){.kxBelt i,.kxCargo,.kxTagWrap{animation:none}}
+@media(prefers-reduced-motion:reduce){.kxBelt i,.kxCargo{animation:none}}
 
 /* Lifecycle road in Kohler green and brass */
 .kohlerStory{--lc-ink:#1f2b26;--lc-road:#245b48;--lc-accent:#b8935a;--lc-accent-2:#dcc08e;--lc-muted:#54605a;--lc-tint:#e3efe8f2;--lc-glass:#eef5f1}
@@ -152,7 +135,6 @@
 /* Composition (desktop): all four chapters were the same title rail + body. Discover keeps the rail (dense);
    Design opens up with a split header over the full-width product surface (visual); Build centers its header over
    the assembly line (analytical); Deliver sets the title above a wide voyage with the shipped list beside it (result). */
-
 
 /* In-progress discipline: the status chain sits above the story, and the
    delivery list is labelled as design intent rather than shipped features. */

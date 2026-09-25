@@ -176,7 +176,7 @@ export default function LifecycleRoad({stages,vehicle='car',label='Product lifec
  const [puffs,setPuffs]=useState<{id:number,pos:string,v:number}[]>([]);
  const posRef=useRef('0%');
  // Label each chapter's heading with its stage ("02 · Define") so the page's own headings
- // carry the same map as the sticky road. Styled by [data-eyebrow] in case-system.css.
+ // carry the same map as the sticky road. The attribute is a layout hook in case-system.css; it is not printed.
  useEffect(()=>{
   stages.forEach((st,i)=>{
    const el=document.getElementById(st.id);

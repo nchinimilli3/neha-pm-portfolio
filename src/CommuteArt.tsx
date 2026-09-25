@@ -1,5 +1,3 @@
-import React from 'react';
-
 /* Drawn artwork for the Commute case, in the same register as the AC Transit
    coach and the BART car: real colours, real proportions, flat shading with
    gradients rather than outline icons. Everything lives in one sprite so a
