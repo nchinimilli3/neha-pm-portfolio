@@ -111,7 +111,17 @@
  .v28Experience .experienceSummary .companyLogo{grid-column:2;grid-row:1}
  .v28Experience .experienceSummary>div:not(.companyLogo){grid-column:3;grid-row:1}
  .v28Experience .experienceSummary time{grid-column:3!important;grid-row:2!important;margin:0!important;padding:0}
- .v28Experience .expToggle{grid-column:4;grid-row:1}
+ .v28Experience .expToggle{grid-column:4!important;grid-row:1!important}
+ .v28Experience .experienceSummary .companyLogo{width:44px!important;height:36px!important}
  .v28Experience .experienceDetail>div{padding-left:0!important;padding-right:0!important}
+ /* The number and object stack above the detail here, so the open summary needs no room held for them. */
+ .v28Experience .expBranded.open .experienceSummary p{max-width:none!important}
+ .v28Experience .expBranded .expColumns{grid-template-columns:1fr!important}
+ .v28Experience .expBranded .expNote{font:400 13px/1.5 Inter,system-ui,sans-serif!important;transform:none;white-space:normal}
+ /* Number and object share a row only when both fit; a wide object (the API window) drops below. */
+ .expBrandHero{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 16px}
+ .expBrandHero>p{flex:1 1 0;min-width:min-content}
+ .expBrandHero b{white-space:nowrap}
+ .expApi{width:min(290px,100%)}
 }
 
