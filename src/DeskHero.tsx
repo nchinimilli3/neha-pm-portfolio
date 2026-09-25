@@ -382,10 +382,10 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
    const vw=window.innerWidth,vh=window.innerHeight;
    SH=isStatic?262:Math.max(220,Math.min(285,SW*vh/vw));SY=SCREEN_BOTTOM-SH;
    stage.style.setProperty('--sh',`${SH}px`);stage.style.setProperty('--sy',`${SY}px`);
-   // Slide the room right until the photo frame (the leftmost object, x≈474) clears the copy.
+   // Slide the room right until the photo frame (the leftmost object, x≈456) clears the copy.
    const copy=copyRef.current,s0=Math.max(vw/1600,vh/1000)*ROOM_ZOOM;
    const copyRight=copy?copy.offsetLeft+copy.offsetWidth:vw*.4;
-   CX0=Math.min(vw/vh>1.9?800:760,468-(copyRight+28-vw/2)/s0);
+   CX0=Math.min(vw/vh>1.9?800:760,450-(copyRight+28-vw/2)/s0);
    // How far the hello note drops so it shrinks into the middle of the dock (it scales from its bottom edge).
    const hello=helloRef.current,dock=dockRef.current;
    if(hello&&dock)HELLO_DY=dock.offsetTop+dock.offsetHeight/2-(hello.offsetTop+hello.offsetHeight)+hello.offsetHeight*.06/2;

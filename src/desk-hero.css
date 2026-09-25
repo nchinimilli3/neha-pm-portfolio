@@ -196,9 +196,9 @@
 .dhBooks,.dhStack,.dhCanvas{filter:drop-shadow(-6px 4px 5px rgba(60,40,20,.28))}
 
 /* My headshot in a 5×7 frame, left of the iMac */
-.dhFrame{left:474px;top:552px;width:124px;height:164px;z-index:17;border-radius:3px;background:linear-gradient(135deg,#d9b98a,#b88a55 40%,#9c6e3d 70%,#c9a06a)}
-.dhFrameFace{position:absolute;inset:9px}
-.dhFrameFace{padding:7px;background:#f7f2e8;box-shadow:inset 0 1px 3px rgba(0,0,0,.25)}
+.dhFrame{left:456px;top:498px;width:156px;height:218px;z-index:17;border-radius:3px;background:linear-gradient(135deg,#d9b98a,#b88a55 40%,#9c6e3d 70%,#c9a06a)}
+.dhFrameFace{position:absolute;inset:11px}
+.dhFrameFace{padding:8px;background:#f7f2e8;box-shadow:inset 0 1px 3px rgba(0,0,0,.25)}
 .dhFrameFace img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 16%;filter:brightness(var(--printDim))}
 
 /* Cookie on a napkin, and the watercolor tin (drawn top-down; the desk plane foreshortens them) */
@@ -220,7 +220,7 @@
 .dhFlask svg,.dhCappa>svg:last-child{width:100%;height:100%;display:block;overflow:visible}
 .dhFlask::after,.dhCappa::after,.dhCamera::after,.dhFrame::after{content:"";position:absolute;left:8%;right:4%;bottom:-3px;height:7px;border-radius:50%;background:rgba(30,18,8,.5);filter:blur(2.5px);z-index:-1;pointer-events:none}
 .dhFlask::before,.dhCappa::before,.dhCamera::before,.dhFrame::before{content:"";position:absolute;left:4%;right:10%;top:calc(100% - 3px);height:var(--castL,24px);border-radius:50%;background:radial-gradient(ellipse 70% 100% at 62% 0,rgba(40,24,10,.4),transparent 72%);filter:blur(4px);transform:skewX(50deg);transform-origin:50% 0;opacity:var(--castOp);z-index:-1;pointer-events:none}
-.dhFlask{--castL:46px}.dhFrame{--castL:40px}.dhCappa{--castL:22px}.dhCamera{--castL:26px}
+.dhFlask{--castL:46px}.dhFrame{--castL:48px}.dhCappa{--castL:22px}.dhCamera{--castL:26px}
 .dhCappa{left:1074px;top:626px;width:104px;height:91px;z-index:17}
 .dhCappa .dhSteam{left:22px;top:-60px;width:52px;height:70px}
 .dhCamera{left:1268px;top:622px;width:128px;height:96px;padding:0;border:0;background:none;cursor:pointer}
@@ -466,7 +466,7 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 .dhPeg{background:linear-gradient(90deg,#a77c4c,#dbc099 40%,#c9a171 65%,#8f6845);box-shadow:1px 2px 2px #0004}
 .dhPeg::after{content:"";position:absolute;left:-1px;right:-1px;top:7px;height:3px;border-top:1px solid #777169;border-bottom:1px solid #777169;background:#aaa49a}
 .dhFrame{box-shadow:inset 1px 1px 1px #ffe3b3,inset -2px -2px 2px #71502d,2px 3px 0 #805a32,-7px 14px 16px -8px #28180a88}
-.dhFrameFace::after{content:"";position:absolute;inset:7px;background:linear-gradient(120deg,#ffffff22,transparent 38%,#ffffff09 65%,transparent 66%);pointer-events:none}
+.dhFrameFace::after{content:"";position:absolute;inset:8px;background:linear-gradient(120deg,#ffffff22,transparent 38%,#ffffff09 65%,transparent 66%);pointer-events:none}
 .dhCanvas{box-shadow:inset 0 0 0 1px #b7a995,2px 3px 0 #bdb09d,-3px 6px 10px -5px #0007}
 .dhImac{filter:drop-shadow(2px 1px 0 #6485a5)}
 .dhImacStand{background:linear-gradient(90deg,#7a9cbe,#bbd0e6 8%,#cbdceb 42%,#9bb9d5 94%,#688bac);clip-path:polygon(24% 0,76% 0,87% 90%,100% 96%,100% 100%,0 100%,0 96%,13% 90%);box-shadow:inset 0 9px 12px -9px #324b66}

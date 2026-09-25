@@ -1,0 +1,5 @@
+/* Stands in for an interactive demo on phones: plain text on the page, no card. */
+.laptopOnly{display:flex;align-items:center;justify-content:center;gap:10px;margin:8px auto 20px;padding:0 16px;max-width:36ch;text-align:left;font:500 15px/1.4 Inter,system-ui,sans-serif;color:#5b5f66}
+.laptopOnly svg{flex:none;width:30px;height:21px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}
+/* Hints that only describe how to use a demo go with it. */
+@media(max-width:760px){.cmDemoHint,.sandboxNote{display:none}}

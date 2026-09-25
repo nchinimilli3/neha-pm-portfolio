@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
+import LaptopOnly from './LaptopOnly';
 import './commute-case.css';
 import CommuteBARTStory from './CommuteBARTStory';
 import RollingVehicle from './RollingVehicle';
@@ -97,7 +98,7 @@ function ModelLearningSummary(){
 function ReliabilityEngine(){
  const [ref,seen]=useInView<HTMLDivElement>();
  return <div ref={ref} className={`cmEngine${seen?' isRunning':''}`} aria-label="Commute reliability algorithm">
-  <CommuteModelLab/>
+  <LaptopOnly><CommuteModelLab/></LaptopOnly>
   <ModelLearningSummary/>
  </div>;
 }
@@ -248,7 +249,7 @@ export default function CommuteCase({demo}:{demo:React.ReactNode}){
    </div>
    <PlatformBoard/>
    <div className="cmDemoStage">
-    <CommutePhoneDemo m={m} app={demo}/>
+    <LaptopOnly><CommutePhoneDemo m={m} app={demo}/></LaptopOnly>
     <p className="cmDemoHint cmDemoLead">The real morning, playable. It opens on the Lock Screen because that is where the app lives: the full app is one tap away, and a normal morning never needs it.</p>
    </div>
   </section>

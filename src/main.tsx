@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import LaptopOnly from './LaptopOnly';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 import './estee.css';
@@ -762,16 +763,16 @@ function useCaseCanvas(id:string){
 
 function CaseSkimDemo({id}:{id:string}){
  const morning=useMorning();
- if(id==='commute')return <section className="caseSkimDemo caseSkimCommute" aria-label="Try the Commute product"><header><h2>Try the product</h2></header><div className="cmDemoStage"><CommutePhoneDemo m={morning} app={<CommuteAppDemo/>}/></div></section>;
- if(id==='scheduler')return <section className="caseSkimDemo schedulerDemo" aria-label="Try the scheduler"><header><h2>Try the product</h2></header><SchedulerDemo/></section>;
- if(id==='chat')return <section className="caseSkimDemo" aria-label="Try the chat product"><header><h2>Try the product</h2></header><ChatSandbox/></section>;
- if(id==='kohler')return <section className="caseSkimDemo kohlerProductStage" aria-label="Try the export workflow"><header><h2>Try the product</h2></header><KohlerProductSurface compact/></section>;
- if(id==='marketExpansion')return <section className="caseSkimDemo" aria-label="Explore the market comparison"><header><h2>Try the scorecard</h2></header><GrazeScorecardDemo/></section>;
- if(id==='fcvf')return <section className="caseSkimDemo" aria-label="Try the assessment decision"><header><h2>Try the key decision</h2></header><SurveyDemo/></section>;
- if(id==='accenture')return <section className="caseSkimDemo" aria-label="Try the request workflow"><header><h2>Try the workflow</h2></header><AccentureRequestRelay/></section>;
- if(id==='estee')return <section className="caseSkimDemo esteeSkimShots" aria-label="Explore the Double Wear experience"><header><h2>Explore the product</h2></header><EsteeDemo/></section>;
+ if(id==='commute')return <section className="caseSkimDemo caseSkimCommute" aria-label="Try the Commute product"><header><h2>Try the product</h2></header><div className="cmDemoStage"><LaptopOnly><CommutePhoneDemo m={morning} app={<CommuteAppDemo/>}/></LaptopOnly></div></section>;
+ if(id==='scheduler')return <section className="caseSkimDemo schedulerDemo" aria-label="Try the scheduler"><header><h2>Try the product</h2></header><LaptopOnly><SchedulerDemo/></LaptopOnly></section>;
+ if(id==='chat')return <section className="caseSkimDemo" aria-label="Try the chat product"><header><h2>Try the product</h2></header><LaptopOnly><ChatSandbox/></LaptopOnly></section>;
+ if(id==='kohler')return <section className="caseSkimDemo kohlerProductStage" aria-label="Try the export workflow"><header><h2>Try the product</h2></header><LaptopOnly><KohlerProductSurface compact/></LaptopOnly></section>;
+ if(id==='marketExpansion')return <section className="caseSkimDemo" aria-label="Explore the market comparison"><header><h2>Try the scorecard</h2></header><LaptopOnly><GrazeScorecardDemo/></LaptopOnly></section>;
+ if(id==='fcvf')return <section className="caseSkimDemo" aria-label="Try the assessment decision"><header><h2>Try the key decision</h2></header><LaptopOnly><SurveyDemo/></LaptopOnly></section>;
+ if(id==='accenture')return <section className="caseSkimDemo" aria-label="Try the request workflow"><header><h2>Try the workflow</h2></header><LaptopOnly><AccentureRequestRelay/></LaptopOnly></section>;
+ if(id==='estee')return <section className="caseSkimDemo esteeSkimShots" aria-label="Explore the Double Wear experience"><header><h2>Explore the product</h2></header><LaptopOnly><EsteeDemo/></LaptopOnly></section>;
  if(id==='bookclub')return <section className="caseSkimDemo" aria-label="See the live Bookclub product"><header><h2>See the product</h2></header><BookclubEditorialHero/></section>;
- if(id==='finsimple')return <section className="caseSkimDemo" aria-label="Try Previous Estimates"><header><h2>Try the shipped feature</h2></header><FinSimpleEstimateDemo/></section>;
+ if(id==='finsimple')return <section className="caseSkimDemo" aria-label="Try Previous Estimates"><header><h2>Try the shipped feature</h2></header><LaptopOnly><FinSimpleEstimateDemo/></LaptopOnly></section>;
  return null;
 }
 
@@ -935,11 +936,11 @@ function SchedulerBrief(){return <section className="schedulerBriefSection scSta
  </section>}
 
 function SchedulerCase(){return <div className="schedulerStory"><LifecycleRoad stages={schedulerStages} vehicle="calendar"/>
-  <section className="schedulerDemo"><SchedulerDemo/></section>
+  <section className="schedulerDemo"><LaptopOnly><SchedulerDemo/></LaptopOnly></section>
   <SchedulerBrief/>
   <section id="sc-discover" className="schedulerProblemStage scStage"><h2 className="csTitle">A heatmap did not finish the plan.</h2><div><p>Students could mark when they were free, but tentative availability was flattened into yes or no. Then the grid handed the rest back: read the shading yourself, work out which slot costs the fewest people, and settle the time, the place, and the invite somewhere else. Ranking a heatmap is a job the software can do.</p></div><SchedulerFlatten/></section>
   <CaseSection title="What I learned from seven student interviews" className="schedulerResearchSection scStage" id="sc-research"><div className="schedulerResearchDesk"><aside className="schedulerInterviewIndex"><strong>7 students</strong><span>One-on-one conversations</span><span>Live task walkthroughs</span><SchedulerPeople/></aside><div className="schedulerNotebook"><div className="schedulerSessionNotes"><article><svg viewBox="0 0 64 40" aria-hidden="true"><circle cx="12" cy="20" r="9" fill="#b9d7c7"/><circle cx="32" cy="20" r="9"/><path d="M32 11a9 9 0 0 1 0 18z" fill="#e7d9ad"/><circle cx="52" cy="20" r="9"/></svg><b>Students wanted a way to say “maybe.”</b><p>Tentative availability was useful information, but the binary grid erased it.</p><span>Seen during availability entry</span></article><article><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M4 4h10v10H4zM18 4h10v10H18zM32 4h10v10H32zM4 18h10v10H4zM18 18h10v10H18zM32 18h10v10H32z"/><path d="M50 14a5 5 0 1 1 7 4.6c-1.3.6-2 1.6-2 3V24M55 30v.5"/></svg><b>The heatmap did not finish the task.</b><p>Groups opened another chat to interpret the overlap, choose a room, and confirm the plan.</p><span>Seen after comparing schedules</span></article><article><svg viewBox="0 0 64 40" aria-hidden="true"><rect x="4" y="8" width="16" height="22" rx="3"/><rect x="26" y="4" width="14" height="14" rx="3" transform="rotate(12 33 11)"/><rect x="44" y="18" width="16" height="16" rx="3" transform="rotate(-10 52 26)"/><path d="M22 20l3-2M41 20l3 2" strokeDasharray="2 3"/></svg><b>Event details split across tools.</b><p>Time, venue, participant status, and notes separated as soon as the group left the grid.</p><span>Seen during follow-through</span></article></div><footer><i aria-hidden="true">→</i><strong>Keep Maybe as its own answer, then recommend a time and carry that choice into venue and calendar setup.</strong></footer></div></div></CaseSection>
-  <CaseSection title="From availability to a confirmed event" className="schedulerDecisionSection scStage" id="sc-design"><SchedulerDecisionDemo/></CaseSection>
+  <CaseSection title="From availability to a confirmed event" className="schedulerDecisionSection scStage" id="sc-design"><LaptopOnly><SchedulerDecisionDemo/></LaptopOnly></CaseSection>
   <CaseSection title="Everything When2meet left to the group chat" className="schedulerCompareSection scStage" id="sc-compare"><SchedulerCompare/></CaseSection>
   <section id="sc-build" className="schedulerBuild scStage"><header><h2>One event, kept in sync.</h2></header><SchedulerSync/></section>
  </div>}
@@ -951,7 +952,7 @@ const chatStages=[
  {id:'ch-build',name:'Build',did:'Socket.IO room events'}
 ];
 function ChatCase(){return <div className="chatStory"><LifecycleRoad stages={chatStages} vehicle="bubble"/>
-  <section className="sandboxSection"><ChatSandbox/></section>
+  <section className="sandboxSection"><LaptopOnly><ChatSandbox/></LaptopOnly></section>
   <CaseSection title="Why recreate iMessage" className="chatFrameSection chStage" id="ch-frame">
    <div className="chatFrameLead">The brief was a feature list: a real-time chat room with messages and join and leave events. I made it a product by recreating iMessage. Every user already knew it by heart, so <em>their expectations became my spec</em>, and a design study of how Apple thinks.</div>
    <div className="chatFrameCols">
@@ -1016,7 +1017,7 @@ const accentureStages=[
 ];
 function AccentureCase(){return <div className="accentureStory"><AccentureStagger/><LifecycleRoad stages={accentureStages} vehicle="cablecar"/>
   <CaseChapter id="ax-discover" className="axStage axDiscover" title={<>How one request moved <em>through the process.</em></>} lead="At Accenture in San Francisco, I supported intake, trainer matching, and scheduling for an AI lab client. Follow request #021 across three tools, first by hand and then with the workflow I built.">
-   <AccentureRequestRelay/>
+   <LaptopOnly><AccentureRequestRelay/></LaptopOnly>
   </CaseChapter>
 
   <CaseChapter id="ax-define" className="axStage axRules csChapter--split" title={<>From repeated decisions <em>to rules I could test.</em></>} lead="Request #021 exposed the pattern: every handoff repeated the same checks. I wrote them into a 10-tab data contract covering inputs, matching logic, warnings, reason codes, and human-review cases.">
@@ -1077,7 +1078,7 @@ function KohlerCase(){
   </div>
 
   <CaseChapter id="kx-design" className="kxStage kxProduct" title="The product in use" lead="Change the destination to see the market packet update without touching the product record.">
-   <section className="kohlerProductStage"><KohlerProductSurface/></section>
+   <section className="kohlerProductStage"><LaptopOnly><KohlerProductSurface/></LaptopOnly></section>
    <KohlerRoles/>
   </CaseChapter>
 

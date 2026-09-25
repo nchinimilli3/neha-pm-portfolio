@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import LaptopOnly from './LaptopOnly';
 import { InterviewRoom, SurveyDemo } from './FCVFResearch';
 import LifecycleRoad from './LifecycleRoad';
 import { DecisionMoment } from './CaseDecision';
@@ -108,7 +109,7 @@ export default function FCVFCase({setLightbox}) {
      <p><s>Everything visible on one page</s><i aria-hidden="true">→</i><b>More clicks, but less to scan and clear progress</b></p></div>}
     result={<p>The assessment shipped paginated, with the score revealed after submission. Feedback volume rose 25%, and the team could read the responses as evidence rather than as answers aimed at a number.</p>}
    >
-    <SurveyDemo/>
+    <LaptopOnly><SurveyDemo/></LaptopOnly>
    </DecisionMoment>
   </div>
 
