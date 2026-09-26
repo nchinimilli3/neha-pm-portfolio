@@ -1,4 +1,5 @@
 import React,{useCallback,useEffect,useLayoutEffect,useRef,useState} from 'react';
+import {getLenis} from './smoothScroll';
 import './desk-hero.css';
 import {CASE_FILES,HOME_SHOWN,isParked,maximizeInto} from './CaseWindow';
 import {ShelbyMark} from './CarArt';
@@ -377,9 +378,9 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
  // raw, unscaled room flashes on load while the rest of the page mounts).
  useLayoutEffect(()=>{
   const stage=stageRef.current,track=trackRef.current;if(!stage||!track)return;
+  if(!isStatic)getLenis();
   let raf=0,lastKey='',warmed=false,toastAt=0,toastGone=false,toastTimer=0;
-  // The camera eases toward the scroll position instead of jumping with it, so a
-  // mouse wheel's notches read as one glide. Big jumps (skip, resize) snap.
+  // The camera follows the scroll position exactly; Lenis (smoothScroll.ts) does the smoothing.
   let shown=-1,lastT=0,snap=true;
   let SH=262,SY=334,CX0=740,HELLO_DY=0;
   const measure=()=>{
@@ -417,10 +418,8 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
    track.classList.toggle('isAway',away);
    if(away){snap=true;return}
    const target=cl(-r.top/total),dt=Math.min(.05,Math.max(0,(now-lastT)/1000));lastT=now;
-   if(snap||shown<0||Math.abs(target-shown)>.25)shown=target;
-   else{shown+=(target-shown)*(1-Math.exp(-dt/.085));if(Math.abs(target-shown)<.0004)shown=target}
+   shown=target;
    snap=false;
-   if(shown!==target)request();
    const p=shown;
    // Start fetching the case images once the visitor starts walking in.
    if(!warmed&&p>.05){warmed=true;winRefs.current.forEach(w=>{const img=w?.querySelector('img');if(img)img.loading='eager'})}
