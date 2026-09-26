@@ -47,6 +47,8 @@ html[data-view="simple"] *{animation:none!important;transition-duration:0s!impor
 .sSection{display:grid;grid-template-columns:200px minmax(0,1fr);gap:40px;padding:44px 0;border-top:1px solid var(--s-rule)}
 .sHead h2{margin:0;font:400 27px/1.2 Georgia,"Times New Roman",serif;letter-spacing:-.03em;color:var(--s-ink)}
 .sHead p{margin:10px 0 0;font-size:13px;line-height:1.5;color:var(--s-soft)}
+/* Long sections keep their heading in view instead of leaving an empty left column. */
+@media(min-width:901px){.sHead{position:sticky;top:96px;align-self:start}}
 .sRows>article{padding:22px 0;border-top:1px solid var(--s-hair)}.sRows>article:first-child{padding-top:2px;border-top:0}
 .sMeta{display:block;font-size:12.5px;line-height:1.4;color:var(--s-soft)}
 .sWork{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:36px}

@@ -1,4 +1,4 @@
-import React,{useCallback,useEffect,useRef,useState} from 'react';
+import React,{useCallback,useEffect,useLayoutEffect,useRef,useState} from 'react';
 import './desk-hero.css';
 import {CASE_FILES,HOME_SHOWN,isParked,maximizeInto} from './CaseWindow';
 import {ShelbyMark} from './CarArt';
@@ -308,6 +308,8 @@ function DeskKeyboard(){
 }
 
 function Glyph({d}:{d:string}){return <svg viewBox="0 0 24 24" aria-hidden="true"><path d={d}/></svg>}
+// The GitHub mark is a filled silhouette, not a stroke glyph like the rest of the dock.
+function GithubGlyph(){return <svg viewBox="0 0 24 24" aria-hidden="true" className="dhGithubMark"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.09 3.29 9.4 7.86 10.93.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.04-.72.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.7 1.25 3.36.96.1-.74.4-1.25.73-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.16 1.18a10.9 10.9 0 0 1 5.75 0c2.2-1.49 3.16-1.18 3.16-1.18.62 1.59.23 2.76.11 3.05.74.8 1.18 1.83 1.18 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .31.2.67.8.56A10.51 10.51 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/></svg>}
 const G={
  work:'M9 6V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1h4a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Zm2 0h2V5h-2ZM3 12h18',
  exp:'M4 20V9l8-5 8 5v11M9 20v-6h6v6',
@@ -371,7 +373,9 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
  },[]);
 
  // The scroll-driven camera. Everything is written straight to styles; no re-renders per frame.
- useEffect(()=>{
+ // A layout effect, so the first frame is framed before the browser paints (otherwise the
+ // raw, unscaled room flashes on load while the rest of the page mounts).
+ useLayoutEffect(()=>{
   const stage=stageRef.current,track=trackRef.current;if(!stage||!track)return;
   let raf=0,lastKey='',warmed=false,toastAt=0,toastGone=false,toastTimer=0;
   // The camera eases toward the scroll position instead of jumping with it, so a
@@ -620,8 +624,8 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
     </div>
     <div className="dhToast" ref={toastRef} role="status"><img src={asset('favicon.svg')} alt=""/><div><b>Neha</b><span>Drag the windows around, or click one to open the case study.</span></div><small>now</small></div>
     <nav className="dhDock" ref={dockRef} aria-label="Dock">
-     {[['Selected work','#projects',G.work,'#e0634f,#b23a2c'],['Experience','#experience',G.exp,'#4f7fd6,#2b4c9a'],['Fun things I built','#fun',G.fun,'#7cc27a,#3f8a45'],['About me','#about',G.about,'#f5b94f,#d9861c'],['Resume','Neha_Chinimilli_Resume.pdf',G.resume,'#f4f1ea,#d8d2c6'],['Email','mailto:chinimi2@msu.edu',G.mail,'#6ec1f2,#2a86d0'],['LinkedIn','https://www.linkedin.com/in/nchinimilli',G.li,'#3a7dc0,#1d5a96']].map(([label,href,d,bg])=>
-      <a key={label} href={href} target={href.startsWith('http')||href.endsWith('.pdf')?'_blank':undefined} rel="noreferrer" style={{'--bg':`linear-gradient(160deg,${bg})`} as React.CSSProperties} className={label==='Resume'?'dhDockLight':''}><Glyph d={d}/><span>{label}</span></a>)}
+     {[['Selected work','#projects',G.work,'#e0634f,#b23a2c'],['Experience','#experience',G.exp,'#4f7fd6,#2b4c9a'],['Fun things I built','#fun',G.fun,'#7cc27a,#3f8a45'],['About me','#about',G.about,'#f5b94f,#d9861c'],['Resume','Neha_Chinimilli_Resume.pdf',G.resume,'#f4f1ea,#d8d2c6'],['Email','mailto:chinimi2@msu.edu',G.mail,'#6ec1f2,#2a86d0'],['GitHub','https://github.com/nchinimilli3',null,'#f4f1ea,#d8d2c6'],['LinkedIn','https://www.linkedin.com/in/nchinimilli',G.li,'#3a7dc0,#1d5a96']].map(([label,href,d,bg])=>
+      <a key={label} href={href} target={href.startsWith('http')||href.endsWith('.pdf')?'_blank':undefined} rel="noreferrer" style={{'--bg':`linear-gradient(160deg,${bg})`} as React.CSSProperties} className={label==='Resume'?'dhDockLight':''}>{label==='GitHub'?<GithubGlyph/>:<Glyph d={d as string}/>}<span>{label}</span></a>)}
     </nav>
    </div>
   </div>
@@ -666,7 +670,7 @@ export function DeskGoodnight(){
   <div className="gnNote">
    <p className="gnThanks">thanks for stopping by ♡</p>
    <p className="gnLead">If you’re hiring for product, or want to trade book recs, I’d love to hear from you.</p>
-   <div className="gnLinks"><a href="mailto:chinimi2@msu.edu">chinimi2@msu.edu</a><a href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer">LinkedIn ↗</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></div>
+   <div className="gnLinks"><a href="mailto:chinimi2@msu.edu">chinimi2@msu.edu</a><a href="https://github.com/nchinimilli3" target="_blank" rel="noreferrer">GitHub ↗</a><a href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer">LinkedIn ↗</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></div>
    <span className="gnSign">— neha</span>
   </div>
  </section>

@@ -1,4 +1,4 @@
-import React,{useEffect,useRef,useState} from 'react';
+import React,{useEffect,useLayoutEffect,useRef,useState} from 'react';
 import SpartanGame from './SpartanGame';
 import StableFluids from './StableFluids';
 import './after-hours.css';
@@ -88,26 +88,26 @@ function BookclubScreen(){
 // iPadOS status bar: time and date on the left, Wi-Fi and battery on the right.
 const PadStatus=()=><div className="ahPadStatus" aria-hidden="true"><span><b>9:41 PM</b> Tue Sep 24</span><span><svg viewBox="0 0 16 12"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0zM3.4 6.8a6.5 6.5 0 0 1 9.2 0l-1.5 1.5a4.4 4.4 0 0 0-6.2 0zM1.1 4.5a9.7 9.7 0 0 1 13.8 0l-1.5 1.5a7.6 7.6 0 0 0-10.8 0z"/></svg>84%<i className="ahBatt"><i/></i></span></div>;
 
-function Screen({id}:{id:string}){
+function Screen({id,focus=true}:{id:string;focus?:boolean}){
  if(id==='commute')return <CommuteScreen/>;
  if(id==='bookclub')return <BookclubScreen/>;
  if(id==='scheduler')return <img className="ahShot ahShotCover" src="project-media/scheduler-actual-v31.png" alt="" loading="lazy" decoding="async"/>;
  if(id==='chat')return <IMessageScreen/>;
  if(id==='game')return <SpartanGame/>;
- if(id==='fluids')return <StableFluids/>;
+ if(id==='fluids')return <StableFluids live={focus}/>;
  return null;
 }
 
 // MacBook Air (2020) keyboard: key widths per row, in key units; the last key of the top row is Touch ID.
 const KEY_ROWS=[Array(14).fill(1),[1,...Array(12).fill(1),1.5],[1.5,...Array(12).fill(1),1],[1.8,...Array(11).fill(1),1.8],[2.3,...Array(10).fill(1),2.3],[1,1,1,1.3,5.2,1.3,1,1,1,1]];
 
-function DeviceView({d,on,onPick}:{d:Device;on:boolean;onPick:()=>void}){
+function DeviceView({d,on,focus,onPick}:{d:Device;on:boolean;focus:boolean;onPick:()=>void}){
  const style={left:d.x,top:d.y,width:d.w,height:d.h,transform:`rotate(${d.rot}deg)`} as React.CSSProperties;
  const live=d.id==='game'||d.id==='fluids';
  const label=`${d.title}: ${d.line}`;
  const inner=d.kind==='laptop'
-  ?<><div className="ahLid"><i className="ahCam" aria-hidden="true"/><div className="ahScreen"><Screen id={d.id}/></div><span className="ahLidName" aria-hidden="true">MacBook Air</span></div><div className="ahDeck" aria-hidden="true"><div className="ahKeys">{KEY_ROWS.map((row,r)=><div key={r} className="ahKeyRow">{row.map((k,i)=><i key={i} style={{flex:k}} className={r===0&&i===row.length-1?'ahTouchId':''}/>)}</div>)}</div><i className="ahTrackpad"/></div></>
-  :<>{d.kind==='phone'&&<i className="ahButtons" aria-hidden="true"/>}<div className="ahScreen"><Screen id={d.id}/>{d.kind==='phone'&&<i className="ahIsland" aria-hidden="true"/>}{d.kind==='tablet'&&<><PadStatus/><i className="ahIndicator" aria-hidden="true"/></>}</div></>;
+  ?<><div className="ahLid"><i className="ahCam" aria-hidden="true"/><div className="ahScreen"><Screen id={d.id} focus={focus}/></div><span className="ahLidName" aria-hidden="true">MacBook Air</span></div><div className="ahDeck" aria-hidden="true"><div className="ahKeys">{KEY_ROWS.map((row,r)=><div key={r} className="ahKeyRow">{row.map((k,i)=><i key={i} style={{flex:k}} className={r===0&&i===row.length-1?'ahTouchId':''}/>)}</div>)}</div><i className="ahTrackpad"/></div></>
+  :<>{d.kind==='phone'&&<i className="ahButtons" aria-hidden="true"/>}<div className="ahScreen"><Screen id={d.id} focus={focus}/>{d.kind==='phone'&&<i className="ahIsland" aria-hidden="true"/>}{d.kind==='tablet'&&<><PadStatus/><i className="ahIndicator" aria-hidden="true"/></>}</div></>;
  // Live screens stay interactive, so they are not wrapped in a button; the others are one.
  return live
   ?<div className={`ahDevice ah-${d.kind} ah-${d.id} ${on?'isOn':''}`} style={style} role="group" aria-label={label}>{inner}</div>
@@ -277,7 +277,8 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
   const set=()=>setStatic(mq.matches);set();mq.addEventListener('change',set);return()=>mq.removeEventListener('change',set);
  },[]);
 
- useEffect(()=>{
+ // Layout effect: the desk is framed before the first paint, never shown unscaled.
+ useLayoutEffect(()=>{
   const stage=stageRef.current,track=trackRef.current;if(!stage||!track)return;
   if(isStatic){
    // A still flat lay that fits the column width.
@@ -295,30 +296,39 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
    const fy=d.fy||0,s=Math.min(2.6,vw*.46/d.w,h*(d.kind==='phone'?.82:.68)/(d.h+fy*2));
    return {s,cx:d.x+d.w/2,cy:d.y+d.h/2+fy,X:vw*.63,Y:midY};
   };
-  let raf=0;
-  const update=()=>{
+  let raf=0,shown=NaN,lastT=0,snap=true;
+  const update=(ts=performance.now())=>{
    raf=0;
-   if(isParked(track))return;
+   if(isParked(track)){snap=true;return}
    const vw=window.innerWidth,vh=window.innerHeight,r=track.getBoundingClientRect();
-   if(r.bottom<-50||r.top>vh+50)return;
+   if(r.bottom<-50||r.top>vh+50){snap=true;return}
+   // Like the desk hero, the camera eases toward the scroll position so a mouse wheel's notches glide.
+   const target=-r.top,dt=Math.min(.05,Math.max(0,(ts-lastT)/1000));lastT=ts;
+   if(snap||isNaN(shown)||Math.abs(target-shown)>vh*1.5)shown=target;
+   else{shown+=(target-shown)*(1-Math.exp(-dt/.085));if(Math.abs(target-shown)<.5)shown=target}
+   snap=false;
+   if(shown!==target)raf=requestAnimationFrame(update);
+   const top=-shown;
    // Arrival: the camera tilts down from the hero's front view to straight above, and the desk light warms up.
-   const arrive=cl(1-r.top/vh);
+   const arrive=cl(1-top/vh);
    if(tiltRef.current)tiltRef.current.style.transform=`rotateX(${(1-ease(arrive))*38}deg)`;
    track.style.setProperty('--dusk',String(arrive));
    const lamp=arrive>.62;setLampOn(v=>v===lamp?v:lamp);
    // Tour: each stop gets an equal share; the first 45% travels, the rest holds on the device.
-   const total=track.offsetHeight-vh,p=cl(-r.top/total)*stops,seg=Math.min(stops-1,Math.floor(p)),t=p-seg;
+   const total=track.offsetHeight-vh,p=cl(-top/total)*stops,seg=Math.min(stops-1,Math.floor(p)),t=p-seg;
    let a=camFor(seg,vw,vh),b=a,k=0;
    if(seg>0){const prev=camFor(seg-1,vw,vh);b=a;a=prev;k=ease(cl(t/.45))}
    const s=a.s*Math.pow(b.s/a.s,k),cx=a.cx+(b.cx-a.cx)*k,cy=a.cy+(b.cy-a.cy)*k,X=a.X+(b.X-a.X)*k,Y=a.Y+(b.Y-a.Y)*k;
    stage.style.transform=`translate(${X-cx*s}px,${Y-cy*s}px) scale(${s})`;
    const now=seg>0&&k<.5?seg-1:seg;
    if(now!==activeRef.current){activeRef.current=now;setActive(now)}
-   if(railRef.current)railRef.current.style.setProperty('--ahp',String(cl(-r.top/total)));
+   if(railRef.current)railRef.current.style.setProperty('--ahp',String(cl(-top/total)));
   };
   const onScroll=()=>{if(!raf)raf=requestAnimationFrame(update)};
-  update();window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',onScroll);window.addEventListener(HOME_SHOWN,update);
-  return()=>{window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',onScroll);window.removeEventListener(HOME_SHOWN,update);cancelAnimationFrame(raf)};
+  // Resizes and coming back from a case land on the exact frame instead of gliding to it.
+  const redraw=()=>{snap=true;update()};
+  update();window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',redraw);window.addEventListener(HOME_SHOWN,redraw);
+  return()=>{window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',redraw);window.removeEventListener(HOME_SHOWN,redraw);cancelAnimationFrame(raf)};
  },[isStatic]);
 
  // Jump to the middle of a stop's hold.
@@ -360,7 +370,7 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
        <div className="ahSticky" aria-hidden="true">ship it<br/>tonight ✓</div>
        <div className="ahPen" aria-hidden="true"/>
        <div className="ahPencil" aria-hidden="true"/>
-       {devices.map((d,i)=><DeviceView key={d.id} d={d} on={active===0||active===i+1} onPick={()=>goTo(i+1)}/>)}
+       {devices.map((d,i)=><DeviceView key={d.id} d={d} on={active===0||active===i+1} focus={isStatic||active===i+1} onPick={()=>goTo(i+1)}/>)}
        <div className="ahNight" aria-hidden="true"/>
 
       </div>
@@ -371,7 +381,8 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
       {cur?<div key={cur.id} className="ahCapCard"><h3>{cur.title}</h3><p>{cur.line}</p>{cur.hint&&<small>{cur.hint}</small>}{cur.caseId&&<button type="button" className="ahOpen" onClick={()=>onOpen(cur.caseId!)}>Read the case study <span aria-hidden="true">→</span></button>}</div>:heading}
      </div>
      <div ref={railRef} className="ahRail" aria-label="After hours tour">
-      <ol>{Array.from({length:stops},(_,i)=><li key={i}><button type="button" className={active===i?'isOn':''} onClick={()=>goTo(i)} aria-label={i===0?'The whole desk':devices[i-1].title} aria-current={active===i?'step':undefined}><span>{i===0?'Desk':devices[i-1].title}</span></button></li>)}</ol>
+      <ol>{Array.from({length:stops},(_,i)=><li key={i}><button type="button" className={active===i?'isOn':''} onClick={()=>goTo(i)} aria-label={i===0?'The whole desk':devices[i-1].title} aria-current={active===i?'step':undefined}><span>{i===0?'Desk':devices[i-1].title}</span></button></li>)}
+       <li><button type="button" className="ahNext" onClick={()=>document.getElementById('about')?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})} aria-label="Skip to the next section: About me"><span>Next: About me</span></button></li></ol>
       <div ref={listRef} className="ahListPop">
        <button type="button" className="ahSkip" aria-expanded={listOpen} aria-controls="fun-pop" onClick={()=>setListOpen(o=>!o)}>{listOpen?'Close list':'Show list'}</button>
        {listOpen&&<div id="fun-pop" className="ahPop" role="dialog" aria-label="All fun builds">

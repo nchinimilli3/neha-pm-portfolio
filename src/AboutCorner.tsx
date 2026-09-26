@@ -28,6 +28,9 @@ export default function AboutCorner({onOpen}:{onOpen:(v:View)=>void}){
     <linearGradient id="acTv" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#f7a9c0"/><stop offset=".55" stopColor="#b0406a"/><stop offset="1" stopColor="#4a2a5c"/></linearGradient>
     <radialGradient id="acBias" cx=".5" cy=".5" r=".5"><stop offset="0" stopColor="#f39ab8" stopOpacity=".5"/><stop offset="1" stopColor="#f39ab8" stopOpacity="0"/></radialGradient>
     <linearGradient id="acSun" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#fff6dc" stopOpacity=".55"/><stop offset="1" stopColor="#fff6dc" stopOpacity="0"/></linearGradient>
+    <radialGradient id="acWallGlow" cx="1" cy="0" r="1"><stop offset="0" stopColor="#fff6dc" stopOpacity=".38"/><stop offset=".5" stopColor="#fff6dc" stopOpacity=".08"/><stop offset="1" stopColor="#fff6dc" stopOpacity="0"/></radialGradient>
+    <linearGradient id="acWallShade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#2a1a0c" stopOpacity=".18"/><stop offset=".45" stopColor="#2a1a0c" stopOpacity="0"/></linearGradient>
+    <linearGradient id="acWinLight" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#fff6dc" stopOpacity="0"/><stop offset="1" stopColor="#fff6dc" stopOpacity=".26"/></linearGradient>
     <filter id="acPlaster" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="4"/><feColorMatrix values="0 0 0 0 .5 0 0 0 0 .4 0 0 0 0 .3 0 0 0 .5 -.2"/><feComposite in2="SourceGraphic" operator="in"/></filter>
     <filter id="acGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".02 .6" numOctaves="3" seed="8"/><feColorMatrix values="0 0 0 0 .25 0 0 0 0 .14 0 0 0 0 .05 0 0 0 .8 -.3"/><feComposite in2="SourceGraphic" operator="in"/></filter>
     <filter id="acCorkTex" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="2" seed="2"/><feColorMatrix values="0 0 0 0 .4 0 0 0 0 .25 0 0 0 0 .1 0 0 0 1.3 -.55"/><feComposite in2="SourceGraphic" operator="in"/></filter>
@@ -40,7 +43,9 @@ export default function AboutCorner({onOpen}:{onOpen:(v:View)=>void}){
 
    {/* Room: plaster wall, window light from the right, baseboard, oak planks. */}
    <rect width="400" height="362" fill="url(#acWall)"/>
+   <rect width="400" height="362" fill="url(#acWallShade)"/>
    <rect width="400" height="362" fill="#fff" filter="url(#acPlaster)" opacity=".35"/>
+   <ellipse cx="400" cy="30" rx="260" ry="220" fill="url(#acWallGlow)"/>
    <path d="M400 28 318 64 292 300 400 262Z" fill="url(#acSun)" filter="url(#acSoft)"/>
    <rect x="0" y="362" width="400" height="138" fill="url(#acFloor)"/>
    <rect x="0" y="362" width="400" height="138" fill="#fff" filter="url(#acGrain)" opacity=".5"/>
@@ -57,11 +62,13 @@ export default function AboutCorner({onOpen}:{onOpen:(v:View)=>void}){
 
    {/* Bookshelf, with its side showing, a trailing pothos on top. */}
    <g className="acShelf">
+    <ellipse cx="30" cy="376" rx="62" ry="9" fill="#2e1b0c" opacity=".2" filter="url(#acSofter)"/>
     <ellipse cx="82" cy="370" rx="70" ry="6" fill="#2e1b0c" opacity=".35" filter="url(#acSoft)"/>
     <path d="M140 64 150 60V364L140 370Z" fill="#5f3f25"/>
     <rect x="14" y="64" width="126" height="306" fill="url(#acWood)"/>
     <rect x="21" y="71" width="112" height="232" fill="#4a301b"/>
     <rect x="21" y="71" width="112" height="232" fill="#fff" filter="url(#acGrain)" opacity=".25"/>
+    <rect x="21" y="71" width="112" height="232" fill="url(#acWinLight)" opacity=".6"/>
     {SHELVES.map(({y,books,lean,stack})=>{let x=25;return <g key={y}>
      <rect x="21" y={y-60} width="112" height="10" fill="#000" opacity=".22" filter="url(#acSoft)"/>
      {books.map(([c,h,w],i)=>{const bx=x;x+=w+1.5;return <g key={i}><rect x={bx} y={y-h} width={w} height={h} rx="1.2" fill={c}/><rect x={bx} y={y-h} width={w} height={h} rx="1.2" fill="url(#acSpine)"/><path d={`M${bx+2} ${y-h+6}h${w-4}M${bx+2} ${y-8}h${w-4}`} stroke="#f3e2b8" strokeOpacity=".45" strokeWidth=".8"/></g>})}
@@ -83,7 +90,7 @@ export default function AboutCorner({onOpen}:{onOpen:(v:View)=>void}){
    <rect x="171" y="57" width="106" height="80" fill="#34302c"/>
    <rect x="174" y="60" width="100" height="74" fill="#f8f4ea"/>
    <image href={asset('about-lakefront.webp')} x="180" y="66" width="88" height="62" preserveAspectRatio="xMidYMid slice" clipPath="url(#acPhoto)"/>
-   <path d="M174 60 214 60 184 134H174Z" fill="#fff" opacity=".12"/>
+   <path d="M274 60 234 60 264 134H274Z" fill="#fff" opacity=".16"/>
 
    {/* Corkboard of film prints, pinned. */}
    <g className="acCork">
@@ -91,6 +98,7 @@ export default function AboutCorner({onOpen}:{onOpen:(v:View)=>void}){
     <rect x="176" y="168" width="128" height="60" rx="2" fill="#6f4f32"/>
     <rect x="180" y="172" width="120" height="52" fill="#c89c69"/>
     <rect x="180" y="172" width="120" height="52" fill="#fff" filter="url(#acCorkTex)" opacity=".7"/>
+    <rect x="180" y="172" width="120" height="52" fill="url(#acWinLight)" opacity=".55"/>
     {['project-media/about-film/01.jpg','project-media/about-film/06.jpg','project-media/about-film/10.jpg'].map((src,i)=><g key={src} transform={`rotate(${[-5,3,-2][i]} ${201+i*38} 196)`}>
      <rect x={183+i*38} y="180" width="36" height="42" fill="#2a1a0c" opacity=".35" filter="url(#acSoft)" transform="translate(-2 3)"/>
      <rect x={184+i*38} y="179" width="34" height="40" fill="#fffdf8"/>
@@ -102,10 +110,12 @@ export default function AboutCorner({onOpen}:{onOpen:(v:View)=>void}){
    {/* Walnut media console on tapered legs, a thin TV with the show on, bias glow on the wall. */}
    <g className="acTvSet">
     <ellipse cx="314" cy="252" rx="92" ry="62" fill="url(#acBias)" className="acGlow"/>
+    <ellipse cx="250" cy="374" rx="90" ry="9" fill="#2e1b0c" opacity=".22" filter="url(#acSofter)"/>
     <ellipse cx="312" cy="368" rx="84" ry="6" fill="#2e1b0c" opacity=".4" filter="url(#acSoft)"/>
     <path d="M246 342l-4 24h4l6-24zM378 342l4 24h-4l-6-24z" fill="#3a2414"/>
     <rect x="232" y="300" width="160" height="44" rx="3" fill="url(#acWalnut)"/>
     <rect x="232" y="300" width="160" height="44" rx="3" fill="#fff" filter="url(#acGrain)" opacity=".3"/>
+    <rect x="232" y="300" width="160" height="44" rx="3" fill="url(#acWinLight)" opacity=".5"/>
     <rect x="232" y="300" width="160" height="2" rx="1" fill="#a2734a"/>
     {Array.from({length:14},(_,i)=><rect key={i} x={240+i*10.8} y="308" width="7.5" height="30" rx="1" fill="#4d2f19" opacity=".55"/>)}
     <path d="M292 300l-6-4h10zM332 300l6-4h-10z" fill="#1b1b1d"/>
@@ -118,6 +128,7 @@ export default function AboutCorner({onOpen}:{onOpen:(v:View)=>void}){
    {/* The sofa faces the TV, so from here we see its back: the upholstered back panel and arms,
        cushions and pillows peeking over the top, and the throw hanging down the back. */}
    <g>
+    <ellipse cx="130" cy="460" rx="128" ry="12" fill="#2e1b0c" opacity=".2" filter="url(#acSofter)"/>
     <ellipse cx="196" cy="454" rx="120" ry="9" fill="#2e1b0c" opacity=".45" filter="url(#acSoft)"/>
     <path d="M108 440l-3 16h4l6-16zM284 440l3 16h-4l-6-16z" fill="#3a2414"/>
     <path d="M122 338q24-12 70-4q4 2 4 10H116q0-4 6-6z" fill="#8fae98"/>
@@ -127,6 +138,7 @@ export default function AboutCorner({onOpen}:{onOpen:(v:View)=>void}){
     <rect x="80" y="360" width="34" height="84" rx="15" fill="url(#acSofaDark)"/>
     <rect x="278" y="360" width="34" height="84" rx="15" fill="url(#acSofaDark)"/>
     <rect x="102" y="342" width="188" height="102" rx="12" fill="url(#acSofa)"/>
+    <rect x="102" y="342" width="188" height="102" rx="12" fill="url(#acWinLight)" opacity=".4"/>
     <path d="M108 350q88-8 176 0" stroke="#b4cdb9" strokeOpacity=".7" strokeWidth="2" fill="none"/>
     <path d="M196 348v94M150 350v92M242 350v92" stroke="#58755f" strokeOpacity=".35" strokeWidth="1"/>
     <rect x="102" y="430" width="188" height="14" rx="6" fill="#4f6a57" opacity=".55"/>

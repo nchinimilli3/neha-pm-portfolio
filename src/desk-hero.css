@@ -323,6 +323,8 @@
 .dhDock a:hover{transform:translateY(-10px) scale(1.14)}
 .dhDock svg{width:26px;height:26px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .dhDock a.dhDockLight svg{stroke:#b0452f}
+/* The GitHub mark is a filled silhouette, not a stroke glyph like the rest of the dock. */
+.dhDock svg.dhGithubMark{fill:#33302b;stroke:none}
 .dhDock a span{position:absolute;bottom:68px;padding:4px 9px;border-radius:7px;background:rgba(40,34,30,.82);color:#fff;font-size:12px;white-space:nowrap;opacity:0;transition:opacity .15s;pointer-events:none}
 .dhDock a:hover span{opacity:1}
 
@@ -391,6 +393,9 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 .sgOverlay b{font:700 20px/1 Inter,sans-serif;padding:8px 16px;border-radius:999px;background:#18453b;text-shadow:none;box-shadow:0 8px 18px -8px rgba(0,0,0,.6)}
 .sgOverlay small{font:500 12px/1.3 Inter,sans-serif;margin-top:6px}
 .sgGame:hover .sgOverlay{background:rgba(10,30,24,.18)}
+.sfPlay{border:0;padding:0;font:inherit;cursor:pointer;background:rgba(8,14,40,.3)}
+.sfPlay b{background:#2b3a8f}
+.sfPlay:hover{background:rgba(8,14,40,.18)}
 
 /* Book rec: the note folds into an envelope and drops into the mailbox */
 .brMail{overflow:visible}

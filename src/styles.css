@@ -3852,3 +3852,7 @@ input,select,button{accent-color:var(--color-focus)}
 
 /* Keep implementation inventories in the in-depth path. */
 main.casePage.isSkim section.caseLead>.toolLogoSection{display:none!important}
+
+/* Safety net for "reduce motion": any loop or transition a section forgot to opt out of
+   jumps to its end state instead of playing. Sections that handle it themselves are unaffected. */
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;animation-delay:0s!important;transition-duration:.01ms!important;transition-delay:0s!important}}

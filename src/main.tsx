@@ -119,7 +119,7 @@ const projects = [
   {
     id:'kohler',
     title:'Ship Anywhere',
-    company:'Kohler Co. · MSU CSE 498',
+    company:'Kohler Co. · MSU CSE Capstone',
     preview:'Built an export assistant that cut processing time 42% and raised first-pass accuracy from 71% to 94%.',
     summary:'An assistant that gets a Kohler order ready to ship to another country.',
     media:'kohler'
@@ -502,7 +502,7 @@ function CaseDecisionNotes({id}){
 }
 
 const caseCompanyInfo={
-  kohler:{name:'Kohler Co. · CSE 498',logo:'company-logos/kohler.svg'},
+  kohler:{name:'Kohler Co. · CSE Capstone',logo:'company-logos/kohler.svg'},
   fcvf:{name:'Ford Motor Company',logo:'company-logos/ford.png'},
   finsimple:{name:'Ford Credit',logo:'company-logos/ford-credit-v31.png'},
   accenture:{name:'Accenture',logo:'company-logos/accenture-v31.png'},
@@ -819,6 +819,8 @@ function CaseStudy({id,onBack}){
  {caseAnswers[id]&&<CaseAnswer key={id} {...caseAnswers[id]} stat={metrics[id]?.some(([v])=>v===caseAnswers[id].stat?.value)?undefined:caseAnswers[id].stat}/>}
  {readingMode==='skim'&&<><CaseSkimDemo id={id}/><div className="caseSkimFinish"><button type="button" onClick={()=>setReadingMode('deep')}>Read the in-depth case ↓</button></div></>}
  {readingMode==='deep'&&<>
+ {/* In depth keeps every demo Skim shows; these cases don't already embed theirs in the story. */}
+ {['finsimple','estee','marketExpansion','bookclub'].includes(id)&&<CaseSkimDemo id={id}/>}
  {id==='fcvf'&&<CarBand car="shelby" label="Shelby GT500 illustration that drives as you scroll"/>}
  {id==='finsimple'&&<CarBand car="mache" label="Mustang Mach-E illustration that drives as you scroll"/>}
  {id==='commute'&&<CommuteCase demo={<CommuteAppDemo/>}/>}
@@ -1302,7 +1304,7 @@ function Home({openCase,onChangeView}){
  const serious=['fcvf','accenture','finsimple','kohler','marketExpansion','estee'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
  const fun=['commute','bookclub','scheduler','chat'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
  return <><button type="button" className="viewSkip" onClick={()=>onChangeView(true)}>Skip the animation: switch to Simple view</button>
- <header className={`siteHeader homeHeader${navOpen?' navIsOpen':''}`}><a className="wordmark" href="#top">Neha Chinimilli</a><button ref={navToggleRef} type="button" className="navToggle" aria-expanded={navOpen} aria-controls="primaryNav" aria-label={navOpen?'Close menu':'Open menu'} onClick={()=>setNavOpen(o=>!o)}><span/><span/></button><nav id="primaryNav" ref={navRef} aria-label="Primary" onClick={e=>{if((e.target as HTMLElement).closest('a'))setNavOpen(false)}}><i className="navIndicator" aria-hidden="true" style={navInd}/><a href="#projects" className={activeSection==='projects'?'isActive':''}>Selected work</a><a href="#experience" className={activeSection==='experience'?'isActive':''}>Experience</a><a href="#fun" className={activeSection==='fun'?'isActive':''}>Fun things I’ve built</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume</a><a href="mailto:chinimi2@msu.edu">Email</a><a className="headerLinkedIn" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on LinkedIn"><img src={assetUrl('linkedin.svg')} alt="LinkedIn"/></a></nav><ViewModeToggle simple={false} onChange={onChangeView}/></header>
+ <header className={`siteHeader homeHeader${navOpen?' navIsOpen':''}`}><a className="wordmark" href="#top">Neha Chinimilli</a><button ref={navToggleRef} type="button" className="navToggle" aria-expanded={navOpen} aria-controls="primaryNav" aria-label={navOpen?'Close menu':'Open menu'} onClick={()=>setNavOpen(o=>!o)}><span/><span/></button><nav id="primaryNav" ref={navRef} aria-label="Primary" onClick={e=>{if((e.target as HTMLElement).closest('a'))setNavOpen(false)}}><i className="navIndicator" aria-hidden="true" style={navInd}/><a href="#projects" className={activeSection==='projects'?'isActive':''}>Selected work</a><a href="#experience" className={activeSection==='experience'?'isActive':''}>Experience</a><a href="#fun" className={activeSection==='fun'?'isActive':''}>Fun things I’ve built</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume</a><a href="mailto:chinimi2@msu.edu">Email</a><a className="headerLinkedIn" href="https://github.com/nchinimilli3" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on GitHub"><img src={assetUrl('github.svg')} alt="GitHub"/></a><a className="headerLinkedIn" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on LinkedIn"><img src={assetUrl('linkedin.svg')} alt="LinkedIn"/></a></nav><ViewModeToggle simple={false} onChange={onChangeView}/></header>
  <main id="main-content" className="homePage">
   <DeskHero projects={serious} openCase={openCase} onSimple={()=>onChangeView(true)}/>
   <CompanyBanner/>

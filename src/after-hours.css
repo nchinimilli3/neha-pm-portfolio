@@ -231,6 +231,10 @@
 .ahRail>ol>li>button:is(:hover,:focus-visible,.isOn) span{opacity:1}
 .ahRail>ol>li>button.isOn{color:var(--ahInk)}
 .ahRail>ol>li>button.isOn::after{opacity:1;box-shadow:0 0 0 4px #f4ede433}
+/* The last stop leaves the tour: a short bar down into an arrowhead dot. */
+.ahRail>ol>li>button.ahNext{margin-top:4px;color:var(--ahInk)}
+.ahRail>ol>li>button.ahNext::after{width:10px;height:16px;border-radius:0;opacity:.8;background:none;border:0;-webkit-mask:none;content:"";background:linear-gradient(currentColor,currentColor) 50% 0/2px 9px no-repeat,conic-gradient(from 135deg at 50% 100%,currentColor 90deg,transparent 0) 50% 100%/10px 7px no-repeat}
+.ahRail>ol>li>button.ahNext:hover::after{opacity:1;transform:translateY(2px);transition:transform .2s}
 .ahSkip{padding:8px 14px;border:1px solid #f4ede444;border-radius:999px;background:#1c1a22aa;color:var(--ahInk);font:500 12px/1 Inter,system-ui,sans-serif;cursor:pointer}
 .ahSkip:hover{background:#2a2732}
 /* Show list: a quick pop-up of every build, opening up and to the left of the rail. */

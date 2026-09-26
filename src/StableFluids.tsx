@@ -38,9 +38,16 @@ function project(u:Float32Array,v:Float32Array,p:Float32Array,div:Float32Array){
  setBnd(1,u);setBnd(2,v);
 }
 
-export default function StableFluids(){
+// The sim waits behind a Play button, like Spartan Touchdown: solving the grid every
+// frame is costly, so it only runs once asked. `live` goes false when the desk tour
+// moves to another device; the sim then pauses on its last frame and shows Play again.
+export default function StableFluids({live=true}:{live?:boolean}){
  const canvasRef=useRef<HTMLCanvasElement>(null);
  const [touched,setTouched]=useState(false);
+ const [playing,setPlaying]=useState(false);
+ const liveRef=useRef(false),wakeRef=useRef<()=>void>(()=>{});
+ useEffect(()=>{if(!live)setPlaying(false)},[live]);
+ useEffect(()=>{liveRef.current=playing&&live;if(liveRef.current)wakeRef.current()},[playing,live]);
  useEffect(()=>{
   const canvas=canvasRef.current;if(!canvas)return;
   const ctx=canvas.getContext('2d');if(!ctx)return;
@@ -89,9 +96,10 @@ export default function StableFluids(){
    // The emitter: a slow jet from the left edge that sweeps up and down.
    if(!reduce){const y=H/2+Math.sin(t*.018)*H*.28;splat(4,y,2.4,Math.cos(t*.018)*.6,hsl((hue+180)%360),.35,3)}
    step();draw();
-   if(!reduce||idle<240)raf=requestAnimationFrame(frame);
+   if(liveRef.current&&(!reduce||idle<240))raf=requestAnimationFrame(frame);else raf=0;
   };
-  const kick=()=>{if(!raf&&visible)raf=requestAnimationFrame(frame)};
+  const kick=()=>{if(!raf&&visible&&liveRef.current)raf=requestAnimationFrame(frame)};
+  wakeRef.current=kick;
   const toGrid=(e:PointerEvent)=>{const r=canvas.getBoundingClientRect();return {x:(e.clientX-r.left)/r.width*W+1,y:(e.clientY-r.top)/r.height*H+1}};
   const onMove=(e:PointerEvent)=>{const g=toGrid(e);if(!pointer.active){pointer.px=g.x;pointer.py=g.y}pointer.x=g.x;pointer.y=g.y;pointer.active=true;setTouched(true);kick()};
   const onDown=(e:PointerEvent)=>{pointer.down=true;canvas.setPointerCapture(e.pointerId);onMove(e)};
@@ -111,6 +119,7 @@ export default function StableFluids(){
  },[]);
  return <div className="sfLive">
   <canvas ref={canvasRef} width={W} height={H} aria-label="Live Stable Fluids simulation. Drag across it to stir the dye." role="img"/>
-  <span className={`sfHint ${touched?'isGone':''}`} aria-hidden="true">live · drag to stir</span>
+  {playing?<span className={`sfHint ${touched?'isGone':''}`} aria-hidden="true">live · drag to stir</span>
+  :<button type="button" className="sgOverlay sfPlay" onClick={e=>{e.stopPropagation();setPlaying(true)}}><b>▶ Play</b><small>then drag across it to stir</small></button>}
  </div>
 }
