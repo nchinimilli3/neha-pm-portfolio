@@ -1,6 +1,6 @@
 /* After hours: the desk from above, at night. Colours come from the hero desk's wood and lamp. */
 .ahSection{--ahInk:#f4ede4;--ahMuted:#c9bfb4;--ahAccent:#f09a7a;position:relative;margin-top:clamp(64px,8vw,120px)}
-.ahTrack{position:relative;height:calc(100vh + var(--stops) * 65vh);--dusk:0}
+.ahTrack{position:relative;height:calc(100vh + var(--stops) * 100vh);--dusk:0}
 .ahPin{position:sticky;top:0;height:100vh;overflow:hidden;background:#141219}
 /* A soft shade behind the caption so its type reads over the wood. */
 .ahPin::after{content:"";position:absolute;inset:0;z-index:35;pointer-events:none;background:linear-gradient(90deg,#141219e0 0,#14121999 24%,transparent 46%)}
@@ -14,12 +14,12 @@
 .ahStage>*{position:absolute}
 
 /* The desk top: the hero's walnut, seen from above. */
-.ahDesk{inset:-2200px;background:
- url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='300'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.002 .08' numOctaves='4' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .17 0 0 0 0 .08 0 0 0 .6 -.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23w)'/%3E%3C/svg%3E"),
+.ahDesk{inset:-900px;background:
+ repeating-linear-gradient(90deg,transparent 0 16px,#4f2f1710 17px 19px,transparent 20px 38px),
  repeating-linear-gradient(0deg,transparent 0 118px,#3a22122e 118px 120px),
  linear-gradient(#b3845b,#9a6d45)}
 /* Night falls as the section arrives; the lamp pool is what lights the desk. */
-.ahNight{inset:-2200px;pointer-events:none;z-index:8;background:radial-gradient(ellipse 1600px 1150px at 3550px 2900px,rgba(255,190,110,.3),rgba(255,176,96,.1) 45%,transparent 72%),rgba(16,18,40,.62);mix-blend-mode:multiply;opacity:calc(.35 + var(--dusk) * .65)}
+.ahNight{inset:-900px;pointer-events:none;z-index:8;background:radial-gradient(ellipse 1600px 1150px at 2250px 1600px,rgba(255,190,110,.3),rgba(255,176,96,.1) 45%,transparent 72%),rgba(16,18,40,.62);opacity:calc(.35 + var(--dusk) * .65)}
 .ahTrack:not(.lampOn) .ahNight{background:rgba(16,18,40,.7)}
 .ahSection.isStatic .ahNight{opacity:1}
 
@@ -47,6 +47,11 @@
 .ahScreen::after{content:"";position:absolute;inset:0;background:#05060c;opacity:.72;transition:opacity .5s ease;pointer-events:none;z-index:7}
 .ahDevice.isOn .ahScreen::after{opacity:0}
 .ahDevice.isOn .ahScreen{box-shadow:0 0 80px 16px #a9bcff24}
+/* During camera travel, skip the costly device and screen shadows; restore them at each stop. */
+.ahTrack.isMoving .ahDevice{filter:none}
+.ahTrack.isMoving .ahMug,.ahTrack.isMoving .ahController{filter:none}
+.ahTrack.isMoving .ahDevice .ahScreen{box-shadow:none}
+.ahTrack.isMoving .ahDevice .ahScreen::after{opacity:.72!important;transition:none}
 
 /* iPhone 15 Pro, face up: titanium band, thin bezel, Dynamic Island, side buttons. */
 .ah-phone{border-radius:32px;background:#050506;padding:7px;box-sizing:border-box;box-shadow:0 0 0 2px #948f87,0 0 0 3.2px #5f5c57,inset 0 0 0 1px #242426}

@@ -499,6 +499,26 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
  },[isStatic]);
  // Measured from the document, not the offset parent, so p=1 lands exactly on the sequence's last frame.
  const jumpTo=(p:number)=>{const t=trackRef.current;if(t)window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY+(t.offsetHeight-window.innerHeight)*p,behavior:'instant' as ScrollBehavior})};
+ // Arrow keys visit the same visual chapters as the progress rail.
+ useEffect(()=>{
+  if(isStatic)return;
+  const chapters=[0,.25,.5,.75,.93];
+  const onKey=(e:KeyboardEvent)=>{
+   if(e.key!=='ArrowDown'&&e.key!=='ArrowUp'||e.repeat||e.defaultPrevented||e.altKey||e.ctrlKey||e.metaKey)return;
+   if((e.target as Element)?.closest?.('input,textarea,select,button,a,[contenteditable],[role="button"],[role="textbox"]'))return;
+   const track=trackRef.current;if(!track)return;
+   const r=track.getBoundingClientRect(),vh=window.innerHeight;
+   if(r.top>1||r.bottom<vh-1)return;
+   const total=track.offsetHeight-vh,p=Math.max(0,Math.min(1,-r.top/total));
+   const next=e.key==='ArrowDown'?chapters.find(v=>v>p+.025):[...chapters].reverse().find(v=>v<p-.025);
+   if(next===undefined&&e.key==='ArrowUp'&&p<.025)return;
+   e.preventDefault();
+   const top=r.top+window.scrollY;
+   window.scrollTo({top:next===undefined?top+track.offsetHeight:top+total*next,behavior:'smooth'});
+  };
+  document.addEventListener('keydown',onKey);
+  return()=>document.removeEventListener('keydown',onKey);
+ },[isStatic]);
  // Links to the work fly through the walk-in in ~1.1s instead of the browser's slow smooth scroll.
  useEffect(()=>{
   if(isStatic)return;
@@ -675,4 +695,3 @@ export function DeskGoodnight(){
   </div>
  </section>
 }
-
