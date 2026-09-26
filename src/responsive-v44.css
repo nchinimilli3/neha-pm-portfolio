@@ -1,4 +1,4 @@
-/* iPad and wide monitor adjustments. The 1201–1699px desktop range is unchanged. */
+/* iPad, wide monitor and phone adjustments. The 1201–1699px desktop range is unchanged. */
 
 /* ---------- iPad landscape and the gap above the phone rules ----------
    Below 851px the site already stacks. Between there and 1200px the
@@ -29,4 +29,24 @@
   .siteFooter{width:min(1480px,calc(100% - 96px))!important;max-width:1480px!important}
 
   main.casePage{width:100%!important;max-width:none!important}
+}
+
+/* ---------- Phones ----------
+   The case page already pads 20px each side, so the shared case column
+   takes the full remaining width instead of insetting another 32px. The
+   hero stacks: at half width the titles were clipped mid-word. */
+@media(max-width:760px){
+  .casePage{--cs-w:100%}
+  .casePage .caseLead>.caseHeader,.casePage .caseLead>.caseHeroMedia{grid-column:1 / -1!important}
+  .casePage .caseLead>.caseHeroMedia{grid-row:2!important;margin-top:var(--s-4)!important}
+  /* Every other chapter heading is left-aligned on phones; this one was centred. */
+  .case-scheduler .schedulerStory .schedulerDecisionSection>h2{text-align:left!important}
+  /* The desk's Bookclub screen (after-hours.css) also uses .bcHero and gives it a
+     fixed 196px height and a photo; undo that here so the case hero keeps its ratio. */
+  .casePage .caseLead .bcHero{height:auto!important;padding:0!important;background:none!important}
+  /* Project-card notes wrap to two lines here; split them evenly, not "…, 1 / scorecard". */
+  .dhWinCap em{text-wrap:balance}
+  /* While typing (the book-rec box), the keyboard lifts the field into the corner the
+     back-to-top button occupies, so a tap on Send could land on it instead. */
+  body:has(:is(input,textarea):focus) .scrollTopButton{opacity:0!important;pointer-events:none!important}
 }

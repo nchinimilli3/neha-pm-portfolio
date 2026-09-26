@@ -136,7 +136,7 @@
 @media(max-width:900px){
  .kxLineStage,.kxLineSteps{grid-template-columns:1fr}
 
- .kxRoles ol{grid-template-columns:1fr 1fr;row-gap:32px}.kxRoles ol:before,.kxRolesCore{display:none}
+ .kxRoles ol{grid-template-columns:1fr 1fr;row-gap:32px}.kxRoles ol:before,.kxRoles li.kxRolesCore{display:none}
  .kxTagScene{padding:20px 0 20px 64px}
 
  .kxBelt,.kxCargo{display:none}.kxInputs{padding-bottom:0}.kxGateStamp{position:static;margin-top:12px}

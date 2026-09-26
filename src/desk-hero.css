@@ -278,6 +278,8 @@
 
 .dhOs{position:absolute;inset:0;z-index:50;opacity:0;visibility:hidden;--su:calc(100vw / 420);font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif;color:#1d1d1f}
 .dhOs:not(.isLive) .dhWin,.dhOs:not(.isLive) .dhDock,.dhOs:not(.isLive) .dhIcons{pointer-events:none}
+/* The static layout (phones, narrow windows, reduced motion) never goes live, so keep it tappable. */
+.isStatic .dhOs:not(.isLive) :is(.dhWin,.dhDock,.dhIcons){pointer-events:auto}
 .dhMenuBar{position:absolute;left:0;right:0;top:0;height:calc(var(--su) * 9);min-height:28px;display:flex;align-items:center;gap:20px;padding:0 16px;background:rgba(246,242,236,.5);-webkit-backdrop-filter:blur(18px) saturate(1.6);backdrop-filter:blur(18px) saturate(1.6);font-size:13px;z-index:5}
 .dhMenuBar a{color:inherit;text-decoration:none;padding:3px 7px;margin:0 -7px;border-radius:5px}
 .dhMenuBar a:hover{background:rgba(0,0,0,.08)}

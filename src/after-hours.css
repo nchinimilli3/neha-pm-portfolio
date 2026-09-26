@@ -273,5 +273,5 @@
 .isStatic .ahPin{position:relative;height:auto;aspect-ratio:2700/1700;width:calc(100% - 40px);margin:0 auto;border-radius:14px}
 .isStatic .ahTilt{transform:none!important}
 .isStatic .ahList{width:calc(100% - 40px);padding-top:32px}
-@media(max-width:600px){.ahList li{grid-template-columns:28px minmax(0,1fr)}.ahList li button{grid-column:2;justify-self:start}}
+@media(max-width:600px){.ahList li{grid-template-columns:28px minmax(0,1fr);grid-template-rows:none}.ahList li>*:not(.ahNum){grid-column:2}.ahList li button{justify-self:start}.ahList .ahNum{grid-row:1;padding-top:5px}.ahList h3{margin-top:0}}
 @media(prefers-reduced-motion:reduce){.ahCapCard{animation:none}.ahScreen::after,.ahRail li button span{transition:none}}

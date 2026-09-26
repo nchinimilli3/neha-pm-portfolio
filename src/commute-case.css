@@ -243,6 +243,13 @@
 .cmEditorial .cmProblem .cmBoardFace>.cmBoardAsk{padding:0 16px;font-size:12.5px}
 .cmEditorial .cmProblem .cmBoardFace>.cmBoardAsk span{font-size:28px}
 .cmEditorial .cmProblem .cmBoardFace>.cmBoardAnswer p{font-size:20px;white-space:nowrap}
+/* Phones: the three board columns stack, so each reading keeps its one line. */
+@media(max-width:760px){
+ .cmEditorial .cmProblem .cmBoardFace{grid-template-columns:1fr;gap:12px}
+ .cmEditorial .cmProblem .cmBoardFace>.cmBoardAsk{padding:12px 0}
+ /* The phone demo just above already says to open a laptop; one note is enough. */
+ .cmEngine .laptopOnly{display:none}
+}
 
 /* Product map, now the opening inventory of the closing section. Without an
    explicit placement, CSS grid drops the list into a single 1/12th column and
