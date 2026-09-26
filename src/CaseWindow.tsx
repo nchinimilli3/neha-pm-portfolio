@@ -21,9 +21,17 @@ export const CASE_FILES:Record<string,string>={
 export const isParked=(el:Element|null|undefined)=>!!el?.closest('[data-parked]');
 export const HOME_SHOWN='homeshown';
 
+/* Case pages live in their own chunk. The app registers how to load it, and a
+   window only starts growing once the page it grows into is ready to render. */
+let caseLoader:()=>Promise<unknown>=()=>Promise.resolve();
+export const setCaseLoader=(load:()=>Promise<unknown>)=>{caseLoader=load};
+
 /* Grow a desktop window (or a fun-build window) into the full-screen case,
    then hand off to the router. */
 export function maximizeInto(from:Element|null|undefined,id:string,go:()=>void){
+ caseLoader().catch(()=>{}).then(()=>growInto(from,id,go));
+}
+function growInto(from:Element|null|undefined,id:string,go:()=>void){
  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  if(!from||reduce){go();return}
  // Preferred: a native view transition. The browser morphs the window into the
