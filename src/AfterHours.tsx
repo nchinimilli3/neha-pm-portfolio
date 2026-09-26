@@ -351,14 +351,14 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
  useEffect(()=>{
   if(isStatic)return;
   const track=trackRef.current;if(!track)return;
-  let locked=false,idle=0,lastWheel=-Infinity,lastScroll=-Infinity;
+  let locked=false,idle=0,lastWheel=-Infinity,lastScroll=-Infinity,movedAt=-Infinity,push=0;
   // A touchpad swipe continues sending momentum events after the fingers lift.
   // Unlock only when both that stream and the smooth camera scroll have gone quiet.
   const release=()=>{
    window.clearTimeout(idle);
-   const now=performance.now(),wait=Math.max(lastWheel+550,lastScroll+180)-now;
+   const now=performance.now(),wait=Math.max(lastWheel+800,lastScroll+180,movedAt+900)-now;
    idle=window.setTimeout(()=>{
-    if(performance.now()-lastWheel>=550&&performance.now()-lastScroll>=180)locked=false;
+    const t=performance.now();if(t-lastWheel>=800&&t-lastScroll>=180&&t-movedAt>=900){locked=false;push=0}
     else release();
    },Math.max(0,wait));
   };
@@ -373,13 +373,20 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
    if((e.target as Element)?.closest?.('.ahPop,input,textarea,select,[contenteditable]'))return;
    const r=track.getBoundingClientRect();
    if(r.top>0||r.bottom<window.innerHeight)return;
-   if(!locked&&(Math.abs(e.deltaY)<2||activeRef.current===0&&e.deltaY<0))return;
+   // Leaving from the first device upward scrolls the page normally.
+   if(!locked&&activeRef.current===0&&e.deltaY<0){push=0;return}
+   // Every other wheel event is ours while pinned, so trackpad momentum never leaks into a native scroll.
    e.preventDefault();
+   if(performance.now()-lastWheel>300)push=0;
    lastWheel=performance.now();
    release();
    if(locked)return;
-   locked=true;
-   move(e.deltaY>0?1:-1);
+   // A deliberate push moves one device; a graze of the trackpad doesn't.
+   push+=e.deltaMode===1?e.deltaY*16:e.deltaY;
+   if(Math.abs(push)<40)return;
+   locked=true;movedAt=performance.now();
+   const dir=push>0?1:-1;push=0;
+   move(dir);
   };
   const onKey=(e:KeyboardEvent)=>{
    if(e.key!=='ArrowDown'&&e.key!=='ArrowUp'||e.repeat||e.defaultPrevented||e.altKey||e.ctrlKey||e.metaKey||isParked(track))return;
