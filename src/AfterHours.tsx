@@ -5,8 +5,7 @@ import './after-hours.css';
 import {HOME_SHOWN,isParked} from './CaseWindow';
 
 /* "After hours": the same desk as the hero, now at night and seen from straight above.
-   As the section arrives the camera tilts down to a flat lay and the desk light warms up; scrolling
-   then glides the camera from device to device. Only the camera and the lights move. */
+   The desk light warms as the section arrives; scrolling moves the camera from device to device. */
 
 type Project={id:string;title:string;company:string;blurb?:string;summary:string};
 type Device={id:string;kind:'phone'|'laptop'|'tablet';x:number;y:number;w:number;h:number;rot:number;fy?:number;title:string;eyebrow:string;line:string;hint?:string;caseId?:string};
@@ -263,7 +262,7 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
   return {id,...LAYOUT[id],title:p?.title||x.title,eyebrow:p?.company||x.eyebrow,line:p?.blurb||p?.summary||x.line,hint:x?.hint,caseId:p?id:undefined};
  });
  const stops=devices.length+1; // the overview, then one stop per device
- const trackRef=useRef<HTMLElement>(null),stageRef=useRef<HTMLDivElement>(null),tiltRef=useRef<HTMLDivElement>(null);
+ const trackRef=useRef<HTMLElement>(null),viewRef=useRef<HTMLDivElement>(null),stageRef=useRef<HTMLDivElement>(null);
  const [active,setActive]=useState(0);
  const [lampOn,setLampOn]=useState(false);
  // Decided before the first paint, so a phone never flashes the pinned desktop layout.
@@ -279,14 +278,16 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
 
  // Layout effect: the desk is framed before the first paint, never shown unscaled.
  useLayoutEffect(()=>{
-  const stage=stageRef.current,track=trackRef.current;if(!stage||!track)return;
+  const stage=stageRef.current,track=trackRef.current,view=viewRef.current;if(!stage||!track||!view)return;
+  view.style.visibility='hidden';
   if(isStatic){
    // A still flat lay that fits the column width.
-   const fit=()=>{const w=stage.parentElement?.clientWidth||SW;stage.style.transform=`scale(${w/SW})`};
+   const fit=()=>{const w=stage.parentElement?.clientWidth||SW;stage.style.transform=`scale(${w/SW})`;view.style.visibility='visible'};
    fit();window.addEventListener('resize',fit);return()=>window.removeEventListener('resize',fit);
   }
   const HEAD=72;
-  const cl=(v:number)=>Math.max(0,Math.min(1,v)),ease=(t:number)=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+  // Quintic easing has zero velocity AND acceleration at either end of a pan.
+  const cl=(v:number)=>Math.max(0,Math.min(1,v)),ease=(t:number)=>t*t*t*(t*(t*6-15)+10);
   const camFor=(i:number,vw:number,vh:number)=>{
    const h=vh-HEAD,midY=HEAD+h/2;
    if(i===0){const s=Math.min(vw*.6/SW,h*.9/SH);return {s,cx:SW/2,cy:SH/2,X:vw*.64,Y:midY}}
@@ -296,40 +297,44 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
    const fy=d.fy||0,s=Math.min(2.6,vw*.46/d.w,h*(d.kind==='phone'?.82:.68)/(d.h+fy*2));
    return {s,cx:d.x+d.w/2,cy:d.y+d.h/2+fy,X:vw*.63,Y:midY};
   };
-  let raf=0,idleTimer=0,pendingActive=0;
+  let raf=0,idleTimer=0,pendingActive=0,lastTransform='',lastLamp:boolean|undefined;
   const settle=()=>{
-   track.classList.remove('isMoving');
    if(pendingActive!==activeRef.current){activeRef.current=pendingActive;setActive(pendingActive)}
   };
   const update=()=>{
    raf=0;
-   if(isParked(track)){window.clearTimeout(idleTimer);track.classList.remove('isMoving');return}
-   const vw=window.innerWidth,vh=window.innerHeight,r=track.getBoundingClientRect();
-   if(r.bottom<-50||r.top>vh+50){window.clearTimeout(idleTimer);track.classList.remove('isMoving');return}
+   if(isParked(track)){window.clearTimeout(idleTimer);return}
+   const vw=window.innerWidth,vh=window.innerHeight,r=track.getBoundingClientRect(),total=track.offsetHeight-vh;
+   if(r.bottom<-50||r.top>vh+50){window.clearTimeout(idleTimer);return}
    // Follow the browser's scroll position directly. An extra easing loop made wheel input
    // lag behind the page and kept repainting the whole desk after scrolling stopped.
    const top=r.top;
-   // Arrival: the camera tilts down from the hero's front view to straight above, and the desk light warms up.
+   // The desk keeps one viewing angle from its first visible frame; only its light warms on arrival.
    const arrive=cl(1-top/vh);
-   if(tiltRef.current)tiltRef.current.style.transform=`rotateX(${(1-ease(arrive))*38}deg)`;
    const dusk=String(arrive);if(track.style.getPropertyValue('--dusk')!==dusk)track.style.setProperty('--dusk',dusk);
-   const lamp=arrive>.62;setLampOn(v=>v===lamp?v:lamp);
-   // Tour: each stop gets an equal share; the first 45% travels, the rest holds on the device.
-   const total=track.offsetHeight-vh,p=cl(-top/total)*stops,seg=Math.min(stops-1,Math.floor(p)),t=p-seg;
+   const lamp=arrive>.62;
+   if(lamp!==lastLamp){lastLamp=lamp;track.classList.toggle('lampOn',lamp);setLampOn(lamp)}
+   // Give the pan room to breathe, followed by a stable, readable hold.
+   const p=cl(-top/Math.max(1,total))*stops,seg=Math.min(stops-1,Math.floor(p)),t=p-seg;
    let a=camFor(seg,vw,vh),b=a,k=0;
-   if(seg>0){const prev=camFor(seg-1,vw,vh);b=a;a=prev;k=ease(cl(t/.45))}
-   track.classList.toggle('isMoving',seg>0&&k>0&&k<1);
-   const s=a.s*Math.pow(b.s/a.s,k),cx=a.cx+(b.cx-a.cx)*k,cy=a.cy+(b.cy-a.cy)*k,X=a.X+(b.X-a.X)*k,Y=a.Y+(b.Y-a.Y)*k;
-   stage.style.transform=`translate(${X-cx*s}px,${Y-cy*s}px) scale(${s})`;
+   if(seg>0){const prev=camFor(seg-1,vw,vh);b=a;a=prev;k=ease(cl(t/.68))}
+   const s=a.s*Math.pow(b.s/a.s,k);
+   // Interpolate the rendered translation so a simultaneous zoom cannot swing
+   // the camera past its destination. Both endpoints retain their exact framing.
+   const x=(a.X-a.cx*a.s)*(1-k)+(b.X-b.cx*b.s)*k;
+   const y=(a.Y-a.cy*a.s)*(1-k)+(b.Y-b.cy*b.s)*k;
+   const transform=`translate(${x}px,${y}px) scale(${s})`;
+   if(transform!==lastTransform){stage.style.transform=transform;lastTransform=transform}
+   view.style.visibility='visible';
    // Update React only after scrolling settles so the live demos do not restart mid-pan.
    pendingActive=seg>0&&k<.5?seg-1:seg;
    window.clearTimeout(idleTimer);
    idleTimer=window.setTimeout(settle,160);
   };
   const onScroll=()=>{if(!raf)raf=requestAnimationFrame(update)};
-  const redraw=()=>update();
+  const redraw=()=>{cancelAnimationFrame(raf);raf=0;update()};
   update();window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',redraw);window.addEventListener(HOME_SHOWN,redraw);
-  return()=>{window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',redraw);window.removeEventListener(HOME_SHOWN,redraw);cancelAnimationFrame(raf);window.clearTimeout(idleTimer);track.classList.remove('isMoving')};
+  return()=>{window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',redraw);window.removeEventListener(HOME_SHOWN,redraw);cancelAnimationFrame(raf);window.clearTimeout(idleTimer)};
  },[isStatic]);
 
  // Jump to the middle of a stop's hold.
@@ -337,7 +342,7 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
   const track=trackRef.current;if(!track)return;
   if(isStatic){const d=devices[i-1];if(d?.caseId)onOpen(d.caseId);return}
   const total=track.offsetHeight-window.innerHeight,top=track.getBoundingClientRect().top+window.scrollY;
-  const at=i===0?.2:i+.72;
+  const at=i===0?.2:i+.84;
   window.scrollTo({top:top+total*(at/stops)+1,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
  };
  // Wheel momentum can cross several short stops in one gesture. Advance one device with
@@ -346,19 +351,23 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
   if(isStatic)return;
   const track=trackRef.current;if(!track)return;
   let locked=false,idle=0;
+  // Keep a gesture locked until the browser's actual scroll has settled.
+  // A fixed timeout alone can expire halfway through a long smooth scroll.
+  const release=()=>{window.clearTimeout(idle);idle=window.setTimeout(()=>{locked=false},200)};
+  const onScroll=()=>{if(locked)release()};
   const move=(direction:number)=>{
    const next=activeRef.current+direction;
    if(next>=stops)document.getElementById('about')?.scrollIntoView({behavior:'smooth',block:'start'});
    else goTo(Math.max(0,next));
   };
   const onWheel=(e:WheelEvent)=>{
-   if(e.ctrlKey||Math.abs(e.deltaY)<2||isParked(track))return;
+   if(e.ctrlKey||e.defaultPrevented||Math.abs(e.deltaY)<2||Math.abs(e.deltaX)>Math.abs(e.deltaY)||isParked(track))return;
+   if((e.target as Element)?.closest?.('.ahPop,input,textarea,select,[contenteditable]'))return;
    const r=track.getBoundingClientRect();
    if(r.top>0||r.bottom<window.innerHeight)return;
    if(activeRef.current===0&&e.deltaY<0)return;
    e.preventDefault();
-   window.clearTimeout(idle);
-   idle=window.setTimeout(()=>{locked=false},260);
+   release();
    if(locked)return;
    locked=true;
    move(e.deltaY>0?1:-1);
@@ -371,13 +380,13 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
    e.preventDefault();
    if(locked)return;
    locked=true;
-   window.clearTimeout(idle);
-   idle=window.setTimeout(()=>{locked=false},260);
+   release();
    move(e.key==='ArrowDown'?1:-1);
   };
   track.addEventListener('wheel',onWheel,{passive:false});
+  window.addEventListener('scroll',onScroll,{passive:true});
   document.addEventListener('keydown',onKey);
-  return()=>{track.removeEventListener('wheel',onWheel);document.removeEventListener('keydown',onKey);window.clearTimeout(idle)};
+  return()=>{track.removeEventListener('wheel',onWheel);window.removeEventListener('scroll',onScroll);document.removeEventListener('keydown',onKey);window.clearTimeout(idle)};
  },[isStatic]);
  // The list is a quick pop-up over the tour, not a second copy of it under the desk.
  useEffect(()=>{
@@ -396,8 +405,7 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
   {isStatic&&heading}
   <section ref={trackRef} className={`ahTrack ${lampOn||isStatic?'lampOn':''}`} style={{'--stops':stops} as React.CSSProperties}>
    <div className="ahPin">
-    <div className="ahView">
-     <div ref={tiltRef} className="ahTilt">
+    <div ref={viewRef} className="ahView">
       <div ref={stageRef} className="ahStage">
        <div className="ahDesk" aria-hidden="true"/>
        <div className="ahBooks" aria-hidden="true"><i/><i/><i/></div>
@@ -414,7 +422,6 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
        <div className="ahNight" aria-hidden="true"/>
 
       </div>
-     </div>
     </div>
     {!isStatic&&<>
      <div className="ahCaption" aria-live="polite">

@@ -5,22 +5,22 @@
 /* A soft shade behind the caption so its type reads over the wood. */
 .ahPin::after{content:"";position:absolute;inset:0;z-index:35;pointer-events:none;background:linear-gradient(90deg,#141219e0 0,#14121999 24%,transparent 46%)}
 .isStatic .ahPin::after{display:none}
-.ahView{position:absolute;inset:0;perspective:1600px;perspective-origin:50% 30%}
+.ahView{position:absolute;inset:0;perspective:1600px;perspective-origin:50% 30%;visibility:hidden}
 /* The desk sinks into the dark at the bottom, so the section can ease back into the cream page. */
 .ahView::after{content:"";position:absolute;left:0;right:0;bottom:0;height:110px;z-index:36;pointer-events:none;background:linear-gradient(transparent,#141219)}
 .isStatic .ahView::after{display:none}
-.ahTilt{position:absolute;inset:0;transform-origin:50% 100%;will-change:transform}
 .ahStage{position:absolute;left:0;top:0;width:2700px;height:1700px;transform-origin:0 0;will-change:transform}
 .ahStage>*{position:absolute}
 
 /* The desk top: the hero's walnut, seen from above. */
-.ahDesk{inset:-900px;background:
+.ahDesk{inset:-550px -350px -350px -900px;background:
  repeating-linear-gradient(90deg,transparent 0 16px,#4f2f1710 17px 19px,transparent 20px 38px),
  repeating-linear-gradient(0deg,transparent 0 118px,#3a22122e 118px 120px),
  linear-gradient(#b3845b,#9a6d45)}
 /* Night falls as the section arrives; the lamp pool is what lights the desk. */
-.ahNight{inset:-900px;pointer-events:none;z-index:8;background:radial-gradient(ellipse 1600px 1150px at 2250px 1600px,rgba(255,190,110,.3),rgba(255,176,96,.1) 45%,transparent 72%),rgba(16,18,40,.62);opacity:calc(.35 + var(--dusk) * .65)}
-.ahTrack:not(.lampOn) .ahNight{background:rgba(16,18,40,.7)}
+.ahNight{inset:-550px -350px -350px -900px;pointer-events:none;z-index:8;background:rgba(16,18,40,.62);opacity:calc(.35 + var(--dusk) * .65)}
+.ahNight::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 1600px 1150px at 2250px 1250px,rgba(255,190,110,.3),rgba(255,176,96,.1) 45%,transparent 72%);opacity:0;transition:opacity .65s cubic-bezier(.22,1,.36,1)}
+.lampOn .ahNight::before{opacity:1}
 .ahSection.isStatic .ahNight{opacity:1}
 
 /* Props */
@@ -32,29 +32,24 @@
 .ahBooks i{position:absolute;inset:0;border-radius:4px;background:linear-gradient(90deg,#6d2f28,#8a3d33 12%,#7a352d);box-shadow:-8px 14px 22px -8px #000a,inset -9px 0 0 #e7ddc8,inset -10px 0 0 #00000030,inset -11px 0 0 #d9ceb6}
 .ahBooks i:nth-child(2){inset:14px -10px -14px 10px;background:linear-gradient(90deg,#24416c,#2f5288 12%,#274676);transform:rotate(3deg);z-index:-1}
 .ahBooks i:nth-child(3){inset:28px -20px -26px 18px;background:linear-gradient(90deg,#355b40,#44704f 12%,#3a6045);transform:rotate(-2deg);z-index:-2}
-.ahMug{left:1600px;top:1330px;width:286px;height:286px;z-index:6;filter:drop-shadow(-10px 16px 14px #000a) drop-shadow(-2px 3px 2px #0007)}
+.ahMug{left:1600px;top:1330px;width:286px;height:286px;z-index:6;filter:drop-shadow(-7px 11px 9px #0008)}
 .ahPad{left:900px;top:60px;width:906px;height:1250px;border-radius:20px;background:linear-gradient(120deg,#46454a,#333236);box-shadow:-10px 18px 30px -12px #000a;opacity:.85}
-.ahController{left:2100px;top:1262px;width:405px;height:283px;transform:rotate(-6deg);z-index:6;filter:drop-shadow(-10px 16px 12px #000b) drop-shadow(-2px 3px 2px #0008)}
+.ahController{left:2100px;top:1262px;width:405px;height:283px;transform:rotate(-6deg);z-index:6;filter:drop-shadow(-7px 11px 9px #0009)}
 .ahSticky{left:590px;top:640px;width:200px;height:200px;padding:30px 22px;box-sizing:border-box;background:#f2d36b;color:#5b4212;font:500 34px/1.05 Caveat,cursive;transform:rotate(-5deg);box-shadow:-5px 12px 14px -8px #000a;z-index:6}
 .ahPen{left:1010px;top:1450px;width:370px;height:24px;border-radius:12px;background:linear-gradient(90deg,#712e22 0 8%,#a54631 8% 80%,#e0dfd9 80% 90%,#303132 90%);transform:rotate(-8deg);box-shadow:-5px 8px 8px -3px #000a;z-index:6}
 
 /* Devices lying flat. The lamp is top right, so every shadow falls down and to the left.
    Screens stay dim until the camera arrives, then they wake. */
-.ahDevice{padding:0;border:0;background:none;font:inherit;color:inherit;text-align:left;cursor:pointer;z-index:10;filter:drop-shadow(-12px 20px 18px #000a) drop-shadow(-2px 3px 3px #0007)}
+.ahDevice{padding:0;border:0;background:none;font:inherit;color:inherit;text-align:left;cursor:pointer;z-index:10;box-shadow:-9px 15px 20px #0008}
 .ahDevice:focus-visible{outline:3px solid var(--ahAccent);outline-offset:8px;border-radius:30px}
 .ahScreen{position:relative;overflow:hidden;width:100%;height:100%;background:#000}
 .ahScreen::before{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;background:linear-gradient(118deg,transparent 36%,#ffffff12 43%,#ffffff06 52%,transparent 60%)}
 .ahScreen::after{content:"";position:absolute;inset:0;background:#05060c;opacity:.72;transition:opacity .5s ease;pointer-events:none;z-index:7}
 .ahDevice.isOn .ahScreen::after{opacity:0}
-.ahDevice.isOn .ahScreen{box-shadow:0 0 80px 16px #a9bcff24}
-/* During camera travel, skip the costly device and screen shadows; restore them at each stop. */
-.ahTrack.isMoving .ahDevice{filter:none}
-.ahTrack.isMoving .ahMug,.ahTrack.isMoving .ahController{filter:none}
-.ahTrack.isMoving .ahDevice .ahScreen{box-shadow:none}
-.ahTrack.isMoving .ahDevice .ahScreen::after{opacity:.72!important;transition:none}
+.ahDevice.isOn .ahScreen{box-shadow:0 0 20px 4px #a9bcff18}
 
 /* iPhone 15 Pro, face up: titanium band, thin bezel, Dynamic Island, side buttons. */
-.ah-phone{border-radius:32px;background:#050506;padding:7px;box-sizing:border-box;box-shadow:0 0 0 2px #948f87,0 0 0 3.2px #5f5c57,inset 0 0 0 1px #242426}
+.ah-phone{border-radius:32px;background:#050506;padding:7px;box-sizing:border-box;box-shadow:0 0 0 2px #948f87,0 0 0 3.2px #5f5c57,inset 0 0 0 1px #242426,-9px 15px 20px #0008}
 .ah-phone .ahScreen{border-radius:25px}
 .ahButtons{position:absolute;inset:0 -3.6px;pointer-events:none}
 .ahButtons::before{content:"";position:absolute;left:0;top:19%;width:2.5px;height:5%;border-radius:2px 0 0 2px;background:#86817a;box-shadow:0 34px 0 #86817a,0 66px 0 #86817a}
@@ -180,7 +175,7 @@
    rounded display corners, the front camera on the long edge, and a slab-thick contact shadow. */
 /* iPad Air 11" (M2) in landscape: 247.6 × 178.5 mm, so a 1.39 slab; thin even bezels,
    a silver aluminium band catching the lamp, rounded display corners, camera on the long edge. */
-.ah-tablet{border-radius:34px;background:#050506;padding:17px;box-sizing:border-box;box-shadow:0 0 0 1px #2a2b2e,0 0 0 3.5px #c9ccd1,0 0 0 4.5px #8e9197;filter:drop-shadow(-14px 22px 18px #000b) drop-shadow(-3px 4px 3px #0008)}
+.ah-tablet{border-radius:34px;background:#050506;padding:17px;box-sizing:border-box;box-shadow:0 0 0 1px #2a2b2e,0 0 0 3.5px #c9ccd1,0 0 0 4.5px #8e9197,-12px 18px 22px #0009}
 .ah-tablet::after{content:"";position:absolute;inset:-4.5px;border-radius:38px;pointer-events:none;padding:4.5px;background:linear-gradient(35deg,transparent 50%,#ffffff8c 70%,transparent 82%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
 .ah-tablet .ahScreen{border-radius:18px}
 .ah-tablet::before{content:"";position:absolute;left:50%;top:6px;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:#171a24;box-shadow:0 0 0 1px #2b2e36}
@@ -280,7 +275,6 @@
 .ahSection.isStatic>.ahIntro p{color:#4b514b}
 .isStatic .ahTrack{height:auto}
 .isStatic .ahPin{position:relative;height:auto;aspect-ratio:2700/1700;width:calc(100% - 40px);margin:0 auto;border-radius:14px}
-.isStatic .ahTilt{transform:none!important}
 .isStatic .ahList{width:calc(100% - 40px);padding-top:32px}
 @media(max-width:600px){.ahList li{grid-template-columns:28px minmax(0,1fr);grid-template-rows:none}.ahList li>*:not(.ahNum){grid-column:2}.ahList li button{justify-self:start}.ahList .ahNum{grid-row:1;padding-top:5px}.ahList h3{margin-top:0}}
-@media(prefers-reduced-motion:reduce){.ahCapCard{animation:none}.ahScreen::after,.ahRail li button span{transition:none}}
+@media(prefers-reduced-motion:reduce){.ahCapCard{animation:none}.ahScreen::after,.ahNight::before,.ahRail li button span{transition:none}}
