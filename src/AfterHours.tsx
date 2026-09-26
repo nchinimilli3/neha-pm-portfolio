@@ -319,7 +319,8 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
    // the camera past its destination. Both endpoints retain their exact framing.
    const x=(a.X-a.cx*a.s)*(1-k)+(b.X-b.cx*b.s)*k;
    const y=(a.Y-a.cy*a.s)*(1-k)+(b.Y-b.cy*b.s)*k;
-   const transform=`translate(${x}px,${y}px) scale(${s})`;
+   // Whole-pixel translation keeps the desk's edges and objects from shimmering apart.
+   const transform=`translate(${Math.round(x)}px,${Math.round(y)}px) scale(${s.toFixed(4)})`;
    if(transform!==lastTransform){stage.style.transform=transform;lastTransform=transform}
    view.style.visibility='visible';
    cameraReady=true;

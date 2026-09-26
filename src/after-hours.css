@@ -5,20 +5,22 @@
 /* A soft shade behind the caption so its type reads over the wood. */
 .ahPin::after{content:"";position:absolute;inset:0;z-index:35;pointer-events:none;background:linear-gradient(90deg,#141219e0 0,#14121999 24%,transparent 46%)}
 .isStatic .ahPin::after{display:none}
-.ahView{position:absolute;inset:0;perspective:1600px;perspective-origin:50% 30%;visibility:hidden}
+.ahView{position:absolute;inset:0;visibility:hidden}
 /* The desk sinks into the dark at the bottom, so the section can ease back into the cream page. */
 .ahView::after{content:"";position:absolute;left:0;right:0;bottom:0;height:110px;z-index:36;pointer-events:none;background:linear-gradient(transparent,#141219)}
 .isStatic .ahView::after{display:none}
-.ahStage{position:absolute;left:0;top:0;width:2700px;height:1700px;transform-origin:0 0;will-change:transform}
+/* No will-change: a promoted layer is rasterized once and then upscaled when the camera zooms,
+   which blurs the desk and cracks it along tile seams. */
+.ahStage{position:absolute;left:0;top:0;width:2700px;height:1700px;transform-origin:0 0}
 .ahStage>*{position:absolute}
 
 /* The desk top: the hero's walnut, seen from above. */
-.ahDesk{inset:-550px -350px -350px -900px;background:
+.ahDesk{inset:-3000px;background:
  repeating-linear-gradient(90deg,transparent 0 16px,#4f2f1710 17px 19px,transparent 20px 38px),
  repeating-linear-gradient(0deg,transparent 0 118px,#3a22122e 118px 120px),
  linear-gradient(#b3845b,#9a6d45)}
 /* One steady warm night tint avoids repainting a desk-sized layer on every scroll. */
-.ahNight{inset:-550px -350px -350px -900px;pointer-events:none;z-index:8;background:radial-gradient(ellipse 1600px 1150px at 2250px 1250px,rgba(255,190,110,.19),rgba(255,176,96,.06) 45%,transparent 72%),rgba(24,18,23,.52)}
+.ahNight{inset:-3000px;pointer-events:none;z-index:8;background:radial-gradient(ellipse 1600px 1150px at 4350px 3700px,rgba(255,190,110,.19),rgba(255,176,96,.06) 45%,transparent 72%),rgba(24,18,23,.52)}
 
 /* Props */
 /* Top-right corner: the watercolour tin and two boxes of Portra. */
