@@ -46,4 +46,7 @@
   .casePage .caseLead .bcHero{height:auto!important;padding:0!important;background:none!important}
   /* Project-card notes wrap to two lines here; split them evenly, not "…, 1 / scorecard". */
   .dhWinCap em{text-wrap:balance}
+  /* While typing (the book-rec box), the keyboard lifts the field into the corner the
+     back-to-top button occupies, so a tap on Send could land on it instead. */
+  body:has(:is(input,textarea):focus) .scrollTopButton{opacity:0!important;pointer-events:none!important}
 }
