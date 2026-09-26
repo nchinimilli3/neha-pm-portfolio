@@ -1,6 +1,6 @@
 /* After hours: the desk from above, at night. Colours come from the hero desk's wood and lamp. */
 .ahSection{--ahInk:#f4ede4;--ahMuted:#c9bfb4;--ahAccent:#f09a7a;position:relative;margin-top:clamp(64px,8vw,120px)}
-.ahTrack{position:relative;height:calc(100vh + var(--stops) * 100vh)}
+.ahTrack{position:relative;height:calc(100vh + var(--stops) * 180vh)}
 .ahPin{position:sticky;top:0;height:100vh;overflow:hidden;background:#141219}
 /* A soft shade behind the caption so its type reads over the wood. */
 .ahPin::after{content:"";position:absolute;inset:0;z-index:35;pointer-events:none;background:linear-gradient(90deg,#141219e0 0,#14121999 24%,transparent 46%)}
