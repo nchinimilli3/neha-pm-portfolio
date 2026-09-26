@@ -1300,14 +1300,18 @@ function Home({openCase,onChangeView}){
  };
  const closeAbout=useCallback(()=>setAboutView('photo'),[]);
  // Looping decoration (planes, sprinkles, steam, screen flicker) only runs in sections on screen.
- useEffect(()=>{const secs=document.querySelectorAll<HTMLElement>('.homePage>section:not(#top)');if(!secs.length)return;const io=new IntersectionObserver(es=>es.forEach(e=>e.target.toggleAttribute('data-offscreen',!e.isIntersecting)),{rootMargin:'200px 0px'});secs.forEach(s=>io.observe(s));return()=>io.disconnect()},[]);
+ // First paint is just the desk hero; everything below builds right after, well before the
+ // walk-in's long scroll can reach it (so it's never seen building). A deep link builds it all at once.
+ const [rest,setRest]=useState(()=>!!window.location.hash);
+ useEffect(()=>{if(rest)return;let t=0;const r=requestAnimationFrame(()=>{t=window.setTimeout(()=>setRest(true),0)});return()=>{cancelAnimationFrame(r);clearTimeout(t)}},[rest]);
+ useEffect(()=>{const secs=document.querySelectorAll<HTMLElement>('.homePage>section:not(#top)');if(!secs.length)return;const io=new IntersectionObserver(es=>es.forEach(e=>e.target.toggleAttribute('data-offscreen',!e.isIntersecting)),{rootMargin:'200px 0px'});secs.forEach(s=>io.observe(s));return()=>io.disconnect()},[rest]);
  const serious=['fcvf','accenture','finsimple','kohler','marketExpansion','estee'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
  const fun=['commute','bookclub','scheduler','chat'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
  return <><button type="button" className="viewSkip" onClick={()=>onChangeView(true)}>Skip the animation: switch to Simple view</button>
  <header className={`siteHeader homeHeader${navOpen?' navIsOpen':''}`}><a className="wordmark" href="#top">Neha Chinimilli</a><button ref={navToggleRef} type="button" className="navToggle" aria-expanded={navOpen} aria-controls="primaryNav" aria-label={navOpen?'Close menu':'Open menu'} onClick={()=>setNavOpen(o=>!o)}><span/><span/></button><nav id="primaryNav" ref={navRef} aria-label="Primary" onClick={e=>{if((e.target as HTMLElement).closest('a'))setNavOpen(false)}}><i className="navIndicator" aria-hidden="true" style={navInd}/><a href="#projects" className={activeSection==='projects'?'isActive':''}>Selected work</a><a href="#experience" className={activeSection==='experience'?'isActive':''}>Experience</a><a href="#fun" className={activeSection==='fun'?'isActive':''}>Fun things I’ve built</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume</a><a href="mailto:chinimi2@msu.edu">Email</a><a className="headerLinkedIn" href="https://github.com/nchinimilli3" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on GitHub"><img src={assetUrl('github.svg')} alt="GitHub"/></a><a className="headerLinkedIn" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on LinkedIn"><img src={assetUrl('linkedin.svg')} alt="LinkedIn"/></a></nav><ViewModeToggle simple={false} onChange={onChangeView}/></header>
  <main id="main-content" className="homePage">
   <DeskHero projects={serious} openCase={openCase} onSimple={()=>onChangeView(true)}/>
-  <CompanyBanner/>
+  {rest&&<><CompanyBanner/>
   <ExperienceSection onOpen={openCase}/><EducationSection/>
   <AfterHours projects={fun} onOpen={openCase}/>
   <section id="about" className="section aboutSection">
@@ -1329,7 +1333,7 @@ function Home({openCase,onChangeView}){
  </g>
 </svg></span> at heart, so I care about how a product feels, not only whether it works. I’ve built customer-facing software at Ford and Ford Credit and worked on product and business problems at Accenture and Spectrum. That mix is why I’m pursuing product management.</p><p className="hobbyLine">Outside of work, I’m usually trying a new coffee shop<span className="coffeeCup" aria-hidden="true"><svg viewBox="0 0 24 24"><path className="steam s1" d="M9.5 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/><path className="steam s2" d="M13 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/><path className="cupLine" d="M5 11h13v3.5A5.5 5.5 0 0 1 12.5 20h-2A5.5 5.5 0 0 1 5 14.5z"/><path className="cupLine" d="M18 12.2h.9a2.2 2.2 0 0 1 0 4.4h-1.3"/><path className="cupLine" d="M4 22h15"/></svg></span>, <span className="travelWord">traveling<TravelPlanes/></span>, <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>openAbout('books')} aria-expanded={aboutView==='books'}>reading</button><span className="filmPhotoHint" role="tooltip">click to see my shelf</span></span>, keeping up with <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>openAbout('tv')} aria-expanded={aboutView==='tv'}>reality TV</button><span className="filmPhotoHint" role="tooltip">click to turn it on</span></span>, <span className="bakeWord">baking<BakeSprinkles/></span>, hiking, painting, or taking <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>{openAbout('film');setFilmIndex(0)}} aria-expanded={aboutView==='film'}>film photos</button><span className="filmPhotoHint" role="tooltip">click to see my photos</span></span>.</p><div className="aboutActions"><BookRecForm/></div></div></section>
   <DeskGoodnight/>
- </main>
+ </>}</main>
  </>
 }
 

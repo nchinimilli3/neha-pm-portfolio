@@ -9,8 +9,8 @@
 /* The desk sinks into the dark at the bottom, so the section can ease back into the cream page. */
 .ahView::after{content:"";position:absolute;left:0;right:0;bottom:0;height:110px;z-index:36;pointer-events:none;background:linear-gradient(transparent,#141219)}
 .isStatic .ahView::after{display:none}
-/* No will-change: a promoted layer is rasterized once and then upscaled when the camera zooms,
-   which blurs the desk and cracks it along tile seams. */
+/* will-change is set from JS only while the camera moves; left on, the layer stays an upscaled
+   copy after a zoom, which blurs the desk and cracks it along tile seams. */
 .ahStage{position:absolute;left:0;top:0;width:2700px;height:1700px;transform-origin:0 0}
 .ahStage>*{position:absolute}
 

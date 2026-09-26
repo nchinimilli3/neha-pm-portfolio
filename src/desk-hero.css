@@ -363,7 +363,7 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 .isStatic .dhWinBar{cursor:default}
 @media (prefers-reduced-motion:reduce){.dhFog ellipse,.dhWaves path,.dhGlint rect,.dhSteam path,.dhCaret{animation:none}}
 /* Nobody can see the room: offscreen, or under the fully opaque OS. DeskHero sets both classes. */
-.dhTrack:is(.isAway,.osCovers) .dhStage *{animation-play-state:paused}
+.dhTrack.isAway *,.dhTrack.osCovers .dhStage *{animation-play-state:paused}
 
 /* Below the hero: fun builds wear the same window chrome as Neha OS; each role gets a margin note. */
 .osWin{border-radius:12px;overflow:hidden;background:#fffdf8;box-shadow:0 22px 40px -22px rgba(40,24,14,.45),0 0 0 .5px rgba(0,0,0,.14);transition:box-shadow .25s,transform .25s}

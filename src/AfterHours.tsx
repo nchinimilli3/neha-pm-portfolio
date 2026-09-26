@@ -297,7 +297,10 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
    return {s,cx:d.x+d.w/2,cy:d.y+d.h/2+fy,X:vw*.63,Y:midY};
   };
   let raf=0,idleTimer=0,pendingActive=0,lastTransform='',cameraReady=false;
+  // Pre-rendered while the camera moves (no half-drawn desk mid-scroll); released once it
+  // settles so the desk redraws sharp at its new zoom instead of staying an upscaled copy.
   const settle=()=>{
+   stage.style.willChange='auto';
    if(pendingActive!==activeRef.current){activeRef.current=pendingActive;setActive(pendingActive)}
   };
   const update=()=>{
@@ -321,7 +324,7 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
    const y=(a.Y-a.cy*a.s)*(1-k)+(b.Y-b.cy*b.s)*k;
    // Whole-pixel translation keeps the desk's edges and objects from shimmering apart.
    const transform=`translate(${Math.round(x)}px,${Math.round(y)}px) scale(${s.toFixed(4)})`;
-   if(transform!==lastTransform){stage.style.transform=transform;lastTransform=transform}
+   if(transform!==lastTransform){stage.style.willChange='transform';stage.style.transform=transform;lastTransform=transform}
    view.style.visibility='visible';
    cameraReady=true;
    // Update React only after scrolling settles so the live demos do not restart mid-pan.
