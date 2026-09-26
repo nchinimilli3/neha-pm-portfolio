@@ -264,7 +264,6 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
  const stops=devices.length+1; // the overview, then one stop per device
  const trackRef=useRef<HTMLElement>(null),viewRef=useRef<HTMLDivElement>(null),stageRef=useRef<HTMLDivElement>(null);
  const [active,setActive]=useState(0);
- const [lampOn,setLampOn]=useState(false);
  // Decided before the first paint, so a phone never flashes the pinned desktop layout.
  const [isStatic,setStatic]=useState(()=>window.matchMedia('(max-width: 900px), (max-aspect-ratio: 23/20), (prefers-reduced-motion: reduce)').matches);
  const activeRef=useRef(0);
@@ -297,7 +296,7 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
    const fy=d.fy||0,s=Math.min(2.6,vw*.46/d.w,h*(d.kind==='phone'?.82:.68)/(d.h+fy*2));
    return {s,cx:d.x+d.w/2,cy:d.y+d.h/2+fy,X:vw*.63,Y:midY};
   };
-  let raf=0,idleTimer=0,pendingActive=0,lastTransform='',lastLamp:boolean|undefined;
+  let raf=0,idleTimer=0,pendingActive=0,lastTransform='',cameraReady=false;
   const settle=()=>{
    if(pendingActive!==activeRef.current){activeRef.current=pendingActive;setActive(pendingActive)}
   };
@@ -305,15 +304,12 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
    raf=0;
    if(isParked(track)){window.clearTimeout(idleTimer);return}
    const vw=window.innerWidth,vh=window.innerHeight,r=track.getBoundingClientRect(),total=track.offsetHeight-vh;
-   if(r.bottom<-50||r.top>vh+50){window.clearTimeout(idleTimer);return}
+   // Frame the desk once while it is still offscreen, so its first visible
+   // frame already has the correct camera position.
+   if(cameraReady&&(r.bottom<-50||r.top>vh+50)){window.clearTimeout(idleTimer);return}
    // Follow the browser's scroll position directly. An extra easing loop made wheel input
    // lag behind the page and kept repainting the whole desk after scrolling stopped.
    const top=r.top;
-   // The desk keeps one viewing angle from its first visible frame; only its light warms on arrival.
-   const arrive=cl(1-top/vh);
-   const dusk=String(arrive);if(track.style.getPropertyValue('--dusk')!==dusk)track.style.setProperty('--dusk',dusk);
-   const lamp=arrive>.62;
-   if(lamp!==lastLamp){lastLamp=lamp;track.classList.toggle('lampOn',lamp);setLampOn(lamp)}
    // Give the pan room to breathe, followed by a stable, readable hold.
    const p=cl(-top/Math.max(1,total))*stops,seg=Math.min(stops-1,Math.floor(p)),t=p-seg;
    let a=camFor(seg,vw,vh),b=a,k=0;
@@ -326,6 +322,7 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
    const transform=`translate(${x}px,${y}px) scale(${s})`;
    if(transform!==lastTransform){stage.style.transform=transform;lastTransform=transform}
    view.style.visibility='visible';
+   cameraReady=true;
    // Update React only after scrolling settles so the live demos do not restart mid-pan.
    pendingActive=seg>0&&k<.5?seg-1:seg;
    window.clearTimeout(idleTimer);
@@ -350,23 +347,31 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
  useEffect(()=>{
   if(isStatic)return;
   const track=trackRef.current;if(!track)return;
-  let locked=false,idle=0;
-  // Keep a gesture locked until the browser's actual scroll has settled.
-  // A fixed timeout alone can expire halfway through a long smooth scroll.
-  const release=()=>{window.clearTimeout(idle);idle=window.setTimeout(()=>{locked=false},200)};
-  const onScroll=()=>{if(locked)release()};
+  let locked=false,idle=0,lastWheel=-Infinity,lastScroll=-Infinity;
+  // A touchpad swipe continues sending momentum events after the fingers lift.
+  // Unlock only when both that stream and the smooth camera scroll have gone quiet.
+  const release=()=>{
+   window.clearTimeout(idle);
+   const now=performance.now(),wait=Math.max(lastWheel+550,lastScroll+180)-now;
+   idle=window.setTimeout(()=>{
+    if(performance.now()-lastWheel>=550&&performance.now()-lastScroll>=180)locked=false;
+    else release();
+   },Math.max(0,wait));
+  };
+  const onScroll=()=>{if(locked){lastScroll=performance.now();release()}};
   const move=(direction:number)=>{
    const next=activeRef.current+direction;
    if(next>=stops)document.getElementById('about')?.scrollIntoView({behavior:'smooth',block:'start'});
    else goTo(Math.max(0,next));
   };
   const onWheel=(e:WheelEvent)=>{
-   if(e.ctrlKey||e.defaultPrevented||Math.abs(e.deltaY)<2||Math.abs(e.deltaX)>Math.abs(e.deltaY)||isParked(track))return;
+   if(e.ctrlKey||e.defaultPrevented||Math.abs(e.deltaX)>Math.abs(e.deltaY)||isParked(track))return;
    if((e.target as Element)?.closest?.('.ahPop,input,textarea,select,[contenteditable]'))return;
    const r=track.getBoundingClientRect();
    if(r.top>0||r.bottom<window.innerHeight)return;
-   if(activeRef.current===0&&e.deltaY<0)return;
+   if(!locked&&(Math.abs(e.deltaY)<2||activeRef.current===0&&e.deltaY<0))return;
    e.preventDefault();
+   lastWheel=performance.now();
    release();
    if(locked)return;
    locked=true;
@@ -380,6 +385,7 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
    e.preventDefault();
    if(locked)return;
    locked=true;
+   lastScroll=performance.now();
    release();
    move(e.key==='ArrowDown'?1:-1);
   };
@@ -403,7 +409,7 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
 
  return <section id="fun" className={`ahSection ${isStatic?'isStatic':''}`} aria-label="Fun things I’ve built">
   {isStatic&&heading}
-  <section ref={trackRef} className={`ahTrack ${lampOn||isStatic?'lampOn':''}`} style={{'--stops':stops} as React.CSSProperties}>
+  <section ref={trackRef} className="ahTrack" style={{'--stops':stops} as React.CSSProperties}>
    <div className="ahPin">
     <div ref={viewRef} className="ahView">
       <div ref={stageRef} className="ahStage">

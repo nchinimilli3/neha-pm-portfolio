@@ -1,6 +1,6 @@
 /* After hours: the desk from above, at night. Colours come from the hero desk's wood and lamp. */
 .ahSection{--ahInk:#f4ede4;--ahMuted:#c9bfb4;--ahAccent:#f09a7a;position:relative;margin-top:clamp(64px,8vw,120px)}
-.ahTrack{position:relative;height:calc(100vh + var(--stops) * 100vh);--dusk:0}
+.ahTrack{position:relative;height:calc(100vh + var(--stops) * 100vh)}
 .ahPin{position:sticky;top:0;height:100vh;overflow:hidden;background:#141219}
 /* A soft shade behind the caption so its type reads over the wood. */
 .ahPin::after{content:"";position:absolute;inset:0;z-index:35;pointer-events:none;background:linear-gradient(90deg,#141219e0 0,#14121999 24%,transparent 46%)}
@@ -17,11 +17,8 @@
  repeating-linear-gradient(90deg,transparent 0 16px,#4f2f1710 17px 19px,transparent 20px 38px),
  repeating-linear-gradient(0deg,transparent 0 118px,#3a22122e 118px 120px),
  linear-gradient(#b3845b,#9a6d45)}
-/* Night falls as the section arrives; the lamp pool is what lights the desk. */
-.ahNight{inset:-550px -350px -350px -900px;pointer-events:none;z-index:8;background:rgba(16,18,40,.62);opacity:calc(.35 + var(--dusk) * .65)}
-.ahNight::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 1600px 1150px at 2250px 1250px,rgba(255,190,110,.3),rgba(255,176,96,.1) 45%,transparent 72%);opacity:0;transition:opacity .65s cubic-bezier(.22,1,.36,1)}
-.lampOn .ahNight::before{opacity:1}
-.ahSection.isStatic .ahNight{opacity:1}
+/* One steady warm night tint avoids repainting a desk-sized layer on every scroll. */
+.ahNight{inset:-550px -350px -350px -900px;pointer-events:none;z-index:8;background:radial-gradient(ellipse 1600px 1150px at 2250px 1250px,rgba(255,190,110,.19),rgba(255,176,96,.06) 45%,transparent 72%),rgba(24,18,23,.52)}
 
 /* Props */
 /* Top-right corner: the watercolour tin and two boxes of Portra. */
@@ -277,4 +274,4 @@
 .isStatic .ahPin{position:relative;height:auto;aspect-ratio:2700/1700;width:calc(100% - 40px);margin:0 auto;border-radius:14px}
 .isStatic .ahList{width:calc(100% - 40px);padding-top:32px}
 @media(max-width:600px){.ahList li{grid-template-columns:28px minmax(0,1fr);grid-template-rows:none}.ahList li>*:not(.ahNum){grid-column:2}.ahList li button{justify-self:start}.ahList .ahNum{grid-row:1;padding-top:5px}.ahList h3{margin-top:0}}
-@media(prefers-reduced-motion:reduce){.ahCapCard{animation:none}.ahScreen::after,.ahNight::before,.ahRail li button span{transition:none}}
+@media(prefers-reduced-motion:reduce){.ahCapCard{animation:none}.ahScreen::after,.ahRail li button span{transition:none}}
