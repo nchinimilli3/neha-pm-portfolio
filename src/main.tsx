@@ -1303,7 +1303,10 @@ function Home({openCase,onChangeView}){
  // First paint is just the desk hero; everything below builds right after, well before the
  // walk-in's long scroll can reach it (so it's never seen building). A deep link builds it all at once.
  const [rest,setRest]=useState(()=>!!window.location.hash);
- useEffect(()=>{if(rest)return;let t=0;const r=requestAnimationFrame(()=>{t=window.setTimeout(()=>setRest(true),0)});return()=>{cancelAnimationFrame(r);clearTimeout(t)}},[rest]);
+ useEffect(()=>{if(rest)return;const go=()=>setRest(true);const ric=window.requestIdleCallback;let r2=0,id=0;
+  // After the hero's first frame has painted, once the browser is idle (at most 1.2s later).
+  const r1=requestAnimationFrame(()=>{r2=requestAnimationFrame(()=>{id=ric?ric(go,{timeout:1200}):window.setTimeout(go,300)})});
+  return()=>{cancelAnimationFrame(r1);cancelAnimationFrame(r2);if(ric)window.cancelIdleCallback(id);else clearTimeout(id)}},[rest]);
  useEffect(()=>{const secs=document.querySelectorAll<HTMLElement>('.homePage>section:not(#top)');if(!secs.length)return;const io=new IntersectionObserver(es=>es.forEach(e=>e.target.toggleAttribute('data-offscreen',!e.isIntersecting)),{rootMargin:'200px 0px'});secs.forEach(s=>io.observe(s));return()=>io.disconnect()},[rest]);
  const serious=['fcvf','accenture','finsimple','kohler','marketExpansion','estee'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
  const fun=['commute','bookclub','scheduler','chat'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
