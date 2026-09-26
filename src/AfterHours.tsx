@@ -1,4 +1,5 @@
 import React,{useEffect,useLayoutEffect,useRef,useState} from 'react';
+import {Observer,ScrollTrigger,getLenis,glideTo} from './smoothScroll';
 import SpartanGame from './SpartanGame';
 import StableFluids from './StableFluids';
 import './after-hours.css';
@@ -338,72 +339,57 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
   return()=>{window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',redraw);window.removeEventListener(HOME_SHOWN,redraw);cancelAnimationFrame(raf);window.clearTimeout(idleTimer)};
  },[isStatic]);
 
- // Jump to the middle of a stop's hold.
- const goTo=(i:number)=>{
-  const track=trackRef.current;if(!track)return;
-  if(isStatic){const d=devices[i-1];if(d?.caseId)onOpen(d.caseId);return}
+ // Where each stop holds: the middle of its hold, as a page y.
+ const stopY=(i:number)=>{
+  const track=trackRef.current;if(!track)return 0;
   const total=track.offsetHeight-window.innerHeight,top=track.getBoundingClientRect().top+window.scrollY;
-  const at=i===0?.2:i+.84;
-  window.scrollTo({top:top+total*(at/stops)+1,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  return top+total*((i===0?.2:i+.84)/stops)+1;
  };
- // Wheel momentum can cross several short stops in one gesture. Advance one device with
- // the same browser scroll used by the rail, and let the next gesture advance again.
+ const tourRef=useRef<{go:(i:number)=>void}|null>(null);
+ const goTo=(i:number)=>{
+  if(isStatic){const d=devices[i-1];if(d?.caseId)onOpen(d.caseId);return}
+  if(tourRef.current)tourRef.current.go(i);else glideTo(stopY(i),{duration:1.1});
+ };
+ /* One device per gesture, the way scroll-snapping product pages do it: while the tour is
+    pinned, GSAP's Observer swallows wheel, trackpad and touch input and turns each gesture
+    into a single next/previous, and Lenis glides the page to that stop. Momentum that
+    arrives mid-glide (or just after) is ignored. Past either end, normal scrolling resumes. */
  useEffect(()=>{
   if(isStatic)return;
   const track=trackRef.current;if(!track)return;
-  let locked=false,idle=0,lastWheel=-Infinity,lastScroll=-Infinity,movedAt=-Infinity,push=0;
-  // A touchpad swipe continues sending momentum events after the fingers lift.
-  // Unlock only when both that stream and the smooth camera scroll have gone quiet.
-  const release=()=>{
-   window.clearTimeout(idle);
-   const now=performance.now(),wait=Math.max(lastWheel+800,lastScroll+180,movedAt+900)-now;
-   idle=window.setTimeout(()=>{
-    const t=performance.now();if(t-lastWheel>=800&&t-lastScroll>=180&&t-movedAt>=900){locked=false;push=0}
-    else release();
-   },Math.max(0,wait));
+  const lenis=getLenis();
+  let cur=0,busy=false,lastInput=0,unlock=0;
+  const nearest=()=>{let best=0,d=Infinity;for(let i=0;i<stops;i++){const dd=Math.abs(stopY(i)-window.scrollY);if(dd<d){d=dd;best=i}}return best};
+  const settle=()=>{window.clearTimeout(unlock);unlock=window.setTimeout(()=>{if(performance.now()-lastInput<350)settle();else busy=false},120)};
+  const glide=(y:number,then?:()=>void)=>{busy=true;glideTo(y,{duration:1.1,onComplete:()=>{then?.();settle()}})};
+  const leave=(y:number)=>{obs.disable();lenis?.start();glideTo(y,{duration:1})};
+  const go=(i:number)=>{
+   if(i<0){leave(track.getBoundingClientRect().top+window.scrollY-window.innerHeight*.6);return}
+   if(i>=stops){const about=document.getElementById('about');leave(about?about.getBoundingClientRect().top+window.scrollY:stopY(stops-1)+window.innerHeight);return}
+   cur=i;glide(stopY(i));
   };
-  const onScroll=()=>{if(locked){lastScroll=performance.now();release()}};
-  const move=(direction:number)=>{
-   const next=activeRef.current+direction;
-   if(next>=stops)document.getElementById('about')?.scrollIntoView({behavior:'smooth',block:'start'});
-   else goTo(Math.max(0,next));
-  };
-  const onWheel=(e:WheelEvent)=>{
-   if(e.ctrlKey||e.defaultPrevented||Math.abs(e.deltaX)>Math.abs(e.deltaY)||isParked(track))return;
-   if((e.target as Element)?.closest?.('.ahPop,input,textarea,select,[contenteditable]'))return;
-   const r=track.getBoundingClientRect();
-   if(r.top>0||r.bottom<window.innerHeight)return;
-   // Leaving from the first device upward scrolls the page normally.
-   if(!locked&&activeRef.current===0&&e.deltaY<0){push=0;return}
-   // Every other wheel event is ours while pinned, so trackpad momentum never leaks into a native scroll.
-   e.preventDefault();
-   if(performance.now()-lastWheel>300)push=0;
-   lastWheel=performance.now();
-   release();
-   if(locked)return;
-   // A deliberate push moves one device; a graze of the trackpad doesn't.
-   push+=e.deltaMode===1?e.deltaY*16:e.deltaY;
-   if(Math.abs(push)<40)return;
-   locked=true;movedAt=performance.now();
-   const dir=push>0?1:-1;push=0;
-   move(dir);
-  };
+  const step=(dir:number)=>{lastInput=performance.now();if(busy||isParked(track))return;go(cur+dir)};
+  const obs=Observer.create({
+   target:window,type:'wheel,touch',wheelSpeed:-1,tolerance:12,preventDefault:true,
+   ignore:'.ahPop,input,textarea,select,[contenteditable]',
+   onChange:()=>{lastInput=performance.now()},
+   onUp:()=>step(1),onDown:()=>step(-1),
+  });
+  obs.disable();
+  const enter=(fromBelow:boolean)=>{lenis?.stop();obs.enable();cur=fromBelow?stops-1:nearest();glide(stopY(cur))};
+  const exit=()=>{obs.disable();lenis?.start()};
+  const st=ScrollTrigger.create({trigger:track,start:'top top',end:'bottom bottom',
+   onEnter:()=>enter(false),onEnterBack:()=>enter(true),onLeave:exit,onLeaveBack:exit});
+  tourRef.current={go:(i:number)=>{if(st.isActive){lenis?.stop();obs.enable();go(i)}else glideTo(stopY(i),{duration:1.1})}};
   const onKey=(e:KeyboardEvent)=>{
-   if(e.key!=='ArrowDown'&&e.key!=='ArrowUp'||e.repeat||e.defaultPrevented||e.altKey||e.ctrlKey||e.metaKey||isParked(track))return;
-   if((e.target as Element)?.closest?.('input,textarea,select,button,a,[contenteditable],[role="button"],[role="textbox"]'))return;
-   const r=track.getBoundingClientRect();
-   if(r.top>1||r.bottom<window.innerHeight-1||activeRef.current===0&&e.key==='ArrowUp')return;
-   e.preventDefault();
-   if(locked)return;
-   locked=true;
-   lastScroll=performance.now();
-   release();
-   move(e.key==='ArrowDown'?1:-1);
+   if(!st.isActive||e.key!=='ArrowDown'&&e.key!=='ArrowUp'||e.repeat||e.altKey||e.ctrlKey||e.metaKey)return;
+   if((e.target as Element)?.closest?.('input,textarea,select,[contenteditable]'))return;
+   e.preventDefault();step(e.key==='ArrowDown'?1:-1);
   };
-  track.addEventListener('wheel',onWheel,{passive:false});
-  window.addEventListener('scroll',onScroll,{passive:true});
   document.addEventListener('keydown',onKey);
-  return()=>{track.removeEventListener('wheel',onWheel);window.removeEventListener('scroll',onScroll);document.removeEventListener('keydown',onKey);window.clearTimeout(idle)};
+  // Sections below the hero mount late; keep the trigger's start and end current.
+  const ro=new ResizeObserver(()=>ScrollTrigger.refresh());ro.observe(document.body);
+  return()=>{ro.disconnect();document.removeEventListener('keydown',onKey);window.clearTimeout(unlock);obs.kill();st.kill();lenis?.start();tourRef.current=null};
  },[isStatic]);
  // The list is a quick pop-up over the tour, not a second copy of it under the desk.
  useEffect(()=>{
