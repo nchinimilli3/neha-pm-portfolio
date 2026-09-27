@@ -2,6 +2,8 @@ import React,{useCallback,useEffect,useLayoutEffect,useRef,useState} from 'react
 import {getLenis,initAnchors} from './smoothScroll';
 import {pageY} from './perfMode';
 import './desk-hero.css';
+import WatercolorPaper,{watercolorName} from './WatercolorPaper';
+import {Candle,DoodlePad,SnowGlobe,TumblerFlask} from './DeskProps';
 import {CASE_FILES,HOME_SHOWN,isParked,maximizeInto} from './CaseWindow';
 import {ShelbyMark} from './CarArt';
 
@@ -146,25 +148,6 @@ function CanonAE1({onShoot}:{onShoot:()=>void}){
  </button>
 }
 
-function HydroFlask(){
- // Black powder-coat bottle, flex cap, with the Accenture mark. Tap it and it wobbles.
- const [n,setN]=useState(0);
- return <div className={`dhFlask dh3d ${n?'isWobble':''}`} key={n} title="Stay hydrated" onClick={()=>setN(v=>v+1)}><svg viewBox="0 0 60 176" aria-hidden="true">
-  <defs><linearGradient id="hfBody" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#1a1b1e"/><stop offset=".08" stopColor="#0b0b0d"/><stop offset=".4" stopColor="#1e1e22"/><stop offset=".66" stopColor="#3e3e44"/><stop offset=".8" stopColor="#26262a"/><stop offset="1" stopColor="#0a0a0b"/></linearGradient>
-  <linearGradient id="hfCap" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#111113"/><stop offset=".65" stopColor="#35353a"/><stop offset="1" stopColor="#141416"/></linearGradient>
-  <linearGradient id="hfSteel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#5d5f62"/><stop offset=".6" stopColor="#d9dadb"/><stop offset=".75" stopColor="#f4f4f4"/><stop offset="1" stopColor="#6b6d70"/></linearGradient></defs>
-  <path d="M22 8Q30 -6 38 8" fill="none" stroke="#1b1b1d" strokeWidth="4" strokeLinecap="round"/>
-  <rect x="15" y="6" width="30" height="20" rx="4" fill="url(#hfCap)"/><rect x="15" y="6" width="30" height="4" rx="2" fill="#2e2e32"/>
-  {Array.from({length:12},(_,i)=><path key={i} d={`M${17+i*2.3} 12v10`} stroke="#55545a" strokeOpacity=".45" strokeWidth=".7"/>)}
-  <rect x="18" y="26" width="24" height="6" fill="url(#hfSteel)"/>
-  <path d="M19 27h22" stroke="#fff" strokeOpacity=".5" strokeWidth=".8"/>
-  <path d="M18 32Q4 38 4 54V164Q4 174 14 174H46Q56 174 56 164V54Q56 38 42 32Z" fill="url(#hfBody)"/>
-  <path d="M7 162q23 9 46 0" fill="none" stroke="#5c5c60" strokeOpacity=".5"/><path d="M41 60V158" stroke="#fff" strokeOpacity=".16" strokeWidth="5" strokeLinecap="round"/><path d="M44 64V150" stroke="#fff" strokeOpacity=".22" strokeWidth="1.2" strokeLinecap="round"/><path d="M6.5 60V160" stroke="#8fa0b8" strokeOpacity=".22" strokeWidth="1.2"/><path d="M22 33Q30 30 38 33" stroke="#fff" strokeOpacity=".18" fill="none"/>
-  <path d="M26 88L36 96L26 104" fill="none" stroke="#a100ff" strokeWidth="4.2" strokeLinejoin="miter"/>
-  <text x="30" y="120" textAnchor="middle" fontFamily="Helvetica,Arial,sans-serif" fontSize="7.4" fontWeight="600" fill="#f5f5f5">accenture</text>
- </svg></div>
-}
-
 function MsuCappuccino(){
  // Cappuccino in an MSU mug on a saucer, with a latte-art heart. Click for a sip.
  // Drawn from a reference photo of a cappuccino seen from about 30° above: a thick cream
@@ -274,8 +257,8 @@ function MsuCappuccino(){
  </button>
 }
 
-function Lamp(){
- return <div className="dhLamp isOn" aria-hidden="true">
+function Lamp({on,onToggle}:{on:boolean;onToggle:()=>void}){
+ return <div className={`dhLamp ${on?'isOn':''}`} role="button" tabIndex={-1} title={on?'Lamp off':'Lamp on'} onClick={onToggle}>
   <svg viewBox="0 0 200 320" aria-hidden="true">
    <defs>
     <linearGradient id="lampShade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#141312"/><stop offset=".55" stopColor="#3c3a38"/><stop offset=".78" stopColor="#5a5754"/><stop offset="1" stopColor="#1c1b1a"/></linearGradient>
@@ -310,6 +293,8 @@ function Mustang(){
 }
 
 // Where each click's bite lands, as [angle in degrees, depth] around the cookie's edge.
+// Two bites show; the third finishes it.
+const COOKIE_BITES=3;
 const BITES:[number,number][]=[[-40,1],[25,1.05],[150,.95],[210,1.1],[95,1],[290,1.15]];
 // A slightly lumpy outline, so it reads as baked rather than stamped.
 const COOKIE_EDGE=(()=>{const n=22,pts=Array.from({length:n},(_,i)=>{const a=i/n*Math.PI*2,r=41+Math.sin(i*2.7)*1.6+Math.cos(i*1.3)*1.1;return [50+Math.cos(a)*r,50+Math.sin(a)*r*.97]});
@@ -318,14 +303,15 @@ const biteCircles=(k:number)=>BITES.slice(0,k).flatMap(([deg,d])=>{const a=deg*M
  return [[cx,cy,11*d],[cx+tx*9,cy+ty*9,8.5*d],[cx-tx*9,cy-ty*9,8.5*d]] as [number,number,number][]});
 
 function CookieNapkin(){
- // A chocolate-chunk cookie on a napkin. Every click takes a bite; when it is gone, a fresh one appears.
- const [bites,setBites]=useState(0);
+ // A chocolate-chunk cookie on a napkin. Three bites and only crumbs are left; it stays
+ // eaten for the rest of the visit and is back, whole, next time.
+ const [bites,setBites]=useState(()=>{try{return Math.min(COOKIE_BITES,Number(sessionStorage.getItem('neha-cookie'))||0)}catch{return 0}});
  const [chomp,setChomp]=useState(0);
- const bite=()=>{setChomp(c=>c+1);setBites(b=>b>=BITES.length?0:b+1)};
- const gone=bites>=BITES.length;
+ const bite=()=>{if(bites>=COOKIE_BITES)return;const n=bites+1;setChomp(c=>c+1);setBites(n);try{sessionStorage.setItem('neha-cookie',String(n))}catch{}};
+ const gone=bites>=COOKIE_BITES;
  const cut=biteCircles(bites);
  const last=bites>0&&!gone?BITES[bites-1]:null;
- return <button type="button" className={`dhCookie ${gone?'isGone':''}`} onClick={bite} aria-label={gone?'Get a fresh cookie':'Take a bite of the cookie'} title={gone?'Another one?':'Take a bite'}>
+ return <button type="button" className={`dhCookie ${gone?'isGone':''}`} onClick={bite} aria-label={gone?'Only crumbs left':'Take a bite of the cookie'} title={gone?'All gone. Back next visit':'Take a bite'}>
   <svg viewBox="0 0 150 130" aria-hidden="true">
   <defs>
    <radialGradient id="ckBody" cx=".42" cy=".38" r=".66"><stop offset="0" stopColor="#ecc991"/><stop offset=".45" stopColor="#dcae6c"/><stop offset=".78" stopColor="#c48a48"/><stop offset=".94" stopColor="#a86c33"/><stop offset="1" stopColor="#8a5424"/></radialGradient>
@@ -341,11 +327,11 @@ function CookieNapkin(){
    <rect x="16" y="14" width="118" height="102" rx="2" fill="none" stroke="#e9e4da" strokeWidth="1.2" strokeDasharray="2 2"/>
    <path d="M75 8V122M10 65H140" stroke="#ece7dd" strokeWidth="1"/>
   </g>
-  {[[30,98,1.6],[112,34,1.3],[120,96,1.1],[36,30,1],[104,108,1.4],[24,70,.9]].slice(0,2+bites).map(([x,y,r],i)=><ellipse key={i} cx={x} cy={y} rx={r*1.3} ry={r} fill="#c48c50"/>)}
+  {[[30,98,1.6],[112,34,1.3],[120,96,1.1],[36,30,1],[104,108,1.4],[24,70,.9]].slice(0,gone?6:2+bites).map(([x,y,r],i)=><ellipse key={i} cx={x} cy={y} rx={r*1.3} ry={r} fill="#c48c50"/>)}
   <g transform="translate(25 15)">
    <g key={chomp} className="ckWhole" mask="url(#ckBite)">
     <path d={COOKIE_EDGE} transform="translate(-3 5)" fill="#3a2410" opacity=".35" filter="url(#ckSoft)"/>
-    <path d={COOKIE_EDGE} fill="url(#ckBody)"/>
+    <path d={COOKIE_EDGE} transform="translate(0 5)" fill="#7a4a1f"/><path d={COOKIE_EDGE} transform="translate(0 2.6)" fill="#9c6630"/><path d={COOKIE_EDGE} fill="url(#ckBody)"/>
     <path d={COOKIE_EDGE} fill="#fff" filter="url(#ckTex)" opacity=".55"/>
     <g clipPath="url(#ckClip)">
      <path d="M26 42q9-7 18-2M52 66q8 5 15 1M34 74q5-6 11-5M60 38q7-5 13 0M44 26q6 3 11 0" fill="none" stroke="#8a5424" strokeWidth="1.3" strokeLinecap="round" opacity=".55"/>
@@ -376,8 +362,9 @@ function WatercolorTin(){
   return ()=>window.clearTimeout(clear);
  },[wash,painting]);
  const pans=['#e2b33a','#e07b2e','#c9352c','#b0304f','#7a3c8c','#2d4f9e','#2f86b8','#2a8f78','#4f8a3a','#9a7b2e','#7a4a2a','#2b2b2e'];
- return <button type="button" tabIndex={-1} className="dhPaints" title="Paint a little watercolor" aria-label="Paint with the watercolor tin and brush" onClick={()=>{setWash(v=>v+1);setPainting(true)}}>
- {painting&&<svg key={wash} className="dhWatercolorBloom" viewBox="0 0 300 200" aria-hidden="true"><defs><filter id="wcBloomEdge" x="-25%" y="-25%" width="150%" height="150%"><feTurbulence type="fractalNoise" baseFrequency=".055" numOctaves="3" seed={wash%7}/><feDisplacementMap in="SourceGraphic" scale="12"/><feGaussianBlur stdDeviation=".5"/></filter></defs><g filter="url(#wcBloomEdge)">{[0,1,2,3,4].map((n)=><ellipse key={n} className="dhPigment" cx={65+n*40} cy={85+(n%2)*28} rx={37+n%3*5} ry={27+n%2*10} fill={pans[(wash+n*2)%pans.length]} style={{animationDelay:`${n*100}ms`}}/>)}<path className="dhPaintStroke" d="M32 125Q95 38 144 99T270 80" fill="none" stroke={pans[wash%pans.length]} strokeWidth="15" strokeLinecap="round" pathLength="1"/></g></svg>}
+ return <button type="button" tabIndex={-1} className="dhPaints" title={`Paint another little picture · ${watercolorName(wash)}`} aria-label={`Paint a new watercolor on the paper. Currently ${watercolorName(wash)}.`} onClick={()=>{setWash(v=>v+1);setPainting(true)}}>
+ <WatercolorPaper click={wash}/>
+
  <svg className="dhWatercolorTin" viewBox="0 0 240 130" aria-hidden="true">
   <defs>
    <linearGradient id="wcTin" x1="0" y1="0" x2=".8" y2="1"><stop stopColor="#64676a"/><stop offset=".12" stopColor="#272e32"/><stop offset=".8" stopColor="#151c20"/><stop offset="1" stopColor="#41474a"/></linearGradient>
@@ -489,6 +476,9 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
  });
  const manualTod=useRef(false);
  const [flash,setFlash]=useState(0);
+ // Window latch: every other click opens it a crack; each opening replays the curtain's breeze.
+ const [air,setAir]=useState(0);
+ const [lampOn,setLampOn]=useState(true);
  // The room fades in once its fonts and photos are ready, instead of filling in piece by piece.
  const [ready,setReady]=useState(false);
  useEffect(()=>{
@@ -669,7 +659,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
  const day=clock.toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'}),time=clock.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
  const hello=<><div className="dhHelloBar"><i/><i/><i/><span>hello.txt</span></div><div className="dhHelloBody"><p>{GREETING[tod]}, i’m neha.<span className="dhCaret"/></p><small>welcome to my desk. keep scrolling, come on in →</small></div></>;
 
- return <section ref={trackRef} className={`dhTrack tod-${tod} ${ready?'isReady':''} ${isStatic?'isStatic':''} lampOn`} style={{'--track':`${TRACK_VH}vh`} as React.CSSProperties} aria-label="Neha Chinimilli, intro and selected work" id="top">
+ return <section ref={trackRef} className={`dhTrack tod-${tod} ${ready?'isReady':''} ${isStatic?'isStatic':''} ${lampOn?'lampOn':''}`} style={{'--track':`${TRACK_VH}vh`} as React.CSSProperties} aria-label="Neha Chinimilli, intro and selected work" id="top">
   {!isStatic&&<span id="projects" className="dhAnchor" style={{top:`${ANCHOR_P*(TRACK_VH-100)}vh`}} aria-hidden="true"/>}
   <div className="dhPin">
    <div className="dhCopy" ref={copyRef}>
@@ -686,16 +676,17 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
      <div className="dhWall"/>
      <div className="dhSunPatch"/>
 
-     <div className="dhWindow" title="Change the time of day" onClick={()=>{manualTod.current=true;setTod(t=>ORDER[(ORDER.indexOf(t)+1)%4]);}}>
-      <div className="dhGlass"><GoldenGateView/><div className="dhMuntins"/><div className="dhReflect"/></div>
-      <div className="dhCurtain"/>
+     <div className={`dhWindow ${air%2?'isAjar':''}`} title="Change the time of day" onClick={()=>{manualTod.current=true;setTod(t=>ORDER[(ORDER.indexOf(t)+1)%4]);}}>
+      <div className="dhGlass"><GoldenGateView/><div className="dhMuntins"/><div className="dhReflect"/><div className="dhGap"/><button type="button" className="dhLatch" tabIndex={-1} title={air%2?'Close the window':'Open the window a crack'} aria-label={air%2?'Close the window':'Open the window a crack'} onClick={e=>{e.stopPropagation();setAir(v=>v+1)}}/></div>
+      <div className="dhCurtain" key={Math.ceil(air/2)}/>
       <div className="dhSill"><div className="dhSucculent"><i/><i/><i/><i/><i/></div></div>
      </div>
 
+     <SnowGlobe/>
      <div className="dhString">
       <svg viewBox="0 0 520 90" preserveAspectRatio="none"><path d="M0 8Q260 80 520 12"/></svg>
       {Array.from({length:13},(_,i)=>{const t=i/12,x=t*520,y=(1-t)*(1-t)*8+2*(1-t)*t*80+t*t*12;return <i key={i} className="dhBulbDot" style={{left:x,top:y+2,animationDelay:`${(i*.37)%2}s`}}/>})}
-      {PRINTS.map((p,i)=>{const t=.12+i*.25,x=t*520,y=(1-t)*(1-t)*8+2*(1-t)*t*80+t*t*12;return <figure key={p.src} className="dhPrint" style={{left:x-40,top:y-4,'--r':`${p.r}deg`,animationDelay:`${i*.6}s`} as React.CSSProperties}><span className="dhPeg"/><img src={asset(p.src)} alt="" style={{objectPosition:p.pos}} loading="eager" decoding="async"/><figcaption>{p.cap}</figcaption></figure>})}
+      {PRINTS.map((p,i)=>{const t=.12+i*.25,x=t*520,y=(1-t)*(1-t)*8+2*(1-t)*t*80+t*t*12;return <figure key={p.src} className="dhPrint" onClick={e=>{const f=e.currentTarget;f.classList.remove('isSwing');void f.offsetWidth;f.classList.add('isSwing')}} style={{left:x-40,top:y-4,'--r':`${p.r}deg`,animationDelay:`${i*.6}s`} as React.CSSProperties}><span className="dhPeg"/><img src={asset(p.src)} alt="" style={{objectPosition:p.pos}} loading="eager" decoding="async"/><figcaption>{p.cap}</figcaption></figure>})}
      </div>
 
      <div className="dhShelf">
@@ -719,12 +710,14 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
       <div className="dhPen"/>
       <WatercolorTin/>
       <CookieNapkin/>
+      <DoodlePad/>
      </div>
      <PhotoFrame/>
-     <HydroFlask/>
+     <Candle/>
+     <TumblerFlask/>
      <MsuCappuccino/>
      <CanonAE1 onShoot={shoot}/>
-     <Lamp/>
+     <Lamp on={lampOn} onToggle={()=>setLampOn(v=>!v)}/>
      <div className="dhShade"/>
 
      <div className="dhScreen" title="Come on in" onClick={()=>{const t=trackRef.current;if(t&&!isStatic){const to=t.offsetTop+(t.offsetHeight-window.innerHeight)*.5;window.scrollTo({top:to,behavior:'smooth'})}}}>
