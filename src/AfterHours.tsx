@@ -315,7 +315,7 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
    const fy=d.fy||0,s=Math.min(2.6,vw*.46/d.w,h*(d.kind==='phone'?.82:.68)/(d.h+fy*2));
    return {s,cx:d.x+d.w/2,cy:d.y+d.h/2+fy,X:vw*.63,Y:midY};
   };
-  let raf=0,idleTimer=0,pendingActive=0,lastTransform='',cameraReady=false;
+  let raf=0,idleTimer=0,pendingActive=0,lastTransform='',cameraReady=false,promotedAt=0;
   // Pre-rendered while the camera moves (no half-drawn desk mid-scroll); released once it
   // settles so the desk redraws sharp at its new zoom instead of staying an upscaled copy.
   const settle=()=>{
@@ -353,7 +353,14 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
    const x=X-cx*s,y=Y-cy*s;
    // Whole-pixel translation keeps the desk's edges and objects from shimmering apart.
    const transform=`translate(${Math.round(x)}px,${Math.round(y)}px) scale(${s.toFixed(4)})`;
-   if(transform!==lastTransform){stage.style.willChange='transform';stage.style.transform=transform;lastTransform=transform}
+   if(transform!==lastTransform){
+    // The browser rasters a promoted layer at the zoom it had when promoted. Zooming out from
+    // a close-up, that raster would cover the whole desk at close-up resolution (~9000px wide),
+    // too big to draw in time, so undrawn tiles flash. Once the zoom falls well below the
+    // promoted one, drop the promotion for a frame so it re-rasters at the current zoom.
+    if(stage.style.willChange!=='transform'){stage.style.willChange='transform';promotedAt=s}
+    else if(s<promotedAt*.6)stage.style.willChange='auto';
+    stage.style.transform=transform;lastTransform=transform}
    view.style.visibility='visible';
    cameraReady=true;
    // Update React only after scrolling settles so the live demos do not restart mid-pan.
