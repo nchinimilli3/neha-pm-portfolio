@@ -25,6 +25,11 @@ const LAYOUT:Record<string,Omit<Device,'id'|'title'|'eyebrow'|'line'|'caseId'|'h
  fluids:{kind:'tablet',x:150,y:900,w:656,h:473,rot:2},
 };
 // Every image the desk shows, so they can be fetched and decoded before it appears.
+// Each device's share of the tour: the camera travels for the first TRAVEL of it and parks
+// for the rest, and a stop holds at HOLD. Kept short so a glide from one stop to the next
+// is almost all camera motion, with no dead stretch at either end. The camera moves on a
+// sine ease (peak speed ~1.6x average) and the page glides linearly, so the two never stack.
+const TRAVEL=.9,HOLD=.95;
 const FUN_IMAGES=['desk/fun-scheduler.jpg','desk/fun-bookclub.jpg','desk/fun-spartan.jpg','project-media/sparty.png','project-media/um-enemy.png'];
 const ORDER=['commute','bookclub','scheduler','chat','game','fluids'];
 const EXTRA:Record<string,{title:string;eyebrow:string;line:string;hint:string}>={
@@ -300,7 +305,7 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
   }
   const HEAD=72;
   // Quintic easing has zero velocity AND acceleration at either end of a pan.
-  const cl=(v:number)=>Math.max(0,Math.min(1,v)),ease=(t:number)=>t*t*t*(t*(t*6-15)+10);
+  const cl=(v:number)=>Math.max(0,Math.min(1,v)),ease=(t:number)=>(1-Math.cos(Math.PI*t))/2;
   const camFor=(i:number,vw:number,vh:number)=>{
    const h=vh-HEAD,midY=HEAD+h/2;
    if(i===0){const s=Math.min(vw*.6/SW,h*.9/SH);return {s,cx:SW/2,cy:SH/2,X:vw*.64,Y:midY}}
@@ -335,7 +340,7 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
    // Give the pan room to breathe, followed by a stable, readable hold.
    const p=cl(-top/Math.max(1,total))*stops,seg=Math.min(stops-1,Math.floor(p)),t=p-seg;
    let a=camFor(seg,vw,vh),b=a,k=0;
-   if(seg>0){const prev=camFor(seg-1,vw,vh);b=a;a=prev;k=ease(cl(t/.68))}
+   if(seg>0){const prev=camFor(seg-1,vw,vh);b=a;a=prev;k=ease(cl(t/TRAVEL))}
    const s=a.s*Math.pow(b.s/a.s,k);
    // Interpolate the rendered translation so a simultaneous zoom cannot swing
    // the camera past its destination. Both endpoints retain their exact framing.
@@ -363,7 +368,7 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
  const stopY=(i:number)=>{
   const track=trackRef.current;if(!track)return 0;
   const total=track.offsetHeight-window.innerHeight,top=track.getBoundingClientRect().top+window.scrollY;
-  return top+total*((i===0?.2:i+.84)/stops)+1;
+  return top+total*((i===0?.2:i+HOLD)/stops)+1;
  };
  const tourRef=useRef<{go:(i:number)=>void}|null>(null);
  const goTo=(i:number)=>{
@@ -383,7 +388,7 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
   let cur=0,busy=false,lastInput=0,prevD=0,armed=false,decaying=false,queuedDir=0;
   const nearest=()=>{let best=0,d=Infinity;for(let i=0;i<stops;i++){const dd=Math.abs(stopY(i)-window.scrollY);if(dd<d){d=dd;best=i}}return best};
   // A swipe made during a glide is queued (one at most) and runs as soon as it lands.
-  const glide=(y:number)=>{busy=true;glideTo(y,{duration:.8,onComplete:()=>{busy=false;if(queuedDir&&performance.now()-lastInput<400){const d=queuedDir;queuedDir=0;armed=false;step(d)}queuedDir=0}})};
+  const glide=(y:number)=>{busy=true;glideTo(y,{duration:1.5,linear:true,onComplete:()=>{busy=false;if(queuedDir&&performance.now()-lastInput<400){const d=queuedDir;queuedDir=0;armed=false;step(d)}queuedDir=0}})};
   const leave=(y:number)=>{obs.disable();lenis?.start();glideTo(y,{duration:1})};
   const go=(i:number)=>{
    if(i<0){leave(track.getBoundingClientRect().top+window.scrollY-window.innerHeight*.6);return}
