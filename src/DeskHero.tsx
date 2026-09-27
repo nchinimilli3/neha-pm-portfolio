@@ -344,14 +344,14 @@ function CookieNapkin(){
   <g transform="translate(25 15)">
    {/* The cookie stands up off the napkin (below); on the napkin itself, just its shadow. */}
    {/* The shadow shrinks as the cookie does, and goes with the last bite. */}
-   <g className="ckShadow" style={{opacity:gone?0:1-bites*.13,transform:`scale(${1-bites*.06})`,transformOrigin:'54px 80px'}}><ellipse cx="54" cy="80" rx="44" ry="30" fill="#3a2410" opacity=".42" filter="url(#ckSoft)"/>
+   <g className="ckShadow" style={{opacity:gone?0:1-bites*.13,transition:gone?'none':undefined,transform:`scale(${1-bites*.06})`,transformOrigin:'54px 80px'}}><ellipse cx="54" cy="80" rx="44" ry="30" fill="#3a2410" opacity=".42" filter="url(#ckSoft)"/>
    <ellipse cx="52" cy="84" rx="36" ry="16" fill="#241406" opacity=".35" filter="url(#ckSoft)"/></g>
    {last&&<g key={`crumbs${chomp}`} className="ckCrumbs">{[0,1,2,3].map(i=>{const a=last[0]*Math.PI/180,x=50+Math.cos(a)*50+(i-1.5)*5,y=50+Math.sin(a)*50+(i%2)*4;return <ellipse key={i} cx={x} cy={y} rx={1.4+i%2} ry={1+i%2*.6} fill="#c48c50" style={{'--dx':`${Math.cos(a)*6+(i-1.5)*2}px`,'--dy':`${Math.sin(a)*6+3}px`} as React.CSSProperties}/>})}</g>}
   </g>
   </svg>
  </button>
   {/* Upright, facing the viewer: a domed top seen at an angle over its thick baked side. */}
-  {spot&&createPortal(<svg className="ckUp" viewBox="0 0 150 72" aria-hidden="true" onClick={bite} style={{left:spot.x-75,top:spot.y-50,opacity:gone?0:1}}>
+  {spot&&createPortal(<svg className="ckUp" viewBox="0 0 150 72" aria-hidden="true" onClick={bite} style={{left:spot.x-75,top:spot.y-50,opacity:gone?0:1,transition:gone?'none':'opacity .6s ease'}}>
    <g transform="translate(25 4) scale(1 .52)">
    <g key={chomp} className="ckWhole" mask="url(#ckBite)">
     {/* The cookie's thickness: its baked side, darker toward the base, seen along the front edge. */}{/* The crumb inside, which a bite exposes where it cuts through the top and side. */}<path d={COOKIE_EDGE} transform="translate(0 9)" fill="#d2a468"/><path d={COOKIE_EDGE} transform="translate(0 9)" fill="#fff" filter="url(#ckTex)" opacity=".5"/>{[22,18,14,10,6,3].map((d,i)=><g key={d} transform={`translate(0 ${d})`}><path d={COOKIE_EDGE} mask="url(#ckBite)" fill={['#5e3514','#6f4119','#80501f','#935f28','#a86f33','#b98040'][i]}/></g>)}<path d={COOKIE_EDGE} fill="url(#ckBody)"/><path d={COOKIE_EDGE} fill="url(#ckRim)"/>
