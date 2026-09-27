@@ -1,5 +1,5 @@
 import React,{useCallback,useEffect,useLayoutEffect,useRef,useState} from 'react';
-import {getLenis} from './smoothScroll';
+import {getLenis,initAnchors} from './smoothScroll';
 import {pageY} from './perfMode';
 import './desk-hero.css';
 import {CASE_FILES,HOME_SHOWN,isParked,maximizeInto} from './CaseWindow';
@@ -167,26 +167,63 @@ function HydroFlask(){
 
 function MsuCappuccino(){
  // Cappuccino in an MSU mug on a saucer, with a latte-art heart. Click for a sip.
+ // Seen from a little above: the coffee sits below the rim (a sliver of the white inside
+ // wall shows at the back), the heart lies flat in the foam, and the lettering follows
+ // the curve of the mug.
  const [sip,setSip]=useState(0);
  return <div className={`dhCappa dh3d ${sip?'isSip':''}`} key={sip} title="Take a sip" onClick={()=>setSip(v=>v+1)}><svg className="dhSteam" viewBox="0 0 60 80" aria-hidden="true"><path d="M20 76c-9-11 9-18 0-31s4-20 4-27"/><path d="M36 76c-9-11 9-18 0-31s4-20 4-27"/></svg>
   <svg viewBox="0 0 120 104" aria-hidden="true">
-   <defs><linearGradient id="msuBody" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#0b3026"/><stop offset=".3" stopColor="#154a3c"/><stop offset=".66" stopColor="#2c7560"/><stop offset=".8" stopColor="#1c5646"/><stop offset="1" stopColor="#0c3228"/></linearGradient>
-   <linearGradient id="msuHandle" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#24664f"/><stop offset="1" stopColor="#0f3a2f"/></linearGradient>
-   <radialGradient id="msuSaucer" cx=".6" cy=".35" r=".7"><stop offset="0" stopColor="#ffffff"/><stop offset=".6" stopColor="#efece5"/><stop offset="1" stopColor="#cfcac0"/></radialGradient>
-   <radialGradient id="foam" cx=".5" cy=".5" r=".6"><stop offset="0" stopColor="#f3e6cf"/><stop offset=".7" stopColor="#dcbf92"/><stop offset="1" stopColor="#9a6a3d"/></radialGradient></defs>
+   <defs>
+    <linearGradient id="msuBody" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#07251d"/><stop offset=".22" stopColor="#123f33"/><stop offset=".58" stopColor="#2a735d"/><stop offset=".7" stopColor="#3b8a71"/><stop offset=".82" stopColor="#1b5343"/><stop offset="1" stopColor="#082a21"/></linearGradient>
+    {/* Contact shading: the glaze darkens toward the foot, where less light reaches it. */}
+    <linearGradient id="msuFoot" x1="0" y1="0" x2="0" y2="1"><stop offset=".62" stopColor="#000" stopOpacity="0"/><stop offset="1" stopColor="#000" stopOpacity=".42"/></linearGradient>
+    <linearGradient id="msuHandle" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#2c7560"/><stop offset=".5" stopColor="#17493b"/><stop offset="1" stopColor="#0b3228"/></linearGradient>
+    <radialGradient id="msuSaucer" cx=".6" cy=".35" r=".7"><stop offset="0" stopColor="#ffffff"/><stop offset=".6" stopColor="#efece5"/><stop offset="1" stopColor="#cfcac0"/></radialGradient>
+    {/* The inside wall: bright where the light falls on the far side, shaded under the near rim. */}
+    <linearGradient id="msuInside" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#fbfaf5"/><stop offset="1" stopColor="#cfcabd"/></linearGradient>
+    {/* Crema: a darker ring where the foam meets the ceramic, pale microfoam toward the middle. */}
+    <radialGradient id="msuFoam" cx=".52" cy=".45" r=".56"><stop offset="0" stopColor="#efdfc4"/><stop offset=".5" stopColor="#d9b98d"/><stop offset=".8" stopColor="#b1834f"/><stop offset=".95" stopColor="#7c512d"/><stop offset="1" stopColor="#5b3a1f"/></radialGradient>
+    <radialGradient id="msuHeart" cx=".5" cy=".4" r=".6"><stop offset="0" stopColor="#fffaf1"/><stop offset=".75" stopColor="#f6ead5"/><stop offset="1" stopColor="#e2c9a3"/></radialGradient>
+    <filter id="msuMicrofoam" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="2.2" numOctaves="2" seed="4"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 .96  0 0 0 0 .88  0 0 0 1.1 -.6"/><feComposite in2="SourceGraphic" operator="in"/></filter>
+    <filter id="msuSoft" x="-20%" y="-40%" width="140%" height="180%"><feGaussianBlur stdDeviation=".55"/></filter>
+    <clipPath id="msuMouth"><ellipse cx="56" cy="20" rx="38.2" ry="7.2"/></clipPath>
+    {/* Horizontal lines on a cylinder seen from above bow downward at the sides. */}
+    <path id="msuArc1" d="M24 49Q56 60 88 49"/><path id="msuArc2" d="M29 62Q56 71.5 83 62"/>
+   </defs>
    <ellipse cx="56" cy="93" rx="54" ry="10" fill="#bdb7ac"/><ellipse cx="56" cy="91.5" rx="54" ry="9.5" fill="url(#msuSaucer)"/><ellipse cx="56" cy="90" rx="42" ry="6.5" fill="#f4f1ea"/>
    <ellipse cx="56" cy="91" rx="33" ry="5" fill="none" stroke="#c6c1b5" strokeWidth="1.3"/>
-   <ellipse cx="50" cy="90" rx="34" ry="3.2" fill="#0e2a20" opacity=".22"/>
-   <path d="M90 34q20 2 18 20t-20 16" fill="none" stroke="url(#msuHandle)" strokeWidth="8" strokeLinecap="round"/>
-   <path d="M92 35q16 3 13.5 18" fill="none" stroke="#0a2a21" strokeOpacity=".5" strokeWidth="1.2"/>
+   {/* The mug's shadow on the saucer, tight and dark where it touches. */}
+   <ellipse cx="53" cy="90.2" rx="34" ry="3.4" fill="#0e2a20" opacity=".26" filter="url(#msuSoft)"/>
+   <ellipse cx="56" cy="89.6" rx="27" ry="1.8" fill="#081a14" opacity=".35"/>
+   <path d="M90 34q20 2 18 20t-20 16" fill="none" stroke="url(#msuHandle)" strokeWidth="8.5" strokeLinecap="round"/>
+   <path d="M92 35q16 3 13.5 18" fill="none" stroke="#06201a" strokeOpacity=".55" strokeWidth="1.3"/>
+   <path d="M99 37q9 5 7 17" fill="none" stroke="#9fd0b9" strokeOpacity=".75" strokeWidth="1.3" strokeLinecap="round"/>
    <path d="M16 20H96L91 80Q90 90 80 90H32Q22 90 21 80Z" fill="url(#msuBody)"/>
-   <path d="M99 37q9 5 7 17" fill="none" stroke="#8cc0a8" strokeOpacity=".8" strokeWidth="1.4" strokeLinecap="round"/><ellipse cx="56" cy="20" rx="40" ry="8" fill="#f0eee2"/><path d="M17 20a39 7.6 0 0 0 78 0" fill="none" stroke="#fff" strokeOpacity=".7" strokeWidth="1"/><ellipse cx="56" cy="21" rx="38" ry="7" fill="#724b2d"/>
-   <ellipse cx="56" cy="21" rx="36" ry="6.4" fill="url(#foam)"/>
-   <path d="M56 26c-6-3-9-5-9-8a4 4 0 0 1 9-1 4 4 0 0 1 9 1c0 3-3 5-9 8Z" fill="#fbf5ea" opacity=".95"/>
-   <text x="56" y="55" textAnchor="middle" fontFamily="Helvetica,Arial,sans-serif" fontWeight="800" fontSize="15" fill="#f4efe4" letterSpacing="1">MSU</text>
-   <text x="56" y="67" textAnchor="middle" fontFamily="Helvetica,Arial,sans-serif" fontSize="6.2" fill="#d9e6df" letterSpacing="1.6">SPARTANS</text>
-   <path d="M80 30L77 78" stroke="#fff" strokeOpacity=".2" strokeWidth="5" strokeLinecap="round"/><path d="M84 31L81.5 70" stroke="#fff" strokeOpacity=".45" strokeWidth="1.2" strokeLinecap="round"/>
-   <ellipse cx="56" cy="22" rx="36" ry="6.4" fill="none" stroke="#3b2413" strokeOpacity=".35" strokeWidth="1.4"/>
+   <path d="M16 20H96L91 80Q90 90 80 90H32Q22 90 21 80Z" fill="url(#msuFoot)"/>
+   <text fontFamily="Helvetica,Arial,sans-serif" fontWeight="800" fontSize="15" fill="#f4efe4" letterSpacing=".6"><textPath href="#msuArc1" startOffset="50%" textAnchor="middle">MSU</textPath></text>
+   <text fontFamily="Helvetica,Arial,sans-serif" fontWeight="600" fontSize="5.6" fill="#d9e6df" letterSpacing="1.1"><textPath href="#msuArc2" startOffset="50%" textAnchor="middle">SPARTANS</textPath></text>
+   {/* Glaze highlights: a broad soft sheen and a crisp window reflection. */}
+   <path d="M80 30L77 78" stroke="#fff" strokeOpacity=".16" strokeWidth="6" strokeLinecap="round"/><path d="M84 31L81.5 70" stroke="#fff" strokeOpacity=".5" strokeWidth="1.2" strokeLinecap="round"/>
+   <path d="M23 26L26 78" stroke="#fff" strokeOpacity=".06" strokeWidth="3" strokeLinecap="round"/>
+   {/* Rim, then the mouth: the inside wall, and the coffee sitting a little below the rim. */}
+   <ellipse cx="56" cy="20" rx="40" ry="8" fill="#f3f1e8"/>
+   <path d="M16.3 20.6a39.7 7.7 0 0 0 79.4 0" fill="none" stroke="#9a978d" strokeOpacity=".45" strokeWidth=".8"/>
+   <g clipPath="url(#msuMouth)">
+    <ellipse cx="56" cy="20" rx="38.2" ry="7.2" fill="url(#msuInside)"/>
+    <ellipse cx="56" cy="22.3" rx="37.4" ry="6.6" fill="#5b3a1f"/>
+    <ellipse cx="56" cy="22.5" rx="36.6" ry="6.3" fill="url(#msuFoam)"/>
+    <ellipse cx="56" cy="22.5" rx="36.6" ry="6.3" fill="#fff" filter="url(#msuMicrofoam)" opacity=".5"/>
+    {/* The heart lies in the foam, flattened by the viewing angle, its edge softened into the crema. */}
+    <g transform="translate(56 22.4) scale(.66 .3) translate(-56 -26)">
+     <path d="M56 41c-12-6-20-12.5-20-21a9.5 9.5 0 0 1 20-4.5 9.5 9.5 0 0 1 20 4.5c0 8.5-8 15-20 21Z" fill="#fbf1de" opacity=".55" filter="url(#msuSoft)"/>
+     <path d="M56 38.5c-10.5-5.4-17.5-11-17.5-18.4a8.3 8.3 0 0 1 17.5-3.9 8.3 8.3 0 0 1 17.5 3.9c0 7.4-7 13-17.5 18.4Z" fill="url(#msuHeart)"/>
+     <path d="M56 13v27" stroke="#c49a6a" strokeWidth="1.4" strokeOpacity=".6"/>
+    </g>
+    {/* Shade from the near rim falling across the front of the foam. */}
+    <ellipse cx="56" cy="31" rx="40" ry="4" fill="#2a180a" opacity=".16" filter="url(#msuSoft)"/>
+    <ellipse cx="68" cy="19.8" rx="7" ry="1.2" fill="#fff" opacity=".35" filter="url(#msuSoft)"/>
+   </g>
+   <path d="M17 20a39 7.6 0 0 1 78 0" fill="none" stroke="#fff" strokeOpacity=".85" strokeWidth=".9"/>
   </svg>
  </div>
 }
@@ -388,6 +425,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
  useLayoutEffect(()=>{
   const stage=stageRef.current,track=trackRef.current;if(!stage||!track)return;
   const lenis=isStatic?null:getLenis();
+  initAnchors();
   let raf=0,lastKey='',warmed=false,toastAt=0,toastGone=false,toastTimer=0;
   // The camera follows the scroll position exactly; Lenis (smoothScroll.ts) does the smoothing.
   let shown=-1,lastT=0,snap=true;
@@ -532,26 +570,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
   document.addEventListener('keydown',onKey);
   return()=>document.removeEventListener('keydown',onKey);
  },[isStatic]);
- // Links to the work fly through the walk-in in ~1.1s instead of the browser's slow smooth scroll.
- useEffect(()=>{
-  if(isStatic)return;
-  let raf=0;
-  const fly=(to:number)=>{
-   cancelAnimationFrame(raf);
-   const from=window.scrollY,d=to-from,t0=performance.now(),dur=Math.min(1100,300+Math.abs(d)*.18);
-   const step=(now:number)=>{const k=cl((now-t0)/dur);window.scrollTo({top:from+d*io(k),behavior:'instant' as ScrollBehavior});if(k<1)raf=requestAnimationFrame(step)};
-   raf=requestAnimationFrame(step);
-  };
-  const onClick=(e:MouseEvent)=>{
-   const a=(e.target as HTMLElement).closest?.('a[href="#projects"]');const t=trackRef.current;
-   if(!a||!t||e.metaKey||e.ctrlKey)return;
-   e.preventDefault();history.replaceState(null,'','#projects');
-   fly(t.offsetTop+(t.offsetHeight-window.innerHeight)*.93);
-  };
-  const stop=()=>cancelAnimationFrame(raf);
-  document.addEventListener('click',onClick);window.addEventListener('wheel',stop,{passive:true});window.addEventListener('touchstart',stop,{passive:true});
-  return()=>{cancelAnimationFrame(raf);document.removeEventListener('click',onClick);window.removeEventListener('wheel',stop);window.removeEventListener('touchstart',stop)};
- },[isStatic]);
+ // Links to the work (#projects, the anchor near the end of the walk-in) glide through Lenis; see initAnchors.
  const scrub=(e:React.MouseEvent<HTMLDivElement>)=>{const r=e.currentTarget.getBoundingClientRect();jumpTo(cl((e.clientX-r.left)/r.width))};
  const open=(id:string)=>(e:React.MouseEvent<HTMLElement>)=>{e.preventDefault();maximizeInto(e.currentTarget.closest('.dhWin')||e.currentTarget,id,()=>openCase(id))};
  const day=clock.toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'}),time=clock.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
