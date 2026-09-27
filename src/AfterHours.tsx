@@ -372,31 +372,45 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
  };
  /* One device per gesture, the way scroll-snapping product pages do it: while the tour is
     pinned, GSAP's Observer swallows wheel, trackpad and touch input and turns each gesture
-    into a single next/previous, and Lenis glides the page to that stop. Momentum that
-    arrives mid-glide (or just after) is ignored. Past either end, normal scrolling resumes. */
+    into a single next/previous, and Lenis glides the page to that stop. A trackpad keeps
+    sending decaying momentum after the fingers lift; that tail is ignored, but a new swipe
+    (a jump in speed, or input after a short gap) is taken at once, even mid-tail. Past
+    either end, normal scrolling resumes. */
  useEffect(()=>{
   if(isStatic)return;
   const track=trackRef.current;if(!track)return;
   const lenis=getLenis();
-  let cur=0,busy=false,lastInput=0,unlock=0;
+  let cur=0,busy=false,lastInput=0,prevD=0,armed=false,decaying=false,queuedDir=0;
   const nearest=()=>{let best=0,d=Infinity;for(let i=0;i<stops;i++){const dd=Math.abs(stopY(i)-window.scrollY);if(dd<d){d=dd;best=i}}return best};
-  const settle=()=>{window.clearTimeout(unlock);unlock=window.setTimeout(()=>{if(performance.now()-lastInput<350)settle();else busy=false},120)};
-  const glide=(y:number,then?:()=>void)=>{busy=true;glideTo(y,{duration:1.1,onComplete:()=>{then?.();settle()}})};
+  // A swipe made during a glide is queued (one at most) and runs as soon as it lands.
+  const glide=(y:number)=>{busy=true;glideTo(y,{duration:.8,onComplete:()=>{busy=false;if(queuedDir&&performance.now()-lastInput<400){const d=queuedDir;queuedDir=0;armed=false;step(d)}queuedDir=0}})};
   const leave=(y:number)=>{obs.disable();lenis?.start();glideTo(y,{duration:1})};
   const go=(i:number)=>{
    if(i<0){leave(track.getBoundingClientRect().top+window.scrollY-window.innerHeight*.6);return}
    if(i>=stops){const about=document.getElementById('about');leave(about?about.getBoundingClientRect().top+window.scrollY:stopY(stops-1)+window.innerHeight);return}
    cur=i;glide(stopY(i));
   };
-  const step=(dir:number)=>{lastInput=performance.now();if(busy||isParked(track))return;go(cur+dir)};
+  const step=(dir:number)=>{if(busy||isParked(track))return;go(cur+dir)};
+  // Is this input a new gesture, or the tail of the last one? Momentum only ever slows down.
+  const onInput=(dy:number)=>{
+   const now=performance.now(),d=Math.abs(dy),gap=now-lastInput;
+   // A speed jump only means a new swipe once the last one has started slowing down.
+   if(gap>160||decaying&&d>prevD*1.6+4){armed=true;decaying=false}
+   else if(d<prevD*.95)decaying=true;
+   prevD=d;lastInput=now;
+   if(!armed||d<3)return;
+   armed=false;
+   if(busy){queuedDir=dy<0?1:-1;return}
+   step(dy<0?1:-1);
+  };
   const obs=Observer.create({
    target:window,type:'wheel,touch',wheelSpeed:-1,tolerance:12,preventDefault:true,
    ignore:'.ahPop,input,textarea,select,[contenteditable]',
-   onChange:()=>{lastInput=performance.now()},
-   onUp:()=>step(1),onDown:()=>step(-1),
+   onChange:self=>onInput(self.deltaY),
   });
   obs.disable();
-  const enter=(fromBelow:boolean)=>{lenis?.stop();obs.enable();cur=fromBelow?stops-1:nearest();glide(stopY(cur))};
+  // The swipe that carried you in is already in flight: treat what's left of it as tail.
+  const enter=(fromBelow:boolean)=>{armed=false;decaying=false;queuedDir=0;prevD=Infinity;lastInput=performance.now();lenis?.stop();obs.enable();cur=fromBelow?stops-1:nearest();glide(stopY(cur))};
   const exit=()=>{obs.disable();lenis?.start()};
   const st=ScrollTrigger.create({trigger:track,start:'top top',end:'bottom bottom',
    onEnter:()=>enter(false),onEnterBack:()=>enter(true),onLeave:exit,onLeaveBack:exit});
@@ -409,7 +423,7 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
   document.addEventListener('keydown',onKey);
   // Sections below the hero mount late; keep the trigger's start and end current.
   const ro=new ResizeObserver(()=>ScrollTrigger.refresh());ro.observe(document.body);
-  return()=>{ro.disconnect();document.removeEventListener('keydown',onKey);window.clearTimeout(unlock);obs.kill();st.kill();lenis?.start();tourRef.current=null};
+  return()=>{ro.disconnect();document.removeEventListener('keydown',onKey);obs.kill();st.kill();lenis?.start();tourRef.current=null};
  },[isStatic]);
  // The list is a quick pop-up over the tour, not a second copy of it under the desk.
  useEffect(()=>{
