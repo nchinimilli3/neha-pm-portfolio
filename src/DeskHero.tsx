@@ -1,5 +1,6 @@
 import React,{useCallback,useEffect,useLayoutEffect,useRef,useState} from 'react';
 import {getLenis} from './smoothScroll';
+import {pageY} from './perfMode';
 import './desk-hero.css';
 import {CASE_FILES,HOME_SHOWN,isParked,maximizeInto} from './CaseWindow';
 import {ShelbyMark} from './CarArt';
@@ -386,11 +387,11 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
  // raw, unscaled room flashes on load while the rest of the page mounts).
  useLayoutEffect(()=>{
   const stage=stageRef.current,track=trackRef.current;if(!stage||!track)return;
-  if(!isStatic)getLenis();
+  const lenis=isStatic?null:getLenis();
   let raf=0,lastKey='',warmed=false,toastAt=0,toastGone=false,toastTimer=0;
   // The camera follows the scroll position exactly; Lenis (smoothScroll.ts) does the smoothing.
   let shown=-1,lastT=0,snap=true;
-  let SH=262,SY=334,CX0=740,HELLO_DY=0;
+  let SH=262,SY=334,CX0=740,HELLO_DY=0,TRACK_TOP=0,TRACK_H=1;
   const measure=()=>{
    const vw=window.innerWidth,vh=window.innerHeight;
    SH=isStatic?262:Math.max(220,Math.min(285,SW*vh/vw));SY=SCREEN_BOTTOM-SH;
@@ -402,6 +403,8 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
    // How far the hello note drops so it shrinks into the middle of the dock (it scales from its bottom edge).
    const hello=helloRef.current,dock=dockRef.current;
    if(hello&&dock)HELLO_DY=dock.offsetTop+dock.offsetHeight/2-(hello.offsetTop+hello.offsetHeight)+hello.offsetHeight*.06/2;
+   // Where the track sits on the page: measured here, not read back on every frame.
+   TRACK_TOP=track.getBoundingClientRect().top+window.scrollY;TRACK_H=track.offsetHeight;
    lastKey='';
   };
   const setOsLive=(v:boolean)=>document.documentElement.classList.toggle('deskOsLive',v);
@@ -419,7 +422,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
    // Parked under an open case: the case page is what's scrolling.
    if(isParked(track)){snap=true;return}
    const vw=window.innerWidth,vh=window.innerHeight;
-   const r=track.getBoundingClientRect(),total=track.offsetHeight-vh;
+   const top=TRACK_TOP-pageY(),r={top,bottom:top+TRACK_H},total=TRACK_H-vh;
    const away=r.bottom<-50||r.top>vh+50;
    if(progRef.current&&away){progRef.current.style.opacity='0';progRef.current.style.visibility='hidden'}
    // Offscreen, the room's water, fog and steam stop drawing.
@@ -476,11 +479,14 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
   // Back from a case: draw now, so the closing transition shrinks into the window where it sits.
   const onShown=()=>{measure();snap=true;update()};
   const toastEl=toastRef.current;
-  window.addEventListener('resize',onResize);window.addEventListener('scroll',request,{passive:true});window.addEventListener(HOME_SHOWN,onShown);toastEl?.addEventListener('mouseleave',request);
+  window.addEventListener('resize',onResize);window.addEventListener('scroll',request,{passive:true});window.addEventListener(HOME_SHOWN,onShown);
+  // With Lenis, draw in the same frame it moves the page (a scroll event would arrive a frame later).
+  const offLenis=lenis?.on('scroll',()=>{cancelAnimationFrame(raf);raf=0;update()});
+ toastEl?.addEventListener('mouseleave',request);
   // Draw the first frame now, not on the next animation frame, so a view
   // transition back to the desktop snapshots the windows in place.
   update();
-  return()=>{cancelAnimationFrame(raf);window.clearTimeout(toastTimer);window.removeEventListener('resize',onResize);window.removeEventListener('scroll',request);window.removeEventListener(HOME_SHOWN,onShown);toastEl?.removeEventListener('mouseleave',request);track.classList.remove('isAway','osCovers');setOsLive(false)};
+  return()=>{offLenis?.();cancelAnimationFrame(raf);window.clearTimeout(toastTimer);window.removeEventListener('resize',onResize);window.removeEventListener('scroll',request);window.removeEventListener(HOME_SHOWN,onShown);toastEl?.removeEventListener('mouseleave',request);track.classList.remove('isAway','osCovers');setOsLive(false)};
  },[isStatic]);
 
  // Windows drag by their title bar, like the real thing.

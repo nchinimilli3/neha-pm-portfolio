@@ -19,6 +19,9 @@ export function getLenis(){
  return lenis;
 }
 
+// The running instance, if any, without starting one.
+export const currentLenis=()=>lenis;
+
 /* Scroll to a y position through Lenis when it's running (even while it's stopped for a
    pinned scene), else natively. */
 export function glideTo(y:number,{duration=1,onComplete}:{duration?:number;onComplete?:()=>void}={}){

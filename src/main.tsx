@@ -54,6 +54,8 @@ import './case-system.css';
 import './responsive-v44.css';
 import './experience-theme.css';
 import './simple-view.css';
+// Last, so its light-scene overrides sit at the end of the cascade.
+import { startPerfMode } from './perfMode';
 
 export const assetUrl=src=>{
   if(/^https?:\/\//.test(src))return src;
@@ -457,6 +459,8 @@ function SimpleHome({openCase,onChangeView}:{openCase:(id:string)=>void,onChange
 // View preference: ?view=simple|full (a link Neha can send) beats the saved choice.
 const VIEW_KEY='neha-view-mode';
 const initialSimple=()=>{const q=new URLSearchParams(window.location.search).get('view');if(q==='simple'||q==='full')return q==='simple';try{return localStorage.getItem(VIEW_KEY)==='simple'}catch{return false}};
+
+startPerfMode();
 
 // Case study pages (and their CSS) are a separate chunk: see CaseStudy.tsx.
 type CaseProps={id:string;onBack:()=>void};

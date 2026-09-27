@@ -1,0 +1,24 @@
+/* Smoothness on slow machines (see perfMode.ts). */
+
+/* Everyone: while the page moves, the rooms' ambient loops (steam, water, fog, screen
+   flicker) hold still, so the scene isn't repainted under a moving camera. They resume
+   the moment scrolling stops, too soon to notice they paused. */
+html.isScrolling .dhStage *,html.isScrolling .ahStage *{animation-play-state:paused!important}
+
+/* Light scene, for devices that drop frames: each costly effect is swapped for a cheap
+   look-alike. Blend modes become plain translucent layers, animated blurs go, and the
+   frosted glass becomes solid glass. The room reads the same; it just costs a fraction
+   to draw. */
+html.lowFx .dhSunPatch,html.lowFx .dhDaylight{mix-blend-mode:normal;opacity:calc(var(--sunOp) * .7)}
+html.lowFx .dhGlow{mix-blend-mode:normal;opacity:calc(var(--glowOp) * .6)}
+html.lowFx .dhLampPool{mix-blend-mode:normal}
+html.lowFx .lampOn .dhLampPool{opacity:.6}
+/* Multiply darkens; a plain layer of the same colour would haze instead, so it gets a deeper mix. */
+html.lowFx .dhShade{mix-blend-mode:normal;background:color-mix(in srgb,var(--shadeC) 35%,#04050b);opacity:calc(var(--shadeOp) * .75)}
+html.lowFx .dhWall::after{display:none}
+html.lowFx .dhSteam path{filter:none}
+html.lowFx :is(.dhMenuBar,.dhToast,.dhDock,.sfHint){-webkit-backdrop-filter:none;backdrop-filter:none}
+html.lowFx .dhMenuBar{background:rgba(246,242,236,.88)}
+html.lowFx .dhToast{background:rgba(246,242,236,.94)}
+html.lowFx .dhDock{background:rgba(246,242,236,.8)}
+html.lowFx .sfHint{background:rgba(20,20,30,.55)}

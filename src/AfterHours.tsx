@@ -4,6 +4,8 @@ import SpartanGame from './SpartanGame';
 import StableFluids from './StableFluids';
 import './after-hours.css';
 import {HOME_SHOWN,isParked} from './CaseWindow';
+import {pageY} from './perfMode';
+import {currentLenis} from './smoothScroll';
 
 /* "After hours": the same desk as the hero, now at night and seen from straight above.
    The desk light warms as the section arrives; scrolling moves the camera from device to device. */
@@ -315,10 +317,15 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
    stage.style.willChange='auto';
    if(pendingActive!==activeRef.current){activeRef.current=pendingActive;setActive(pendingActive)}
   };
+  let dirty=true,TRACK_TOP=0,TRACK_H=1;
+  const pageResize=new ResizeObserver(()=>{dirty=true});pageResize.observe(document.body);
   const update=()=>{
    raf=0;
    if(isParked(track)){window.clearTimeout(idleTimer);return}
-   const vw=window.innerWidth,vh=window.innerHeight,r=track.getBoundingClientRect(),total=track.offsetHeight-vh;
+   // The track's place on the page is measured only when the page's height changes
+   // (an Experience role opening, a resize), never read back on every frame.
+   if(dirty){dirty=false;TRACK_TOP=track.getBoundingClientRect().top+window.scrollY;TRACK_H=track.offsetHeight}
+   const vw=window.innerWidth,vh=window.innerHeight,rt=TRACK_TOP-pageY(),r={top:rt,bottom:rt+TRACK_H},total=TRACK_H-vh;
    // Frame the desk once while it is still offscreen, so its first visible
    // frame already has the correct camera position.
    if(cameraReady&&(r.bottom<-50||r.top>vh+50)){window.clearTimeout(idleTimer);return}
@@ -345,9 +352,11 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
    idleTimer=window.setTimeout(settle,160);
   };
   const onScroll=()=>{if(!raf)raf=requestAnimationFrame(update)};
-  const redraw=()=>{cancelAnimationFrame(raf);raf=0;update()};
+  const redraw=()=>{cancelAnimationFrame(raf);raf=0;dirty=true;update()};
+  // With Lenis, draw in the same frame it moves the page.
+  const offLenis=currentLenis()?.on('scroll',()=>{cancelAnimationFrame(raf);raf=0;update()});
   update();window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',redraw);window.addEventListener(HOME_SHOWN,redraw);
-  return()=>{window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',redraw);window.removeEventListener(HOME_SHOWN,redraw);cancelAnimationFrame(raf);window.clearTimeout(idleTimer)};
+  return()=>{offLenis?.();pageResize.disconnect();window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',redraw);window.removeEventListener(HOME_SHOWN,redraw);cancelAnimationFrame(raf);window.clearTimeout(idleTimer)};
  },[isStatic]);
 
  // Where each stop holds: the middle of its hold, as a page y.
