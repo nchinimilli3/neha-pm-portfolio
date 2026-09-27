@@ -2,6 +2,7 @@ import React,{useCallback,useEffect,useLayoutEffect,useRef,useState} from 'react
 import {getLenis,initAnchors} from './smoothScroll';
 import {pageY} from './perfMode';
 import './desk-hero.css';
+import {createPortal} from 'react-dom';
 import WatercolorPaper,{watercolorName} from './WatercolorPaper';
 import {Candle,DoodlePad,SnowGlobe,TumblerFlask} from './DeskProps';
 import './desk-materials.css';
@@ -312,7 +313,17 @@ function CookieNapkin(){
  const gone=bites>=COOKIE_BITES;
  const cut=biteCircles(bites);
  const last=bites>0&&!gone?BITES[bites-1]:null;
- return <button type="button" className={`dhCookie ${gone?'isGone':''}`} onClick={bite} aria-label={gone?'All gone':'Take a bite of the cookie'} title={gone?'All gone… one more coming':'Take a bite'}>
+ // The cookie is drawn upright in the room, not painted onto the tilted desk plane, so it
+ // keeps its thickness in every browser. It sits over the napkin's measured centre.
+ const napkin=useRef<HTMLButtonElement>(null);
+ const [spot,setSpot]=useState<{x:number;y:number;stage:HTMLElement}|null>(null);
+ useLayoutEffect(()=>{
+  const place=()=>{const n=napkin.current,st=n?.closest<HTMLElement>('.dhStage');if(!n||!st)return;
+   const r=n.getBoundingClientRect(),sr=st.getBoundingClientRect(),k=sr.width/st.offsetWidth;
+   setSpot({x:(r.left+r.width*.52-sr.left)/k,y:(r.top+r.height*.62-sr.top)/k,stage:st})};
+  place();window.addEventListener('resize',place);return()=>window.removeEventListener('resize',place);
+ },[]);
+ return <><button ref={napkin} type="button" className={`dhCookie ${gone?'isGone':''}`} onClick={bite} aria-label={gone?'All gone':'Take a bite of the cookie'} title={gone?'All gone… one more coming':'Take a bite'}>
   <svg viewBox="0 0 150 130" aria-hidden="true">
   <defs>
    <radialGradient id="ckBody" cx=".42" cy=".38" r=".66"><stop offset="0" stopColor="#ecc991"/><stop offset=".45" stopColor="#dcae6c"/><stop offset=".78" stopColor="#c48a48"/><stop offset=".94" stopColor="#a86c33"/><stop offset="1" stopColor="#8a5424"/></radialGradient>
@@ -337,8 +348,9 @@ function CookieNapkin(){
    {last&&<g key={`crumbs${chomp}`} className="ckCrumbs">{[0,1,2,3].map(i=>{const a=last[0]*Math.PI/180,x=50+Math.cos(a)*50+(i-1.5)*5,y=50+Math.sin(a)*50+(i%2)*4;return <ellipse key={i} cx={x} cy={y} rx={1.4+i%2} ry={1+i%2*.6} fill="#c48c50" style={{'--dx':`${Math.cos(a)*6+(i-1.5)*2}px`,'--dy':`${Math.sin(a)*6+3}px`} as React.CSSProperties}/>})}</g>}
   </g>
   </svg>
+ </button>
   {/* Upright, facing the viewer: a domed top seen at an angle over its thick baked side. */}
-  <svg className="ckUp" viewBox="0 0 150 72" aria-hidden="true">
+  {spot&&createPortal(<svg className="ckUp" viewBox="0 0 150 72" aria-hidden="true" onClick={bite} style={{left:spot.x-75,top:spot.y-50}}>
    <g transform="translate(25 4) scale(1 .52)">
    <g key={chomp} className="ckWhole" mask="url(#ckBite)">
     {/* The cookie's thickness: its baked side, darker toward the base, seen along the front edge. */}{[22,18,14,10,6,3].map((d,i)=><path key={d} d={COOKIE_EDGE} transform={`translate(0 ${d})`} fill={['#5e3514','#6f4119','#80501f','#935f28','#a86f33','#b98040'][i]}/>)}<path d={COOKIE_EDGE} fill="url(#ckBody)"/><path d={COOKIE_EDGE} fill="url(#ckRim)"/>
@@ -357,8 +369,7 @@ function CookieNapkin(){
     </g>
    </g>
    </g>
-  </svg>
- </button>
+  </svg>,spot.stage)}</>
 }
 
 function WatercolorTin(){
