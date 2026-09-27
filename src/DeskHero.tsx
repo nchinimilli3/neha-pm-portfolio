@@ -172,8 +172,20 @@ function MsuCappuccino(){
  // bubbles and gentle mottling; a soft heart (lobes away, point toward you) with a pale
  // halo; a satin glaze darker at the sides and foot with a warm bounce from the saucer.
  const [sip,setSip]=useState(0);
+ const [drinking,setDrinking]=useState(false);
+ useEffect(()=>{
+  if(!drinking)return;
+  const lower=window.setTimeout(()=>setSip(v=>Math.min(5,v+1)),420);
+  const settle=window.setTimeout(()=>setDrinking(false),1200);
+  return ()=>{window.clearTimeout(lower);window.clearTimeout(settle)};
+ },[drinking]);
+ useEffect(()=>{
+  if(sip!==5)return;
+  const refill=window.setTimeout(()=>setSip(0),1800);
+  return ()=>window.clearTimeout(refill);
+ },[sip]);
  const heart='M0 14C-10 8-18 1-18-6C-18-12-13.5-16-9-16C-4.5-16-1.5-13 0-10C1.5-13 4.5-16 9-16C13.5-16 18-12 18-6C18 1 10 8 0 14Z';
- return <div className={`dhCappa dh3d ${sip?'isSip':''}`} key={sip} title="Take a sip" onClick={()=>setSip(v=>v+1)}><svg className="dhSteam" viewBox="0 0 60 80" aria-hidden="true"><path d="M20 76c-9-11 9-18 0-31s4-20 4-27"/><path d="M36 76c-9-11 9-18 0-31s4-20 4-27"/></svg>
+ return <button type="button" tabIndex={-1} className={`dhCappa dh3d ${drinking?'isSip':''}`} title={sip===5?'Refilling…':'Take a sip'} aria-label={sip===5?'Empty cup, refilling':`Take a sip of coffee, ${100-sip*20}% remaining`} aria-disabled={drinking||sip===5} onClick={()=>{if(!drinking&&sip<5)setDrinking(true)}} style={{'--coffee-steam':sip===5?0:1-sip*.14} as React.CSSProperties}><svg className="dhSteam" viewBox="0 0 60 80" aria-hidden="true"><path d="M19 78C8 64 30 57 20 43S12 22 24 5"/><path d="M32 79C46 65 22 55 34 39S44 20 32 0"/><path d="M42 78C32 67 49 56 42 46S36 28 47 15"/></svg>
   <svg viewBox="0 0 120 104" aria-hidden="true">
    <defs>
     {/* Glaze: a cylinder lit from the front left, satin rather than glossy. */}
@@ -233,6 +245,8 @@ function MsuCappuccino(){
    <ellipse cx="56" cy="18" rx="40" ry="11" fill="url(#msuLip)"/>
    <g clipPath="url(#msuMouth)">
     <ellipse cx="56" cy="18" rx="37.2" ry="10.1" fill="url(#msuWall)"/>
+    <ellipse cx="56" cy="24" rx="30" ry="7" fill="#9b886c" opacity=".4"/>
+    <g className="dhCoffeeLevel" style={{transform:`translateY(${sip*3.7}px)`,opacity:sip===5?0:1}}>
     <ellipse cx="56" cy="20.2" rx="36.3" ry="9.6" fill="#3b2210"/>
     <g clipPath="url(#msuLiquid)">
      <ellipse cx="56" cy="20.4" rx="35.4" ry="9.1" fill="url(#msuCrema)"/>
@@ -248,6 +262,7 @@ function MsuCappuccino(){
      {/* A soft sheen on the far side of the surface. */}
      <ellipse cx="44" cy="15.6" rx="11" ry="1.6" fill="#fff" opacity=".22" filter="url(#msuSoft)"/>
     </g>
+    </g>
     {/* The near wall hides the front edge of the coffee in a little shade. */}
     <ellipse cx="56" cy="30.2" rx="38" ry="4" fill="#2a1a0c" opacity=".25" filter="url(#msuSoft)"/>
    </g>
@@ -256,7 +271,7 @@ function MsuCappuccino(){
    <path d="M16.2 18.6A39.8 10.8 0 0 0 95.8 18.6" fill="none" stroke="#8d887c" strokeOpacity=".5" strokeWidth=".7"/>
    <ellipse cx="85" cy="25.6" rx="3.2" ry="1" fill="#fff" opacity=".8" transform="rotate(-24 85 25.6)"/>
   </svg>
- </div>
+ </button>
 }
 
 function Lamp({on,onToggle}:{on:boolean;onToggle:()=>void}){
@@ -350,8 +365,17 @@ function CookieNapkin(){
 
 function WatercolorTin(){
  // Top-down: a travel watercolor tin, lid open as a mixing tray, twelve used half-pans, and a round brush.
+ const [wash,setWash]=useState(0);
+ const [painting,setPainting]=useState(false);
+ useEffect(()=>{
+  if(!painting)return;
+  const clear=window.setTimeout(()=>setPainting(false),3300);
+  return ()=>window.clearTimeout(clear);
+ },[wash,painting]);
  const pans=['#e2b33a','#e07b2e','#c9352c','#b0304f','#7a3c8c','#2d4f9e','#2f86b8','#2a8f78','#4f8a3a','#9a7b2e','#7a4a2a','#2b2b2e'];
- return <div className="dhPaints"><svg viewBox="0 0 240 130" aria-hidden="true">
+ return <button type="button" tabIndex={-1} className="dhPaints" title="Paint a little watercolor" aria-label="Paint with the watercolor tin and brush" onClick={()=>{setWash(v=>v+1);setPainting(true)}}>
+ {painting&&<svg key={wash} className="dhWatercolorBloom" viewBox="0 0 300 200" aria-hidden="true"><defs><filter id="wcBloomEdge" x="-25%" y="-25%" width="150%" height="150%"><feTurbulence type="fractalNoise" baseFrequency=".055" numOctaves="3" seed={wash%7}/><feDisplacementMap in="SourceGraphic" scale="12"/><feGaussianBlur stdDeviation=".5"/></filter></defs><g filter="url(#wcBloomEdge)">{[0,1,2,3,4].map((n)=><ellipse key={n} className="dhPigment" cx={65+n*40} cy={85+(n%2)*28} rx={37+n%3*5} ry={27+n%2*10} fill={pans[(wash+n*2)%pans.length]} style={{animationDelay:`${n*100}ms`}}/>)}<path className="dhPaintStroke" d="M32 125Q95 38 144 99T270 80" fill="none" stroke={pans[wash%pans.length]} strokeWidth="15" strokeLinecap="round" pathLength="1"/></g></svg>}
+ <svg viewBox="0 0 240 130" aria-hidden="true">
   <defs><linearGradient id="wcTin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#3a3a3e"/><stop offset="1" stopColor="#1f1f22"/></linearGradient></defs>
   <rect x="4" y="10" width="112" height="112" rx="6" fill="#eeeae2" stroke="#c9c3b7"/>
   {[[26,36,'#2f86b8'],[64,40,'#c9352c'],[40,82,'#e2b33a'],[84,84,'#2a8f78']].map(([x,y,c],i)=><g key={i}><circle cx={x} cy={y} r="16" fill="#fff" stroke="#ddd6c9"/><circle cx={Number(x)+2} cy={Number(y)+1} r="10" fill={c as string} opacity=".28"/><circle cx={Number(x)-3} cy={Number(y)+3} r="5" fill={c as string} opacity=".35"/></g>)}
@@ -361,7 +385,7 @@ function WatercolorTin(){
   {[28,88].map(y=><g key={y}><rect x="113" y={y} width="10" height="14" rx="2" fill="#b6b5b0" stroke="#72746f" strokeWidth=".6"/><path d={`M118 ${y}v14`} stroke="#f2f0e6"/></g>)}
   <rect x="120" y="10" width="116" height="112" rx="6" fill="url(#wcTin)"/>
   {pans.map((c,i)=>{const col=i%6,row=Math.floor(i/6),x=126+col*18.3,y=20+row*50;return <g key={c}><rect x={x} y={y} width="15" height="40" rx="2.5" fill="#f4f1ea"/><rect x={x+1.5} y={y+1.5} width="12" height="37" rx="2" fill={c}/><ellipse cx={x+7.5} cy={y+14+(i%3)*5} rx="4.5" ry="7" fill="#fff" opacity=".22"/><path d={`M${x+3} ${y+28}q4 -4 9 0`} stroke="#000" strokeOpacity=".18" fill="none"/></g>})}
-  <g transform="rotate(-24 150 70)">
+  <g key={wash} className={wash?"dhActiveBrush":undefined} transform="rotate(-24 150 70)">
    <rect x="60" y="66" width="150" height="5" rx="2.5" fill="#b0452f"/>
    <path d="M66 67h140" stroke="#f1b394" strokeOpacity=".5" strokeWidth=".8"/>
    <rect x="210" y="65.5" width="16" height="6" rx="1" fill="#c9c5bd"/>
@@ -369,7 +393,7 @@ function WatercolorTin(){
    <path d="M226 65.5q14 1.5 20 3.5q-6 2 -20 3.5Z" fill="#2a1a12"/>
    <path d="M238 67.8q6 .8 8 1.2q-2 .6 -8 1.2Z" fill="#2d4f9e"/>
   </g>
- </svg></div>
+ </svg></button>
 }
 
 function DeskKeyboard(){

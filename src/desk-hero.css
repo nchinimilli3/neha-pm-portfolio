@@ -527,3 +527,22 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 .dhBridge{filter:drop-shadow(1px 1px 0 #522c2433)}
 .dhPaints svg>rect{stroke-width:1.2}
 .dhDeskEdge{height:3px;background:linear-gradient(rgba(60,36,16,.35),transparent)}
+
+/* Little desk rituals: translucent pigment and a cup that actually empties. */
+button.dhCappa,button.dhPaints{padding:0;border:0;background:none;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button.dhCappa:focus-visible,button.dhPaints:focus-visible{outline:2px solid #e2b33a;outline-offset:7px;border-radius:8px}
+.dhCoffeeLevel{transition:transform .75s ease-in-out,opacity .65s ease}
+.dhCappa .dhSteam{opacity:var(--coffee-steam,1);transition:opacity .7s;pointer-events:none}
+.dhCappa .dhSteam path{stroke:#fff8eb;stroke-width:2.4;filter:blur(2.4px);animation:dhSteamWisp 5.8s ease-in-out infinite;transform-origin:50% 100%}
+.dhCappa .dhSteam path:nth-child(2){stroke-width:4;animation-delay:-2.6s;animation-duration:6.8s;filter:blur(3.4px)}
+.dhCappa .dhSteam path:nth-child(3){stroke-width:1.5;animation-delay:-4s;animation-duration:5.2s}
+@keyframes dhSteamWisp{0%{opacity:0;transform:translate(0,9px) scale(.8,.7)}30%{opacity:.35}65%{opacity:.2}100%{opacity:0;transform:translate(9px,-22px) scale(1.3,1.12)}}
+.dhPaints .dhWatercolorBloom{position:absolute;width:320px;height:210px;left:-68px;top:-62px;pointer-events:none;mix-blend-mode:multiply;animation:dhWashFade 3.2s ease-out both}
+.dhPigment{transform-box:fill-box;transform-origin:center;animation:dhPigmentSpread 2.8s ease-out both}
+.dhPaintStroke{stroke-dasharray:1;stroke-dashoffset:1;opacity:.4;animation:dhPaintDraw 1s ease-out forwards}
+.dhActiveBrush{transform-box:fill-box;transform-origin:90% 50%;animation:dhBrushDab .85s ease-in-out}
+@keyframes dhPigmentSpread{0%{opacity:0;transform:scale(.12)}22%{opacity:.48}65%{opacity:.3;transform:scale(1)}100%{opacity:0;transform:scale(1.14)}}
+@keyframes dhPaintDraw{to{stroke-dashoffset:0}}
+@keyframes dhWashFade{0%,75%{opacity:1}100%{opacity:0}}
+@keyframes dhBrushDab{40%{transform:translate(-8px,-9px) rotate(-32deg)}75%{transform:translate(4px,-3px) rotate(-18deg)}}
+@media(prefers-reduced-motion:reduce){.dhCoffeeLevel,.dhCappa .dhSteam{transition:none}.dhCappa .dhSteam path,.dhActiveBrush{animation:none}.dhPaints .dhWatercolorBloom{animation:none}.dhPigment{animation:none;opacity:.25}.dhPaintStroke{animation:none;stroke-dashoffset:0}}
