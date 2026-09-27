@@ -522,14 +522,17 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
   // The camera follows the scroll position exactly; Lenis (smoothScroll.ts) does the smoothing.
   let shown=-1,lastT=0,snap=true;
   let promotedAt=0,restTimer=0;
-  let SH=262,SY=334,CX0=740,HELLO_DY=0,TRACK_TOP=0,TRACK_H=1;
+  let SH=262,SY=334,CX0=740,START_SCALE=1,HELLO_DY=0,TRACK_TOP=0,TRACK_H=1;
   const measure=()=>{
    const vw=window.innerWidth,vh=window.innerHeight;
    SH=isStatic?262:Math.max(220,Math.min(285,SW*vh/vw));SY=SCREEN_BOTTOM-SH;
    stage.style.setProperty('--sh',`${SH}px`);stage.style.setProperty('--sy',`${SY}px`);
    // Slide the room right until the photo frame (the leftmost object, x≈456) clears the copy.
-   const copy=copyRef.current,s0=Math.max(vw/1600,vh/1000)*ROOM_ZOOM;
+   const copy=copyRef.current;
    const copyRight=copy?copy.offsetLeft+copy.offsetWidth:vw*.4;
+   // Leave the camera at the far right inside the opening view on narrower laptops.
+   const s0=Math.min(Math.max(vw/1600,vh/1000)*ROOM_ZOOM,Math.max(.35,(vw-copyRight-44)/1000));
+   START_SCALE=s0;
    CX0=Math.min(vw/vh>1.9?800:760,450-(copyRight+28-vw/2)/s0);
    // How far the hello note drops so it shrinks into the middle of the dock (it scales from its bottom edge).
    const hello=helloRef.current,dock=dockRef.current;
@@ -571,7 +574,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
    const key=`${toastGone?1:0}|${p.toFixed(4)}|${vw}x${vh}`;if(key===lastKey)return;lastKey=key;
 
    // Camera: the visible part of the room shrinks from the whole set to exactly the screen.
-   const s0=Math.max(vw/1600,vh/1000)*ROOM_ZOOM,s1=Math.max(vw/SW,vh/SH);
+   const s0=START_SCALE,s1=Math.max(vw/SW,vh/SH);
    const e=io(cl((p-.07)/.35));
    const s=s0*Math.pow(s1/s0,e);
    const k=(1/s0-1/s)/(1/s0-1/s1||1);

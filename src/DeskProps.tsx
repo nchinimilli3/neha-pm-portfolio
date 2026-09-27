@@ -5,14 +5,11 @@ import './desk-props.css';
    lit like the rest of the room: light from the front left, soft contact shadows, and
    tops seen from a little above so they read as solid objects. */
 
-/* The Accenture tumbler, measured off a product photo of a 40oz Quencher: a stocky body
-   (width 0.44 of its height) that tapers a touch, steps in at 60% to a base 0.62 as wide,
-   a lid slightly wider than the body, a thin steel band, a tall straw a little left of
-   centre, and a thick squared handle a third as wide as the body. Sized against the mug
-   (~8.5cm): the body is ~9.8cm across. Click and the straw bobs, as if someone sipped. */
+/* Cream handled tumbler: an elliptical lid, curved steel band, tapered shoulder,
+   narrower foot and matte powder coat. Its scale is set against the nearby mug. */
 export function TumblerFlask(){
  const [n,setN]=useState(0);
- const body="M44 50H110L108 120C108 125 101 128 97.5 131.5L96.8 177A19.8 4.6 0 0 1 57.2 177L56.5 131.5C53 128 46 125 46 120Z";
+ const body="M44 50Q77 58 110 50L106 116C105.5 124 101 128 97.5 132L96.8 177A19.8 5.5 0 0 1 57.2 177L56.5 132C53 128 48.5 124 48 116Z";
  return <div className={`dhFlask dh3d ${n?'isSip':''}`} key={n} title="Stay hydrated" onClick={()=>setN(v=>v+1)}>
   <svg viewBox="0 0 120 200" aria-hidden="true">
    <defs>
@@ -24,9 +21,9 @@ export function TumblerFlask(){
     <linearGradient id="tuStraw" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#c9d3dc" stopOpacity=".9"/><stop offset=".4" stopColor="#f5f9fc" stopOpacity=".95"/><stop offset="1" stopColor="#b3bec9" stopOpacity=".9"/></linearGradient>
     <filter id="tuGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="2" seed="8"/><feColorMatrix values="0 0 0 0 .45  0 0 0 0 .38  0 0 0 0 .28  0 0 0 .35 -.12"/><feComposite in2="SourceGraphic" operator="in"/></filter>
     <filter id="tuSoft" x="-30%" y="-10%" width="160%" height="120%"><feGaussianBlur stdDeviation="1.6"/></filter>
-    <clipPath id="tuBodyClip"><path d={body}/></clipPath>
+    <path id="tuWordmarkCurve" d="M49 80Q77 84 105 80"/><clipPath id="tuBodyClip"><path d={body}/></clipPath>
    </defs>
-   <ellipse cx="77" cy="182" rx="24" ry="3" fill="#2a1a0c" opacity=".35" filter="url(#tuSoft)"/>
+   <ellipse cx="77" cy="182" rx="22" ry="3.5" fill="#2a1a0c" opacity=".35" filter="url(#tuSoft)"/>
    {/* Straw: tall, a little left of centre. */}
    <g className="tuStraw"><rect x="69.6" y="3" width="4.6" height="31" rx="1.6" fill="url(#tuStraw)"/><path d="M71 4V33" stroke="#fff" strokeOpacity=".9" strokeWidth=".8"/></g>
    {/* Handle: a thick squared loop from under the band to just past halfway, with its shadow on the cup. */}
@@ -44,19 +41,21 @@ export function TumblerFlask(){
     <path d="M62 54V116" stroke="#fff" strokeOpacity=".42" strokeWidth="10" filter="url(#tuSoft)"/>
     <path d="M67 136V178" stroke="#fff" strokeOpacity=".3" strokeWidth="6" filter="url(#tuSoft)"/>
     <ellipse cx="45.5" cy="57" rx="2.4" ry="5.4" fill="#6b5a40" opacity=".2"/><ellipse cx="46.5" cy="111" rx="2.4" ry="5.4" fill="#6b5a40" opacity=".2"/>
-    {/* The Accenture mark, engraved in purple. */}
-    <path d="M83.6 68.4L89.2 70.8L83.6 73.2" fill="none" stroke="#a100ff" strokeWidth="1.4"/>
-    <text x="77" y="81" textAnchor="middle" fontFamily="Helvetica,Arial,sans-serif" fontSize="10.4" fontWeight="600" fill="#a100ff" letterSpacing="-.25">accenture</text>
+    {/* Printed wordmark follows the round front face. */}
+    <path d="M83.6 68.4L89.2 70.8L83.6 73.2" fill="none" stroke="#7b24b4" strokeWidth="1.25"/>
+    <text fontFamily="Helvetica,Arial,sans-serif" fontSize="9" fontWeight="600" fill="#7b24b4" letterSpacing="-.2"><textPath href="#tuWordmarkCurve" startOffset="50%" textAnchor="middle">accenture</textPath></text>
    </g>
+   <path d="M58 175.5Q77 181.5 96 175.5" stroke="#a99980" strokeWidth="1.3" fill="none"/>
+   <path d="M60 177Q77 181 94 177" stroke="#f4edde" strokeWidth=".8" fill="none"/>
    {/* Brushed steel band. */}
-   <rect x="44" y="44" width="66" height="6.4" fill="url(#tuSteel)"/>
-   <path d="M44 44.8H110" stroke="#000" strokeOpacity=".22" strokeWidth="1.2"/>
-   <path d="M44 49.8H110" stroke="#fff" strokeOpacity=".6" strokeWidth=".5"/>
+   <path d="M43 43Q77 51 111 43V50Q77 58 44 50Z" fill="url(#tuSteel)"/>
+   <path d="M44 44Q77 52 110 44" stroke="#494d4d" strokeOpacity=".35" strokeWidth=".8" fill="none"/>
+   <path d="M44 50Q77 58 110 50" stroke="#fff" strokeOpacity=".65" strokeWidth=".65" fill="none"/>
    {/* Lid: a touch wider than the body, frosted, its top seen from above, the slider. */}
-   <path d="M42 35.4Q42 32.4 45 32.4H109Q112 32.4 112 35.4V44.8Q77 46.6 42 44.8Z" fill="url(#tuLid)"/>
-   <ellipse cx="77" cy="32.8" rx="35" ry="3.4" fill="#f5f7f9"/>
-   <ellipse cx="77" cy="32.8" rx="35" ry="3.4" fill="none" stroke="#a9aeb4" strokeWidth=".5"/>
-   <ellipse cx="71.9" cy="33" rx="3.8" ry="1" fill="#c9ced4"/>
+   <path d="M42 33Q77 43 112 33V43Q77 53 42 43Z" fill="url(#tuLid)"/>
+   <ellipse cx="77" cy="32.8" rx="35" ry="7.8" fill="#f5f7f9"/>
+   <ellipse cx="77" cy="32.8" rx="35" ry="7.8" fill="none" stroke="#a9aeb4" strokeWidth=".5"/>
+   <ellipse cx="77" cy="32.8" rx="31" ry="5.7" fill="#b6c1bd" opacity=".26"/><path d="M46 36Q77 43 108 36" fill="none" stroke="#fff" strokeOpacity=".7" strokeWidth=".8"/><ellipse cx="71.9" cy="33" rx="3.8" ry="1" fill="#c9ced4"/>
    <rect x="88" y="28.8" width="11" height="4.6" rx="2.3" fill="#ece3d1" stroke="#bfb29a" strokeWidth=".5"/>
   </svg>
  </div>
@@ -101,6 +100,7 @@ export function Candle(){
     <path d="M3.5 12V70Q50 92 96.5 70V12Q50 32 3.5 12Z" fill="url(#dcJarV)"/>
     <path className="dcBodyGlow" d="M3.5 12V70Q50 92 96.5 70V12Q50 32 3.5 12Z" fill="url(#dcInner)" opacity="0"/>
     <path d="M14 20V74" stroke="#fff" strokeOpacity=".35" strokeWidth="5" filter="url(#dcSoft)"/>
+    <path d="M7 72Q50 90 93 72" fill="none" stroke="#baac94" strokeWidth="1.4"/><path d="M9 73Q50 87 91 73" fill="none" stroke="#fffaf0" strokeOpacity=".6" strokeWidth=".8"/>
     {/* Rolled lip. */}
     <path d="M3.5 12Q50 32 96.5 12" fill="none" stroke="url(#dcRim)" strokeWidth="2.4"/>
     <path d="M4 11.4Q50 -8 96 11.4" fill="none" stroke="#fbf8f1" strokeWidth="1.6"/>
@@ -157,10 +157,11 @@ export function SnowGlobe(){
    {/* Walnut base: a tapered drum, its top seen from above, a brass plaque. */}
    <path d="M20 90L24 110Q50 116 76 110L80 90Z" fill="url(#sgBase)"/>
    <ellipse cx="50" cy="90" rx="30" ry="5.4" fill="url(#sgBaseTop)"/>
+   <path d="M24 107Q50 114 76 107" stroke="#b58254" strokeWidth=".8" fill="none"/><path d="M24 110Q50 116 76 110" stroke="#24180f" strokeWidth="1.4" fill="none"/>
    <rect x="38" y="97" width="24" height="7.4" rx="1.4" fill="url(#sgBrass)"/>
    <text x="50" y="102.4" textAnchor="middle" fontFamily="Georgia,serif" fontSize="4.2" letterSpacing=".6" fill="#4a3312">NEW YORK</text>
    <g className="sgBody">
-    <circle cx="50" cy="50" r="38" fill="url(#sgSky)"/><ellipse cx="50" cy="85" rx="28" ry="5" fill="#839baf" opacity=".4"/>
+    <circle cx="50" cy="50" r="38" fill="url(#sgSky)" fillOpacity=".75"/><ellipse cx="50" cy="85" rx="28" ry="5" fill="#839baf" opacity=".4"/>
     <g clipPath="url(#sgInside)">
      {/* Skyline: back row paler (further away), Chrysler and Empire State in front, lit windows. */}
      <path d="M12 86V70H18V64H24V72H30V60H35V68H40V74H64V62H70V66H76V58H81V70H88V86Z" fill="#a9bacb"/>

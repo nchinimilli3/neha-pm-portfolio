@@ -1,6 +1,6 @@
 /* Shared desk-scale and material pass. Standing objects meet the back desk edge;
    paper, keyboard and the tin keep the existing common foreshortened plane. */
-.dhStage .dhLamp{left:284px;top:395px;width:215px;height:344px}
+.dhStage .dhLamp{left:296px;top:395px;width:215px;height:344px}
 .dhLampPool{left:418px;top:669px;width:620px;height:190px;z-index:46;background:radial-gradient(ellipse at 53% 44%,#ffdcaa45, #ffd29322 43%,transparent 72%);transform:rotate(5deg);filter:blur(5px)}
 .dhPortraitLight{left:448px;top:491px;width:170px;height:230px;opacity:0;background:radial-gradient(ellipse at 0 24%,#ffdcab26,transparent 80%);transition:opacity .3s}
 .lampOn .dhPortraitLight{opacity:1}
@@ -31,3 +31,26 @@
 .dhSticky{box-shadow:0 1px 1px #3426191a,-2px 5px 5px -4px #34261970}
 .dhBooks i{border-bottom:1px solid #231a1533}
 .dhPrint{box-shadow:1px 1px 0 #d0c5b4,-2px 4px 5px -3px #281d1760}
+
+/* Small bevels and edge thickness remain legible at the room's final scale. */
+.dhKeyRow span{background:linear-gradient(155deg,#fffef9,#efeeea 68%,#dbdbd5);box-shadow:0 1.3px 0 #8f9392,inset 0 .6px 0 #fff,0 0 0 .4px #b8bcba}
+.dhTop .dhMouse{box-shadow:0 2px 0 #aeb4b7,-2px 5px 5px -3px #0005,inset 1px 0 1px #fff}
+.dhTop .dhNotebook{box-shadow:0 1px 0 #c6c0b2,0 3px 0 #ece6d9,0 4px 0 #24416c,-2px 7px 8px -5px #0005}
+.dhTop .dhPen{box-shadow:-1px 3px 2px -1px #33221860}
+.dhStage .dhMatches{filter:drop-shadow(-1px 2px 1px #31231840)}
+.dhStage .dhCamera::after{height:5px;bottom:1px;filter:blur(2px)}
+.dhStage .dhGlobe::after{content:"";position:absolute;left:24%;right:20%;bottom:4px;height:3px;border-radius:50%;background:#27221930;filter:blur(1px);pointer-events:none}
+
+/* Sticky paper is attached along the top and lifts a little at the lower corner. */
+.dhStage .dhSticky{width:104px;min-height:76px;padding:12px 11px 16px;border:0;border-radius:1px 1px 3px 1px;transform-origin:50% 8%;isolation:isolate;box-shadow:0 1px 1px #44321b18,1px 5px 5px -4px #39251655;filter:drop-shadow(2px 5px 2px #33211424);background-image:linear-gradient(177deg,#ffffff1c,transparent 20%,#60401a06 65%,#60401a13 91%,#ffffff22)}
+.dhStage .dhSticky::before{content:"";position:absolute;inset:0 0 auto;height:15px;border-top:1px solid #ffffff3b;background:linear-gradient(#4631100c,transparent);pointer-events:none}
+.dhStage .dhSticky::after{content:"";position:absolute;right:0;bottom:0;width:17px;height:18px;clip-path:polygon(100% 0,100% 100%,0 100%);background:linear-gradient(135deg,#fff9d86b 38%,#503b2533 52%,#fff5d68c 65%,#fff7dd);border-radius:0 0 3px 0;pointer-events:none}
+.dhStage .dhStickyA{background-color:#edcf66;transform:rotate(-5deg) skewY(-1deg)}
+.dhStage .dhStickyB{background-color:#edafbd;transform:rotate(6deg) skewY(1deg);min-height:74px}
+.dhStage .dhStickyB::after{background:linear-gradient(135deg,#ffe6ef4d 38%,#6d354833 52%,#ffd0df 65%,#ffe2eb)}
+/* The display remains front-facing; its stand and foot show depth toward the viewer. */
+.dhImac::after{content:"";position:absolute;right:-3px;top:6px;bottom:4px;width:4px;border-radius:0 5px 5px 0;background:linear-gradient(#94aac1,#7394b8 70%,#6889b0);z-index:-1}
+.dhImacStand{background:linear-gradient(90deg,#7693b6,#b6cce2 12%,#c8daeb 42%,#91aece 87%,#607e9f);box-shadow:inset 0 10px 12px -8px #263f5b99}
+.dhImacFoot{top:calc(100% + 56px);height:25px;border-radius:2px 2px 5px 5px;clip-path:polygon(17% 0,83% 0,100% 81%,98% 100%,2% 100%,0 81%);background:linear-gradient(175deg,#c3d8ec,#9bb9d8 60%,#88a8ca 80%,#5f80a6 81%,#7294b9);box-shadow:none;filter:drop-shadow(0 3px 2px #261e174d)}
+.dhImacFoot::before,.dhImacFoot::after{display:none}
+.tod-night .dhLampPool{background:radial-gradient(ellipse at 62% 45%,#ffdda56b,#ffcf8130 46%,transparent 73%)}

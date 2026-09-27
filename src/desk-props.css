@@ -4,7 +4,7 @@
 
 /* Tumbler: sits where the bottle was, wider for its handle; a click bobs the straw. */
 /* Real scale next to the mug: body ~80px across (1.15x the mug), base on the desk line. */
-.dhStage .dhFlask{left:1160px;top:497px;width:145px;height:242px;z-index:13}
+.dhStage .dhFlask{left:1172px;top:515px;width:132px;height:220px;z-index:13}
 .dhFlask .tuStraw{transform-box:fill-box}
 .dhFlask.isSip .tuStraw{animation:tuSip .9s cubic-bezier(.3,.6,.3,1)}
 @keyframes tuSip{25%{transform:translateY(-5px)}55%{transform:translateY(1px)}100%{transform:none}}
