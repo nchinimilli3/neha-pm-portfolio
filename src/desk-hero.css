@@ -538,9 +538,7 @@ button.dhCappa:focus-visible,button.dhPaints:focus-visible{outline:2px solid #e2
 @keyframes dhSteamWisp{0%{opacity:0;transform:translate(0,9px) scale(.8,.7)}30%{opacity:.35}65%{opacity:.2}100%{opacity:0;transform:translate(9px,-22px) scale(1.3,1.12)}}
 .dhWatercolorTin{position:relative;pointer-events:none}
 .dhPaints::before{content:"";position:absolute;inset:-12px;pointer-events:auto}
-.dhActiveBrush{transform-box:fill-box;transform-origin:90% 50%;animation:dhBrushDab .85s ease-in-out}
-@keyframes dhBrushDab{40%{transform:translate(-8px,-9px) rotate(-8deg)}75%{transform:translate(4px,-3px) rotate(6deg)}}
-@media(prefers-reduced-motion:reduce){.dhCoffeeLevel,.dhCappa .dhSteam{transition:none}.dhCappa .dhSteam path,.dhActiveBrush{animation:none}}
+@media(prefers-reduced-motion:reduce){.dhCoffeeLevel,.dhCappa .dhSteam{transition:none}.dhCappa .dhSteam path{animation:none}}
 
 /* The shade points down and right from the left of the portrait. Light lands on the
    print and nearby wood; it stays local rather than washing out the entire room. */
@@ -550,8 +548,9 @@ button.dhCappa:focus-visible,button.dhPaints:focus-visible{outline:2px solid #e2
 
 /* A deckle-edged sheet on the same perspective plane as the paint tin. */
 .dhPaints .dhWatercolorPaper{position:absolute;left:220px;top:-19px;width:145px;height:155px;transform:rotate(-9deg);filter:drop-shadow(-1px 3px 1px #38281940);pointer-events:auto}
-.dhPaperLine{stroke-dasharray:1;stroke-dashoffset:1;opacity:.7;animation:dhPaperDraw 1.15s ease-out var(--paint-delay,0ms) forwards}
-.dhPaperWash{opacity:0;animation:dhPaperWet 1.5s ease-out calc(var(--paint-delay,0ms) + .2s) forwards}
-@keyframes dhPaperDraw{to{stroke-dashoffset:0}}
-@keyframes dhPaperWet{0%{opacity:0}55%{opacity:.48}100%{opacity:.3}}
+.dhPaperLine{stroke-dasharray:1;stroke-dashoffset:1;opacity:.75}
+.dhPaperWash{opacity:0}
 @media(prefers-reduced-motion:reduce){.dhPaperLine{animation:none;stroke-dashoffset:0}.dhPaperWash{animation:none;opacity:.3}}
+
+.dhPaints.isPainting .dhRestingBrush{opacity:0}
+.dhPaintingBrush{will-change:transform;pointer-events:none}

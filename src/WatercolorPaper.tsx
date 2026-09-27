@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useLayoutEffect,useRef} from 'react';
 
 const sketches = [
  {name:'heart',color:'#bc4f62',paths:['M75 117C63 104 32 86 32 62C32 39 61 33 75 55C89 32 119 40 119 63C119 86 87 107 75 117Z'],fills:[0]},
@@ -11,7 +11,49 @@ const sketches = [
 
 export function watercolorName(click:number){return click ? sketches[(click-1)%sketches.length].name : 'blank paper'}
 
-export default function WatercolorPaper({click}:{click:number}){
+export default function WatercolorPaper({click,onPaintingChange}:{click:number;onPaintingChange:(active:boolean)=>void}){
+ const art=useRef<SVGGElement>(null),brush=useRef<SVGGElement>(null);
+ useLayoutEffect(()=>{
+  if(!click||!art.current||!brush.current)return;
+  const strokes=Array.from(art.current.querySelectorAll<SVGPathElement>('.dhPaperLine'));
+  const washes=Array.from(art.current.querySelectorAll<SVGPathElement>('.dhPaperWash'));
+  const lengths=strokes.map(p=>p.getTotalLength()),total=lengths.reduce((a,b)=>a+b,0);
+  const tip=brush.current;
+  const finish=()=>{strokes.forEach(p=>p.style.strokeDashoffset='0');washes.forEach(p=>p.style.opacity='.32');tip.style.opacity='0';onPaintingChange(false)};
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){finish();return}
+  onPaintingChange(true);
+  let frame=0,start=0;
+  const pickup=550,returnTime=480,travel=100;
+  const durations=lengths.map(l=>Math.max(150,l/total*3000));
+  const end=pickup+durations.reduce((a,b)=>a+b+travel,0);
+  const rest={x:-13,y:30};
+  const place=(x:number,y:number,lift:number)=>{tip.setAttribute('transform',`translate(${x} ${y-lift}) rotate(${-36-lift*.3})`);tip.style.opacity='1';tip.style.filter=`drop-shadow(${-1-lift*.15}px ${2+lift*.4}px ${1+lift*.15}px #25190d40)`};
+  const ease=(v:number)=>v*v*(3-2*v);
+  const draw=(now:number)=>{
+   if(!start)start=now;
+   const elapsed=now-start,first=strokes[0].getPointAtLength(0);
+   if(elapsed<pickup){const t=elapsed/pickup;place(rest.x+(first.x-rest.x)*ease(t),rest.y+(first.y-rest.y)*ease(t),Math.sin(t*Math.PI)*17)}
+   else if(elapsed<end){
+    let cursor=pickup;
+    for(let i=0;i<strokes.length;i++){
+     const progress=Math.max(0,Math.min(1,(elapsed-cursor)/durations[i]));
+     strokes[i].style.strokeDashoffset=String(1-progress);
+     const wash=strokes[i].parentElement?.querySelector<SVGPathElement>('.dhPaperWash');
+     if(wash)wash.style.opacity=String(progress*.32);
+     if(elapsed>=cursor&&elapsed<cursor+durations[i]){const point=strokes[i].getPointAtLength(lengths[i]*progress);tip.querySelector('.dhWetTip')?.setAttribute('fill',strokes[i].getAttribute('stroke')||'#74503b');place(point.x,point.y,0)}
+     if(elapsed>=cursor+durations[i]&&elapsed<cursor+durations[i]+travel){
+      const from=strokes[i].getPointAtLength(lengths[i]),to=i+1<strokes.length?strokes[i+1].getPointAtLength(0):from,t=(elapsed-cursor-durations[i])/travel;
+      place(from.x+(to.x-from.x)*ease(t),from.y+(to.y-from.y)*ease(t),Math.sin(t*Math.PI)*8);
+     }
+     cursor+=durations[i]+travel;
+    }
+   }else if(elapsed<end+returnTime){const last=strokes[strokes.length-1].getPointAtLength(lengths[lengths.length-1]),t=(elapsed-end)/returnTime;place(last.x+(rest.x-last.x)*ease(t),last.y+(rest.y-last.y)*ease(t),Math.sin(t*Math.PI)*20)}
+   else{finish();return}
+   frame=requestAnimationFrame(draw);
+  };
+  frame=requestAnimationFrame(draw);
+  return()=>cancelAnimationFrame(frame);
+ },[click,onPaintingChange]);
  const sketch=sketches[(Math.max(1,click)-1)%sketches.length];
  return <svg className="dhWatercolorPaper" viewBox="0 0 150 160" aria-hidden="true">
   <defs>
@@ -21,7 +63,7 @@ export default function WatercolorPaper({click}:{click:number}){
   <path d="M5 5L145 4L147 154L6 156Z" fill="#cfc7b4"/>
   <path d="M4 3L46 4L73 2L109 4L145 2L144 54L146 92L144 153L102 152L73 155L35 153L4 155L5 112L3 74Z" fill="#faf5e7" stroke="#e4dcc9" strokeWidth=".7"/>
   <path d="M8 8H140V149H8Z" fill="#fffdf3" filter="url(#wcPaperGrain)"/>
-  {click>0&&<g key={click} className="dhPaperArtwork" filter="url(#wcPaperBleed)">
+  {click>0&&<g key={click} ref={art} className="dhPaperArtwork" filter="url(#wcPaperBleed)">
    {sketch.paths.map((d,i)=>{
     const color=sketch.name==='rainbow'?['#c96e6e','#d4aa43','#598c84'][i]:sketch.name==='flower'?(i<2?'#57846c':i===3?'#d5a83a':sketch.color):sketch.color;
     return <g key={i} style={{'--paint-delay':`${i*130}ms`} as React.CSSProperties}>
@@ -30,5 +72,14 @@ export default function WatercolorPaper({click}:{click:number}){
     </g>;
    })}
   </g>}
+  <g ref={brush} className="dhPaintingBrush" opacity="0" pointerEvents="none">
+   <path d="M-118 -2Q-127 0 -118 2L-29 3.5V-3.5Z" fill="#91482c" stroke="#60311f" strokeWidth=".5"/>
+   <path d="M-116 -1L-31 -2" stroke="#e6ab79" strokeWidth=".8"/>
+   <path d="M-30 -3.5H-13V3.5H-30Z" fill="#b4b9b2" stroke="#616b65" strokeWidth=".6"/>
+   <path d="M-29 -2H-14M-25 -3V3M-17 -3V3" stroke="#f3eee1" strokeWidth=".8"/>
+   <path d="M-13 -3.5Q-6 -4 0 0Q-6 4 -13 3.5Z" fill="#57412b"/>
+   <path d="M-12 -2L0 0M-12 1L0 0" stroke="#c3a071" strokeWidth=".6"/>
+   <path className="dhWetTip" d="M-6 -2L0 0L-6 2Z" fill={sketch.color}/>
+  </g>
  </svg>;
 }
