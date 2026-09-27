@@ -167,63 +167,94 @@ function HydroFlask(){
 
 function MsuCappuccino(){
  // Cappuccino in an MSU mug on a saucer, with a latte-art heart. Click for a sip.
- // Seen from a little above: the coffee sits below the rim (a sliver of the white inside
- // wall shows at the back), the heart lies flat in the foam, and the lettering follows
- // the curve of the mug.
+ // Drawn from a reference photo of a cappuccino seen from about 30° above: a thick cream
+ // lip with the inside wall showing at the back; crema with a dark meniscus, fine pale
+ // bubbles and gentle mottling; a soft heart (lobes away, point toward you) with a pale
+ // halo; a satin glaze darker at the sides and foot with a warm bounce from the saucer.
  const [sip,setSip]=useState(0);
+ const heart='M0 14C-10 8-18 1-18-6C-18-12-13.5-16-9-16C-4.5-16-1.5-13 0-10C1.5-13 4.5-16 9-16C13.5-16 18-12 18-6C18 1 10 8 0 14Z';
  return <div className={`dhCappa dh3d ${sip?'isSip':''}`} key={sip} title="Take a sip" onClick={()=>setSip(v=>v+1)}><svg className="dhSteam" viewBox="0 0 60 80" aria-hidden="true"><path d="M20 76c-9-11 9-18 0-31s4-20 4-27"/><path d="M36 76c-9-11 9-18 0-31s4-20 4-27"/></svg>
   <svg viewBox="0 0 120 104" aria-hidden="true">
    <defs>
-    <linearGradient id="msuBody" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#07251d"/><stop offset=".22" stopColor="#123f33"/><stop offset=".58" stopColor="#2a735d"/><stop offset=".7" stopColor="#3b8a71"/><stop offset=".82" stopColor="#1b5343"/><stop offset="1" stopColor="#082a21"/></linearGradient>
-    {/* Contact shading: the glaze darkens toward the foot, where less light reaches it. */}
-    <linearGradient id="msuFoot" x1="0" y1="0" x2="0" y2="1"><stop offset=".62" stopColor="#000" stopOpacity="0"/><stop offset="1" stopColor="#000" stopOpacity=".42"/></linearGradient>
-    <linearGradient id="msuHandle" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#2c7560"/><stop offset=".5" stopColor="#17493b"/><stop offset="1" stopColor="#0b3228"/></linearGradient>
-    <radialGradient id="msuSaucer" cx=".6" cy=".35" r=".7"><stop offset="0" stopColor="#ffffff"/><stop offset=".6" stopColor="#efece5"/><stop offset="1" stopColor="#cfcac0"/></radialGradient>
-    {/* The inside wall: bright where the light falls on the far side, shaded under the near rim. */}
-    <linearGradient id="msuInside" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#fbfaf5"/><stop offset="1" stopColor="#cfcabd"/></linearGradient>
-    {/* Crema: a darker ring where the foam meets the ceramic, pale microfoam toward the middle. */}
-    <radialGradient id="msuFoam" cx=".52" cy=".45" r=".56"><stop offset="0" stopColor="#efdfc4"/><stop offset=".5" stopColor="#d9b98d"/><stop offset=".8" stopColor="#b1834f"/><stop offset=".95" stopColor="#7c512d"/><stop offset="1" stopColor="#5b3a1f"/></radialGradient>
-    <radialGradient id="msuHeart" cx=".5" cy=".4" r=".6"><stop offset="0" stopColor="#fffaf1"/><stop offset=".75" stopColor="#f6ead5"/><stop offset="1" stopColor="#e2c9a3"/></radialGradient>
-    <filter id="msuMicrofoam" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="2.2" numOctaves="2" seed="4"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 .96  0 0 0 0 .88  0 0 0 1.1 -.6"/><feComposite in2="SourceGraphic" operator="in"/></filter>
-    <filter id="msuSoft" x="-20%" y="-40%" width="140%" height="180%"><feGaussianBlur stdDeviation=".55"/></filter>
-    <clipPath id="msuMouth"><ellipse cx="56" cy="20" rx="38.2" ry="7.2"/></clipPath>
-    {/* Horizontal lines on a cylinder seen from above bow downward at the sides. */}
-    <path id="msuArc1" d="M24 49Q56 60 88 49"/><path id="msuArc2" d="M29 62Q56 71.5 83 62"/>
+    {/* Glaze: a cylinder lit from the front left, satin rather than glossy. */}
+    <linearGradient id="msuBody" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#0a2a21"/><stop offset=".12" stopColor="#153f33"/><stop offset=".38" stopColor="#23604d"/><stop offset=".55" stopColor="#2b6f5a"/><stop offset=".78" stopColor="#1a4d3f"/><stop offset=".93" stopColor="#0f3329"/><stop offset="1" stopColor="#0a261e"/></linearGradient>
+    <linearGradient id="msuShade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#000" stopOpacity=".18"/><stop offset=".14" stopColor="#000" stopOpacity="0"/><stop offset=".72" stopColor="#000" stopOpacity="0"/><stop offset="1" stopColor="#000" stopOpacity=".38"/></linearGradient>
+    <linearGradient id="msuBounce" x1="0" y1="0" x2="0" y2="1"><stop offset=".8" stopColor="#f3e7d2" stopOpacity="0"/><stop offset="1" stopColor="#f3e7d2" stopOpacity=".2"/></linearGradient>
+    <linearGradient id="msuHandle" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#2f7560"/><stop offset=".45" stopColor="#1b4f41"/><stop offset="1" stopColor="#0b2d24"/></linearGradient>
+    {/* Porcelain saucer: bright at the back, cooler toward the front edge. */}
+    <radialGradient id="msuSaucer" cx=".4" cy=".25" r=".85"><stop offset="0" stopColor="#fdfcf8"/><stop offset=".55" stopColor="#efebe2"/><stop offset="1" stopColor="#d6d0c4"/></radialGradient>
+    <radialGradient id="msuWell" cx=".45" cy=".35" r=".7"><stop offset="0" stopColor="#f7f4ec"/><stop offset="1" stopColor="#e0dacd"/></radialGradient>
+    {/* Cream lip and inside wall. */}
+    <linearGradient id="msuLip" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#e2dccd"/><stop offset=".35" stopColor="#fbf8f0"/><stop offset=".75" stopColor="#f4efe3"/><stop offset="1" stopColor="#d9d2c2"/></linearGradient>
+    <linearGradient id="msuWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#f6f1e4"/><stop offset=".6" stopColor="#ddd4c1"/><stop offset="1" stopColor="#b9ae98"/></linearGradient>
+    {/* Crema: dark where it meets the wall, warm tan toward the middle. */}
+    <radialGradient id="msuCrema" cx=".5" cy=".46" r=".54"><stop offset="0" stopColor="#c89a66"/><stop offset=".55" stopColor="#a8773f"/><stop offset=".86" stopColor="#7d4f24"/><stop offset="1" stopColor="#4d2e14"/></radialGradient>
+    <radialGradient id="msuHalo" cx=".5" cy=".5" r=".5"><stop offset="0" stopColor="#e9cfa6" stopOpacity=".95"/><stop offset=".6" stopColor="#d7b283" stopOpacity=".55"/><stop offset="1" stopColor="#c69a66" stopOpacity="0"/></radialGradient>
+    <radialGradient id="msuHeart" cx=".5" cy=".4" r=".6"><stop offset="0" stopColor="#fffcf5"/><stop offset=".75" stopColor="#fbf2e2"/><stop offset="1" stopColor="#f0dfc2"/></radialGradient>
+    {/* Fine pale bubbles: sparse points pulled out of high-frequency noise. */}
+    <filter id="msuBubbles" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="3.2" numOctaves="1" seed="11"/><feColorMatrix values="0 0 0 0 .97  0 0 0 0 .9  0 0 0 0 .78  0 0 0 9 -5.6"/><feComposite in2="SourceGraphic" operator="in"/></filter>
+    {/* Gentle mottling across the crema. */}
+    <filter id="msuMottle" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".35 1.2" numOctaves="2" seed="5"/><feColorMatrix values="0 0 0 0 .32  0 0 0 0 .19  0 0 0 0 .08  0 0 0 1.6 -.75"/><feComposite in2="SourceGraphic" operator="in"/></filter>
+    <filter id="msuSoft" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation=".6"/></filter>
+    <filter id="msuSofter" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="1.4"/></filter>
+    <clipPath id="msuMouth"><ellipse cx="56" cy="18" rx="37.2" ry="10.1"/></clipPath>
+    <clipPath id="msuLiquid"><ellipse cx="56" cy="20.2" rx="36.3" ry="9.6"/></clipPath>
+    <clipPath id="msuBodyClip"><path d="M16 18L21.5 78A34.5 9.3 0 0 0 90.5 78L96 18Z"/></clipPath>
+    {/* Lines on a cylinder seen from above bow downward toward the sides. */}
+    <path id="msuArc1" d="M25 47Q56 58 87 47"/><path id="msuArc2" d="M29 60Q56 70 83 60"/>
    </defs>
-   <ellipse cx="56" cy="93" rx="54" ry="10" fill="#bdb7ac"/><ellipse cx="56" cy="91.5" rx="54" ry="9.5" fill="url(#msuSaucer)"/><ellipse cx="56" cy="90" rx="42" ry="6.5" fill="#f4f1ea"/>
-   <ellipse cx="56" cy="91" rx="33" ry="5" fill="none" stroke="#c6c1b5" strokeWidth="1.3"/>
-   {/* The mug's shadow on the saucer, tight and dark where it touches. */}
-   <ellipse cx="53" cy="90.2" rx="34" ry="3.4" fill="#0e2a20" opacity=".26" filter="url(#msuSoft)"/>
-   <ellipse cx="56" cy="89.6" rx="27" ry="1.8" fill="#081a14" opacity=".35"/>
-   <path d="M90 34q20 2 18 20t-20 16" fill="none" stroke="url(#msuHandle)" strokeWidth="8.5" strokeLinecap="round"/>
-   <path d="M92 35q16 3 13.5 18" fill="none" stroke="#06201a" strokeOpacity=".55" strokeWidth="1.3"/>
-   <path d="M99 37q9 5 7 17" fill="none" stroke="#9fd0b9" strokeOpacity=".75" strokeWidth="1.3" strokeLinecap="round"/>
-   <path d="M16 20H96L91 80Q90 90 80 90H32Q22 90 21 80Z" fill="url(#msuBody)"/>
-   <path d="M16 20H96L91 80Q90 90 80 90H32Q22 90 21 80Z" fill="url(#msuFoot)"/>
-   <text fontFamily="Helvetica,Arial,sans-serif" fontWeight="800" fontSize="15" fill="#f4efe4" letterSpacing=".6"><textPath href="#msuArc1" startOffset="50%" textAnchor="middle">MSU</textPath></text>
-   <text fontFamily="Helvetica,Arial,sans-serif" fontWeight="600" fontSize="5.6" fill="#d9e6df" letterSpacing="1.1"><textPath href="#msuArc2" startOffset="50%" textAnchor="middle">SPARTANS</textPath></text>
-   {/* Glaze highlights: a broad soft sheen and a crisp window reflection. */}
-   <path d="M80 30L77 78" stroke="#fff" strokeOpacity=".16" strokeWidth="6" strokeLinecap="round"/><path d="M84 31L81.5 70" stroke="#fff" strokeOpacity=".5" strokeWidth="1.2" strokeLinecap="round"/>
-   <path d="M23 26L26 78" stroke="#fff" strokeOpacity=".06" strokeWidth="3" strokeLinecap="round"/>
-   {/* Rim, then the mouth: the inside wall, and the coffee sitting a little below the rim. */}
-   <ellipse cx="56" cy="20" rx="40" ry="8" fill="#f3f1e8"/>
-   <path d="M16.3 20.6a39.7 7.7 0 0 0 79.4 0" fill="none" stroke="#9a978d" strokeOpacity=".45" strokeWidth=".8"/>
-   <g clipPath="url(#msuMouth)">
-    <ellipse cx="56" cy="20" rx="38.2" ry="7.2" fill="url(#msuInside)"/>
-    <ellipse cx="56" cy="22.3" rx="37.4" ry="6.6" fill="#5b3a1f"/>
-    <ellipse cx="56" cy="22.5" rx="36.6" ry="6.3" fill="url(#msuFoam)"/>
-    <ellipse cx="56" cy="22.5" rx="36.6" ry="6.3" fill="#fff" filter="url(#msuMicrofoam)" opacity=".5"/>
-    {/* The heart lies in the foam, flattened by the viewing angle, its edge softened into the crema. */}
-    <g transform="translate(56 22.4) scale(.66 .3) translate(-56 -26)">
-     <path d="M56 41c-12-6-20-12.5-20-21a9.5 9.5 0 0 1 20-4.5 9.5 9.5 0 0 1 20 4.5c0 8.5-8 15-20 21Z" fill="#fbf1de" opacity=".55" filter="url(#msuSoft)"/>
-     <path d="M56 38.5c-10.5-5.4-17.5-11-17.5-18.4a8.3 8.3 0 0 1 17.5-3.9 8.3 8.3 0 0 1 17.5 3.9c0 7.4-7 13-17.5 18.4Z" fill="url(#msuHeart)"/>
-     <path d="M56 13v27" stroke="#c49a6a" strokeWidth="1.4" strokeOpacity=".6"/>
-    </g>
-    {/* Shade from the near rim falling across the front of the foam. */}
-    <ellipse cx="56" cy="31" rx="40" ry="4" fill="#2a180a" opacity=".16" filter="url(#msuSoft)"/>
-    <ellipse cx="68" cy="19.8" rx="7" ry="1.2" fill="#fff" opacity=".35" filter="url(#msuSoft)"/>
+   {/* Saucer: underside edge, top, the well, and the mug's contact shadow in it. */}
+   <ellipse cx="56" cy="89.6" rx="53.5" ry="13.4" fill="#b9b2a5"/>
+   <ellipse cx="56" cy="88" rx="53.5" ry="13.4" fill="url(#msuSaucer)"/>
+   <ellipse cx="56" cy="87.6" rx="52.6" ry="12.9" fill="none" stroke="#fff" strokeOpacity=".75" strokeWidth=".7"/>
+   <ellipse cx="56" cy="87" rx="37" ry="9.4" fill="url(#msuWell)"/>
+   <ellipse cx="56" cy="87.4" rx="37" ry="9.4" fill="none" stroke="#c9c2b4" strokeWidth=".9"/>
+   <ellipse cx="59" cy="85.6" rx="36" ry="8.2" fill="#1e1a12" opacity=".2" filter="url(#msuSofter)"/>
+   <ellipse cx="57" cy="84.6" rx="33" ry="6.4" fill="#120d07" opacity=".3" filter="url(#msuSoft)"/>
+   {/* Where the foot meets the well: a thin dark line, so the mug sits rather than floats. */}
+   <path d="M22.5 79A34 8.8 0 0 0 89.5 79" fill="none" stroke="#0b0806" strokeOpacity=".55" strokeWidth="1.6" filter="url(#msuSoft)"/>
+   {/* Handle: a rounded loop, lit along its top. */}
+   <path d="M91.5 30C110 29 112 46 104 56C98.5 63 93 64 89.5 63" fill="none" stroke="url(#msuHandle)" strokeWidth="8.6" strokeLinecap="round"/>
+   <path d="M93 29.6C106 30 108.5 41 104.5 49" fill="none" stroke="#7fb7a0" strokeOpacity=".55" strokeWidth="1.4" strokeLinecap="round"/>
+   <path d="M95.5 35.4C102.5 37 103 47.5 98 54.5" fill="none" stroke="#051a14" strokeOpacity=".35" strokeWidth="2" strokeLinecap="round" filter="url(#msuSoft)"/>
+   {/* Body. */}
+   <path d="M16 18L21.5 78A34.5 9.3 0 0 0 90.5 78L96 18Z" fill="url(#msuBody)"/>
+   <g clipPath="url(#msuBodyClip)">
+    <rect x="10" y="10" width="92" height="82" fill="url(#msuShade)"/>
+    <rect x="10" y="10" width="92" height="82" fill="url(#msuBounce)"/>
+    <text fontFamily="Helvetica,Arial,sans-serif" fontWeight="800" fontSize="15.5" fill="#efe9dc" fillOpacity=".95" letterSpacing=".4"><textPath href="#msuArc1" startOffset="50%" textAnchor="middle">MSU</textPath></text>
+    <text fontFamily="Helvetica,Arial,sans-serif" fontWeight="600" fontSize="5.6" fill="#d6e3dc" fillOpacity=".9" letterSpacing="1.2"><textPath href="#msuArc2" startOffset="50%" textAnchor="middle">SPARTANS</textPath></text>
+    {/* Sheen: a broad soft band and one crisp window reflection. */}
+    <path d="M37 20L39 82" stroke="#fff" strokeOpacity=".09" strokeWidth="9" filter="url(#msuSofter)"/>
+    <path d="M81 22L78.5 76" stroke="#fff" strokeOpacity=".14" strokeWidth="5" strokeLinecap="round" filter="url(#msuSoft)"/>
+    <path d="M84.2 24L82.2 66" stroke="#fff" strokeOpacity=".55" strokeWidth="1" strokeLinecap="round"/>
    </g>
-   <path d="M17 20a39 7.6 0 0 1 78 0" fill="none" stroke="#fff" strokeOpacity=".85" strokeWidth=".9"/>
+   {/* Lip, then the mouth: the inside wall and the coffee a little below the rim. */}
+   <ellipse cx="56" cy="18" rx="40" ry="11" fill="url(#msuLip)"/>
+   <g clipPath="url(#msuMouth)">
+    <ellipse cx="56" cy="18" rx="37.2" ry="10.1" fill="url(#msuWall)"/>
+    <ellipse cx="56" cy="20.2" rx="36.3" ry="9.6" fill="#3b2210"/>
+    <g clipPath="url(#msuLiquid)">
+     <ellipse cx="56" cy="20.4" rx="35.4" ry="9.1" fill="url(#msuCrema)"/>
+     <ellipse cx="56" cy="20.4" rx="35.4" ry="9.1" fill="#fff" filter="url(#msuMottle)" opacity=".7"/>
+     <ellipse cx="56" cy="20.4" rx="35.4" ry="9.1" fill="#fff" filter="url(#msuBubbles)" opacity=".55"/>
+     {/* The heart, lying in the foam: halo, a soft outer edge, the body, a faint inner ring and the pull-through. */}
+     <ellipse cx="56" cy="20.6" rx="24" ry="6" fill="url(#msuHalo)" opacity=".7" filter="url(#msuSoft)"/>
+     <g transform="translate(56 20.5) scale(1.12 .3)">
+      <path d={heart} fill="#ecd9b8" opacity=".55" filter="url(#msuSoft)" transform="scale(1.06)"/>
+      <path d={heart} fill="url(#msuHeart)"/>
+      <path d="M0-10C.4-2 .2 6 0 12.5" fill="none" stroke="#c39a6c" strokeOpacity=".45" strokeWidth="1.1" strokeLinecap="round"/>
+     </g>
+     {/* A soft sheen on the far side of the surface. */}
+     <ellipse cx="44" cy="15.6" rx="11" ry="1.6" fill="#fff" opacity=".22" filter="url(#msuSoft)"/>
+    </g>
+    {/* The near wall hides the front edge of the coffee in a little shade. */}
+    <ellipse cx="56" cy="30.2" rx="38" ry="4" fill="#2a1a0c" opacity=".25" filter="url(#msuSoft)"/>
+   </g>
+   {/* Lip edges: bright along the back, a fine glaze line at the front, a specular glint. */}
+   <path d="M17 17.4A39 10.4 0 0 1 95 17.4" fill="none" stroke="#fff" strokeOpacity=".9" strokeWidth=".8"/>
+   <path d="M16.2 18.6A39.8 10.8 0 0 0 95.8 18.6" fill="none" stroke="#8d887c" strokeOpacity=".5" strokeWidth=".7"/>
+   <ellipse cx="85" cy="25.6" rx="3.2" ry="1" fill="#fff" opacity=".8" transform="rotate(-24 85 25.6)"/>
   </svg>
  </div>
 }
