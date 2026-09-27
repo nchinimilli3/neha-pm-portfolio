@@ -332,7 +332,8 @@ function CookieNapkin(){
   {[[30,98,1.6],[112,34,1.3],[120,96,1.1],[36,30,1],[104,108,1.4],[24,70,.9]].slice(0,gone?6:2+bites).map(([x,y,r],i)=><ellipse key={i} cx={x} cy={y} rx={r*1.3} ry={r} fill="#c48c50"/>)}
   <g transform="translate(25 15)">
    {/* The cookie stands up off the napkin (below); on the napkin itself, just its shadow. */}
-   <ellipse cx="47" cy="56" rx="46" ry="42" fill="#3a2410" opacity=".4" filter="url(#ckSoft)"/>
+   <ellipse cx="54" cy="80" rx="44" ry="30" fill="#3a2410" opacity=".42" filter="url(#ckSoft)"/>
+   <ellipse cx="52" cy="84" rx="36" ry="16" fill="#241406" opacity=".35" filter="url(#ckSoft)"/>
    {last&&<g key={`crumbs${chomp}`} className="ckCrumbs">{[0,1,2,3].map(i=>{const a=last[0]*Math.PI/180,x=50+Math.cos(a)*50+(i-1.5)*5,y=50+Math.sin(a)*50+(i%2)*4;return <ellipse key={i} cx={x} cy={y} rx={1.4+i%2} ry={1+i%2*.6} fill="#c48c50" style={{'--dx':`${Math.cos(a)*6+(i-1.5)*2}px`,'--dy':`${Math.sin(a)*6+3}px`} as React.CSSProperties}/>})}</g>}
   </g>
   </svg>
