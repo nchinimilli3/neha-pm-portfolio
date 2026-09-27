@@ -4,7 +4,7 @@ import {pageY} from './perfMode';
 import './desk-hero.css';
 import {createPortal} from 'react-dom';
 import WatercolorPaper,{watercolorName} from './WatercolorPaper';
-import {Candle,DoodlePad,SnowGlobe,TumblerFlask} from './DeskProps';
+import {Candle,DeskTips,DoodlePad,SnowGlobe,TumblerFlask} from './DeskProps';
 import './desk-materials.css';
 import {CASE_FILES,HOME_SHOWN,isParked,maximizeInto} from './CaseWindow';
 import {ShelbyMark} from './CarArt';
@@ -107,7 +107,7 @@ function GoldenGateView(){
 
 function CanonAE1({onShoot}:{onShoot:()=>void}){
  // Canon AE-1 Program with the FD 50mm f/1.8: black body, chrome top plate, the prism hump.
- return <button type="button" className="dhCamera dh3d" tabIndex={-1} title="Say cheese" onClick={onShoot} aria-label="Take a photo with the Canon AE-1 Program">
+ return <button type="button" className="dhCamera dh3d" tabIndex={-1} data-tip="Say cheese" onClick={onShoot} aria-label="Take a photo with the Canon AE-1 Program">
   <svg viewBox="0 0 200 150" aria-hidden="true">
    <defs>
     <linearGradient id="aeChrome" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#f4f4f2"/><stop offset=".45" stopColor="#c9c9c6"/><stop offset=".55" stopColor="#e9e9e6"/><stop offset="1" stopColor="#9d9d9a"/></linearGradient>
@@ -170,7 +170,7 @@ function MsuCappuccino(){
   return ()=>window.clearTimeout(refill);
  },[sip]);
  const heart='M0 14C-10 8-18 1-18-6C-18-12-13.5-16-9-16C-4.5-16-1.5-13 0-10C1.5-13 4.5-16 9-16C13.5-16 18-12 18-6C18 1 10 8 0 14Z';
- return <button type="button" tabIndex={-1} className={`dhCappa dh3d ${drinking?'isSip':''}`} title={sip===5?'Refilling…':'Take a sip'} aria-label={sip===5?'Empty cup, refilling':`Take a sip of coffee, ${100-sip*20}% remaining`} aria-disabled={drinking||sip===5} onClick={()=>{if(!drinking&&sip<5)setDrinking(true)}} style={{'--coffee-steam':sip===5?0:1-sip*.14} as React.CSSProperties}><svg className="dhSteam" viewBox="0 0 60 80" aria-hidden="true"><path d="M19 78C8 64 30 57 20 43S12 22 24 5"/><path d="M32 79C46 65 22 55 34 39S44 20 32 0"/><path d="M42 78C32 67 49 56 42 46S36 28 47 15"/></svg>
+ return <button type="button" tabIndex={-1} className={`dhCappa dh3d ${drinking?'isSip':''}`} data-tip={sip===5?'Refilling…':'Take a sip'} aria-label={sip===5?'Empty cup, refilling':`Take a sip of coffee, ${100-sip*20}% remaining`} aria-disabled={drinking||sip===5} onClick={()=>{if(!drinking&&sip<5)setDrinking(true)}} style={{'--coffee-steam':sip===5?0:1-sip*.14} as React.CSSProperties}><svg className="dhSteam" viewBox="0 0 60 80" aria-hidden="true"><path d="M19 78C8 64 30 57 20 43S12 22 24 5"/><path d="M32 79C46 65 22 55 34 39S44 20 32 0"/><path d="M42 78C32 67 49 56 42 46S36 28 47 15"/></svg>
   <svg viewBox="0 0 120 104" aria-hidden="true">
    <defs>
     {/* Glaze: a cylinder lit from the front left, satin rather than glossy. */}
@@ -259,8 +259,8 @@ function MsuCappuccino(){
  </button>
 }
 
-function Lamp({on,onToggle}:{on:boolean;onToggle:()=>void}){
- return <div className={`dhLamp ${on?'isOn':''}`} role="button" tabIndex={-1} title={on?'Lamp off':'Lamp on'} onClick={onToggle}>
+function Lamp({on=true,onToggle}:{on?:boolean;onToggle?:()=>void}){
+ return <div className={`dhLamp ${on?'isOn':''}`} role="button" tabIndex={-1} data-tip={on?'Lamp off':'Lamp on'} onClick={onToggle}>
   <svg viewBox="0 0 200 320" aria-hidden="true">
    <defs>
     <linearGradient id="lampShade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#141312"/><stop offset=".55" stopColor="#3c3a38"/><stop offset=".78" stopColor="#5a5754"/><stop offset="1" stopColor="#1c1b1a"/></linearGradient>
@@ -291,7 +291,7 @@ function PhotoFrame({eager=true}:{eager?:boolean}){
 }
 function Mustang(){
  const [rev,setRev]=useState(0);
- return <div className={`dhMustang dh3d ${rev?'isRev':''}`} key={rev} title="’67 Shelby GT500" onClick={()=>setRev(v=>v+1)}><ShelbyMark/><img className="dhFordScript" src={asset('desk/ford-script.png')} alt="" aria-hidden="true"/>{rev>0&&<span className="dhVroom">vroom!</span>}</div>
+ return <div className={`dhMustang dh3d ${rev?'isRev':''}`} key={rev} data-tip="’67 Shelby GT500" onClick={()=>setRev(v=>v+1)}><ShelbyMark/><img className="dhFordScript" src={asset('desk/ford-script.png')} alt="" aria-hidden="true"/>{rev>0&&<span className="dhVroom">vroom!</span>}</div>
 }
 
 // Where each click's bite lands, as [angle in degrees, depth] around the cookie's edge.
@@ -323,7 +323,7 @@ function CookieNapkin(){
    setSpot({x:(r.left+r.width*.52-sr.left)/k,y:(r.top+r.height*.62-sr.top)/k,stage:st})};
   place();window.addEventListener('resize',place);return()=>window.removeEventListener('resize',place);
  },[]);
- return <><button ref={napkin} type="button" className={`dhCookie ${gone?'isGone':''}`} onClick={bite} aria-label={gone?'All gone':'Take a bite of the cookie'} title={gone?'All gone… one more coming':'Take a bite'}>
+ return <><button ref={napkin} type="button" className={`dhCookie ${gone?'isGone':''}`} onClick={bite} aria-label={gone?'All gone':'Take a bite of the cookie'} data-tip={gone?'All gone… one more coming':'Take a bite'}>
   <svg viewBox="0 0 150 130" aria-hidden="true">
   <defs>
    <radialGradient id="ckBody" cx=".42" cy=".38" r=".66"><stop offset="0" stopColor="#ecc991"/><stop offset=".45" stopColor="#dcae6c"/><stop offset=".78" stopColor="#c48a48"/><stop offset=".94" stopColor="#a86c33"/><stop offset="1" stopColor="#8a5424"/></radialGradient>
@@ -378,7 +378,7 @@ function WatercolorTin(){
  const [wash,setWash]=useState(0);
  const [painting,setPainting]=useState(false);
  const pans=['#e2b33a','#e07b2e','#c9352c','#b0304f','#7a3c8c','#2d4f9e','#2f86b8','#2a8f78','#4f8a3a','#9a7b2e','#7a4a2a','#2b2b2e'];
- return <button type="button" tabIndex={-1} className={`dhPaints ${painting?'isPainting':''}`} title={`Paint another little picture · ${watercolorName(wash)}`} aria-label={`Paint a new watercolor on the paper. Currently ${watercolorName(wash)}.`} onClick={()=>setWash(v=>v+1)}>
+ return <button type="button" tabIndex={-1} className={`dhPaints ${painting?'isPainting':''}`} data-tip={`Paint another little picture · ${watercolorName(wash)}`} aria-label={`Paint a new watercolor on the paper. Currently ${watercolorName(wash)}.`} onClick={()=>setWash(v=>v+1)}>
  <WatercolorPaper click={wash} onPaintingChange={setPainting}/>
 
  <svg className="dhWatercolorTin" viewBox="0 0 240 130" aria-hidden="true">
@@ -679,6 +679,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
  const hello=<><div className="dhHelloBar"><i/><i/><i/><span>hello.txt</span></div><div className="dhHelloBody"><p>{GREETING[tod]}, i’m neha.<span className="dhCaret"/></p><small>welcome to my desk. keep scrolling, come on in →</small></div></>;
 
  return <section ref={trackRef} className={`dhTrack tod-${tod} ${ready?'isReady':''} ${isStatic?'isStatic':''} ${lampOn?'lampOn':''}`} style={{'--track':`${TRACK_VH}vh`} as React.CSSProperties} aria-label="Neha Chinimilli, intro and selected work" id="top">
+  {!isStatic&&<DeskTips/>}
   {!isStatic&&<span id="projects" className="dhAnchor" style={{top:`${ANCHOR_P*(TRACK_VH-100)}vh`}} aria-hidden="true"/>}
   <div className="dhPin">
    <div className="dhCopy" ref={copyRef}>
@@ -695,8 +696,8 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
      <div className="dhWall"/>
      <div className="dhSunPatch"/>
 
-     <div className={`dhWindow ${air%2?'isAjar':''}`} title="Change the time of day" onClick={()=>{manualTod.current=true;setTod(t=>ORDER[(ORDER.indexOf(t)+1)%4]);}}>
-      <div className="dhGlass"><GoldenGateView/><div className="dhMuntins"/><div className="dhReflect"/><div className="dhGap"/><button type="button" className="dhLatch" tabIndex={-1} title={air%2?'Close the window':'Open the window a crack'} aria-label={air%2?'Close the window':'Open the window a crack'} onClick={e=>{e.stopPropagation();setAir(v=>v+1)}}/></div>
+     <div className={`dhWindow ${air%2?'isAjar':''}`} data-tip="Change the time of day" onClick={()=>{manualTod.current=true;setTod(t=>ORDER[(ORDER.indexOf(t)+1)%4]);}}>
+      <div className="dhGlass"><GoldenGateView/><div className="dhMuntins"/><div className="dhReflect"/><div className="dhGap"/><button type="button" className="dhLatch" tabIndex={-1} data-tip={air%2?'Close the window':'Open the window a crack'} aria-label={air%2?'Close the window':'Open the window a crack'} onClick={e=>{e.stopPropagation();setAir(v=>v+1)}}/></div>
       <div className="dhCurtain" key={Math.ceil(air/2)}/>
       <div className="dhSill"><div className="dhSucculent"><i/><i/><i/><i/><i/></div></div>
      </div>
@@ -739,7 +740,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
      <Lamp on={lampOn} onToggle={()=>setLampOn(v=>!v)}/>
      <div className="dhShade"/>
 
-     <div className="dhScreen" title="Come on in" onClick={()=>{const t=trackRef.current;if(t&&!isStatic){const to=t.offsetTop+(t.offsetHeight-window.innerHeight)*.5;window.scrollTo({top:to,behavior:'smooth'})}}}>
+     <div className="dhScreen" data-tip="Come on in" onClick={()=>{const t=trackRef.current;if(t&&!isStatic){const to=t.offsetTop+(t.offsetHeight-window.innerHeight)*.5;window.scrollTo({top:to,behavior:'smooth'})}}}>
       <WaveWallpaper id="dhMiniWp"/>
       <div className="dhMiniBar"><b>Neha</b><span>Selected work</span><span>Experience</span></div>
       <div className="dhHello dhHelloMini">{hello}</div>

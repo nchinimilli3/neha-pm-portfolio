@@ -86,3 +86,13 @@
 /* The tumbler draws its own contact shadow; the old bottle's cast shadows would float below its box. */
 .dhStage .dhFlask::before,.dhStage .dhFlask::after{display:none}
 .dhCookie .ckShadow{transition:opacity .6s,transform .4s}
+
+/* Hover labels on the desk (DeskTips): a small cream tag with a pointer, in the site's
+   sans, above the object under the mouse. */
+.deskTip{position:fixed;z-index:9000;pointer-events:none;white-space:nowrap;padding:5px 10px 6px;border-radius:8px;
+ background:#fbf8f2;color:#3b3029;font:500 12px/1.2 Inter,system-ui,sans-serif;letter-spacing:.005em;
+ box-shadow:0 8px 18px -8px rgba(40,26,12,.45),0 0 0 .5px rgba(70,52,36,.16);
+ opacity:0;transform:translate(-50%,calc(-100% + 4px));transition:opacity .16s ease,transform .18s cubic-bezier(.2,.8,.2,1)}
+.deskTip.isOn{opacity:1;transform:translate(-50%,-100%)}
+.deskTip::after{content:"";position:absolute;left:50%;bottom:-4px;width:8px;height:8px;margin-left:-4px;background:#fbf8f2;transform:rotate(45deg);box-shadow:1px 1px 0 rgba(70,52,36,.08);border-radius:0 0 2px 0}
+@media (prefers-reduced-motion:reduce){.deskTip{transition:none}}

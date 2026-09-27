@@ -1,4 +1,5 @@
 import React,{useEffect,useRef,useState} from 'react';
+import {createPortal} from 'react-dom';
 import './desk-props.css';
 
 /* Small things on the hero desk that each do one real thing when touched. Drawn in code,
@@ -10,7 +11,7 @@ import './desk-props.css';
 export function TumblerFlask(){
  const [n,setN]=useState(0);
  const body="M44 50Q77 58 110 50L106 116C105.5 124 101 128 97.5 132L96.8 177A19.8 5.5 0 0 1 57.2 177L56.5 132C53 128 48.5 124 48 116Z";
- return <div className={`dhFlask dh3d ${n?'isSip':''}`} key={n} title="Stay hydrated" onClick={()=>setN(v=>v+1)}>
+ return <div className={`dhFlask dh3d ${n?'isSip':''}`} key={n} data-tip="Stay hydrated" onClick={()=>setN(v=>v+1)}>
   <svg viewBox="0 0 120 200" aria-hidden="true">
    <defs>
     <linearGradient id="tuBody" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#c8bca7"/><stop offset=".1" stopColor="#ddd3c2"/><stop offset=".32" stopColor="#f1ebdf"/><stop offset=".46" stopColor="#f8f3ea"/><stop offset=".62" stopColor="#efe8db"/><stop offset=".84" stopColor="#d9cfbd"/><stop offset="1" stopColor="#bfb39e"/></linearGradient>
@@ -75,7 +76,7 @@ export function Candle(){
  const strike=()=>{if(lit||striking)return;setStriking(Date.now());timers.current.push(window.setTimeout(()=>{setLit(true);setPuffs(0)},900),window.setTimeout(()=>setStriking(0),1500))};
  const blow=()=>{if(!lit)return;setLit(false);setPuffs(p=>p+1)};
  return <>
-  <div className={`dhCandle ${lit?'isLit':''}`} onClick={blow} title={lit?'Blow it out':'Strike a match to light it'}>
+  <div className={`dhCandle ${lit?'isLit':''}`} onClick={blow} data-tip={lit?'Blow it out':'Strike a match to light it'}>
    <div className="dcGlow"/>
    <svg viewBox="0 0 100 84" aria-hidden="true">
     <defs>
@@ -117,7 +118,7 @@ export function Candle(){
    </svg>
    {puffs>0&&<svg className="dcSmoke" key={puffs} viewBox="0 0 100 80" aria-hidden="true">{[28,50,72].map((x,i)=><path key={i} d={`M${x} 78c-6-10 7-16 0-27s5-18-1-30`} style={{animationDelay:`${i*.12}s`}}/>)}</svg>}
   </div>
-  <div className={`dhMatches ${striking?'isStriking':''}`} onClick={strike} title="Strike a match">
+  <div className={`dhMatches ${striking?'isStriking':''}`} onClick={strike} data-tip="Strike a match">
    <svg viewBox="0 0 60 34" aria-hidden="true">
     <defs><linearGradient id="dmSide" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#6b3b2a"/><stop offset="1" stopColor="#3f2016"/></linearGradient></defs>
     <ellipse cx="30" cy="31" rx="27" ry="3" fill="#1e140a" opacity=".3"/>
@@ -141,7 +142,7 @@ const FLAKES=Array.from({length:34},(_,i)=>{const r=(n:number)=>((Math.sin(i*12.
  return {x0:20+r(1)*60,x1:14+r(2)*72,y1:14+r(3)*34,x2:18+r(4)*64,d:4.2+r(5)*3.4,dl:r(6)*.35,s:.7+r(7)*1.1}});
 export function SnowGlobe(){
  const [n,setN]=useState(0);
- return <div className={`dhGlobe ${n?'isShaken':''}`} key={n} onClick={e=>{e.stopPropagation();setN(v=>v+1)}} title="Shake it">
+ return <div className={`dhGlobe ${n?'isShaken':''}`} key={n} onClick={e=>{e.stopPropagation();setN(v=>v+1)}} data-tip="Shake it">
   <svg viewBox="0 0 100 120" aria-hidden="true">
    <defs>
     <radialGradient id="sgWater" cx=".4" cy=".35" r=".75"><stop offset="0" stopColor="#eef5fb" stopOpacity=".55"/><stop offset=".7" stopColor="#c9dcec" stopOpacity=".35"/><stop offset="1" stopColor="#8fa9c2" stopOpacity=".55"/></radialGradient>
@@ -223,7 +224,7 @@ export function DoodlePad(){
  const move=(e:React.PointerEvent)=>{const d=drawing.current;if(!d)return;const p=toPad(d.inv,e.clientX,e.clientY),l=d.pts[d.pts.length-1];if(Math.hypot(p[0]-l[0],p[1]-l[1])<1.2)return;d.pts.push(p);setStrokes(s=>[...s.slice(0,-1),path(d.pts)])};
  const up=()=>{drawing.current=null};
  return <div className="dhDoodle">
-  <div className="ddPage" key={tear} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up} title="Doodle: drag to draw">
+  <div className="ddPage" key={tear} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up} data-tip="Doodle: drag to draw">
    <svg viewBox={`0 0 ${PAD_W} ${PAD_H}`} aria-hidden="true">
     <defs>
      {/* Ink in paper: the line wanders a hair and a faint halo bleeds into the fibres. */}
@@ -235,6 +236,34 @@ export function DoodlePad(){
    </svg>
    {[0,1,2,3].map(i=><span key={i} className="ddCorner" data-c={i} ref={el=>{corners.current[i]=el}}/>)}
   </div>
-  <button type="button" className="ddTear" onClick={()=>{setStrokes([]);setTear(t=>t+1)}} title="Tear off a fresh page" aria-label="Tear off a fresh page"/>
+  <button type="button" className="ddTear" onClick={()=>{setStrokes([]);setTear(t=>t+1)}} data-tip="Tear off a fresh page" aria-label="Tear off a fresh page"/>
  </div>
+}
+
+/* The desk's hover labels, in place of the browser's tooltip: a small cream tag with a
+   pointer, just above whatever the mouse rests on (anything in the hero with data-tip).
+   It waits a beat before appearing, follows state changes (lamp on/off), and gets out
+   of the way when the page scrolls. Mouse only; touch devices don't hover. */
+export function DeskTips(){
+ const [tip,setTip]=useState<{text:string;x:number;y:number;on:boolean}|null>(null);
+ useEffect(()=>{
+  let anchor:HTMLElement|null=null,timer=0;
+  const place=(el:HTMLElement,on:boolean)=>{const r=el.getBoundingClientRect(),text=el.dataset.tip||'';if(!text){setTip(null);return}
+   setTip({text,x:Math.min(window.innerWidth-12,Math.max(12,r.left+r.width/2)),y:Math.max(28,r.top-6),on})};
+  const hide=()=>{window.clearTimeout(timer);anchor=null;setTip(t=>t&&{...t,on:false})};
+  const over=(e:PointerEvent)=>{
+   if(e.pointerType!=='mouse')return;
+   const el=(e.target as HTMLElement).closest<HTMLElement>('.dhTrack [data-tip]');
+   if(el===anchor)return;
+   window.clearTimeout(timer);anchor=el;
+   if(!el){setTip(t=>t&&{...t,on:false});return}
+   timer=window.setTimeout(()=>{if(anchor===el)place(el,true)},260);
+  };
+  const click=()=>{const el=anchor;if(el)window.setTimeout(()=>{if(anchor===el)place(el,true)},0)};
+  document.addEventListener('pointerover',over);document.addEventListener('click',click,true);
+  window.addEventListener('scroll',hide,{passive:true});window.addEventListener('blur',hide);
+  return()=>{window.clearTimeout(timer);document.removeEventListener('pointerover',over);document.removeEventListener('click',click,true);window.removeEventListener('scroll',hide);window.removeEventListener('blur',hide)};
+ },[]);
+ if(!tip)return null;
+ return createPortal(<div className={`deskTip ${tip.on?'isOn':''}`} style={{left:tip.x,top:tip.y}} aria-hidden="true">{tip.text}</div>,document.body);
 }
