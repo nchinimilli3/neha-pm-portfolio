@@ -4,6 +4,7 @@ import {pageY} from './perfMode';
 import './desk-hero.css';
 import WatercolorPaper,{watercolorName} from './WatercolorPaper';
 import {Candle,DoodlePad,SnowGlobe,TumblerFlask} from './DeskProps';
+import './desk-materials.css';
 import {CASE_FILES,HOME_SHOWN,isParked,maximizeInto} from './CaseWindow';
 import {ShelbyMark} from './CarArt';
 
@@ -275,7 +276,7 @@ function Lamp({on,onToggle}:{on:boolean;onToggle:()=>void}){
    <path d="M142 280L122 186M118 170L74 118" fill="none" stroke="#8d8a86" strokeWidth="1.6" strokeDasharray="1.2 1.6"/>
    <circle cx="126" cy="176" r="7" fill="#2f2e2c" stroke="#5a5754"/><circle cx="126" cy="176" r="2.4" fill="#8d8a86"/>
    <circle cx="150" cy="290" r="5" fill="#2f2e2c"/><circle cx="66" cy="106" r="5" fill="#2f2e2c"/>
-   <g transform="rotate(38 58 98)"><path d="M40 78h36l2 8H38Z" fill="#2f2e2c"/><path d="M36 86h44l22 40H14Z" fill="url(#lampShade)"/><path d="M78 87l21 37" stroke="#8d8a86" strokeOpacity=".55" strokeWidth="1.2"/><ellipse cx="58" cy="126" rx="44" ry="7" fill="#1b1a19"/><ellipse cx="58" cy="126" rx="41" ry="5.8" className="dhShadeInner" fill="url(#lampInner)"/><ellipse cx="58" cy="126.5" rx="14" ry="3.2" className="dhBulb"/></g>
+   <g transform="rotate(51 58 98)"><path d="M40 78h36l2 8H38Z" fill="#2f2e2c"/><path d="M36 86h44l22 40H14Z" fill="url(#lampShade)"/><path d="M78 87l21 37" stroke="#8d8a86" strokeOpacity=".55" strokeWidth="1.2"/><ellipse cx="58" cy="126" rx="44" ry="7" fill="#1b1a19"/><ellipse cx="58" cy="126" rx="41" ry="5.8" className="dhShadeInner" fill="url(#lampInner)"/><ellipse cx="58" cy="126.5" rx="14" ry="3.2" className="dhBulb"/></g>
    </g>
   </svg>
  </div>
@@ -293,8 +294,8 @@ function Mustang(){
 }
 
 // Where each click's bite lands, as [angle in degrees, depth] around the cookie's edge.
-// Two bites show; the third finishes it.
-const COOKIE_BITES=3;
+// Four bites show; the fifth finishes it, and a fresh one appears.
+const COOKIE_BITES=5;
 const BITES:[number,number][]=[[-40,1],[25,1.05],[150,.95],[210,1.1],[95,1],[290,1.15]];
 // A slightly lumpy outline, so it reads as baked rather than stamped.
 const COOKIE_EDGE=(()=>{const n=22,pts=Array.from({length:n},(_,i)=>{const a=i/n*Math.PI*2,r=41+Math.sin(i*2.7)*1.6+Math.cos(i*1.3)*1.1;return [50+Math.cos(a)*r,50+Math.sin(a)*r*.97]});
@@ -303,18 +304,19 @@ const biteCircles=(k:number)=>BITES.slice(0,k).flatMap(([deg,d])=>{const a=deg*M
  return [[cx,cy,11*d],[cx+tx*9,cy+ty*9,8.5*d],[cx-tx*9,cy-ty*9,8.5*d]] as [number,number,number][]});
 
 function CookieNapkin(){
- // A chocolate-chunk cookie on a napkin. Three bites and only crumbs are left; it stays
- // eaten for the rest of the visit and is back, whole, next time.
- const [bites,setBites]=useState(()=>{try{return Math.min(COOKIE_BITES,Number(sessionStorage.getItem('neha-cookie'))||0)}catch{return 0}});
+ // A chocolate-chunk cookie on a napkin. Five bites and it's gone (crumbs left), then a
+ // fresh one fades back in.
+ const [bites,setBites]=useState(0);
  const [chomp,setChomp]=useState(0);
- const bite=()=>{if(bites>=COOKIE_BITES)return;const n=bites+1;setChomp(c=>c+1);setBites(n);try{sessionStorage.setItem('neha-cookie',String(n))}catch{}};
+ const bite=()=>{if(bites>=COOKIE_BITES)return;const n=bites+1;setChomp(c=>c+1);setBites(n);if(n>=COOKIE_BITES)window.setTimeout(()=>setBites(0),2600)};
  const gone=bites>=COOKIE_BITES;
  const cut=biteCircles(bites);
  const last=bites>0&&!gone?BITES[bites-1]:null;
- return <button type="button" className={`dhCookie ${gone?'isGone':''}`} onClick={bite} aria-label={gone?'Only crumbs left':'Take a bite of the cookie'} title={gone?'All gone. Back next visit':'Take a bite'}>
+ return <button type="button" className={`dhCookie ${gone?'isGone':''}`} onClick={bite} aria-label={gone?'All gone':'Take a bite of the cookie'} title={gone?'All gone… one more coming':'Take a bite'}>
   <svg viewBox="0 0 150 130" aria-hidden="true">
   <defs>
    <radialGradient id="ckBody" cx=".42" cy=".38" r=".66"><stop offset="0" stopColor="#ecc991"/><stop offset=".45" stopColor="#dcae6c"/><stop offset=".78" stopColor="#c48a48"/><stop offset=".94" stopColor="#a86c33"/><stop offset="1" stopColor="#8a5424"/></radialGradient>
+   <radialGradient id="ckRim" cx=".42" cy=".36" r=".6"><stop offset=".72" stopColor="#5a3212" stopOpacity="0"/><stop offset="1" stopColor="#5a3212" stopOpacity=".45"/></radialGradient>
    <radialGradient id="ckDome" cx=".38" cy=".3" r=".55"><stop offset="0" stopColor="#fff3d6" stopOpacity=".55"/><stop offset="1" stopColor="#fff3d6" stopOpacity="0"/></radialGradient>
    <radialGradient id="ckChunk" cx=".35" cy=".3" r=".8"><stop offset="0" stopColor="#6b4027"/><stop offset=".5" stopColor="#3d2314"/><stop offset="1" stopColor="#24130a"/></radialGradient>
    <filter id="ckTex" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".55" numOctaves="3" seed="11"/><feColorMatrix values="0 0 0 0 .45 0 0 0 0 .27 0 0 0 0 .1 0 0 0 1.4 -.62"/><feComposite in2="SourceGraphic" operator="in"/></filter>
@@ -329,9 +331,16 @@ function CookieNapkin(){
   </g>
   {[[30,98,1.6],[112,34,1.3],[120,96,1.1],[36,30,1],[104,108,1.4],[24,70,.9]].slice(0,gone?6:2+bites).map(([x,y,r],i)=><ellipse key={i} cx={x} cy={y} rx={r*1.3} ry={r} fill="#c48c50"/>)}
   <g transform="translate(25 15)">
+   {/* The cookie stands up off the napkin (below); on the napkin itself, just its shadow. */}
+   <ellipse cx="47" cy="56" rx="46" ry="42" fill="#3a2410" opacity=".4" filter="url(#ckSoft)"/>
+   {last&&<g key={`crumbs${chomp}`} className="ckCrumbs">{[0,1,2,3].map(i=>{const a=last[0]*Math.PI/180,x=50+Math.cos(a)*50+(i-1.5)*5,y=50+Math.sin(a)*50+(i%2)*4;return <ellipse key={i} cx={x} cy={y} rx={1.4+i%2} ry={1+i%2*.6} fill="#c48c50" style={{'--dx':`${Math.cos(a)*6+(i-1.5)*2}px`,'--dy':`${Math.sin(a)*6+3}px`} as React.CSSProperties}/>})}</g>}
+  </g>
+  </svg>
+  {/* Upright, facing the viewer: a domed top seen at an angle over its thick baked side. */}
+  <svg className="ckUp" viewBox="0 0 150 72" aria-hidden="true">
+   <g transform="translate(25 4) scale(1 .52)">
    <g key={chomp} className="ckWhole" mask="url(#ckBite)">
-    <path d={COOKIE_EDGE} transform="translate(-3 5)" fill="#3a2410" opacity=".35" filter="url(#ckSoft)"/>
-    <path d={COOKIE_EDGE} transform="translate(0 5)" fill="#7a4a1f"/><path d={COOKIE_EDGE} transform="translate(0 2.6)" fill="#9c6630"/><path d={COOKIE_EDGE} fill="url(#ckBody)"/>
+    {/* The cookie's thickness: its baked side, darker toward the base, seen along the front edge. */}{[22,18,14,10,6,3].map((d,i)=><path key={d} d={COOKIE_EDGE} transform={`translate(0 ${d})`} fill={['#5e3514','#6f4119','#80501f','#935f28','#a86f33','#b98040'][i]}/>)}<path d={COOKIE_EDGE} fill="url(#ckBody)"/><path d={COOKIE_EDGE} fill="url(#ckRim)"/>
     <path d={COOKIE_EDGE} fill="#fff" filter="url(#ckTex)" opacity=".55"/>
     <g clipPath="url(#ckClip)">
      <path d="M26 42q9-7 18-2M52 66q8 5 15 1M34 74q5-6 11-5M60 38q7-5 13 0M44 26q6 3 11 0" fill="none" stroke="#8a5424" strokeWidth="1.3" strokeLinecap="round" opacity=".55"/>
@@ -346,8 +355,7 @@ function CookieNapkin(){
      {cut.map(([x,y,r],i)=><circle key={`c${i}`} cx={x} cy={y} r={r+2.6} fill="none" stroke="#e8c48c" strokeWidth="1" strokeDasharray="1.5 2" opacity=".8"/>)}
     </g>
    </g>
-   {last&&<g key={`crumbs${chomp}`} className="ckCrumbs">{[0,1,2,3].map(i=>{const a=last[0]*Math.PI/180,x=50+Math.cos(a)*50+(i-1.5)*5,y=50+Math.sin(a)*50+(i%2)*4;return <ellipse key={i} cx={x} cy={y} rx={1.4+i%2} ry={1+i%2*.6} fill="#c48c50" style={{'--dx':`${Math.cos(a)*6+(i-1.5)*2}px`,'--dy':`${Math.sin(a)*6+3}px`} as React.CSSProperties}/>})}</g>}
-  </g>
+   </g>
   </svg>
  </button>
 }
@@ -356,14 +364,9 @@ function WatercolorTin(){
  // Top-down: a travel watercolor tin, lid open as a mixing tray, twelve used half-pans, and a round brush.
  const [wash,setWash]=useState(0);
  const [painting,setPainting]=useState(false);
- useEffect(()=>{
-  if(!painting)return;
-  const clear=window.setTimeout(()=>setPainting(false),3300);
-  return ()=>window.clearTimeout(clear);
- },[wash,painting]);
  const pans=['#e2b33a','#e07b2e','#c9352c','#b0304f','#7a3c8c','#2d4f9e','#2f86b8','#2a8f78','#4f8a3a','#9a7b2e','#7a4a2a','#2b2b2e'];
- return <button type="button" tabIndex={-1} className="dhPaints" title={`Paint another little picture · ${watercolorName(wash)}`} aria-label={`Paint a new watercolor on the paper. Currently ${watercolorName(wash)}.`} onClick={()=>{setWash(v=>v+1);setPainting(true)}}>
- <WatercolorPaper click={wash}/>
+ return <button type="button" tabIndex={-1} className={`dhPaints ${painting?'isPainting':''}`} title={`Paint another little picture · ${watercolorName(wash)}`} aria-label={`Paint a new watercolor on the paper. Currently ${watercolorName(wash)}.`} onClick={()=>setWash(v=>v+1)}>
+ <WatercolorPaper click={wash} onPaintingChange={setPainting}/>
 
  <svg className="dhWatercolorTin" viewBox="0 0 240 130" aria-hidden="true">
   <defs>
@@ -403,7 +406,7 @@ function WatercolorTin(){
   <path d="M170 122v3h17v-3" fill="url(#wcMetal)" stroke="#858c86" strokeWidth=".6"/>
   {/* A tapered lacquer handle, crimped ferrule and individual wet bristles. */}
   <g transform="rotate(-24 150 70)">
-   <g key={wash} className={painting?"dhActiveBrush":undefined}>
+   <g key={wash} className="dhRestingBrush">
     <path d="M62 72L221 72L245 73" fill="none" stroke="#101513" strokeOpacity=".25" strokeWidth="7" strokeLinecap="round"/>
     <path d="M59 68Q56 69 61 70L208 72V65Z" fill="url(#wcBrushWood)"/>
     <path d="M68 68L204 66.3" stroke="#efba8b" strokeOpacity=".6" strokeWidth=".7"/>
