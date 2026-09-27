@@ -274,8 +274,8 @@ function MsuCappuccino(){
  </button>
 }
 
-function Lamp({on,onToggle}:{on:boolean;onToggle:()=>void}){
- return <button type="button" className={`dhLamp ${on?'isOn':''}`} tabIndex={-1} title={on?'Lamp off':'Lamp on'} onClick={onToggle} aria-pressed={on} aria-label={on?'Turn the desk lamp off':'Turn the desk lamp on'}>
+function Lamp(){
+ return <div className="dhLamp isOn" aria-hidden="true">
   <svg viewBox="0 0 200 320" aria-hidden="true">
    <defs>
     <linearGradient id="lampShade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#141312"/><stop offset=".55" stopColor="#3c3a38"/><stop offset=".78" stopColor="#5a5754"/><stop offset="1" stopColor="#1c1b1a"/></linearGradient>
@@ -283,6 +283,8 @@ function Lamp({on,onToggle}:{on:boolean;onToggle:()=>void}){
     <radialGradient id="lampInner" cx=".5" cy=".9" r=".9"><stop offset="0" stopColor="#fff3cf"/><stop offset=".5" stopColor="#e9c98a"/><stop offset="1" stopColor="#8c7450"/></radialGradient>
     <filter id="lampBlur" x="-30%" y="-100%" width="160%" height="300%"><feGaussianBlur stdDeviation="3"/></filter>
    </defs>
+   <g transform="translate(200 0) scale(-1 1)">
+   <path d="M168 301Q186 307 208 298T245 301" fill="none" stroke="#292522" strokeWidth="2.3" strokeLinecap="round"/>
    <ellipse className="dhLampShadow" cx="124" cy="308" rx="52" ry="8" fill="#1c1a19" opacity=".38" filter="url(#lampBlur)"/>
    <ellipse cx="150" cy="298" rx="39" ry="10" fill="#141414"/><ellipse cx="150" cy="294" rx="38" ry="8" fill="url(#lampBase)"/><ellipse cx="150" cy="292" rx="30" ry="5" fill="#3a3836"/><path d="M160 288.5a30 5 0 0 0 18 -1.6" stroke="#9b978f" strokeOpacity=".7" fill="none"/>
    <path d="M150 292L126 176L64 104" fill="none" stroke="#3a3836" strokeWidth="6.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -290,9 +292,10 @@ function Lamp({on,onToggle}:{on:boolean;onToggle:()=>void}){
    <path d="M142 280L122 186M118 170L74 118" fill="none" stroke="#8d8a86" strokeWidth="1.6" strokeDasharray="1.2 1.6"/>
    <circle cx="126" cy="176" r="7" fill="#2f2e2c" stroke="#5a5754"/><circle cx="126" cy="176" r="2.4" fill="#8d8a86"/>
    <circle cx="150" cy="290" r="5" fill="#2f2e2c"/><circle cx="66" cy="106" r="5" fill="#2f2e2c"/>
-   <g transform="rotate(-38 58 98)"><path d="M40 78h36l2 8H38Z" fill="#2f2e2c"/><path d="M36 86h44l22 40H14Z" fill="url(#lampShade)"/><path d="M78 87l21 37" stroke="#8d8a86" strokeOpacity=".55" strokeWidth="1.2"/><ellipse cx="58" cy="126" rx="44" ry="7" fill="#1b1a19"/><ellipse cx="58" cy="126" rx="41" ry="5.8" className="dhShadeInner" fill="url(#lampInner)"/><ellipse cx="58" cy="126.5" rx="14" ry="3.2" className="dhBulb"/></g>
+   <g transform="rotate(38 58 98)"><path d="M40 78h36l2 8H38Z" fill="#2f2e2c"/><path d="M36 86h44l22 40H14Z" fill="url(#lampShade)"/><path d="M78 87l21 37" stroke="#8d8a86" strokeOpacity=".55" strokeWidth="1.2"/><ellipse cx="58" cy="126" rx="44" ry="7" fill="#1b1a19"/><ellipse cx="58" cy="126" rx="41" ry="5.8" className="dhShadeInner" fill="url(#lampInner)"/><ellipse cx="58" cy="126.5" rx="14" ry="3.2" className="dhBulb"/></g>
+   </g>
   </svg>
- </button>
+ </div>
 }
 
 function PhotoFrame({eager=true}:{eager?:boolean}){
@@ -375,23 +378,54 @@ function WatercolorTin(){
  const pans=['#e2b33a','#e07b2e','#c9352c','#b0304f','#7a3c8c','#2d4f9e','#2f86b8','#2a8f78','#4f8a3a','#9a7b2e','#7a4a2a','#2b2b2e'];
  return <button type="button" tabIndex={-1} className="dhPaints" title="Paint a little watercolor" aria-label="Paint with the watercolor tin and brush" onClick={()=>{setWash(v=>v+1);setPainting(true)}}>
  {painting&&<svg key={wash} className="dhWatercolorBloom" viewBox="0 0 300 200" aria-hidden="true"><defs><filter id="wcBloomEdge" x="-25%" y="-25%" width="150%" height="150%"><feTurbulence type="fractalNoise" baseFrequency=".055" numOctaves="3" seed={wash%7}/><feDisplacementMap in="SourceGraphic" scale="12"/><feGaussianBlur stdDeviation=".5"/></filter></defs><g filter="url(#wcBloomEdge)">{[0,1,2,3,4].map((n)=><ellipse key={n} className="dhPigment" cx={65+n*40} cy={85+(n%2)*28} rx={37+n%3*5} ry={27+n%2*10} fill={pans[(wash+n*2)%pans.length]} style={{animationDelay:`${n*100}ms`}}/>)}<path className="dhPaintStroke" d="M32 125Q95 38 144 99T270 80" fill="none" stroke={pans[wash%pans.length]} strokeWidth="15" strokeLinecap="round" pathLength="1"/></g></svg>}
- <svg viewBox="0 0 240 130" aria-hidden="true">
-  <defs><linearGradient id="wcTin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#3a3a3e"/><stop offset="1" stopColor="#1f1f22"/></linearGradient></defs>
-  <rect x="4" y="10" width="112" height="112" rx="6" fill="#eeeae2" stroke="#c9c3b7"/>
-  {[[26,36,'#2f86b8'],[64,40,'#c9352c'],[40,82,'#e2b33a'],[84,84,'#2a8f78']].map(([x,y,c],i)=><g key={i}><circle cx={x} cy={y} r="16" fill="#fff" stroke="#ddd6c9"/><circle cx={Number(x)+2} cy={Number(y)+1} r="10" fill={c as string} opacity=".28"/><circle cx={Number(x)-3} cy={Number(y)+3} r="5" fill={c as string} opacity=".35"/></g>)}
-  <path d="M100 26q-10 14 -2 30" fill="none" stroke="#7a3c8c" strokeOpacity=".3" strokeWidth="4" strokeLinecap="round"/>
-  <rect x="8" y="14" width="104" height="104" rx="4" fill="none" stroke="#fffdf5" strokeWidth="2"/>
-  <rect x="116" y="10" width="4" height="112" fill="#8d8a84"/>
-  {[28,88].map(y=><g key={y}><rect x="113" y={y} width="10" height="14" rx="2" fill="#b6b5b0" stroke="#72746f" strokeWidth=".6"/><path d={`M118 ${y}v14`} stroke="#f2f0e6"/></g>)}
-  <rect x="120" y="10" width="116" height="112" rx="6" fill="url(#wcTin)"/>
-  {pans.map((c,i)=>{const col=i%6,row=Math.floor(i/6),x=126+col*18.3,y=20+row*50;return <g key={c}><rect x={x} y={y} width="15" height="40" rx="2.5" fill="#f4f1ea"/><rect x={x+1.5} y={y+1.5} width="12" height="37" rx="2" fill={c}/><ellipse cx={x+7.5} cy={y+14+(i%3)*5} rx="4.5" ry="7" fill="#fff" opacity=".22"/><path d={`M${x+3} ${y+28}q4 -4 9 0`} stroke="#000" strokeOpacity=".18" fill="none"/></g>})}
-  <g key={wash} className={wash?"dhActiveBrush":undefined} transform="rotate(-24 150 70)">
-   <rect x="60" y="66" width="150" height="5" rx="2.5" fill="#b0452f"/>
-   <path d="M66 67h140" stroke="#f1b394" strokeOpacity=".5" strokeWidth=".8"/>
-   <rect x="210" y="65.5" width="16" height="6" rx="1" fill="#c9c5bd"/>
-   <path d="M211 67h14M214 66v5M223 66v5" stroke="#f9f7ed" strokeWidth=".7"/>
-   <path d="M226 65.5q14 1.5 20 3.5q-6 2 -20 3.5Z" fill="#2a1a12"/>
-   <path d="M238 67.8q6 .8 8 1.2q-2 .6 -8 1.2Z" fill="#2d4f9e"/>
+ <svg className="dhWatercolorTin" viewBox="0 0 240 130" aria-hidden="true">
+  <defs>
+   <linearGradient id="wcTin" x1="0" y1="0" x2=".8" y2="1"><stop stopColor="#64676a"/><stop offset=".12" stopColor="#272e32"/><stop offset=".8" stopColor="#151c20"/><stop offset="1" stopColor="#41474a"/></linearGradient>
+   <linearGradient id="wcMetal" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#fffaf0"/><stop offset=".24" stopColor="#a9aaa5"/><stop offset=".48" stopColor="#edece4"/><stop offset=".75" stopColor="#797e7b"/><stop offset="1" stopColor="#d7d6cb"/></linearGradient>
+   <linearGradient id="wcEnamel" x1="0" y1="0" x2=".5" y2="1"><stop stopColor="#fffdf3"/><stop offset=".6" stopColor="#e9e6da"/><stop offset="1" stopColor="#c8c7bb"/></linearGradient>
+   <radialGradient id="wcPigment" cx=".48" cy=".45" r=".7"><stop stopColor="#090b0a" stopOpacity=".32"/><stop offset=".52" stopColor="#090b0a" stopOpacity=".05"/><stop offset="1" stopColor="#090b0a" stopOpacity=".5"/></radialGradient>
+   <linearGradient id="wcBrushWood" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#df9872"/><stop offset=".3" stopColor="#9c4e31"/><stop offset=".75" stopColor="#713321"/><stop offset="1" stopColor="#3a231c"/></linearGradient>
+  </defs>
+  {/* The open lid lies on the same desk plane; a narrow rolled edge gives the tin thickness. */}
+  <rect x="3" y="13" width="113" height="113" rx="7" fill="#727773"/>
+  <rect x="3" y="9" width="113" height="113" rx="7" fill="url(#wcMetal)" stroke="#767b78" strokeWidth=".8"/>
+  <rect x="6" y="12" width="107" height="106" rx="5" fill="url(#wcEnamel)"/>
+  {[[12,18,'#2f86b8'],[62,18,'#b0304f'],[12,69,'#e2b33a'],[62,69,'#2a8f78']].map(([x,y,c],i)=><g key={i} transform={`translate(${x} ${y})`}>
+   <rect width="44" height="43" rx="5" fill="#b7b7ac"/>
+   <rect x="1" y="1.8" width="42" height="40" rx="4" fill="url(#wcEnamel)" stroke="#fffdf4" strokeWidth=".7"/>
+   <path d="M9 27Q2 12 18 13T34 25Q28 36 15 32Z" fill={c as string} opacity=".19"/>
+   <path d="M9 27Q5 20 12 18M17 32Q30 34 34 25" fill="none" stroke={c as string} strokeWidth="1.2" opacity=".32"/>
+   <ellipse cx="25" cy="24" rx="10" ry="7" fill={c as string} opacity=".12"/>
+  </g>)}
+  <path d="M9 14H108M7 20v86" fill="none" stroke="#fffdf5" strokeWidth="1"/>
+  <rect x="115" y="13" width="6" height="108" fill="#585e5c"/>
+  {[29,87].map(y=><g key={y}><rect x="112" y={y} width="12" height="16" rx="2" fill="url(#wcMetal)" stroke="#6c736f" strokeWidth=".6"/><path d={`M118 ${y+1}v14`} stroke="#fffdf5" strokeWidth="1"/></g>)}
+  <rect x="120" y="13" width="117" height="114" rx="7" fill="#11181b"/>
+  <rect x="119" y="9" width="118" height="113" rx="7" fill="url(#wcTin)" stroke="#929792" strokeWidth="1"/>
+  <rect x="123" y="13" width="110" height="105" rx="4" fill="#10171a" stroke="#707775" strokeWidth=".8"/>
+  {pans.map((c,i)=>{const col=i%4,row=Math.floor(i/4),x=127+col*26,y=18+row*32;return <g key={c}>
+   <rect x={x} y={y+1.8} width="23" height="28" rx="2" fill="#62675f"/>
+   <rect x={x} y={y} width="23" height="27" rx="2" fill="url(#wcEnamel)"/>
+   <rect x={x+2} y={y+2} width="19" height="23" rx="1.8" fill={c}/>
+   <rect x={x+2} y={y+2} width="19" height="23" rx="1.8" fill="url(#wcPigment)"/>
+   <path d={`M${x+5} ${y+17}q5 ${-5-i%3} 13 -3M${x+6} ${y+20}l8 -2`} fill="none" stroke="#f5e5c7" strokeOpacity=".19" strokeWidth=".7"/>
+   <path d={`M${x+3} ${y+3}h17`} stroke="#100f0b" strokeOpacity=".35"/>
+   <ellipse cx={x+9+i%3} cy={y+11} rx="4" ry="2.5" fill="#fff8df" opacity=".12"/>
+  </g>})}
+  <path d="M125 10h104M121 16v98" stroke="#c3ccc7" strokeOpacity=".5" fill="none"/>
+  <path d="M170 122v3h17v-3" fill="url(#wcMetal)" stroke="#858c86" strokeWidth=".6"/>
+  {/* A tapered lacquer handle, crimped ferrule and individual wet bristles. */}
+  <g transform="rotate(-24 150 70)">
+   <g key={wash} className={painting?"dhActiveBrush":undefined}>
+    <path d="M62 72L221 72L245 73" fill="none" stroke="#101513" strokeOpacity=".25" strokeWidth="7" strokeLinecap="round"/>
+    <path d="M59 68Q56 69 61 70L208 72V65Z" fill="url(#wcBrushWood)"/>
+    <path d="M68 68L204 66.3" stroke="#efba8b" strokeOpacity=".6" strokeWidth=".7"/>
+    <path d="M207 65L224 65.5V71.5L207 72Z" fill="url(#wcMetal)" stroke="#828781" strokeWidth=".5"/>
+    <path d="M211 65.5v6M214 65.5v6M221 66v5" stroke="#555d56" strokeOpacity=".7" strokeWidth=".6"/>
+    <path d="M224 65.5C232 64 240 68 248 69C239 70 232 74 224 71.5Z" fill="#503528"/>
+    {[0,1,2,3].map(i=><path key={i} d={`M225 ${66+i*1.5}Q235 ${67+i*.8} 247 69`} fill="none" stroke={i%2?'#bb8b59':'#231d18'} strokeWidth=".55" opacity=".75"/>)}
+    <path d="M239 67.8L248 69L239 70.4Q242 69 239 67.8" fill={pans[wash%pans.length]}/>
+   </g>
   </g>
  </svg></button>
 }
@@ -453,9 +487,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
   const q=new URLSearchParams(window.location.search).get('tod');
   return (['morning','day','evening','night'] as Tod[]).includes(q as Tod)?q as Tod:todFor(new Date().getHours());
  });
- const [lampOn,setLampOn]=useState(()=>tod==='evening'||tod==='night');
  const manualTod=useRef(false);
- useEffect(()=>{setLampOn(tod==='evening'||tod==='night')},[tod]);
  const [flash,setFlash]=useState(0);
  // The room fades in once its fonts and photos are ready, instead of filling in piece by piece.
  const [ready,setReady]=useState(false);
@@ -637,7 +669,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
  const day=clock.toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'}),time=clock.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
  const hello=<><div className="dhHelloBar"><i/><i/><i/><span>hello.txt</span></div><div className="dhHelloBody"><p>{GREETING[tod]}, i’m neha.<span className="dhCaret"/></p><small>welcome to my desk. keep scrolling, come on in →</small></div></>;
 
- return <section ref={trackRef} className={`dhTrack tod-${tod} ${ready?'isReady':''} ${isStatic?'isStatic':''} ${lampOn?'lampOn':''}`} style={{'--track':`${TRACK_VH}vh`} as React.CSSProperties} aria-label="Neha Chinimilli, intro and selected work" id="top">
+ return <section ref={trackRef} className={`dhTrack tod-${tod} ${ready?'isReady':''} ${isStatic?'isStatic':''} lampOn`} style={{'--track':`${TRACK_VH}vh`} as React.CSSProperties} aria-label="Neha Chinimilli, intro and selected work" id="top">
   {!isStatic&&<span id="projects" className="dhAnchor" style={{top:`${ANCHOR_P*(TRACK_VH-100)}vh`}} aria-hidden="true"/>}
   <div className="dhPin">
    <div className="dhCopy" ref={copyRef}>
@@ -678,7 +710,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
      <div className="dhImac"><div className="dhImacFace"><i className="dhImacCam"/></div><div className="dhImacChin"/><div className="dhImacStand"/><div className="dhImacFoot"/></div>
 
      <div className="dhDesk"><div className="dhDeskEdge"/></div><div className="dhWood"/>
-     <div className="dhLampPool"/>
+     <div className="dhLampPool"/><div className="dhPortraitLight"/>
      {/* Everything lying on the desk shares one plane, seen in perspective */}
      <div className="dhTop">
       <div className="dhDaylight"/>
@@ -692,7 +724,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
      <HydroFlask/>
      <MsuCappuccino/>
      <CanonAE1 onShoot={shoot}/>
-     <Lamp on={lampOn} onToggle={()=>setLampOn(v=>!v)}/>
+     <Lamp/>
      <div className="dhShade"/>
 
      <div className="dhScreen" title="Come on in" onClick={()=>{const t=trackRef.current;if(t&&!isStatic){const to=t.offsetTop+(t.offsetHeight-window.innerHeight)*.5;window.scrollTo({top:to,behavior:'smooth'})}}}>
@@ -746,23 +778,16 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
 }
 
 /* The end of the page: the same desk, at night. When it comes into view the
-   lamp clicks off, and a note on the wall says thanks, with how to reach me. */
+   portrait lamp stays warm, and a note on the wall says thanks, with how to reach me. */
 export function DeskGoodnight(){
  const rootRef=useRef<HTMLElement>(null),sceneRef=useRef<HTMLDivElement>(null),stageRef=useRef<HTMLDivElement>(null);
- const [lampOn,setLampOn]=useState(true);
  useEffect(()=>{
   const scene=sceneRef.current,stage=stageRef.current;if(!scene||!stage)return;
   const fit=()=>{const w=scene.clientWidth,h=scene.clientHeight,s=Math.max(w/1500,h/780),cx=w<760?900:760;stage.style.transform=`translate(${w/2-cx*s}px,${h/2-500*s}px) scale(${s})`};
   fit();const ro=new ResizeObserver(fit);ro.observe(scene);
-  let t=0;
-  const io=new IntersectionObserver(([e])=>{
-   if(e.isIntersecting&&e.intersectionRatio>.55){if(!t)t=window.setTimeout(()=>setLampOn(false),900)}
-   else if(!e.isIntersecting){window.clearTimeout(t);t=0;setLampOn(true)}
-  },{threshold:[0,.55]});
-  if(rootRef.current)io.observe(rootRef.current);
-  return()=>{ro.disconnect();io.disconnect();window.clearTimeout(t)};
+  return()=>ro.disconnect();
  },[]);
- return <section ref={rootRef} className={`dhTrack tod-night dhGoodnight ${lampOn?'lampOn':'lampOff'}`} aria-label="Contact">
+ return <section ref={rootRef} className="dhTrack tod-night dhGoodnight lampOn" aria-label="Contact">
   <div className="dhScene" ref={sceneRef}>
    <div className="dhStage" ref={stageRef} style={{'--sh':'262px','--sy':'310px'} as React.CSSProperties} aria-hidden="true">
     <div className="dhWall"/>
@@ -771,12 +796,12 @@ export function DeskGoodnight(){
     <div className="dhImac"><div className="dhImacFace"><i className="dhImacCam"/></div><div className="dhImacChin"/><div className="dhImacStand"/><div className="dhImacFoot"/></div>
     <div className="dhScreen"/>
     <div className="dhDesk"><div className="dhDeskEdge"/></div><div className="dhWood"/>
-    <div className="dhLampPool"/>
+    <div className="dhLampPool"/><div className="dhPortraitLight"/>
     <div className="dhTop"><div className="dhMat"><DeskKeyboard/><div className="dhMouse"/></div></div>
     <PhotoFrame eager={false}/>
     <MsuCappuccino/>
     <CanonAE1 onShoot={()=>{}}/>
-    <Lamp on={lampOn} onToggle={()=>setLampOn(v=>!v)}/>
+    <Lamp/>
     <div className="dhShade"/>
    </div>
   </div>
