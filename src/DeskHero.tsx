@@ -37,10 +37,10 @@ const BOOKS=[
  {t:'',c:'#9c4f3f',f:'#e8cf9c',h:108,w:16}
 ];
 const PRINTS=[
- {src:'project-media/about-film/04.jpg',pos:'50% 50%',cap:'presidio',r:-5},
- {src:'project-media/about-film/01.jpg',pos:'50% 50%',cap:'baker beach',r:4},
- {src:'project-media/about-film/06.jpg',pos:'50% 40%',cap:'tahoe',r:-3},
- {src:'project-media/about-film/10.jpg',pos:'50% 50%',cap:'painted ladies',r:6}
+ {src:'desk/print-04.jpg',pos:'50% 50%',cap:'presidio',r:-5},
+ {src:'desk/print-01.jpg',pos:'50% 50%',cap:'baker beach',r:4},
+ {src:'desk/print-06.jpg',pos:'50% 40%',cap:'tahoe',r:-3},
+ {src:'desk/print-10.jpg',pos:'50% 50%',cap:'painted ladies',r:6}
 ];
 
 const cl=(v:number)=>Math.max(0,Math.min(1,v));
@@ -214,12 +214,12 @@ function Lamp({on,onToggle}:{on:boolean;onToggle:()=>void}){
 function PhotoFrame({eager=true}:{eager?:boolean}){
  // A 5×7 frame with my headshot. It is just a photo on the desk.
  return <div className="dhFrame" aria-hidden="true">
-  <div className="dhFrameFace"><img src={asset('headshot.jpg')} alt="" loading={eager?'eager':'lazy'} decoding="async"/></div>
+  <div className="dhFrameFace"><img src={asset('desk/headshot.jpg')} alt="" loading={eager?'eager':'lazy'} decoding="async"/></div>
  </div>
 }
 function Mustang(){
  const [rev,setRev]=useState(0);
- return <div className={`dhMustang dh3d ${rev?'isRev':''}`} key={rev} title="’67 Shelby GT500" onClick={()=>setRev(v=>v+1)}><ShelbyMark/><img className="dhFordScript" src={asset('company-logos/ford-white-source.png')} alt="" aria-hidden="true"/>{rev>0&&<span className="dhVroom">vroom!</span>}</div>
+ return <div className={`dhMustang dh3d ${rev?'isRev':''}`} key={rev} title="’67 Shelby GT500" onClick={()=>setRev(v=>v+1)}><ShelbyMark/><img className="dhFordScript" src={asset('desk/ford-script.png')} alt="" aria-hidden="true"/>{rev>0&&<span className="dhVroom">vroom!</span>}</div>
 }
 
 // Where each click's bite lands, as [angle in degrees, depth] around the cookie's edge.
@@ -364,6 +364,14 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
  const manualTod=useRef(false);
  useEffect(()=>{setLampOn(tod==='evening'||tod==='night')},[tod]);
  const [flash,setFlash]=useState(0);
+ // The room fades in once its fonts and photos are ready, instead of filling in piece by piece.
+ const [ready,setReady]=useState(false);
+ useEffect(()=>{
+  const stage=stageRef.current;let done=false;const finish=()=>{if(!done){done=true;setReady(true)}};
+  const imgs=stage?[...stage.querySelectorAll('img')].filter(i=>i.getAttribute('src')):[];
+  Promise.all([document.fonts?.ready,...imgs.map(i=>i.decode().catch(()=>{}))]).then(finish);
+  const cap=window.setTimeout(finish,1500);return()=>window.clearTimeout(cap);
+ },[]);
  const [clock,setClock]=useState(()=>new Date());
 
  useEffect(()=>{const id=setInterval(()=>{const now=new Date();setClock(now);if(!manualTod.current&&!new URLSearchParams(window.location.search).get('tod'))setTod(todFor(now.getHours()))},30000);return()=>clearInterval(id)},[]);
@@ -422,7 +430,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
    snap=false;
    const p=shown;
    // Start fetching the case images once the visitor starts walking in.
-   if(!warmed&&p>.05){warmed=true;winRefs.current.forEach(w=>{const img=w?.querySelector('img');if(img)img.loading='eager'})}
+   if(!warmed&&p>.05){warmed=true;winRefs.current.forEach(w=>{const img=w?.querySelector('img');if(img&&!img.getAttribute('src')&&img.dataset.src){img.loading='eager';img.src=img.dataset.src}})}
    // Like a real notification, the toast slides in, then gets out of the way.
    const toast=toastRef.current;
    if(toast){if(p<.86)toastAt=0;else if(p>=.91&&!toastAt){toastAt=performance.now();window.clearTimeout(toastTimer);toastTimer=window.setTimeout(request,5050)}toastGone=!!toastAt&&performance.now()-toastAt>5000&&!toast.matches(':hover')}
@@ -543,7 +551,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
  const day=clock.toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'}),time=clock.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
  const hello=<><div className="dhHelloBar"><i/><i/><i/><span>hello.txt</span></div><div className="dhHelloBody"><p>{GREETING[tod]}, i’m neha.<span className="dhCaret"/></p><small>welcome to my desk. keep scrolling, come on in →</small></div></>;
 
- return <section ref={trackRef} className={`dhTrack tod-${tod} ${isStatic?'isStatic':''} ${lampOn?'lampOn':''}`} style={{'--track':`${TRACK_VH}vh`} as React.CSSProperties} aria-label="Neha Chinimilli, intro and selected work" id="top">
+ return <section ref={trackRef} className={`dhTrack tod-${tod} ${ready?'isReady':''} ${isStatic?'isStatic':''} ${lampOn?'lampOn':''}`} style={{'--track':`${TRACK_VH}vh`} as React.CSSProperties} aria-label="Neha Chinimilli, intro and selected work" id="top">
   {!isStatic&&<span id="projects" className="dhAnchor" style={{top:`${ANCHOR_P*(TRACK_VH-100)}vh`}} aria-hidden="true"/>}
   <div className="dhPin">
    <div className="dhCopy" ref={copyRef}>
@@ -632,7 +640,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
       return <article key={p.id} className="dhWin" data-case={p.id} ref={el=>{winRefs.current[i]=el}} style={isStatic?undefined:{left:`${x}vw`,top:`${y}vh`}}>
        <header className="dhWinBar" onPointerDown={e=>startDrag(i,e)}><i/><i/><i/><span>{CASE_FILES[p.id]}</span></header>
        <a href={`#/projects/${p.id}`} onClick={open(p.id)} className="dhWinBody" aria-label={`Open ${p.title} case study`}>
-        <img src={asset(w.img)} alt="" loading="lazy" decoding="async" style={w.pos?{objectPosition:w.pos}:undefined}/>
+        <img src={isStatic?asset(w.img):undefined} data-src={asset(w.img)} alt="" loading="lazy" decoding="async" style={w.pos?{objectPosition:w.pos}:undefined}/>
         <div className="dhWinCap"><div><h3>{p.title}</h3><small>{p.company.split(' · ')[0]}</small></div><em>{w.note}</em></div>
        </a>
       </article>})}

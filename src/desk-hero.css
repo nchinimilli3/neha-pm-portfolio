@@ -17,6 +17,10 @@
 .dhAnchor{position:absolute;left:0;width:1px;height:1px;pointer-events:none}
 
 .dhPin{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--wallB);isolation:isolate}
+/* Load cover: the wall color, lifted once the room's fonts and photos are ready. */
+.dhPin::before{content:"";position:absolute;inset:0;z-index:65;background:var(--wallB);pointer-events:none;transition:opacity .4s ease,visibility 0s .4s}
+.dhTrack.isReady .dhPin::before{opacity:0;visibility:hidden}
+@media(prefers-reduced-motion:reduce){.dhPin::before{transition:none}}
 .dhScene{position:absolute;inset:0;clip-path:inset(0)}
 /* Safari lets the desk's 3D-tilted planes (desk top, keyboard, mouse) escape overflow:hidden,
    so the scene clips with clip-path; once Neha OS covers the room it isn't drawn at all. */
@@ -250,7 +254,7 @@
 .dhCopy .dhEdu{display:flex;align-items:flex-start;gap:10px;line-height:1.45;margin-top:clamp(8px,1.4vh,12px);font-size:clamp(14px,1.9vh,15.5px);font-weight:500;opacity:.9}
 .dhEdu i{flex:none;width:18px;height:2px;margin-top:.7em;border-radius:1px;background:var(--accent)}
 .dhLinks{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:clamp(18px,3vh,28px)}
-.dhLinks a{font-size:14.5px;font-weight:500;color:var(--ink);text-decoration:none;padding:11px 18px;border-radius:999px;border:1px solid color-mix(in srgb,var(--ink) 30%,transparent);background:color-mix(in srgb,var(--wallA) 55%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:transform .15s,background .15s,border-color .15s}
+.dhLinks a{font-size:14.5px;font-weight:500;color:var(--ink);text-decoration:none;padding:11px 18px;border-radius:999px;border:1px solid color-mix(in srgb,var(--ink) 30%,transparent);background:color-mix(in srgb,var(--wallA) 55%,transparent);transition:transform .15s,background .15s,border-color .15s}
 .dhLinks a:hover{transform:translateY(-2px);border-color:var(--ink)}
 .dhLinks a:first-child{background:var(--ink);border-color:var(--ink);color:var(--wallA);padding:11px 22px;box-shadow:0 10px 22px -12px rgba(0,0,0,.55)}
 .dhLinks a span{display:inline-block;transition:transform .15s}
@@ -329,7 +333,7 @@
 .dhDock a:hover span{opacity:1}
 
 /* Progress rail: where you are in the walk-in, with a way out */
-.dhProgress{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);transition:transform .5s cubic-bezier(.3,.7,.2,1),padding .3s,opacity .2s;z-index:70;display:flex;align-items:center;gap:12px;padding:7px 8px 7px 14px;border-radius:999px;background:rgba(250,246,240,.62);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);box-shadow:0 0 0 .5px rgba(0,0,0,.08),0 6px 18px -8px rgba(0,0,0,.3);font:500 12px/1 Inter,sans-serif;color:#3a312a}
+.dhProgress{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);transition:transform .5s cubic-bezier(.3,.7,.2,1),padding .3s,opacity .2s;z-index:70;display:flex;align-items:center;gap:12px;padding:7px 8px 7px 14px;border-radius:999px;background:rgba(250,246,240,.9);box-shadow:0 0 0 .5px rgba(0,0,0,.08),0 6px 18px -8px rgba(0,0,0,.3);font:500 12px/1 Inter,sans-serif;color:#3a312a}
 .dhChapter{position:relative;width:104px;height:12px;overflow:hidden}
 .dhChapter b{position:absolute;inset:0;font-weight:500;white-space:nowrap;opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s}
 .dhProgress[data-chapter="0"] b:nth-child(1),.dhProgress[data-chapter="1"] b:nth-child(2),.dhProgress[data-chapter="2"] b:nth-child(3),.dhProgress[data-chapter="3"] b:nth-child(4){opacity:1;transform:none}
@@ -350,10 +354,10 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 /* Phones, portrait tablets, reduced motion: the same room and desktop, no pinned zoom. */
 .dhTrack.isStatic{height:auto;--ink:#221d19;--muted:#6d6258;--accent:#b0452f}
 .isStatic .dhPin{position:relative;height:auto;overflow:visible;background:none}
-.isStatic .dhCopy{position:relative;left:auto;top:auto;transform:none;width:auto;max-width:640px;padding:104px 20px 28px}
+/* Stacked, the copy sits on the cream page, not the wall: its pills take the page color at any time of day. */
+.isStatic .dhCopy{--wallA:var(--surf-paper,#f3ede3);position:relative;left:auto;top:auto;transform:none;width:auto;max-width:640px;padding:104px 20px 28px}
 .isStatic .dhPoke i{transform:rotate(45deg) translateX(2px)}
 .isStatic .dhCopy h1{font-size:clamp(56px,15vw,96px)}
-.isStatic .dhLinks a:first-child{color:#f3ede3}
 .isStatic .dhScene{position:relative;height:min(64vh,540px);overflow:hidden;background:var(--wallB)}
 .isStatic .dhOs{position:relative;inset:auto;opacity:1;visibility:visible;padding:56px 20px 24px;--su:1px}
 .isStatic .dhOs>.dhWallpaper,.isStatic .dhMenuBar,.isStatic .dhHelloOs,.isStatic .dhIcons,.isStatic .dhToast,.isStatic .dhDock{display:none}
