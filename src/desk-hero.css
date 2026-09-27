@@ -173,20 +173,21 @@
 
 /* iMac 24" (M1) in Blue, head-on: a white glass bezel with the display's thin black border,
    a pale anodised-blue chin with no logo, and the blue blade stand bending forward into a flat foot. */
-/* iMac 24" in blue, matched to Apple's product photo: a thin white bezel the same on all
-   four sides, a solid light-blue chin (~17% of the width), a flat aluminium blade stand
-   (~25% of the width) straight down to a thin foot plate, and a hair of blue back edge
-   for depth. The screen rect (SX/SW/SCREEN_BOTTOM in DeskHero.tsx) is fixed by the
-   camera; the body is built around it. */
-.dhImac{left:623px;top:calc(var(--sy) - 7px);width:434px;height:calc(var(--sh) + 82px);z-index:10}
-.dhImac::after{content:"";position:absolute;right:-3px;top:7px;bottom:5px;width:4px;border-radius:0 6px 6px 0;background:linear-gradient(#9bb6d3,#7898bf 70%,#6a8bb4);z-index:-1}
-.dhImacFace{position:absolute;left:0;right:0;top:0;bottom:69px;border-radius:9px 9px 0 0;background:linear-gradient(#fbfcfd,#f1f3f6);box-shadow:inset 0 1px 0 #fff,inset 0 0 0 1px #e1e5ea}
-.dhImacChin{position:absolute;left:0;right:0;bottom:0;height:69px;border-radius:0 0 9px 9px;background:linear-gradient(90deg,rgba(45,80,130,.1),transparent 30%,rgba(255,255,255,.2) 72%,rgba(45,80,130,.1)),linear-gradient(#b2cff0,#a2c4ea 55%,#97bbe4);box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 3px rgba(40,70,120,.18)}
-.dhImacStand{position:absolute;left:163px;top:100%;width:108px;height:63px;background:linear-gradient(90deg,#86a8cf,#b9d3ef 14%,#c9ddf3 40%,#a9c7ea 78%,#7e9fc7);box-shadow:inset 0 10px 10px -8px rgba(38,63,98,.55)}
-.dhImacFoot{position:absolute;left:157px;top:calc(100% + 61px);width:120px;height:8px;border-radius:2px 2px 4px 4px;background:linear-gradient(#cfe1f5,#a6c4e6 45%,#7c9dc6);box-shadow:0 3px 5px -1px rgba(30,20,10,.45)}
+/* iMac 24" in blue, measured off Apple's front view (as a share of the display width):
+   an even white bezel of 2.3% on all four sides, a solid light-blue chin of 9.9%, corners
+   of ~1.6%, a flat aluminium blade 23.7% wide and 14% tall, and a foot plate 2% tall and a
+   touch wider than the blade. The screen rect (SX/SW/SCREEN_BOTTOM in DeskHero.tsx) is fixed
+   by the camera; the body is built around it. Standing further back than the cup and
+   camera, its foot sits a little higher on the desk. */
+.dhImac{left:620px;top:calc(var(--sy) - 10px);width:440px;height:calc(var(--sh) + 64px);z-index:10}
+.dhImac::after{content:"";position:absolute;right:-3px;top:6px;bottom:4px;width:4px;border-radius:0 7px 7px 0;background:linear-gradient(#8fb0d6,#6f93c0 70%,#5f86b6);z-index:-1}
+.dhImacFace{position:absolute;left:0;right:0;top:0;bottom:44px;border-radius:7px 7px 0 0;background:linear-gradient(#f5f6f7,#eef0f2);box-shadow:inset 0 1px 0 #fff,inset 0 0 0 1px #e2e5e9}
+.dhImacChin{position:absolute;left:0;right:0;bottom:0;height:44px;border-radius:0 0 7px 7px;background:linear-gradient(90deg,rgba(45,80,130,.07),transparent 25%,rgba(255,255,255,.14) 70%,rgba(45,80,130,.08)),linear-gradient(#bdd3ef,#b4cdeb 60%,#abc6e7);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -1px 2px rgba(40,70,120,.16)}
+.dhImacStand{position:absolute;left:168px;top:100%;width:104px;height:62px;background:linear-gradient(90deg,#9dbbe0,#b9d1ee 12%,#c3d8f1 45%,#b3cbea 82%,#94b3db);box-shadow:inset 0 8px 8px -6px rgba(38,63,98,.4)}
+.dhImacFoot{position:absolute;left:165px;top:calc(100% + 60px);width:110px;height:9px;border-radius:2px 2px 3px 3px;background:linear-gradient(#d6e6f7 0 2px,#a9c5e7 2px,#8eaed8);box-shadow:0 3px 5px -1px rgba(30,20,10,.4)}
 /* The blade is a deeper blue than the chin, lit from above, a touch narrower at the top. */
 /* The foot: a flat blue plate the blade bends into, seen edge-on as a thin slab with a lit front lip. */
-.dhScreen{box-shadow:0 0 0 3px #0e0e0f;cursor:pointer}
+.dhScreen{box-shadow:0 0 0 1.5px #111214;cursor:pointer}
 
 /* The desk top: one plane in perspective, so flat things foreshorten like a real desk */
 .dhTop{left:-200px;top:700px;width:2000px;height:640px;z-index:12;transform-origin:50% 0;transform:perspective(1500px) rotateX(60deg);pointer-events:none}
