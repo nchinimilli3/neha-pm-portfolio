@@ -3,14 +3,14 @@
    them, then settle. Flames flicker only while lit. */
 
 /* Tumbler: sits where the bottle was, wider for its handle; a click bobs the straw. */
-/* Real scale next to the mug: body ~80px across (1.15x the mug), base on the desk line. */
-.dhStage .dhFlask{left:1172px;top:515px;width:132px;height:220px;z-index:13}
+/* Real size, with the Canon AE-1 (14.1cm = 125px, ~8.9px/cm) as the ruler: a 40oz Quencher is 9.8cm across and ~22cm to the lid. Was: real scale next to the mug: body ~80px across (1.15x the mug), base on the desk line. */
+.dhStage .dhFlask{left:1154px;top:479px;width:158px;height:264px;z-index:13}
 .dhFlask .tuStraw{transform-box:fill-box}
 .dhFlask.isSip .tuStraw{animation:tuSip .9s cubic-bezier(.3,.6,.3,1)}
 @keyframes tuSip{25%{transform:translateY(-5px)}55%{transform:translateY(1px)}100%{transform:none}}
 
 /* Candle and matchbox. */
-.dhStage .dhCandle{left:634px;top:650px;width:82px;height:69px;z-index:18;cursor:pointer}
+.dhStage .dhCandle{left:628px;top:633px;width:96px;height:81px;z-index:18;cursor:pointer}
 .dhCandle>svg{position:relative;display:block;width:100%;height:100%;overflow:visible}
 .dcGlow{position:absolute;left:-70%;right:-70%;top:-95%;bottom:-25%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,196,110,.38),rgba(255,170,80,.12) 55%,transparent);opacity:0;transition:opacity .6s;pointer-events:none}
 .dhCandle.isLit .dcGlow{opacity:1;animation:dcGlow 2.6s ease-in-out infinite}
@@ -24,7 +24,7 @@
 .dcSmoke{position:absolute;left:0;top:-78px;width:100%;height:84px;overflow:visible;pointer-events:none}
 .dcSmoke path{fill:none;stroke:rgba(236,232,226,.75);stroke-width:1.3;stroke-linecap:round;stroke-dasharray:80;stroke-dashoffset:80;animation:dcSmoke 2.8s ease-out both}
 @keyframes dcSmoke{0%{stroke-dashoffset:80;opacity:.9;transform:none}45%{stroke-dashoffset:18;opacity:.7}100%{stroke-dashoffset:0;opacity:0;transform:translate(3px,-14px)}}
-.dhStage .dhMatches{left:706px;top:700px;width:62px;height:35px;z-index:19;cursor:pointer}
+.dhStage .dhMatches{left:714px;top:702px;width:62px;height:35px;z-index:19;cursor:pointer}
 .dhMatches svg{display:block;width:100%;height:100%;overflow:visible}
 .dhMatches .dmMatch,.dhMatches .dmFlame{transform-box:fill-box}
 .dhMatches .dmMatch{opacity:0;transform-origin:0 100%}

@@ -11,7 +11,7 @@
 .dhFrameFace::after{background:linear-gradient(117deg,#ffe7bd25,transparent 36%,#ffffff06 65%,transparent 66%)}
 /* Ceramic, powder coat, leather and glass each catch light differently. */
 .dhStage .dhCappa{left:1078px;top:632px;width:99px;height:87px}
-.dhStage .dhCamera{left:1301px;top:627px;width:125px;height:92px;filter:drop-shadow(-2px 3px 2px #231d1940)}
+.dhStage .dhCamera{left:1301px;top:637px;width:125px;height:92px;filter:drop-shadow(-2px 3px 2px #231d1940)}
 .dhCandle::after{content:"";position:absolute;left:10%;right:8%;bottom:1px;height:6px;border-radius:50%;background:#251b1438;filter:blur(2px);z-index:-1;pointer-events:none}
 .dhStage .dhGlobe{left:1218px;top:386px;width:72px;height:86px;filter:drop-shadow(-2px 3px 2px #1c25312b)}
 /* Leave open working space between the keyboard and paper; avoid edge tangencies. */
@@ -25,7 +25,6 @@
 .dhDoodle .ddPage{background:radial-gradient(circle,#c1b9a9 .55px,transparent .85px) 0 0/12px 12px,linear-gradient(160deg,#fffdf6,#eee7d8)}
 .dhTop .dhWatercolorPaper{left:222px;top:-13px;filter:drop-shadow(-1px 2px .8px #30241a40)}
 /* Lower, firmer contact shadows keep the monitor and accessories on the wood. */
-.dhSticky{box-shadow:0 1px 1px #3426191a,-2px 5px 5px -4px #34261970}
 .dhBooks i{border-bottom:1px solid #231a1533}
 .dhPrint{box-shadow:1px 1px 0 #d0c5b4,-2px 4px 5px -3px #281d1760}
 
@@ -38,11 +37,5 @@
 .dhStage .dhGlobe::after{content:"";position:absolute;left:24%;right:20%;bottom:4px;height:3px;border-radius:50%;background:#27221930;filter:blur(1px);pointer-events:none}
 
 /* Sticky paper is attached along the top and lifts a little at the lower corner. */
-.dhStage .dhSticky{width:104px;min-height:76px;padding:12px 11px 16px;border:0;border-radius:1px 1px 3px 1px;transform-origin:50% 8%;isolation:isolate;box-shadow:0 1px 1px #44321b18,1px 5px 5px -4px #39251655;filter:drop-shadow(2px 5px 2px #33211424);background-image:linear-gradient(177deg,#ffffff1c,transparent 20%,#60401a06 65%,#60401a13 91%,#ffffff22)}
-.dhStage .dhSticky::before{content:"";position:absolute;inset:0 0 auto;height:15px;border-top:1px solid #ffffff3b;background:linear-gradient(#4631100c,transparent);pointer-events:none}
-.dhStage .dhSticky::after{content:"";position:absolute;right:0;bottom:0;width:17px;height:18px;clip-path:polygon(100% 0,100% 100%,0 100%);background:linear-gradient(135deg,#fff9d86b 38%,#503b2533 52%,#fff5d68c 65%,#fff7dd);border-radius:0 0 3px 0;pointer-events:none}
-.dhStage .dhStickyA{background-color:#edcf66;transform:rotate(-5deg) skewY(-1deg)}
-.dhStage .dhStickyB{background-color:#edafbd;transform:rotate(6deg) skewY(1deg);min-height:74px}
-.dhStage .dhStickyB::after{background:linear-gradient(135deg,#ffe6ef4d 38%,#6d354833 52%,#ffd0df 65%,#ffe2eb)}
 /* The display remains front-facing; its stand and foot show depth toward the viewer. */
 .tod-night .dhLampPool{background:radial-gradient(ellipse at 62% 45%,#ffdda56b,#ffcf8130 46%,transparent 73%)}

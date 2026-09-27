@@ -122,10 +122,21 @@
 
 /* Monitor */
 .dhGlow{left:470px;top:180px;width:760px;height:620px;z-index:8;border-radius:50%;background:radial-gradient(closest-side,rgba(255,222,196,.5),transparent);opacity:var(--glowOp);mix-blend-mode:screen;pointer-events:none}
-.dhSticky{width:108px;padding:10px 10px 12px;font:500 19px/1 Caveat,cursive;color:#3a2f1a;z-index:61}
-.dhSticky small{display:block;margin-top:6px;font:500 14px/1 Caveat,cursive;color:#8a6d2a}
-.dhStickyA{left:588px;top:calc(var(--sy) - 34px);background:#f7dc6f;transform:rotate(-7deg)}
-.dhStickyB{left:1022px;top:calc(var(--sy) + 150px);background:#f6b7c4;transform:rotate(8deg);color:#6e2440}
+/* Post-it notes at real size: 76mm square is ~62px at this room's scale (the 24" iMac's
+   display, 54.7cm across, is 440px). Only the adhesive strip along the top is stuck down,
+   so it sits flat; the rest of the sheet curls very slightly away, shading toward the
+   bottom, and the shadow falls under that lifted bottom edge. Square corners, matte paper,
+   handwriting in marker. Each is stuck by its adhesive to the iMac's bezel edge. */
+.dhSticky{width:64px;min-height:64px;padding:13px 6px 6px;box-sizing:border-box;font:500 13px/1.02 Caveat,cursive;color:#2b2722;z-index:61;border-radius:0 0 1px 1px;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='2' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='80' height='80' filter='url(%23n)'/%3E%3C/svg%3E"),
+  linear-gradient(#00000008 0 19%,#ffffff22 19.5%,#ffffff0c 45%,transparent 72%,#0000000b 100%);
+ box-shadow:0 .5px 0 #0000001a,0 4px 4px -3px rgba(40,28,14,.42),0 7px 7px -6px rgba(40,28,14,.22);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.dhSticky small{display:block;margin-top:4px;font:500 10.5px/1 Caveat,cursive;color:#7a6330}
+.dhStickyA{left:600px;top:calc(var(--sy) - 26px);background-color:#f8e27c;transform:rotate(-5deg)}
+.dhStickyB{left:1026px;top:calc(var(--sy) + 118px);background-color:#f6bccb;transform:rotate(6deg);color:#5e2238}
+/* Touched, the free part of the sheet lifts a little more. */
+.dhStickyA:hover{transform:rotate(-5deg) translateY(-1px)}.dhStickyB:hover{transform:rotate(6deg) translateY(-1px)}
+
 .dhScreen{left:630px;top:var(--sy);width:420px;height:var(--sh);z-index:60;overflow:hidden;border-radius:3px;--su:1px}
 .dhScreen::after{content:"";position:absolute;inset:0;background:linear-gradient(245deg,rgba(255,255,255,.16),rgba(255,255,255,.04) 26%,transparent 42%),linear-gradient(transparent 60%,rgba(0,0,0,.06));pointer-events:none}
 
@@ -461,9 +472,6 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 @keyframes dhVroom{0%{opacity:0;transform:translateY(4px)}20%{opacity:1}100%{opacity:0;transform:translateY(-10px)}}
 .dhBooks i{transition:transform .25s cubic-bezier(.2,.8,.2,1);cursor:default}
 .dhBooks i:not(.dhLean):hover{transform:translateY(-10px)}
-.dhSticky{transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
-.dhStickyA:hover{transform:rotate(-4deg) translateY(-3px) scale(1.04);box-shadow:0 12px 14px -8px rgba(0,0,0,.4)}
-.dhStickyB:hover{transform:rotate(5deg) translateY(-3px) scale(1.04);box-shadow:0 12px 14px -8px rgba(0,0,0,.4)}
 .dhWindow{cursor:pointer}
 @media (prefers-reduced-motion:reduce){.dh3d:hover{transform:none}.dhFlask.isWobble svg,.dhCappa.isSip>svg:last-child,.dhMustang.isRev :is(.lcMarkCar,.dhFordScript){animation:none}}
 
@@ -510,7 +518,6 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 .dhFrame{box-shadow:inset 1px 1px 1px #ffe3b3,inset -2px -2px 2px #71502d,2px 3px 0 #805a32,-7px 14px 16px -8px #28180a88}
 .dhFrameFace::after{content:"";position:absolute;inset:8px;background:linear-gradient(120deg,#ffffff22,transparent 38%,#ffffff09 65%,transparent 66%);pointer-events:none}
 .dhCanvas{box-shadow:inset 0 0 0 1px #b7a995,2px 3px 0 #bdb09d,-3px 6px 10px -5px #0007}
-.dhSticky{background-image:linear-gradient(175deg,#ffffff16,transparent 24%,#00000008 78%,#00000012 92%,#ffffff26);border-top:10px solid #ffffff0a;box-shadow:0 2px 1px #3426191a,-3px 10px 9px -8px #34261988}
 .dhMat{border-radius:12px;background:repeating-linear-gradient(0deg,#ffffff03 0 1px,transparent 1px 3px),linear-gradient(120deg,#4c4a49,#343333);border:1px solid #69645d;outline:1px dashed #7a73665c;outline-offset:-5px}
 /* Magic Keyboard (blue): white keys on a light-blue aluminium plate, its blue edge showing in front. */
 .dhKeyboard{display:flex;flex-direction:column;gap:3px;padding:6px;box-sizing:border-box;border-radius:7px;background:linear-gradient(135deg,#d7e6f7,#b3cced);border:1px solid #9dbbe0;box-shadow:0 3px 0 #86a8d2,-3px 9px 10px -5px #0007}
