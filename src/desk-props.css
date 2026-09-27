@@ -85,3 +85,5 @@
 .dhStage>svg.ckUp{position:absolute;width:150px;height:72px;z-index:14;overflow:visible;cursor:pointer}
 /* The tumbler draws its own contact shadow; the old bottle's cast shadows would float below its box. */
 .dhStage .dhFlask::before,.dhStage .dhFlask::after{display:none}
+.dhCookie .ckShadow{transition:opacity .6s,transform .4s}
+.dhStage>svg.ckUp{transition:opacity .6s ease}
