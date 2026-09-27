@@ -180,11 +180,11 @@
    by the camera; the body is built around it. Standing further back than the cup and
    camera, its foot sits a little higher on the desk. */
 .dhImac{left:620px;top:calc(var(--sy) - 10px);width:440px;height:calc(var(--sh) + 64px);z-index:10}
-.dhImac::after{content:"";position:absolute;right:-3px;top:6px;bottom:4px;width:4px;border-radius:0 7px 7px 0;background:linear-gradient(#8fb0d6,#6f93c0 70%,#5f86b6);z-index:-1}
 .dhImacFace{position:absolute;left:0;right:0;top:0;bottom:44px;border-radius:7px 7px 0 0;background:linear-gradient(#f5f6f7,#eef0f2);box-shadow:inset 0 1px 0 #fff,inset 0 0 0 1px #e2e5e9}
 .dhImacChin{position:absolute;left:0;right:0;bottom:0;height:44px;border-radius:0 0 7px 7px;background:linear-gradient(90deg,rgba(45,80,130,.07),transparent 25%,rgba(255,255,255,.14) 70%,rgba(45,80,130,.08)),linear-gradient(#bdd3ef,#b4cdeb 60%,#abc6e7);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -1px 2px rgba(40,70,120,.16)}
-.dhImacStand{position:absolute;left:168px;top:100%;width:104px;height:62px;background:linear-gradient(90deg,#9dbbe0,#b9d1ee 12%,#c3d8f1 45%,#b3cbea 82%,#94b3db);box-shadow:inset 0 8px 8px -6px rgba(38,63,98,.4)}
-.dhImacFoot{position:absolute;left:165px;top:calc(100% + 60px);width:110px;height:9px;border-radius:2px 2px 3px 3px;background:linear-gradient(#d6e6f7 0 2px,#a9c5e7 2px,#8eaed8);box-shadow:0 3px 5px -1px rgba(30,20,10,.4)}
+.dhImacStand{position:absolute;left:168px;top:100%;width:104px;height:72px;background:linear-gradient(90deg,#9dbbe0,#b9d1ee 12%,#c3d8f1 45%,#b3cbea 82%,#94b3db);box-shadow:inset 0 8px 8px -6px rgba(38,63,98,.4)}
+.dhImacFoot{position:absolute;left:165px;top:calc(100% + 70px);width:110px;height:9px;border-radius:2px 2px 3px 3px;background:linear-gradient(#d6e6f7 0 2px,#a9c5e7 2px,#8eaed8);box-shadow:0 3px 5px -1px rgba(30,20,10,.4)}
+.dhImacFoot::after{content:\"\";position:absolute;left:-8px;right:-14px;top:5px;height:9px;border-radius:50%;background:rgba(30,20,10,.4);filter:blur(3px);z-index:-1}
 /* The blade is a deeper blue than the chin, lit from above, a touch narrower at the top. */
 /* The foot: a flat blue plate the blade bends into, seen edge-on as a thin slab with a lit front lip. */
 .dhScreen{box-shadow:0 0 0 1.5px #111214;cursor:pointer}
@@ -193,11 +193,11 @@
 .dhTop{left:-200px;top:700px;width:2000px;height:640px;z-index:12;transform-origin:50% 0;transform:perspective(1500px) rotateX(60deg);pointer-events:none}
 .dhTop>*{position:absolute}
 .dhMat{left:842px;top:40px;width:400px;height:196px;box-shadow:-6px 14px 22px -10px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.07)}
-.dhKeyboard{position:absolute;left:34px;top:40px;width:236px;height:98px}
+.dhKeyboard{position:absolute;left:26px;top:38px;width:262px;height:100px}
 .dhKeyboard i{position:absolute;inset:9px 10px 10px;border-radius:5px;background-color:#fdfdfc;
  background-image:linear-gradient(90deg,transparent 0 17px,#cfd0d3 17px 20px),linear-gradient(transparent 0 15px,#cfd0d3 15px 18.5px);background-size:20px 18.5px}
 .dhKeyboard i::after{content:"";position:absolute;left:25%;right:30%;bottom:0;height:15px;background:#fdfdfc;border-radius:3px;box-shadow:-3px 0 0 #cfd0d3,3px 0 0 #cfd0d3}
-.dhMouse{position:absolute;left:298px;top:44px;width:48px;height:86px;border-radius:24px/32px}
+.dhMouse{position:absolute;left:308px;top:44px;width:46px;height:84px;border-radius:23px/31px}
 .dhMouse::after{content:"";position:absolute;left:50%}
 .dhNotebook{left:230px;top:300px;width:172px;height:124px;transform:rotate(-7deg);border-radius:3px 6px 6px 3px;
  background:repeating-linear-gradient(transparent 0 17px,#c7d4e4 17px 18px),#f8f4ea;background-position:0 28px;border-left:16px solid #2c4a8a}
@@ -207,7 +207,7 @@
 
 /* Daylight through the window, falling across the desk (gone at night) */
 .dhDaylight{left:1150px;top:0;width:620px;height:520px;background:linear-gradient(100deg,transparent,var(--sunC) 30%,var(--sunC) 70%,transparent);opacity:calc(var(--sunOp) * 1.2);filter:blur(18px);transform:skewX(-24deg);mix-blend-mode:screen}
-.dhImacCam{position:absolute;left:50%;top:5px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:#2b2b2d;box-shadow:inset 0 0 0 1px #4a4a4d}
+.dhImacCam{position:absolute;left:50%;top:5px;width:4px;height:4px;transform:translateX(-50%);border-radius:50%;background:#2b2b2d;box-shadow:inset 0 0 0 1px #4a4a4d}
 .dhImac::before{content:"";position:absolute;left:-30px;right:22px;top:18px;bottom:-6px;border-radius:18px;background:rgba(60,40,20,.22);filter:blur(22px);z-index:-1}
 .dhBracket{position:absolute;left:60px;bottom:-18px;width:10px;height:22px;background:linear-gradient(90deg,#3b3632,#57504a);clip-path:polygon(0 0,100% 0,100% 100%,0 20%)}
 .dhBracketR{left:auto;right:60px}
@@ -512,13 +512,15 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 .dhCanvas{box-shadow:inset 0 0 0 1px #b7a995,2px 3px 0 #bdb09d,-3px 6px 10px -5px #0007}
 .dhSticky{background-image:linear-gradient(175deg,#ffffff16,transparent 24%,#00000008 78%,#00000012 92%,#ffffff26);border-top:10px solid #ffffff0a;box-shadow:0 2px 1px #3426191a,-3px 10px 9px -8px #34261988}
 .dhMat{border-radius:12px;background:repeating-linear-gradient(0deg,#ffffff03 0 1px,transparent 1px 3px),linear-gradient(120deg,#4c4a49,#343333);border:1px solid #69645d;outline:1px dashed #7a73665c;outline-offset:-5px}
-.dhKeyboard{display:flex;flex-direction:column;gap:3px;padding:6px;box-sizing:border-box;border-radius:7px;background:linear-gradient(135deg,#f0f0ed,#bfc2c4);border:1px solid #b4b6b7;box-shadow:0 3px 0 #929597,-3px 9px 10px -5px #0008}
+/* Magic Keyboard (blue): white keys on a light-blue aluminium plate, its blue edge showing in front. */
+.dhKeyboard{display:flex;flex-direction:column;gap:3px;padding:6px;box-sizing:border-box;border-radius:7px;background:linear-gradient(135deg,#d7e6f7,#b3cced);border:1px solid #9dbbe0;box-shadow:0 3px 0 #86a8d2,-3px 9px 10px -5px #0007}
 .dhKeyRow{display:flex;gap:2px;flex:1;min-height:0}
 .dhKeyRow span{display:flex;align-items:center;justify-content:center;flex:1;border-radius:2px;background:linear-gradient(#fff,#eeefec);color:#62666a;font:5px/1 Arial,sans-serif;box-shadow:0 1px 0 #9fa2a3,0 0 0 .4px #bfc1c1}
 .dhKeyRow:first-child{flex:.65}
 .dhKeyRow .dhModifier{flex:1.65;font-size:3.6px}
 .dhKeyRow .dhSpace{flex:6}
-.dhMouse{background:radial-gradient(ellipse at 40% 25%,#fff 20%,#f5f5f2 65%,#d7d9d8 90%);border:1px solid #c8cac9;box-shadow:0 3px 0 #aeb4b7,-3px 10px 10px -5px #0006}
+/* Magic Mouse (blue): a white shell on a light-blue base rim. */
+.dhMouse{background:radial-gradient(ellipse at 40% 25%,#fff 20%,#f7f8f9 62%,#dfe3e8 88%);border:1.5px solid #a9c6ea;box-shadow:0 3px 0 #8fb0da,-3px 10px 10px -5px #0006}
 .dhMouse::after{top:auto;bottom:9px;height:3px;width:3px;border-radius:50%;background:#b8bcba;transform:translateX(-50%)}
 .dhNotebook{box-shadow:0 2px 0 #c6c0b2,0 4px 0 #ece6d9,0 6px 0 #24416c,-3px 14px 16px -9px #0007;background-image:linear-gradient(90deg,transparent 16px,#dc9a9955 16px 17px,transparent 17px),repeating-linear-gradient(transparent 0 17px,#b4c6d9 17px 18px)}
 .dhNotebook::before{left:-17px;width:15px;background:repeating-linear-gradient(0deg,transparent 0 7px,#686b70 7px 8px,#e2e3df 8px 10px,#73777b 10px 11px,transparent 11px 14px);border-radius:3px}
