@@ -22,6 +22,8 @@ const LAYOUT:Record<string,Omit<Device,'id'|'title'|'eyebrow'|'line'|'caseId'|'h
  game:{kind:'tablet',x:1900,y:720,w:656,h:473,rot:-2,fy:150},
  fluids:{kind:'tablet',x:150,y:900,w:656,h:473,rot:2},
 };
+// Every image the desk shows, so they can be fetched and decoded before it appears.
+const FUN_IMAGES=['desk/fun-scheduler.jpg','desk/fun-bookclub.jpg','desk/fun-spartan.jpg','project-media/sparty.png','project-media/um-enemy.png'];
 const ORDER=['commute','bookclub','scheduler','chat','game','fluids'];
 const EXTRA:Record<string,{title:string;eyebrow:string;line:string;hint:string}>={
  game:{title:'Spartan Touchdown',eyebrow:'MSU · CSE 335',line:'A C++ team game with player movement, collisions, enemies, scoring, and a shared level state.',hint:'Click the screen to play. Space jumps.'},
@@ -91,7 +93,7 @@ const PadStatus=()=><div className="ahPadStatus" aria-hidden="true"><span><b>9:4
 function Screen({id,focus=true}:{id:string;focus?:boolean}){
  if(id==='commute')return <CommuteScreen/>;
  if(id==='bookclub')return <BookclubScreen/>;
- if(id==='scheduler')return <img className="ahShot ahShotCover" src="project-media/scheduler-actual-v31.png" alt="" loading="lazy" decoding="async"/>;
+ if(id==='scheduler')return <img className="ahShot ahShotCover" src="desk/fun-scheduler.jpg" alt="" decoding="async"/>;
  if(id==='chat')return <IMessageScreen/>;
  if(id==='game')return <SpartanGame/>;
  if(id==='fluids')return <StableFluids live={focus}/>;
@@ -269,6 +271,15 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
  const [isStatic,setStatic]=useState(()=>window.matchMedia('(max-width: 900px), (max-aspect-ratio: 23/20), (prefers-reduced-motion: reduce)').matches);
  const activeRef=useRef(0);
  const [listOpen,setListOpen]=useState(false);
+ // The desk fades in once its screens are downloaded and decoded, instead of filling in on arrival.
+ // Fetched right when this section mounts (after the hero), long before the walk-in reaches it.
+ const [ready,setReady]=useState(false);
+ useEffect(()=>{
+  let done=false;const finish=()=>{if(!done){done=true;setReady(true)}};
+  const load=(src:string)=>{const i=new Image();i.src=src;return i.decode().catch(()=>{})};
+  Promise.all([document.fonts?.ready,...FUN_IMAGES.map(load)]).then(finish);
+  const cap=window.setTimeout(finish,2500);return()=>window.clearTimeout(cap);
+ },[]);
  const listRef=useRef<HTMLDivElement>(null);
 
  useEffect(()=>{
@@ -406,7 +417,7 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
 
  return <section id="fun" className={`ahSection ${isStatic?'isStatic':''}`} aria-label="Fun things I’ve built">
   {isStatic&&heading}
-  <section ref={trackRef} className="ahTrack" style={{'--stops':stops} as React.CSSProperties}>
+  <section ref={trackRef} className={`ahTrack ${ready?'isReady':''}`} style={{'--stops':stops} as React.CSSProperties}>
    <div className="ahPin">
     <div ref={viewRef} className="ahView">
       <div ref={stageRef} className="ahStage">

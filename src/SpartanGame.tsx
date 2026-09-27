@@ -62,7 +62,7 @@ export default function SpartanGame(){
  return <div ref={sceneRef} className={`spartanScene sgGame is-${phase}`} tabIndex={0} role="button"
   aria-label={phase==='playing'?`Spartan Touchdown, score ${score}. Press space to jump.`:'Play Spartan Touchdown. Press space or click to start, then to jump.'}
   onPointerDown={e=>{e.preventDefault();press()}} onKeyDown={onKey}>
-  <img className="spartanBg" src="project-media/spartan-background.png" alt="" width={2048} height={1024} loading="lazy" decoding="async"/>
+  <img className="spartanBg" src="desk/fun-spartan.jpg" alt="" width={1320} height={660} decoding="async"/>
   <div className="spartanGround" ref={groundRef}></div>
   <img className="spartySprite" ref={spartyRef} src="project-media/sparty.png" alt="Sparty" loading="lazy" decoding="async"/>
   <img className="enemySprite" ref={enemyRef} src="project-media/um-enemy.png" alt="Michigan defender" loading="lazy" decoding="async"/>

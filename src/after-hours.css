@@ -5,7 +5,10 @@
 /* A soft shade behind the caption so its type reads over the wood. */
 .ahPin::after{content:"";position:absolute;inset:0;z-index:35;pointer-events:none;background:linear-gradient(90deg,#141219e0 0,#14121999 24%,transparent 46%)}
 .isStatic .ahPin::after{display:none}
-.ahView{position:absolute;inset:0;visibility:hidden}
+.ahView{position:absolute;inset:0;visibility:hidden;opacity:0;transition:opacity .45s ease}
+/* Shown once every screen on the desk has decoded (see FUN_IMAGES), in one fade. */
+.ahTrack.isReady .ahView{opacity:1}
+@media(prefers-reduced-motion:reduce){.ahView{transition:none}}
 /* The desk sinks into the dark at the bottom, so the section can ease back into the cream page. */
 .ahView::after{content:"";position:absolute;left:0;right:0;bottom:0;height:110px;z-index:36;pointer-events:none;background:linear-gradient(transparent,#141219)}
 .isStatic .ahView::after{display:none}
@@ -141,14 +144,14 @@
 .bcBell{position:relative;display:grid;place-items:center;width:40px;height:40px;border:1px solid #e6e3df;border-radius:50%}
 .bcBell svg{width:18px;height:20px;fill:none;stroke:#2a2523;stroke-width:1.6;stroke-linejoin:round}
 .bcBell::after{content:"";position:absolute;top:1px;right:2px;width:9px;height:9px;border-radius:50%;background:#b0452f;border:2px solid #fff}
-.bcHero{position:relative;height:196px;padding:34px 18px 0;box-sizing:border-box;color:#fff;background:linear-gradient(180deg,#0000 30%,#0006),url(/project-media/bookclub/mobile/club-home.png) -526px -296px/1162px 1644px no-repeat}
+.bcHero{position:relative;height:196px;padding:34px 18px 0;box-sizing:border-box;color:#fff;background:linear-gradient(180deg,#0000 30%,#0006),url(/desk/fun-bookclub.jpg) -526px -296px/1162px 1644px no-repeat}
 .bcHero h4{margin:0;font:400 42px/1 Georgia,"Times New Roman",serif;letter-spacing:-1.2px}
 .bcHero small{display:block;margin-top:8px;font:600 15px/1 -apple-system,system-ui}
 .bcFaces{display:flex;margin-top:14px}
 .bcFaces i{display:grid;place-items:center;width:34px;height:34px;margin-left:-8px;border:1.5px solid #ffffffb3;border-radius:50%;background:#ffffffa6;backdrop-filter:blur(2px);font:600 14px/1 -apple-system,system-ui;font-style:normal;color:#2b2522}
 .bcFaces i:first-child{margin-left:0}
 .bcNow{display:flex;gap:18px;padding:22px 16px 0}
-.bcCover{flex:none;width:110px;height:166px;border-radius:2px;background:url(/project-media/bookclub/mobile/club-home.png) -151.5px -333px/659px 932px no-repeat;box-shadow:0 10px 18px -8px #0006}
+.bcCover{flex:none;width:110px;height:166px;border-radius:2px;background:url(/desk/fun-bookclub.jpg) -151.5px -333px/659px 932px no-repeat;box-shadow:0 10px 18px -8px #0006}
 .bcNow small{display:flex;align-items:center;gap:8px;font:700 12px/1 -apple-system,system-ui;letter-spacing:1.6px;text-transform:uppercase;color:#7c7572}
 .bcNow small i{width:9px;height:9px;border-radius:50%;background:#8b8481;box-shadow:0 0 0 4px #ebe8e5}
 .bcNow h5{margin:12px 0 0;font:400 33px/1.02 Georgia,"Times New Roman",serif;letter-spacing:-.8px;color:#4a403d}
