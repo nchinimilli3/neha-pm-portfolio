@@ -210,10 +210,17 @@
 .dhKeyboard i::after{content:"";position:absolute;left:25%;right:30%;bottom:0;height:15px;background:#fdfdfc;border-radius:3px;box-shadow:-3px 0 0 #cfd0d3,3px 0 0 #cfd0d3}
 .dhMouse{position:absolute;left:308px;top:44px;width:46px;height:84px;border-radius:23px/31px}
 .dhMouse::after{content:"";position:absolute;left:50%}
-.dhNotebook{left:230px;top:300px;width:172px;height:124px;transform:rotate(-7deg);border-radius:3px 6px 6px 3px;
- background:repeating-linear-gradient(transparent 0 17px,#c7d4e4 17px 18px),#f8f4ea;background-position:0 28px;border-left:16px solid #2c4a8a}
-.dhNotebook::before{content:"";position:absolute;top:8px;bottom:8px}
-.dhNotebook span{position:absolute;left:10px;top:8px;font:500 17px/16px Caveat,cursive;color:#2c4a8a}
+/* The ship-it list: a spiral pocket notebook lying on the desk. Warm ruled paper lit from
+   the top left, metal coils through punched holes on the left, the page stack and a blue
+   back cover showing along the lower edge, and the bottom-right corner lifting a little. */
+.dhNotebook{left:231px;top:301px;width:172px;height:124px;transform:rotate(-6deg);border-radius:2px 4px 4px 2px;
+ background:linear-gradient(135deg,#ffffff38,transparent 45%,#0000000a),linear-gradient(315deg,#00000012 0,transparent 16%),
+  linear-gradient(90deg,transparent 18px,#e4a3a066 18px 19px,transparent 19px),repeating-linear-gradient(transparent 0 16px,#b9cadc 16px 17px),#fbf7ee;
+ box-shadow:0 1px 0 #ebe5d8,0 2px 0 #d8d0c1,0 3px 0 #eae3d5,0 4.5px 0 #2a4775,-3px 12px 14px -8px #0007}
+.dhNotebook::before{content:"";position:absolute;left:-7px;top:6px;bottom:6px;width:14px;
+ background:radial-gradient(ellipse 6px 3px at 50% 50%,transparent 52%,#5c5f63 60%,#e3e4e5 72%,#8d9094 84%,transparent 92%) 0 0/14px 10px repeat-y}
+.dhNotebook::after{content:"";position:absolute;left:3px;top:6px;bottom:6px;width:4px;background:radial-gradient(circle,#4a3b2c88 1.2px,transparent 1.6px) 0 0/4px 10px repeat-y}
+.dhNotebook span{position:absolute;left:12px;top:6px;font:500 17px/16px Caveat,cursive;color:#27458a}
 .dhPen{left:430px;top:372px;width:120px;height:10px;border-radius:5px;transform:rotate(-24deg);box-shadow:-3px 8px 6px -4px rgba(0,0,0,.5)}
 
 /* Daylight through the window, falling across the desk (gone at night) */
@@ -529,8 +536,6 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 /* Magic Mouse (blue): a white shell on a light-blue base rim. */
 .dhMouse{background:radial-gradient(ellipse at 40% 25%,#fff 20%,#f7f8f9 62%,#dfe3e8 88%);border:1.5px solid #a9c6ea;box-shadow:0 3px 0 #8fb0da,-3px 10px 10px -5px #0006}
 .dhMouse::after{top:auto;bottom:9px;height:3px;width:3px;border-radius:50%;background:#b8bcba;transform:translateX(-50%)}
-.dhNotebook{box-shadow:0 2px 0 #c6c0b2,0 4px 0 #ece6d9,0 6px 0 #24416c,-3px 14px 16px -9px #0007;background-image:linear-gradient(90deg,transparent 16px,#dc9a9955 16px 17px,transparent 17px),repeating-linear-gradient(transparent 0 17px,#b4c6d9 17px 18px)}
-.dhNotebook::before{left:-17px;width:15px;background:repeating-linear-gradient(0deg,transparent 0 7px,#686b70 7px 8px,#e2e3df 8px 10px,#73777b 10px 11px,transparent 11px 14px);border-radius:3px}
 .dhPen{background:linear-gradient(0deg,#0004,transparent 40%,#ffffff50 60%,transparent 85%),linear-gradient(90deg,#712e22 0 8%,#a54631 8% 78%,#e0dfd9 78% 89%,#92928b 89% 96%,#303132 96%);clip-path:polygon(0 10%,89% 10%,100% 50%,89% 90%,0 90%)}
 .dhPen::after{content:"";position:absolute;left:8px;top:1px;width:32px;height:2px;background:#dedcd7;border-radius:2px}
 .dhWaves{opacity:.35;transform:scaleY(.5);transform-origin:50% 260px}

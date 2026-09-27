@@ -91,23 +91,24 @@ export function Candle(){
      <radialGradient id="dcFlame" cx=".5" cy=".72" r=".62"><stop offset="0" stopColor="#fffbe8"/><stop offset=".35" stopColor="#ffe9a6"/><stop offset=".7" stopColor="#ffb44a"/><stop offset="1" stopColor="#ff8a1e" stopOpacity="0"/></radialGradient>
      <filter id="dcSoft"><feGaussianBlur stdDeviation="1.2"/></filter>
     </defs>
-    <ellipse cx="50" cy="80" rx="47" ry="6" fill="#1e140a" opacity=".3" filter="url(#dcSoft)"/>
+    <ellipse cx="51" cy="81" rx="46" ry="5.5" fill="#1e140a" opacity=".32" filter="url(#dcSoft)"/>
     {/* The mouth: the frosted inside wall at the back, then the flames just below the rim. */}
     <ellipse cx="50" cy="12" rx="46.5" ry="10" fill="url(#dcInside)"/>
+    <ellipse cx="50" cy="12.4" rx="44.2" ry="9.1" fill="none" stroke="#e6dac6" strokeWidth="1.2"/>
     <ellipse className="dcInnerGlow" cx="50" cy="13" rx="44" ry="8.6" fill="#ffcf8a" opacity="0"/>
-    {[[28,16],[50,18.6],[72,16]].map(([x,y],i)=><g key={i} className="dcFlame" style={{'--i':i} as React.CSSProperties}><ellipse cx={x} cy={y-5.4} rx="2.6" ry="6.4" fill="url(#dcFlame)"/><ellipse cx={x} cy={y-3} rx="1" ry="2" fill="#fff" opacity=".85"/></g>)}
+    {[[29,19.5],[50,17],[71,19.5]].map(([x,y],i)=><g key={i} className="dcFlame" style={{'--i':i} as React.CSSProperties}><ellipse cx={x} cy={y-5.4} rx="2.6" ry="6.4" fill="url(#dcFlame)"/><ellipse cx={x} cy={y-3} rx="1" ry="2" fill="#fff" opacity=".85"/></g>)}
     {/* Jar body: straight walls, rounded foot. */}
-    <path d="M3.5 12V70Q50 92 96.5 70V12Q50 32 3.5 12Z" fill="url(#dcJar)"/>
-    <path d="M3.5 12V70Q50 92 96.5 70V12Q50 32 3.5 12Z" fill="url(#dcJarV)"/>
-    <path className="dcBodyGlow" d="M3.5 12V70Q50 92 96.5 70V12Q50 32 3.5 12Z" fill="url(#dcInner)" opacity="0"/>
+    <path d="M3.5 12V72A46.5 10 0 0 0 96.5 72V12A46.5 10 0 0 1 3.5 12Z" fill="url(#dcJar)"/>
+    <path d="M3.5 12V72A46.5 10 0 0 0 96.5 72V12A46.5 10 0 0 1 3.5 12Z" fill="url(#dcJarV)"/>
+    <path className="dcBodyGlow" d="M3.5 12V72A46.5 10 0 0 0 96.5 72V12A46.5 10 0 0 1 3.5 12Z" fill="url(#dcInner)" opacity="0"/>
     <path d="M14 20V74" stroke="#fff" strokeOpacity=".35" strokeWidth="5" filter="url(#dcSoft)"/>
     <path d="M7 72Q50 90 93 72" fill="none" stroke="#baac94" strokeWidth="1.4"/><path d="M9 73Q50 87 91 73" fill="none" stroke="#fffaf0" strokeOpacity=".6" strokeWidth=".8"/>
     {/* Rolled lip. */}
-    <path d="M3.5 12Q50 32 96.5 12" fill="none" stroke="url(#dcRim)" strokeWidth="2.4"/>
-    <path d="M4 11.4Q50 -8 96 11.4" fill="none" stroke="#fbf8f1" strokeWidth="1.6"/>
+    <path d="M3.5 12A46.5 10 0 0 0 96.5 12" fill="none" stroke="url(#dcRim)" strokeWidth="2.4"/>
+    <path d="M3.5 12A46.5 10 0 0 1 96.5 12" fill="none" stroke="#fbf8f1" strokeWidth="1.6"/>
     {/* Label: pinstriped paper, bold serif scent name, a double gold rule, notes. */}
-    <path d="M24 31Q50 37 76 31V69Q50 75 24 69Z" fill="url(#dcStripes)"/>
-    <path d="M24 31Q50 37 76 31V69Q50 75 24 69Z" fill="url(#dcLabelShade)"/>
+    <path d="M24 29.3A46.5 10 0 0 0 76 29.3V67.3A46.5 10 0 0 1 24 67.3Z" fill="url(#dcStripes)"/>
+    <path d="M24 29.3A46.5 10 0 0 0 76 29.3V67.3A46.5 10 0 0 1 24 67.3Z" fill="url(#dcLabelShade)"/>
     <text x="28.5" y="40" fontFamily="Georgia,'Times New Roman',serif" fontWeight="700" fontSize="6.6" fill="#2e2219">late night</text>
     <text x="28.5" y="47.2" fontFamily="Georgia,'Times New Roman',serif" fontWeight="700" fontSize="6.6" fill="#2e2219">latte</text>
     <path d="M28.5 51.4H70.5M28.5 52.6H70.5" stroke="#d6a45a" strokeWidth=".45"/>

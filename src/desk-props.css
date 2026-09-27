@@ -43,15 +43,16 @@
 .dhGlobe.isShaken .sgFlakes circle{animation:sgFlake var(--d) var(--dl) cubic-bezier(.25,.1,.35,1) both}
 @keyframes sgFlake{0%{opacity:0;transform:translate(var(--x0),84px)}6%{opacity:1}20%{transform:translate(var(--x1),var(--y1))}50%{transform:translate(calc((var(--x1) + var(--x2)) / 2),calc(var(--y1) + 22px))}88%{opacity:1}100%{opacity:0;transform:translate(var(--x2),84px)}}
 
-/* Doodle pad, lying on the desk. */
-.dhDoodle{left:1300px;top:250px;width:200px;height:150px;transform:rotate(7deg);pointer-events:auto;box-shadow:0 2px 0 #d8d1c2,0 4px 0 #efe9dc,0 6px 0 #d2cab9,-4px 16px 18px -10px #0007;border-radius:2px}
-.dhDoodle .ddPage{position:absolute;inset:0;border-radius:2px;cursor:crosshair;touch-action:none;user-select:none;-webkit-user-select:none;
- background:radial-gradient(circle,#c9c2b3 .7px,transparent .9px) 0 0/12px 12px,linear-gradient(170deg,#fffdf7,#f3eee2);animation:ddFresh .45s ease-out}
-.dhDoodle .ddPage svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
-.dhDoodle .ddCorner{position:absolute;width:0;height:0;pointer-events:none}
-.dhDoodle .ddCorner[data-c="0"]{left:0;top:0}.dhDoodle .ddCorner[data-c="1"]{left:100%;top:0}
-.dhDoodle .ddCorner[data-c="2"]{left:100%;top:100%}.dhDoodle .ddCorner[data-c="3"]{left:0;top:100%}
-.dhDoodle .ddTear{position:absolute;right:0;bottom:0;width:26px;height:26px;padding:0;border:0;cursor:pointer;background:linear-gradient(135deg,transparent 50%,#e6dfcf 50%,#f7f2e6);box-shadow:-2px -2px 3px -1px #0002;border-radius:0 0 2px 0}
+/* Doodle pad, lying on the desk: a top-bound sketch pad. Black wire binding through
+   punched holes, softly lit paper with a faint dot grid, a stack of pages over a
+   cardboard back along the lower edge, and a dog-eared corner that tears off a page. */
+.dhDoodle{left:1301px;top:296px;width:185px;height:139px;transform:rotate(4deg);pointer-events:auto;border-radius:1px 1px 2px 2px;background:#c3ab86;
+ box-shadow:0 1px 0 #f1ebdf,0 2px 0 #ddd5c5,0 3px 0 #efe8db,0 4px 0 #d7cebd,0 6px 0 #b59c77,-4px 16px 18px -10px #0007}
+.dhDoodle::before{content:"";position:absolute;left:10px;right:10px;top:-5px;height:11px;z-index:2;pointer-events:none;
+ background:radial-gradient(ellipse 2.4px 5px at 50% 50%,transparent 50%,#1d1d20 58%,#6a6a70 70%,#1d1d20 84%,transparent 92%) 0 0/9px 11px repeat-x}
+.dhDoodle .ddPage{position:absolute;inset:0;border-radius:1px 1px 2px 2px;cursor:crosshair;touch-action:none;user-select:none;-webkit-user-select:none;
+ background:radial-gradient(circle,#3a2c1c 1.1px,transparent 1.5px) 14.5px 1px/9px 8px repeat-x,
+  linear-gradient(135deg,#ffffff40,transparent 50%,#0000000c),radial-gradient(circle,#cfc7b8 .6px,transparent .8px) 6px 16px/12px 12px,#fcf9f2;animation:ddFresh .45s ease-out}
 @keyframes ddFresh{from{opacity:.4;transform:translateY(-3px)}}
 
 /* Window: a brass latch on the bottom rail. Open, the lower sash rises a crack and the
