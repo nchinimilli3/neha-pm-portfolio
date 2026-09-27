@@ -319,10 +319,9 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
   // Pre-rendered while the camera moves (no half-drawn desk mid-scroll); released once it
   // settles so the desk redraws sharp at its new zoom instead of staying an upscaled copy.
   const settle=()=>{
-   // Re-promote a frame later: the desk re-rasters sharp at this zoom now, while it's still,
-   // instead of in the first frame of the next move (the whole-desk view is the costliest).
+   // Promoted only while moving. Left promoted at rest, the 2700px desk is too big a GPU
+   // layer to keep fully rastered, and scrolling near it shows undrawn (dark) tiles.
    stage.style.willChange='auto';
-   requestAnimationFrame(()=>requestAnimationFrame(()=>{stage.style.willChange='transform'}));
    if(pendingActive!==activeRef.current){activeRef.current=pendingActive;setActive(pendingActive)}
   };
   let dirty=true,TRACK_TOP=0,TRACK_H=1;
