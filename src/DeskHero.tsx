@@ -429,6 +429,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
   let raf=0,lastKey='',warmed=false,toastAt=0,toastGone=false,toastTimer=0;
   // The camera follows the scroll position exactly; Lenis (smoothScroll.ts) does the smoothing.
   let shown=-1,lastT=0,snap=true;
+  let promotedAt=0,restTimer=0;
   let SH=262,SY=334,CX0=740,HELLO_DY=0,TRACK_TOP=0,TRACK_H=1;
   const measure=()=>{
    const vw=window.innerWidth,vh=window.innerHeight;
@@ -483,6 +484,11 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
    const s=s0*Math.pow(s1/s0,e);
    const k=(1/s0-1/s)/(1/s0-1/s1||1);
    const cx=L(CX0,SX+SW/2,k),cy=L(510,SY+SH/2,k);
+   // Promote while moving; re-raster when a zoom-out falls well below the promoted zoom (else
+   // the whole room would be drawn at close-up resolution); drop the layer once it rests.
+   if(stage.style.willChange!=='transform'){stage.style.willChange='transform';promotedAt=s}
+   else if(s<promotedAt*.6)stage.style.willChange='auto';
+   window.clearTimeout(restTimer);restTimer=window.setTimeout(()=>{stage.style.willChange='auto'},180);
    stage.style.transform=`translate(${vw/2-cx*s}px,${vh/2-cy*s}px) scale(${s})`;
 
    const ct=cl((p-.03)/.09);

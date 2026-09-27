@@ -27,7 +27,9 @@
 .dhTrack.osCovers .dhPin>.dhScene{visibility:hidden}
 .dhScene::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse 75% 70% at 55% 50%,transparent 60%,rgba(40,24,10,.16))}
 .isStatic .dhScene::after{display:none}
-.dhStage{position:absolute;left:0;top:0;width:1600px;height:1000px;transform-origin:0 0;will-change:transform}
+/* Promoted to its own layer only while the camera moves (DeskHero.tsx). Kept promoted at rest,
+   the zoomed room is too big a layer to keep fully drawn and shows unpainted rectangles. */
+.dhStage{position:absolute;left:0;top:0;width:1600px;height:1000px;transform-origin:0 0}
 .dhStage>*{position:absolute}
 
 /* Room shell */
