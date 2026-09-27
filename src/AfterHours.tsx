@@ -319,7 +319,10 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
   // Pre-rendered while the camera moves (no half-drawn desk mid-scroll); released once it
   // settles so the desk redraws sharp at its new zoom instead of staying an upscaled copy.
   const settle=()=>{
+   // Re-promote a frame later: the desk re-rasters sharp at this zoom now, while it's still,
+   // instead of in the first frame of the next move (the whole-desk view is the costliest).
    stage.style.willChange='auto';
+   requestAnimationFrame(()=>requestAnimationFrame(()=>{stage.style.willChange='transform'}));
    if(pendingActive!==activeRef.current){activeRef.current=pendingActive;setActive(pendingActive)}
   };
   let dirty=true,TRACK_TOP=0,TRACK_H=1;
@@ -342,10 +345,13 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
    let a=camFor(seg,vw,vh),b=a,k=0;
    if(seg>0){const prev=camFor(seg-1,vw,vh);b=a;a=prev;k=ease(cl(t/TRAVEL))}
    const s=a.s*Math.pow(b.s/a.s,k);
-   // Interpolate the rendered translation so a simultaneous zoom cannot swing
-   // the camera past its destination. Both endpoints retain their exact framing.
-   const x=(a.X-a.cx*a.s)*(1-k)+(b.X-b.cx*b.s)*k;
-   const y=(a.Y-a.cy*a.s)*(1-k)+(b.Y-b.cy*b.s)*k;
+   // A dolly, not a slide: the point the camera looks at moves in step with 1/scale, so
+   // during a big zoom (the whole desk to the first phone, ~7x) the target stays steady
+   // on screen instead of sliding early and lurching late. Monotonic, so no overshoot;
+   // both endpoints keep their exact framing.
+   const kk=Math.abs(1/a.s-1/b.s)<1e-6?k:(1/a.s-1/s)/(1/a.s-1/b.s);
+   const cx=a.cx+(b.cx-a.cx)*kk,cy=a.cy+(b.cy-a.cy)*kk,X=a.X+(b.X-a.X)*k,Y=a.Y+(b.Y-a.Y)*k;
+   const x=X-cx*s,y=Y-cy*s;
    // Whole-pixel translation keeps the desk's edges and objects from shimmering apart.
    const transform=`translate(${Math.round(x)}px,${Math.round(y)}px) scale(${s.toFixed(4)})`;
    if(transform!==lastTransform){stage.style.willChange='transform';stage.style.transform=transform;lastTransform=transform}
