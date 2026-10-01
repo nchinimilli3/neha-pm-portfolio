@@ -730,7 +730,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
   <div className="dhPin">
    <div className="dhCopy" ref={copyRef}>
     <h1>Neha<br/><em>Chinimilli</em></h1>
-    <p><b>Product-minded engineer</b> who turns customer and operations problems into shipped software, most recently at Accenture, Ford Credit, and Ford.</p>
+    <p><b>I find what makes a product hard to use,</b> decide what to change, and help ship it, most recently at Accenture, Ford Credit, and Ford.</p>
     <p className="dhEdu"><i aria-hidden="true"/><span>Computer Science + Supply Chain Management<br/>Michigan State University · 2027</span></p>
     <div className="dhLinks"><a href="#projects">See my work <span aria-hidden="true">↓</span></a><a href="#about">About me</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume <span aria-hidden="true">↗</span></a></div>
     {onSimple&&<p className="dhQuick">{reduced?'Reduced motion is on.':'Short on time?'} <button type="button" onClick={onSimple}>Switch to Simple view</button></p>}

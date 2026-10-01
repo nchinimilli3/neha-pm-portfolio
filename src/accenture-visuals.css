@@ -211,3 +211,19 @@
 
 /* The page used to end on the cable-car illustration; close on the finding instead. */
 
+
+/* The five recommendations, then the one pilot that tests them. */
+.axRecs{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:start;margin-top:clamp(28px,4vw,48px)}
+.axRecs ol{list-style:none;margin:0;padding:0;display:grid;gap:0;border-top:1px solid #1f1a2b1f}
+.axRecs li{display:grid;grid-template-columns:34px minmax(0,1fr);column-gap:12px;padding:14px 0;border-bottom:1px solid #1f1a2b1f}
+.axRecs li b{grid-row:1 / span 2;font:600 13px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:#a100ff}
+.axRecs li strong{font:600 16px/1.35 Inter,system-ui,sans-serif;color:#1f1a2b}
+.axRecs li span{margin-top:2px;font:400 14.5px/1.5 Inter,system-ui,sans-serif;color:#5b5566}
+.axPilot{padding:20px 22px;border-radius:14px;background:#f5efff;border:1px solid #a100ff26}
+.axPilot em{display:inline-block;padding:3px 9px;border-radius:999px;background:#a100ff;color:#fff;font:600 11px/1.4 Inter,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.axPilot p{margin:12px 0 16px;font:400 15px/1.55 Inter,system-ui,sans-serif;color:#2c2638}
+.axPilot dl{display:grid;gap:10px;margin:0}
+.axPilot dl div{display:grid;gap:2px}
+.axPilot dt{font:600 11px/1.4 Inter,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#7a6f8c}
+.axPilot dd{margin:0;font:600 16px/1.35 Inter,system-ui,sans-serif;color:#1f1a2b}
+@media(max-width:760px){.axRecs{grid-template-columns:1fr}}
