@@ -5,8 +5,8 @@ import {currentLenis} from './smoothScroll';
 
    - pageY(): the scroll position from Lenis, which sets it earlier in the same frame, so
      the scenes neither force a layout to learn it nor draw a frame behind it.
-   - html.isScrolling: set while the page moves, so ambient loops (steam, water, fog)
-     hold still instead of repainting the scene under a moving camera.
+   - html.isScrolling: set while the page moves, so the hero's rooms stop taking the
+     pointer (see .dhShield in desk-hero.css).
    - html.lowFx: set when this device can't keep up (it drops frames during the first
      scroll) or asks for reduced motion. low-fx.css then swaps the costly effects (blend
      modes, live blurs, frosted glass) for cheap look-alikes. Fast devices never switch. */

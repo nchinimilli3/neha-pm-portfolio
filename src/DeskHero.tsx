@@ -4,10 +4,11 @@ import {pageY} from './perfMode';
 import './desk-hero.css';
 import {createPortal} from 'react-dom';
 import WatercolorPaper,{watercolorName} from './WatercolorPaper';
-import {Candle,DeskTips,DoodlePad,SnowGlobe,TumblerFlask} from './DeskProps';
+import {Candle,DeskTips,SnowGlobe,TumblerFlask} from './DeskProps';
 import './desk-materials.css';
 import {CASE_FILES,HOME_SHOWN,isParked,maximizeInto} from './CaseWindow';
 import {ShelbyMark} from './CarArt';
+import FlatText from './FlatText';
 
 /* The home hero is my desk. Scrolling pins the room, the camera walks into the
    monitor, and the monitor becomes "Neha OS": a desktop where every window is a
@@ -122,10 +123,9 @@ function CanonAE1({onShoot}:{onShoot:()=>void}){
    <rect x="148" y="28" width="28" height="12" rx="3" fill="url(#aeChromeV)"/><rect x="140" y="33" width="10" height="6" rx="2" fill="#2a2a2b"/>
    <circle cx="132" cy="36" r="4" fill="url(#aeChromeV)" stroke="#6b6b69" strokeWidth=".6"/>
    <path d="M62 40L74 10Q76 6 81 6H119Q124 6 126 10L138 40Z" fill="url(#aeChrome)" stroke="#8a8a87" strokeWidth=".6"/>
-   <text x="100" y="31" textAnchor="middle" fontFamily="'Times New Roman',Georgia,serif" fontWeight="700" fontSize="13" fill="#161616" letterSpacing="-.2" transform="translate(100 0) scale(1.06 1) translate(-100 0)">Canon</text>
+   <FlatText viewBox="0 0 200 150" markup={`<text x="100" y="31" text-anchor="middle" font-family="'Times New Roman',Georgia,serif" font-weight="700" font-size="13" fill="#161616" letter-spacing="-.2" transform="translate(100 0) scale(1.06 1) translate(-100 0)">Canon</text>`}/>
    <rect x="8" y="40" width="184" height="14" rx="4" fill="url(#aeChrome)" stroke="#8a8a87" strokeWidth=".6"/>
-   <text x="20" y="50.5" fontFamily="Helvetica,Arial,sans-serif" fontWeight="700" fontStyle="italic" fontSize="7.4" fill="#161616">AE-1</text>
-   <text x="40" y="50.5" fontFamily="Helvetica,Arial,sans-serif" fontSize="5.2" fill="#161616" letterSpacing="1">PROGRAM</text>
+   <FlatText viewBox="0 0 200 150" markup={`<text x="20" y="50.5" font-family="Helvetica,Arial,sans-serif" font-weight="700" font-style="italic" font-size="7.4" fill="#161616">AE-1</text><text x="40" y="50.5" font-family="Helvetica,Arial,sans-serif" font-size="5.2" fill="#161616" letter-spacing="1">PROGRAM</text>`}/>
    {/* body */}
    <rect x="8" y="52" width="184" height="72" rx="7" fill="url(#aeLeather)"/>
    <rect x="8" y="52" width="184" height="72" rx="7" fill="none" stroke="#000" strokeOpacity=".5"/>
@@ -144,8 +144,7 @@ function CanonAE1({onShoot}:{onShoot:()=>void}){
    <circle cx="100" cy="90" r="13.5" fill="none" stroke="#3a4274" strokeOpacity=".7"/>
    <ellipse cx="93" cy="82" rx="6" ry="3.6" fill="#fff" opacity=".28" transform="rotate(-30 93 82)"/>
    <circle cx="108" cy="98" r="1.8" fill="#fff" opacity=".18"/>
-   <path id="aeLensArc" d="M76 90a24 24 0 0 1 48 0" fill="none"/>
-   <text fontFamily="Helvetica,Arial,sans-serif" fontSize="3.6" fill="#cfcfcc" letterSpacing=".5"><textPath href="#aeLensArc" startOffset="50%" textAnchor="middle">CANON LENS FD 50mm 1:1.8</textPath></text>
+   <FlatText viewBox="0 0 200 150" markup={`<defs><path id="arc" d="M76 90a24 24 0 0 1 48 0"/></defs><text font-family="Helvetica,Arial,sans-serif" font-size="3.6" fill="#cfcfcc" letter-spacing=".5"><textPath href="#arc" startOffset="50%" text-anchor="middle">CANON LENS FD 50mm 1:1.8</textPath></text>`}/>
   </svg>
  </button>
 }
@@ -158,6 +157,10 @@ function MsuCappuccino(){
  // halo; a satin glaze darker at the sides and foot with a warm bounce from the saucer.
  const [sip,setSip]=useState(0);
  const [drinking,setDrinking]=useState(false);
+ // Press and hold: the steam writes "hi" for a moment, then drifts apart. A hold isn't a sip.
+ const [hi,setHi]=useState(0);
+ const hold=useRef({timer:0,held:false});
+ useEffect(()=>{if(!hi)return;const t=window.setTimeout(()=>setHi(0),3000);return()=>window.clearTimeout(t)},[hi]);
  useEffect(()=>{
   if(!drinking)return;
   const lower=window.setTimeout(()=>setSip(v=>Math.min(5,v+1)),420);
@@ -170,7 +173,8 @@ function MsuCappuccino(){
   return ()=>window.clearTimeout(refill);
  },[sip]);
  const heart='M0 14C-10 8-18 1-18-6C-18-12-13.5-16-9-16C-4.5-16-1.5-13 0-10C1.5-13 4.5-16 9-16C13.5-16 18-12 18-6C18 1 10 8 0 14Z';
- return <button type="button" tabIndex={-1} className={`dhCappa dh3d ${drinking?'isSip':''}`} data-tip={sip===5?'Refilling…':'Take a sip'} aria-label={sip===5?'Empty cup, refilling':`Take a sip of coffee, ${100-sip*20}% remaining`} aria-disabled={drinking||sip===5} onClick={()=>{if(!drinking&&sip<5)setDrinking(true)}} style={{'--coffee-steam':sip===5?0:1-sip*.14} as React.CSSProperties}><svg className="dhSteam" viewBox="0 0 60 80" aria-hidden="true"><path d="M19 78C8 64 30 57 20 43S12 22 24 5"/><path d="M32 79C46 65 22 55 34 39S44 20 32 0"/><path d="M42 78C32 67 49 56 42 46S36 28 47 15"/></svg>
+ return <button type="button" tabIndex={-1} className={`dhCappa dh3d ${drinking?'isSip':''} ${hi?'isHi':''}`} data-tip={sip===5?'Refilling…':'Take a sip · or hold'} aria-label={sip===5?'Empty cup, refilling':`Take a sip of coffee, ${100-sip*20}% remaining`} aria-disabled={drinking||sip===5} onPointerDown={()=>{hold.current.held=false;window.clearTimeout(hold.current.timer);hold.current.timer=window.setTimeout(()=>{hold.current.held=true;if(sip<5)setHi(v=>v+1)},550)}} onPointerUp={()=>window.clearTimeout(hold.current.timer)} onPointerLeave={()=>window.clearTimeout(hold.current.timer)} onClick={()=>{if(hold.current.held){hold.current.held=false;return}if(!drinking&&sip<5)setDrinking(true)}} style={{'--coffee-steam':sip===5?0:1-sip*.14} as React.CSSProperties}><svg className="dhSteam" viewBox="0 0 60 80" aria-hidden="true"><path d="M19 78C8 64 30 57 20 43S12 22 24 5"/><path d="M32 79C46 65 22 55 34 39S44 20 32 0"/><path d="M42 78C32 67 49 56 42 46S36 28 47 15"/></svg>
+  {hi>0&&<svg className="dhSteamHi" key={hi} viewBox="0 0 60 70" aria-hidden="true"><path d="M14 52C15 38 17 22 19 10M18 38C22 30 30 30 30 38V52"/><path d="M41 52V36"/><path d="M40.6 26.4l.9.9"/></svg>}
   <svg viewBox="0 0 120 104" aria-hidden="true">
    <defs>
     {/* Glaze: a cylinder lit from the front left, satin rather than glossy. */}
@@ -197,8 +201,6 @@ function MsuCappuccino(){
     <clipPath id="msuMouth"><ellipse cx="56" cy="18" rx="37.2" ry="10.1"/></clipPath>
     <clipPath id="msuLiquid"><ellipse cx="56" cy="20.2" rx="36.3" ry="9.6"/></clipPath>
     <clipPath id="msuBodyClip"><path d="M16 18L21.5 78A34.5 9.3 0 0 0 90.5 78L96 18Z"/></clipPath>
-    {/* Lines on a cylinder seen from above bow downward toward the sides. */}
-    <path id="msuArc1" d="M25 47Q56 58 87 47"/><path id="msuArc2" d="M29 60Q56 70 83 60"/>
    </defs>
    {/* Saucer: underside edge, top, the well, and the mug's contact shadow in it. */}
    <ellipse cx="56" cy="89.6" rx="53.5" ry="13.4" fill="#b9b2a5"/>
@@ -219,8 +221,8 @@ function MsuCappuccino(){
    <g clipPath="url(#msuBodyClip)">
     <rect x="10" y="10" width="92" height="82" fill="url(#msuShade)"/>
     <rect x="10" y="10" width="92" height="82" fill="url(#msuBounce)"/>
-    <text fontFamily="Helvetica,Arial,sans-serif" fontWeight="800" fontSize="15.5" fill="#efe9dc" fillOpacity=".95" letterSpacing=".4"><textPath href="#msuArc1" startOffset="50%" textAnchor="middle">MSU</textPath></text>
-    <text fontFamily="Helvetica,Arial,sans-serif" fontWeight="600" fontSize="5.6" fill="#d6e3dc" fillOpacity=".9" letterSpacing="1.2"><textPath href="#msuArc2" startOffset="50%" textAnchor="middle">SPARTANS</textPath></text>
+    {/* Lines on a cylinder seen from above bow downward toward the sides. */}
+    <FlatText viewBox="0 0 120 104" markup={`<defs><path id="a1" d="M25 47Q56 58 87 47"/><path id="a2" d="M29 60Q56 70 83 60"/></defs><text font-family="Helvetica,Arial,sans-serif" font-weight="800" font-size="15.5" fill="#efe9dc" fill-opacity=".95" letter-spacing=".4"><textPath href="#a1" startOffset="50%" text-anchor="middle">MSU</textPath></text><text font-family="Helvetica,Arial,sans-serif" font-weight="600" font-size="5.6" fill="#d6e3dc" fill-opacity=".9" letter-spacing="1.2"><textPath href="#a2" startOffset="50%" text-anchor="middle">SPARTANS</textPath></text>`}/>
     {/* Sheen: a broad soft band and one crisp window reflection. */}
     <path d="M37 20L39 82" stroke="#fff" strokeOpacity=".09" strokeWidth="9" filter="url(#msuSofter)"/>
     <path d="M81 22L78.5 76" stroke="#fff" strokeOpacity=".14" strokeWidth="5" strokeLinecap="round" filter="url(#msuSoft)"/>
@@ -259,8 +261,8 @@ function MsuCappuccino(){
  </button>
 }
 
-function Lamp({on=true,onToggle}:{on?:boolean;onToggle?:()=>void}){
- return <div className={`dhLamp ${on?'isOn':''}`} role="button" tabIndex={-1} data-tip={on?'Lamp off':'Lamp on'} onClick={onToggle}>
+function Lamp({on=true,disco=false,onToggle}:{on?:boolean;disco?:boolean;onToggle?:()=>void}){
+ return <div className={`dhLamp ${on?'isOn':''}`} role="button" tabIndex={-1} data-tip={disco?'Disco off':on?'Lamp off':'Lamp on'} onClick={onToggle}>
   <svg viewBox="0 0 200 320" aria-hidden="true">
    <defs>
     <linearGradient id="lampShade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#141312"/><stop offset=".55" stopColor="#3c3a38"/><stop offset=".78" stopColor="#5a5754"/><stop offset="1" stopColor="#1c1b1a"/></linearGradient>
@@ -433,9 +435,11 @@ function WatercolorTin(){
  </svg></button>
 }
 
-function DeskKeyboard(){
+function DeskKeyboard({onKey}:{onKey?:(k:string)=>void}){
  const rows=[['esc','☀','☀','▦','⌕','◉','◀','▶','▶','◁','◁','▷','⏻'],['`','1','2','3','4','5','6','7','8','9','0','−','=','delete'],['tab','Q','W','E','R','T','Y','U','I','O','P','[',']','\\'],['caps','A','S','D','F','G','H','J','K','L',';',"'",'return'],['shift','Z','X','C','V','B','N','M',',','.','/','shift'],['fn','control','option','⌘','space','⌘','option','◀','▲','▼','▶']];
- return <div className="dhKeyboard" aria-hidden="true">{rows.map((row,r)=><div className="dhKeyRow" key={r}>{row.map((key,i)=><span key={i} className={key==='space'?'dhSpace':key.length>1?'dhModifier':''}>{key==='space'?'':key}</span>)}</div>)}</div>;
+ // data-k is what the key types, so the room's keyboard can light up the key you pressed.
+ const typed=(key:string)=>key==='space'?' ':key==='delete'?'Backspace':key.length===1&&/[\x21-\x7e]/.test(key)?key.toLowerCase():'';
+ return <div className="dhKeyboard" aria-hidden="true">{rows.map((row,r)=><div className="dhKeyRow" key={r}>{row.map((key,i)=>{const k=typed(key);return <span key={i} data-k={k||undefined} className={key==='space'?'dhSpace':key.length>1?'dhModifier':''} onClick={k&&onKey?e=>{e.stopPropagation();onKey(k)}:undefined}>{key==='space'?'':key}</span>})}</div>)}</div>;
 }
 
 function Glyph({d}:{d:string}){return <svg viewBox="0 0 24 24" aria-hidden="true"><path d={d}/></svg>}
@@ -495,6 +499,18 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
  // Window latch: every other click opens it a crack; each opening replays the curtain's breeze.
  const [air,setAir]=useState(0);
  const [lampOn,setLampOn]=useState(true);
+ // Typing at the desk shows up in hello.txt on the iMac; ↑↑↓↓←→←→BA throws a disco.
+ const [typed,setTyped]=useState('');
+ const [disco,setDisco]=useState(false);
+ const keyboardRef=useRef<HTMLDivElement>(null),pNow=useRef(0);
+ const pressKey=useCallback((k:string)=>{
+  const el=keyboardRef.current?.querySelector<HTMLElement>(`[data-k="${CSS.escape(k.toLowerCase())}"]`);
+  if(el){el.classList.remove('isDown');void el.offsetWidth;el.classList.add('isDown');window.setTimeout(()=>el.classList.remove('isDown'),140)}
+  setTyped(t=>k==='Backspace'?t.slice(0,-1):(t+k).slice(-34));
+ },[]);
+ // The succulent: watered, it perks up, greens and flowers.
+ const [watering,setWatering]=useState(0),[watered,setWatered]=useState(false);
+ useEffect(()=>{if(!watering)return;const g=window.setTimeout(()=>setWatered(true),1500),d=window.setTimeout(()=>setWatering(0),2400);return()=>{window.clearTimeout(g);window.clearTimeout(d)}},[watering]);
  // The room fades in once its fonts and photos are ready, instead of filling in piece by piece.
  const [ready,setReady]=useState(false);
  useEffect(()=>{
@@ -543,6 +559,13 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
    lastKey='';
   };
   const setOsLive=(v:boolean)=>document.documentElement.classList.toggle('deskOsLive',v);
+  // The ambient loops (water, fog, steam, the caret) hold still while nobody can see them:
+  // everything when the hero is offscreen, the room when the opaque OS covers it. Paused one
+  // by one: a class with an `… *` rule restyled the whole page each time it flipped (~120ms).
+  const holder=(root:Element)=>{let on=false,held:Animation[]=[];return(v:boolean)=>{if(v===on)return;on=v;
+   if(v)held=root.getAnimations({subtree:true}).filter(a=>a.playState==='running'&&a.effect?.getTiming().iterations===Infinity);
+   held.forEach(a=>v?a.pause():a.play());if(!v)held=[]}};
+  const holdAll=holder(track),holdRoom=holder(stage);
 
   const frameStatic=()=>{
    const scene=sceneRef.current;if(!scene)return;
@@ -560,13 +583,12 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
    const top=TRACK_TOP-pageY(),r={top,bottom:top+TRACK_H},total=TRACK_H-vh;
    const away=r.bottom<-50||r.top>vh+50;
    if(progRef.current&&away){progRef.current.style.opacity='0';progRef.current.style.visibility='hidden'}
-   // Offscreen, the room's water, fog and steam stop drawing.
-   track.classList.toggle('isAway',away);
+   holdAll(away);
    if(away){snap=true;return}
    const target=cl(-r.top/total),dt=Math.min(.05,Math.max(0,(now-lastT)/1000));lastT=now;
    shown=target;
    snap=false;
-   const p=shown;
+   const p=shown;pNow.current=p;
    // Start fetching the case images once the visitor starts walking in.
    if(!warmed&&p>.05){warmed=true;winRefs.current.forEach(w=>{const img=w?.querySelector('img');if(img&&!img.getAttribute('src')&&img.dataset.src){img.loading='eager';img.src=img.dataset.src}})}
    // Like a real notification, the toast slides in, then gets out of the way.
@@ -595,8 +617,8 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
    // Neha OS takes over once the screen fills the view.
    const ot=cl((p-.38)/.05),os=osRef.current;
    if(os){os.style.opacity=String(ot);os.style.visibility=ot>0?'visible':'hidden';os.classList.toggle('isLive',ot>.9)}
-   // Once the OS fully covers the room, the room's ambient loops pause underneath it.
-   track.classList.toggle('osCovers',ot>=1);
+   // Once the OS fully covers the room, the room isn't drawn underneath it.
+   track.classList.toggle('osCovers',ot>=1);holdRoom(ot>=1);
    setOsLive(ot>.5&&p<.999);
    const dockY=(1-out3(cl((p-.43)/.06)))*140;
    if(dockRef.current)dockRef.current.style.transform=`translate(-50%,${dockY}px)`;
@@ -626,7 +648,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
   // Draw the first frame now, not on the next animation frame, so a view
   // transition back to the desktop snapshots the windows in place.
   update();
-  return()=>{offLenis?.();cancelAnimationFrame(raf);window.clearTimeout(toastTimer);window.removeEventListener('resize',onResize);window.removeEventListener('scroll',request);window.removeEventListener(HOME_SHOWN,onShown);toastEl?.removeEventListener('mouseleave',request);track.classList.remove('isAway','osCovers');setOsLive(false)};
+  return()=>{offLenis?.();cancelAnimationFrame(raf);window.clearTimeout(toastTimer);window.removeEventListener('resize',onResize);window.removeEventListener('scroll',request);window.removeEventListener(HOME_SHOWN,onShown);toastEl?.removeEventListener('mouseleave',request);holdRoom(false);holdAll(false);track.classList.remove('osCovers');setOsLive(false)};
  },[isStatic]);
 
  // Windows drag by their title bar, like the real thing.
@@ -672,13 +694,37 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
   document.addEventListener('keydown',onKey);
   return()=>document.removeEventListener('keydown',onKey);
  },[isStatic]);
+ // Typing while the room is in view writes into hello.txt; the Konami code toggles the disco.
+ // Arrows that continue the code past its first two presses are kept from scrolling the walk-in.
+ useEffect(()=>{
+  if(isStatic)return;
+  const CODE=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  let at=0;
+  const onKey=(e:KeyboardEvent)=>{
+   if(e.altKey||e.ctrlKey||e.metaKey||e.repeat)return;
+   if((e.target as Element)?.closest?.('input,textarea,select,[contenteditable]'))return;
+   const track=trackRef.current;if(!track)return;
+   const r=track.getBoundingClientRect(),mid=window.innerHeight/2;if(r.top>mid||r.bottom<mid)return;
+   const k=e.key.length===1?e.key.toLowerCase():e.key;
+   at=k===CODE[at]?at+1:k===CODE[0]?1:0;
+   if(at>2&&k.startsWith('Arrow'))e.preventDefault();
+   if(at===CODE.length){at=0;setDisco(d=>{if(!d){manualTod.current=true;setTod('night');setLampOn(true)}return !d});return}
+   // Typing only in the room, before Neha OS takes the screen.
+   if(pNow.current>.38)return;
+   if(e.key==='Backspace'){e.preventDefault();pressKey('Backspace');return}
+   if(e.key===' '&&typed)e.preventDefault();
+   if(e.key.length===1&&/[\x20-\x7e]/.test(e.key)&&(e.key!==' '||typed))pressKey(e.key===' '?' ':e.key);
+  };
+  window.addEventListener('keydown',onKey,true);
+  return()=>window.removeEventListener('keydown',onKey,true);
+ },[isStatic,pressKey,typed]);
  // Links to the work (#projects, the anchor near the end of the walk-in) glide through Lenis; see initAnchors.
  const scrub=(e:React.MouseEvent<HTMLDivElement>)=>{const r=e.currentTarget.getBoundingClientRect();jumpTo(cl((e.clientX-r.left)/r.width))};
  const open=(id:string)=>(e:React.MouseEvent<HTMLElement>)=>{e.preventDefault();maximizeInto(e.currentTarget.closest('.dhWin')||e.currentTarget,id,()=>openCase(id))};
  const day=clock.toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'}),time=clock.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
- const hello=<><div className="dhHelloBar"><i/><i/><i/><span>hello.txt</span></div><div className="dhHelloBody"><p>{GREETING[tod]}, i’m neha.<span className="dhCaret"/></p><small>welcome to my desk. keep scrolling, come on in →</small></div></>;
+ const hello=<><div className="dhHelloBar"><i/><i/><i/><span>hello.txt</span></div><div className="dhHelloBody"><p>{GREETING[tod]}, i’m neha.{!typed&&<span className="dhCaret"/>}</p>{typed?<p className="dhTyped">{typed}<span className="dhCaret"/></p>:<small>welcome to my desk. keep scrolling, come on in →</small>}</div></>;
 
- return <section ref={trackRef} className={`dhTrack tod-${tod} ${ready?'isReady':''} ${isStatic?'isStatic':''} ${lampOn?'lampOn':''}`} style={{'--track':`${TRACK_VH}vh`} as React.CSSProperties} aria-label="Neha Chinimilli, intro and selected work" id="top">
+ return <section ref={trackRef} className={`dhTrack tod-${tod} ${ready?'isReady':''} ${isStatic?'isStatic':''} ${lampOn?'lampOn':''} ${disco?'isDisco':''}`} style={{'--track':`${TRACK_VH}vh`} as React.CSSProperties} aria-label="Neha Chinimilli, intro and selected work" id="top">
   {!isStatic&&<DeskTips/>}
   {!isStatic&&<span id="projects" className="dhAnchor" style={{top:`${ANCHOR_P*(TRACK_VH-100)}vh`}} aria-hidden="true"/>}
   <div className="dhPin">
@@ -699,14 +745,16 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
      <div className={`dhWindow ${air%2?'isAjar':''}`} data-tip="Change the time of day" onClick={()=>{manualTod.current=true;setTod(t=>ORDER[(ORDER.indexOf(t)+1)%4]);}}>
       <div className="dhGlass"><GoldenGateView/><div className="dhMuntins"/><div className="dhReflect"/><div className="dhGap"/><button type="button" className="dhLatch" tabIndex={-1} data-tip={air%2?'Close the window':'Open the window a crack'} aria-label={air%2?'Close the window':'Open the window a crack'} onClick={e=>{e.stopPropagation();setAir(v=>v+1)}}/></div>
       <div className="dhCurtain" key={Math.ceil(air/2)}/>
-      <div className="dhSill"><div className="dhSucculent"><i/><i/><i/><i/><i/></div></div>
+      <div className="dhSill"><div className={`dhSucculent ${watered?'isWatered':''} ${watering?'isWatering':''}`} data-tip={watered?'Water it again':'Water me'} onClick={e=>{e.stopPropagation();setWatering(v=>v+1)}}><i/><i/><i/><i/><i/><b className="dhBloom"/><b className="dhBloom"/><b className="dhBloom"/>
+       {watering>0&&<span className="dhCan" key={watering}><svg viewBox="0 0 48 30" aria-hidden="true"><defs><linearGradient id="dhCanG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#dfe4e6"/><stop offset=".5" stopColor="#a9b2b7"/><stop offset="1" stopColor="#7d878d"/></linearGradient></defs><path d="M2 9L14 14" stroke="#8d969b" strokeWidth="2.6" strokeLinecap="round"/><ellipse cx="2" cy="9" rx="2.2" ry="3" fill="#6f787d"/><path d="M14 8H40V27Q27 30 14 27Z" fill="url(#dhCanG)"/><ellipse cx="27" cy="8" rx="13" ry="2.6" fill="#c9d0d3"/><path d="M38 6C48 2 50 18 40 20" fill="none" stroke="#8d969b" strokeWidth="2.4"/></svg><span className="dhDrops"><em/><em/><em/></span></span>}
+      </div></div>
      </div>
 
      <SnowGlobe/>
      <div className="dhString">
       <svg viewBox="0 0 520 90" preserveAspectRatio="none"><path d="M0 8Q260 80 520 12"/></svg>
       {Array.from({length:13},(_,i)=>{const t=i/12,x=t*520,y=(1-t)*(1-t)*8+2*(1-t)*t*80+t*t*12;return <i key={i} className="dhBulbDot" style={{left:x,top:y+2,animationDelay:`${(i*.37)%2}s`}}/>})}
-      {PRINTS.map((p,i)=>{const t=.12+i*.25,x=t*520,y=(1-t)*(1-t)*8+2*(1-t)*t*80+t*t*12;return <figure key={p.src} className="dhPrint" onClick={e=>{const f=e.currentTarget;f.classList.remove('isSwing');void f.offsetWidth;f.classList.add('isSwing')}} style={{left:x-40,top:y-4,'--r':`${p.r}deg`,animationDelay:`${i*.6}s`} as React.CSSProperties}><span className="dhPeg"/><img src={asset(p.src)} alt="" style={{objectPosition:p.pos}} loading="eager" decoding="async"/><figcaption>{p.cap}</figcaption></figure>})}
+      {PRINTS.map((p,i)=>{const t=.12+i*.25,x=t*520,y=(1-t)*(1-t)*8+2*(1-t)*t*80+t*t*12;return <figure key={p.src} className="dhPrint" onClick={e=>{const f=e.currentTarget;f.classList.remove('isSwing');void f.offsetWidth;f.classList.add('isSwing')}} style={{left:x-40,top:y-4,'--r':`${p.r}deg`,'--sd':`${[5.6,6.9,6.2,7.4][i]}s`,animationDelay:`${-i*1.7}s`} as React.CSSProperties}><span className="dhPeg"/><img src={asset(p.src)} alt="" style={{objectPosition:p.pos}} loading="eager" decoding="async"/><figcaption>{p.cap}</figcaption></figure>})}
      </div>
 
      <div className="dhShelf">
@@ -725,19 +773,18 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
      {/* Everything lying on the desk shares one plane, seen in perspective */}
      <div className="dhTop">
       <div className="dhDaylight"/>
-      <div className="dhMat"><DeskKeyboard/><div className="dhMouse"/></div>
+      <div className="dhMat" ref={keyboardRef}><DeskKeyboard onKey={pressKey}/><div className="dhMouse"/></div>
       <div className="dhNotebook"><span>ship-it list<br/>✓ commute<br/>✓ book club<br/>☐ your team?</span></div>
       <div className="dhPen"/>
       <WatercolorTin/>
       <CookieNapkin/>
-      <DoodlePad/>
      </div>
      <PhotoFrame/>
      <Candle/>
      <TumblerFlask/>
      <MsuCappuccino/>
      <CanonAE1 onShoot={shoot}/>
-     <Lamp on={lampOn} onToggle={()=>setLampOn(v=>!v)}/>
+     <Lamp on={lampOn} disco={disco} onToggle={()=>disco?setDisco(false):setLampOn(v=>!v)}/>
      <div className="dhShade"/>
 
      <div className="dhScreen" data-tip="Come on in" onClick={()=>{const t=trackRef.current;if(t&&!isStatic){const to=t.offsetTop+(t.offsetHeight-window.innerHeight)*.5;window.scrollTo({top:to,behavior:'smooth'})}}}>
@@ -750,6 +797,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
     </div>
     {flash>0&&<div className="dhFlash" key={flash} aria-hidden="true"/>}
    </div>
+   {!isStatic&&<div className="dhShield" aria-hidden="true"/>}
    {!isStatic&&<div className="dhProgress" ref={progRef} data-chapter="0">
     <span className="dhChapter" aria-hidden="true"><b>scroll to walk in</b><b>walking in</b><b>hello</b><b>the work</b></span>
     <div className="dhRail" onClick={scrub} role="presentation"><i/>{[.07,.42,.56].map(t=><em key={t} style={{left:`${t*100}%`}}/>)}</div>

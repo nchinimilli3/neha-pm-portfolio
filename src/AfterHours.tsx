@@ -1,5 +1,5 @@
 import React,{useEffect,useLayoutEffect,useRef,useState} from 'react';
-import {Observer,ScrollTrigger,getLenis,glideTo} from './smoothScroll';
+import {glideTo} from './smoothScroll';
 import SpartanGame from './SpartanGame';
 import StableFluids from './StableFluids';
 import './after-hours.css';
@@ -25,11 +25,10 @@ const LAYOUT:Record<string,Omit<Device,'id'|'title'|'eyebrow'|'line'|'caseId'|'h
  fluids:{kind:'tablet',x:150,y:900,w:656,h:473,rot:2},
 };
 // Every image the desk shows, so they can be fetched and decoded before it appears.
-// Each device's share of the tour: the camera travels for the first TRAVEL of it and parks
-// for the rest, and a stop holds at HOLD. Kept short so a glide from one stop to the next
-// is almost all camera motion, with no dead stretch at either end. The camera moves on a
-// sine ease (peak speed ~1.6x average) and the page glides linearly, so the two never stack.
-const TRAVEL=.9,HOLD=.95;
+// Each device's share of the tour: the camera travels for the first TRAVEL of it and rests
+// on the device for the rest, so a visitor who stops scrolling anywhere in that stretch sees
+// it framed. A jump from the list lands at HOLD, inside the rest.
+const TRAVEL=.6,HOLD=.8;
 const FUN_IMAGES=['desk/fun-scheduler.jpg','desk/fun-bookclub.jpg','desk/fun-spartan.jpg','project-media/sparty.png','project-media/um-enemy.png'];
 const ORDER=['commute','bookclub','scheduler','chat','game','fluids'];
 const EXTRA:Record<string,{title:string;eyebrow:string;line:string;hint:string}>={
@@ -382,65 +381,26 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
   const total=track.offsetHeight-window.innerHeight,top=track.getBoundingClientRect().top+window.scrollY;
   return top+total*((i===0?.2:i+HOLD)/stops)+1;
  };
- const tourRef=useRef<{go:(i:number)=>void}|null>(null);
  const goTo=(i:number)=>{
   if(isStatic){const d=devices[i-1];if(d?.caseId)onOpen(d.caseId);return}
-  if(tourRef.current)tourRef.current.go(i);else glideTo(stopY(i),{duration:1.1});
+  glideTo(stopY(i),{duration:1.1});
  };
- /* One device per gesture, the way scroll-snapping product pages do it: while the tour is
-    pinned, GSAP's Observer swallows wheel, trackpad and touch input and turns each gesture
-    into a single next/previous, and Lenis glides the page to that stop. A trackpad keeps
-    sending decaying momentum after the fingers lift; that tail is ignored, but a new swipe
-    (a jump in speed, or input after a short gap) is taken at once, even mid-tail. Past
-    either end, normal scrolling resumes. */
+ /* The camera follows the scroll, like the hero: it moves only while you scroll, as fast as
+    you scroll, and rests on each device for a stretch so it's always framed when you stop.
+    Arrow keys glide to the next or previous device. */
  useEffect(()=>{
   if(isStatic)return;
   const track=trackRef.current;if(!track)return;
-  const lenis=getLenis();
-  let cur=0,busy=false,lastInput=0,prevD=0,armed=false,decaying=false,queuedDir=0;
-  const nearest=()=>{let best=0,d=Infinity;for(let i=0;i<stops;i++){const dd=Math.abs(stopY(i)-window.scrollY);if(dd<d){d=dd;best=i}}return best};
-  // A swipe made during a glide is queued (one at most) and runs as soon as it lands.
-  const glide=(y:number)=>{busy=true;glideTo(y,{duration:1.5,linear:true,onComplete:()=>{busy=false;if(queuedDir&&performance.now()-lastInput<400){const d=queuedDir;queuedDir=0;armed=false;step(d)}queuedDir=0}})};
-  const leave=(y:number)=>{obs.disable();lenis?.start();glideTo(y,{duration:1})};
-  const go=(i:number)=>{
-   if(i<0){leave(track.getBoundingClientRect().top+window.scrollY-window.innerHeight*.6);return}
-   if(i>=stops){const about=document.getElementById('about');leave(about?about.getBoundingClientRect().top+window.scrollY:stopY(stops-1)+window.innerHeight);return}
-   cur=i;glide(stopY(i));
-  };
-  const step=(dir:number)=>{if(busy||isParked(track))return;go(cur+dir)};
-  // Is this input a new gesture, or the tail of the last one? Momentum only ever slows down.
-  const onInput=(dy:number)=>{
-   const now=performance.now(),d=Math.abs(dy),gap=now-lastInput;
-   // A speed jump only means a new swipe once the last one has started slowing down.
-   if(gap>160||decaying&&d>prevD*1.6+4){armed=true;decaying=false}
-   else if(d<prevD*.95)decaying=true;
-   prevD=d;lastInput=now;
-   if(!armed||d<3)return;
-   armed=false;
-   if(busy){queuedDir=dy<0?1:-1;return}
-   step(dy<0?1:-1);
-  };
-  const obs=Observer.create({
-   target:window,type:'wheel,touch',wheelSpeed:-1,tolerance:12,preventDefault:true,
-   ignore:'.ahPop,input,textarea,select,[contenteditable]',
-   onChange:self=>onInput(self.deltaY),
-  });
-  obs.disable();
-  // The swipe that carried you in is already in flight: treat what's left of it as tail.
-  const enter=(fromBelow:boolean)=>{armed=false;decaying=false;queuedDir=0;prevD=Infinity;lastInput=performance.now();lenis?.stop();obs.enable();cur=fromBelow?stops-1:nearest();glide(stopY(cur))};
-  const exit=()=>{obs.disable();lenis?.start()};
-  const st=ScrollTrigger.create({trigger:track,start:'top top',end:'bottom bottom',
-   onEnter:()=>enter(false),onEnterBack:()=>enter(true),onLeave:exit,onLeaveBack:exit});
-  tourRef.current={go:(i:number)=>{if(st.isActive){lenis?.stop();obs.enable();go(i)}else glideTo(stopY(i),{duration:1.1})}};
   const onKey=(e:KeyboardEvent)=>{
-   if(!st.isActive||e.key!=='ArrowDown'&&e.key!=='ArrowUp'||e.repeat||e.altKey||e.ctrlKey||e.metaKey)return;
+   if(e.key!=='ArrowDown'&&e.key!=='ArrowUp'||e.repeat||e.altKey||e.ctrlKey||e.metaKey)return;
    if((e.target as Element)?.closest?.('input,textarea,select,[contenteditable]'))return;
-   e.preventDefault();step(e.key==='ArrowDown'?1:-1);
+   const r=track.getBoundingClientRect();if(r.top>1||r.bottom<window.innerHeight-1)return;
+   let cur=0,d=Infinity;for(let i=0;i<stops;i++){const dd=Math.abs(stopY(i)-window.scrollY);if(dd<d){d=dd;cur=i}}
+   const next=cur+(e.key==='ArrowDown'?1:-1);if(next<0||next>=stops)return;
+   e.preventDefault();glideTo(stopY(next),{duration:1.1});
   };
   document.addEventListener('keydown',onKey);
-  // Sections below the hero mount late; keep the trigger's start and end current.
-  const ro=new ResizeObserver(()=>ScrollTrigger.refresh());ro.observe(document.body);
-  return()=>{ro.disconnect();document.removeEventListener('keydown',onKey);obs.kill();st.kill();lenis?.start();tourRef.current=null};
+  return()=>document.removeEventListener('keydown',onKey);
  },[isStatic]);
  // The list is a quick pop-up over the tour, not a second copy of it under the desk.
  useEffect(()=>{
@@ -460,6 +420,7 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
   <section ref={trackRef} className={`ahTrack ${ready?'isReady':''}`} style={{'--stops':stops} as React.CSSProperties}>
    <div className="ahPin">
     <div ref={viewRef} className="ahView">
+      {!isStatic&&<div className="ahShield" aria-hidden="true"/>}
       <div ref={stageRef} className="ahStage">
        <div className="ahDesk" aria-hidden="true"/>
        <div className="ahBooks" aria-hidden="true"><i/><i/><i/></div>

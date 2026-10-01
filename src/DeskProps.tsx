@@ -1,6 +1,7 @@
 import React,{useEffect,useRef,useState} from 'react';
 import {createPortal} from 'react-dom';
 import './desk-props.css';
+import FlatText from './FlatText';
 
 /* Small things on the hero desk that each do one real thing when touched. Drawn in code,
    lit like the rest of the room: light from the front left, soft contact shadows, and
@@ -9,9 +10,8 @@ import './desk-props.css';
 /* Cream handled tumbler: an elliptical lid, curved steel band, tapered shoulder,
    narrower foot and matte powder coat. Its scale is set against the nearby mug. */
 export function TumblerFlask(){
- const [n,setN]=useState(0);
  const body="M44 50Q77 58 110 50L106 116C105.5 124 101 128 97.5 132L96.8 177A19.8 5.5 0 0 1 57.2 177L56.5 132C53 128 48.5 124 48 116Z";
- return <div className={`dhFlask dh3d ${n?'isSip':''}`} key={n} data-tip="Stay hydrated" onClick={()=>setN(v=>v+1)}>
+ return <div className="dhFlask">
   <svg viewBox="0 0 120 200" aria-hidden="true">
    <defs>
     <linearGradient id="tuBody" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#c8bca7"/><stop offset=".1" stopColor="#ddd3c2"/><stop offset=".32" stopColor="#f1ebdf"/><stop offset=".46" stopColor="#f8f3ea"/><stop offset=".62" stopColor="#efe8db"/><stop offset=".84" stopColor="#d9cfbd"/><stop offset="1" stopColor="#bfb39e"/></linearGradient>
@@ -22,7 +22,7 @@ export function TumblerFlask(){
     <linearGradient id="tuStraw" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#c9d3dc" stopOpacity=".9"/><stop offset=".4" stopColor="#f5f9fc" stopOpacity=".95"/><stop offset="1" stopColor="#b3bec9" stopOpacity=".9"/></linearGradient>
     <filter id="tuGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="2" seed="8"/><feColorMatrix values="0 0 0 0 .45  0 0 0 0 .38  0 0 0 0 .28  0 0 0 .35 -.12"/><feComposite in2="SourceGraphic" operator="in"/></filter>
     <filter id="tuSoft" x="-30%" y="-10%" width="160%" height="120%"><feGaussianBlur stdDeviation="1.6"/></filter>
-    <path id="tuWordmarkCurve" d="M49 80Q77 84 105 80"/><clipPath id="tuBodyClip"><path d={body}/></clipPath>
+    <clipPath id="tuBodyClip"><path d={body}/></clipPath>
    </defs>
    <ellipse cx="77" cy="182" rx="22" ry="3.5" fill="#2a1a0c" opacity=".35" filter="url(#tuSoft)"/>
    {/* Straw: tall, a little left of centre. */}
@@ -44,7 +44,7 @@ export function TumblerFlask(){
     <ellipse cx="45.5" cy="57" rx="2.4" ry="5.4" fill="#6b5a40" opacity=".2"/><ellipse cx="46.5" cy="111" rx="2.4" ry="5.4" fill="#6b5a40" opacity=".2"/>
     {/* Printed wordmark follows the round front face. */}
     <path d="M83.6 68.4L89.2 70.8L83.6 73.2" fill="none" stroke="#7b24b4" strokeWidth="1.25"/>
-    <text fontFamily="Helvetica,Arial,sans-serif" fontSize="9" fontWeight="600" fill="#7b24b4" letterSpacing="-.2"><textPath href="#tuWordmarkCurve" startOffset="50%" textAnchor="middle">accenture</textPath></text>
+    <FlatText viewBox="0 0 120 200" markup={`<defs><path id="w" d="M49 80Q77 84 105 80"/></defs><text font-family="Helvetica,Arial,sans-serif" font-size="9" font-weight="600" fill="#7b24b4" letter-spacing="-.2"><textPath href="#w" startOffset="50%" text-anchor="middle">accenture</textPath></text>`}/>
    </g>
    <path d="M58 175.5Q77 181.5 96 175.5" stroke="#a99980" strokeWidth="1.3" fill="none"/>
    <path d="M60 177Q77 181 94 177" stroke="#f4edde" strokeWidth=".8" fill="none"/>
@@ -109,13 +109,7 @@ export function Candle(){
     {/* Label: pinstriped paper, bold serif scent name, a double gold rule, notes. */}
     <path d="M24 29.3A46.5 10 0 0 0 76 29.3V67.3A46.5 10 0 0 1 24 67.3Z" fill="url(#dcStripes)"/>
     <path d="M24 29.3A46.5 10 0 0 0 76 29.3V67.3A46.5 10 0 0 1 24 67.3Z" fill="url(#dcLabelShade)"/>
-    <text x="28.5" y="40" fontFamily="Georgia,'Times New Roman',serif" fontWeight="700" fontSize="6.6" fill="#2e2219">late night</text>
-    <text x="28.5" y="47.2" fontFamily="Georgia,'Times New Roman',serif" fontWeight="700" fontSize="6.6" fill="#2e2219">latte</text>
-    <path d="M28.5 51.4H70.5M28.5 52.6H70.5" stroke="#d6a45a" strokeWidth=".45"/>
-    <text x="28.5" y="57.6" fontFamily="Helvetica,Arial,sans-serif" fontSize="3" letterSpacing=".5" fill="#2e2219">HOME STUDIO</text>
-    <text x="28.5" y="61.4" fontFamily="Georgia,serif" fontSize="2.3" fill="#4a3a2e">Espresso, Oat Milk,</text>
-    <text x="28.5" y="64.2" fontFamily="Georgia,serif" fontSize="2.3" fill="#4a3a2e">Vanilla Bean</text>
-    <text x="28.5" y="68.6" fontFamily="Georgia,serif" fontSize="1.9" fill="#4a3a2e">Hand-poured soy wax blend candle</text>
+    <FlatText viewBox="0 0 100 84" markup={`<g font-family="Georgia,'Times New Roman',serif"><text x="28.5" y="40" font-weight="700" font-size="6.6" fill="#2e2219">late night</text><text x="28.5" y="47.2" font-weight="700" font-size="6.6" fill="#2e2219">latte</text><path d="M28.5 51.4H70.5M28.5 52.6H70.5" stroke="#d6a45a" stroke-width=".45"/><text x="28.5" y="57.6" font-family="Helvetica,Arial,sans-serif" font-size="3" letter-spacing=".5" fill="#2e2219">HOME STUDIO</text><text x="28.5" y="61.4" font-size="2.3" fill="#4a3a2e">Espresso, Oat Milk,</text><text x="28.5" y="64.2" font-size="2.3" fill="#4a3a2e">Vanilla Bean</text><text x="28.5" y="68.6" font-size="1.9" fill="#4a3a2e">Hand-poured soy wax blend candle</text></g>`}/>
    </svg>
    {puffs>0&&<svg className="dcSmoke" key={puffs} viewBox="0 0 100 80" aria-hidden="true">{[28,50,72].map((x,i)=><path key={i} d={`M${x} 78c-6-10 7-16 0-27s5-18-1-30`} style={{animationDelay:`${i*.12}s`}}/>)}</svg>}
   </div>
@@ -125,7 +119,7 @@ export function Candle(){
     <ellipse cx="30" cy="31" rx="27" ry="3" fill="#1e140a" opacity=".3"/>
     <path d="M6 14L44 10L56 17L18 21.5Z" fill="#e8dcc6"/>
     <path d="M9 14.2L43.5 10.6L52 15.6L18.2 19.6Z" fill="#c2413a"/>
-    <text x="0" y="0" transform="matrix(.98 -.1 .5 .38 22 17)" fontFamily="Helvetica,Arial,sans-serif" fontWeight="800" fontSize="7" fill="#f6ead6">MATCHES</text>
+    <FlatText viewBox="0 0 60 34" markup={`<text transform="matrix(.98 -.1 .5 .38 22 17)" font-family="Helvetica,Arial,sans-serif" font-weight="800" font-size="7" fill="#f6ead6">MATCHES</text>`}/>
     <path d="M18 21.5L56 17V24L18 29Z" fill="url(#dmSide)"/>
     <path d="M18 23.5L56 19V21.5L18 26Z" fill="#2b1a12" opacity=".7"/>
     <path d="M6 14L18 21.5V29L6 21Z" fill="#b8ab93"/>
@@ -161,7 +155,7 @@ export function SnowGlobe(){
    <ellipse cx="50" cy="90" rx="30" ry="5.4" fill="url(#sgBaseTop)"/>
    <path d="M24 107Q50 114 76 107" stroke="#b58254" strokeWidth=".8" fill="none"/><path d="M24 110Q50 116 76 110" stroke="#24180f" strokeWidth="1.4" fill="none"/>
    <rect x="38" y="97" width="24" height="7.4" rx="1.4" fill="url(#sgBrass)"/>
-   <text x="50" y="102.4" textAnchor="middle" fontFamily="Georgia,serif" fontSize="4.2" letterSpacing=".6" fill="#4a3312">NEW YORK</text>
+   <FlatText viewBox="0 0 100 120" markup={`<text x="50" y="102.4" text-anchor="middle" font-family="Georgia,serif" font-size="4.2" letter-spacing=".6" fill="#4a3312">NEW YORK</text>`}/>
    <g className="sgBody">
     <circle cx="50" cy="50" r="38" fill="url(#sgSky)" fillOpacity=".75"/><ellipse cx="50" cy="85" rx="28" ry="5" fill="#839baf" opacity=".4"/>
     <g clipPath="url(#sgInside)">
@@ -192,55 +186,6 @@ export function SnowGlobe(){
  </div>
 }
 
-/* A doodle pad lying on the desk. Drag across it to draw in ink that feathers a little
-   into the paper; the corner tears off a fresh page. The desk is a real perspective
-   plane, so the pointer is mapped onto the page through the page's projected corners. */
-type Pt=[number,number];
-const PAD_W=200,PAD_H=150;
-function squareToQuad(q:Pt[]){
- const [[x0,y0],[x1,y1],[x2,y2],[x3,y3]]=q;
- const sx=x0-x1+x2-x3,sy=y0-y1+y2-y3,dx1=x1-x2,dx2=x3-x2,dy1=y1-y2,dy2=y3-y2,det=dx1*dy2-dx2*dy1;
- const g=(sx*dy2-dx2*sy)/det,h=(dx1*sy-sx*dy1)/det;
- return [x1-x0+g*x1,x3-x0+h*x3,x0,y1-y0+g*y1,y3-y0+h*y3,y0,g,h,1];
-}
-function invert3(m:number[]){
- const [a,b,c,d,e,f,g,h,i]=m,A=e*i-f*h,B=-(d*i-f*g),C=d*h-e*g,det=a*A+b*B+c*C;
- return [A,-(b*i-c*h),b*f-c*e,B,a*i-c*g,-(a*f-c*d),C,-(a*h-b*g),a*e-b*d].map(v=>v/det);
-}
-export function DoodlePad(){
- const [strokes,setStrokes]=useState<string[]>([]);
- const [tear,setTear]=useState(0);
- const corners=useRef<(HTMLSpanElement|null)[]>([]);
- const drawing=useRef<{inv:number[];pts:Pt[]}|null>(null);
- const toPad=(inv:number[],x:number,y:number):Pt=>{const u=inv[0]*x+inv[1]*y+inv[2],v=inv[3]*x+inv[4]*y+inv[5],w=inv[6]*x+inv[7]*y+inv[8];return [u/w*PAD_W,v/w*PAD_H]};
- const path=(p:Pt[])=>p.length<2?`M${p[0][0]} ${p[0][1]}l.1 .1`:p.reduce((s,q,i)=>{if(!i)return `M${q[0].toFixed(1)} ${q[1].toFixed(1)}`;const m=p[i-1];return s+`Q${m[0].toFixed(1)} ${m[1].toFixed(1)} ${((m[0]+q[0])/2).toFixed(1)} ${((m[1]+q[1])/2).toFixed(1)}`},'');
- const down=(e:React.PointerEvent)=>{
-  if(e.button!==0)return;e.preventDefault();e.stopPropagation();
-  const q=corners.current.map(c=>{const r=c!.getBoundingClientRect();return [r.left+r.width/2,r.top+r.height/2] as Pt});
-  const inv=invert3(squareToQuad(q));
-  drawing.current={inv,pts:[toPad(inv,e.clientX,e.clientY)]};
-  (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-  setStrokes(s=>[...s.slice(-40),path(drawing.current!.pts)]);
- };
- const move=(e:React.PointerEvent)=>{const d=drawing.current;if(!d)return;const p=toPad(d.inv,e.clientX,e.clientY),l=d.pts[d.pts.length-1];if(Math.hypot(p[0]-l[0],p[1]-l[1])<1.2)return;d.pts.push(p);setStrokes(s=>[...s.slice(0,-1),path(d.pts)])};
- const up=()=>{drawing.current=null};
- return <div className="dhDoodle">
-  <div className="ddPage" key={tear} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up} data-tip="Doodle: drag to draw">
-   <svg viewBox={`0 0 ${PAD_W} ${PAD_H}`} aria-hidden="true">
-    <defs>
-     {/* Ink in paper: the line wanders a hair and a faint halo bleeds into the fibres. */}
-     <filter id="ddInk" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.8" xChannelSelector="R" yChannelSelector="G" result="d"/><feGaussianBlur in="d" stdDeviation=".35"/></filter>
-     <filter id="ddBleed" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G" result="d"/><feGaussianBlur in="d" stdDeviation="1.1"/></filter>
-    </defs>
-    <g filter="url(#ddBleed)" opacity=".22">{strokes.map((d,i)=><path key={i} d={d} fill="none" stroke="#243764" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>)}</g>
-    <g filter="url(#ddInk)">{strokes.map((d,i)=><path key={i} d={d} fill="none" stroke="#18223f" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>)}</g>
-   </svg>
-   {[0,1,2,3].map(i=><span key={i} className="ddCorner" data-c={i} ref={el=>{corners.current[i]=el}}/>)}
-  </div>
-  <button type="button" className="ddTear" onClick={()=>{setStrokes([]);setTear(t=>t+1)}} data-tip="Tear off a fresh page" aria-label="Tear off a fresh page"/>
- </div>
-}
-
 /* The desk's hover labels, in place of the browser's tooltip: a small cream tag with a
    pointer, just above whatever the mouse rests on (anything in the hero with data-tip).
    It waits a beat before appearing, follows state changes (lamp on/off), and gets out
@@ -251,7 +196,8 @@ export function DeskTips(){
   let anchor:HTMLElement|null=null,timer=0;
   const place=(el:HTMLElement,on:boolean)=>{const r=el.getBoundingClientRect(),text=el.dataset.tip||'';if(!text){setTip(null);return}
    setTip({text,x:Math.min(window.innerWidth-12,Math.max(12,r.left+r.width/2)),y:Math.max(28,r.top-6),on})};
-  const hide=()=>{window.clearTimeout(timer);anchor=null;setTip(t=>t&&{...t,on:false})};
+  // Already hidden: keep the same state, so scrolling doesn't re-render the tip every event.
+  const hide=()=>{window.clearTimeout(timer);anchor=null;setTip(t=>t?.on?{...t,on:false}:t)};
   const over=(e:PointerEvent)=>{
    if(e.pointerType!=='mouse')return;
    const el=(e.target as HTMLElement).closest<HTMLElement>('.dhTrack [data-tip]');

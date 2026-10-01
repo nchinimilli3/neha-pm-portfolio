@@ -23,14 +23,29 @@
 @media(prefers-reduced-motion:reduce){.dhPin::before{transition:none}}
 .dhScene{position:absolute;inset:0;clip-path:inset(0)}
 /* Safari lets the desk's 3D-tilted planes (desk top, keyboard, mouse) escape overflow:hidden,
-   so the scene clips with clip-path; once Neha OS covers the room it isn't drawn at all. */
-.dhTrack.osCovers .dhPin>.dhScene{visibility:hidden}
+   so the scene clips with clip-path; once Neha OS covers the room it isn't drawn at all.
+   Opacity, not visibility: hiding it that way restyled every object in the room (~70ms). */
+.dhTrack.osCovers .dhPin>.dhScene{opacity:0}
 .dhScene::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse 75% 70% at 55% 50%,transparent 60%,rgba(40,24,10,.16))}
 .isStatic .dhScene::after{display:none}
 /* Promoted to its own layer only while the camera moves (DeskHero.tsx). Kept promoted at rest,
    the zoomed room is too big a layer to keep fully drawn and shows unpainted rectangles. */
 .dhStage{position:absolute;left:0;top:0;width:1600px;height:1000px;transform-origin:0 0}
 .dhStage>*{position:absolute}
+/* Chrome re-lays out SVG text (the camera's lens ring, the mug, the Shelby badge…) at every
+   change of the camera's zoom, to hint it for the screen; that alone cost ~25ms a frame and
+   repainted every layer the text sits in. Geometric precision lays it out once. */
+.dhStage text{text-rendering:geometricPrecision}
+/* What fades and slides over the room on every frame of the walk-in sits on its own layer,
+   so moving it doesn't repaint (and re-raster) the room or the desktop under it. */
+.dhTrack:not(.isStatic) :is(.dhCopy,.dhOs,.dhHello,.dhWin,.dhDock,.dhIcons a,.dhToast){will-change:transform,opacity}
+/* A clear sheet over the room and Neha OS while the page scrolls (html.isScrolling, perfMode.ts).
+   The cursor sits still while the room zooms under it, so desk objects kept sliding beneath it,
+   each starting its hover lift, drop shadow and tooltip mid-zoom. Below the progress rail, so
+   skipping still works. One element to show, where a pointer-events rule on every object in
+   the room restyled the whole page at the start and end of each scroll. */
+.dhShield{position:absolute;inset:0;z-index:60;display:none}
+html.isScrolling .dhTrack:not(.isStatic) .dhShield{display:block}
 
 /* Room shell */
 .dhWall{inset:-200px -300px 0;background:
@@ -391,8 +406,6 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 .isStatic .dhWin{position:relative;width:auto;opacity:1;visibility:visible;transform:none}
 .isStatic .dhWinBar{cursor:default}
 @media (prefers-reduced-motion:reduce){.dhFog ellipse,.dhWaves path,.dhGlint rect,.dhSteam path,.dhCaret{animation:none}}
-/* Nobody can see the room: offscreen, or under the fully opaque OS. DeskHero sets both classes. */
-.dhTrack.isAway *,.dhTrack.osCovers .dhStage *{animation-play-state:paused}
 
 /* Below the hero: fun builds wear the same window chrome as Neha OS; each role gets a margin note. */
 .osWin{border-radius:12px;overflow:hidden;background:#fffdf8;box-shadow:0 22px 40px -22px rgba(40,24,14,.45),0 0 0 .5px rgba(0,0,0,.14);transition:box-shadow .25s,transform .25s}
@@ -467,8 +480,6 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 /* Touchable desk: objects tilt toward the pointer in perspective, lift, and do one real thing when clicked */
 .dh3d{cursor:pointer;transition:transform .45s cubic-bezier(.2,.8,.2,1),filter .45s}
 .dh3d:hover{transform:perspective(700px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(-5px);filter:drop-shadow(0 14px 10px rgba(30,18,8,.18))}
-.dhFlask.isWobble svg{transform-origin:50% 100%;animation:dhWobble .9s cubic-bezier(.3,.6,.3,1)}
-@keyframes dhWobble{15%{transform:rotate(-7deg)}35%{transform:rotate(5deg)}55%{transform:rotate(-3deg)}75%{transform:rotate(1.5deg)}100%{transform:none}}
 .dhCappa.isSip>svg:last-child{transform-origin:20% 100%;animation:dhSip 1.2s cubic-bezier(.4,0,.2,1)}
 @keyframes dhSip{35%,60%{transform:translate(-6px,-14px) rotate(-16deg)}100%{transform:none}}
 /* The Ford script is a separate image over the car, so it revs with it. */
@@ -480,7 +491,7 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 .dhBooks i{transition:transform .25s cubic-bezier(.2,.8,.2,1);cursor:default}
 .dhBooks i:not(.dhLean):hover{transform:translateY(-10px)}
 .dhWindow{cursor:pointer}
-@media (prefers-reduced-motion:reduce){.dh3d:hover{transform:none}.dhFlask.isWobble svg,.dhCappa.isSip>svg:last-child,.dhMustang.isRev :is(.lcMarkCar,.dhFordScript){animation:none}}
+@media (prefers-reduced-motion:reduce){.dh3d:hover{transform:none}.dhCappa.isSip>svg:last-child,.dhMustang.isRev :is(.lcMarkCar,.dhFordScript){animation:none}}
 
 /* About me: the other corner of the room */
 .aboutCorner{position:relative;width:100%;aspect-ratio:4/5;border-radius:18px;overflow:hidden;background:#e4d4bd;box-shadow:0 24px 50px -24px rgba(40,24,10,.45)}

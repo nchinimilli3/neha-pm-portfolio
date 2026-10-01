@@ -25,8 +25,6 @@ html,body{overflow-x:clip}
 body:has(.homePage){background:var(--surf-paper)}
 /* The canvas behind the header and footer matches the page, so nothing on the home page sits on cool white. */
 html:not([data-view="simple"]):has(.homeKeep:not([data-parked]) .homePage){--page-canvas:var(--surf-paper)}
-/* Home sections off screen pause their looping decoration (main.tsx sets data-offscreen). */
-.homePage>section[data-offscreen] *{animation-play-state:paused!important}
 .homePage .v28Hero{background:transparent!important}
 .homePage>*:not(.auraField){position:relative;z-index:1}
 
@@ -200,7 +198,7 @@ html:not([data-view="simple"]):has(.homeKeep:not([data-parked]) .homePage){--pag
 .scrollTopButton{position:fixed}
 .scrollTopButton .scrollRing{position:absolute;inset:-4px;width:calc(100% + 8px);height:calc(100% + 8px);transform:rotate(-90deg);pointer-events:none}
 .scrollRingTrack{fill:none;stroke:rgba(46,33,28,.08);stroke-width:2}
-.scrollRingFill{fill:none;stroke:#e8577f;stroke-width:2.2;stroke-linecap:round;stroke-dasharray:138.2;transition:stroke-dashoffset .12s linear}
+.scrollRingFill{fill:none;stroke:#e8577f;stroke-width:2.2;stroke-linecap:round;stroke-dasharray:138.2;stroke-dashoffset:138.2}
 .scrollTopButton>span{position:relative}
 
 /* Nav: one underline that slides to the section you're reading */

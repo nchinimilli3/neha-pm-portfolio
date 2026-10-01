@@ -1,10 +1,5 @@
 /* Smoothness on slow machines (see perfMode.ts). */
 
-/* Everyone: while the page moves, the rooms' ambient loops (steam, water, fog, screen
-   flicker) hold still, so the scene isn't repainted under a moving camera. They resume
-   the moment scrolling stops, too soon to notice they paused. */
-html.isScrolling .dhStage *,html.isScrolling .ahStage *{animation-play-state:paused!important}
-
 /* Light scene, for devices that drop frames: each costly effect is swapped for a cheap
    look-alike. Blend modes become plain translucent layers, animated blurs go, and the
    frosted glass becomes solid glass. The room reads the same; it just costs a fraction

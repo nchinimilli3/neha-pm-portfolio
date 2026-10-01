@@ -12,7 +12,7 @@ gsap.registerPlugin(ScrollTrigger,Observer);
 let lenis:Lenis|null=null;
 export function getLenis(){
  if(lenis||typeof window==='undefined'||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return lenis;
- lenis=new Lenis({lerp:.12,wheelMultiplier:.9});
+ lenis=new Lenis({lerp:.2,wheelMultiplier:.9});
  lenis.on('scroll',ScrollTrigger.update);
  gsap.ticker.add(t=>lenis?.raf(t*1000));
  gsap.ticker.lagSmoothing(0);

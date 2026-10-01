@@ -1,5 +1,6 @@
 import React from 'react';
 import MachEArtwork from './MachEArtwork';
+import FlatText from './FlatText';
 
 /* The Shelby GT500 from the Ford CVF scroll scene, redrawn at road scale so the
    traveler on the lifecycle bar is literally the same car the page drives.
@@ -41,7 +42,7 @@ export function ShelbyMark(){
  <path d="M241 234L276 228L270 255L238 263Z" fill="#12364f" stroke="#84a9bf" strokeWidth="1.5"/>
  <path d="M245 242L268 236M244 249L266 242M243 256L264 249" stroke="#547c94"/>
  <path d="M234 279H532" stroke="#ebece1" strokeWidth="7"/><path d="M236 286H531" stroke="#d5dedb" strokeWidth="2"/>
- <text x="452" y="275" fill="#e9ece1" fontFamily="monospace" fontSize="10" letterSpacing="2">G.T. 500</text>
+ <FlatText viewBox="52 140 676 180" markup={`<text x="452" y="275" fill="#e9ece1" font-family="monospace" font-size="10" letter-spacing="2">G.T. 500</text>`}/>
  <path d="M239 300H528" stroke={`url(#shelbyMetal${_u})`} strokeWidth="4"/>
  <path d="M645 252L702 256L704 280L644 277Z" fill="#102c40"/>
  <path d="M651 258H699M650 263H700M650 268H700" stroke="#738e9c" strokeWidth="1"/>
