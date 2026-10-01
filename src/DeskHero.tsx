@@ -754,7 +754,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
      <div className="dhString">
       <svg viewBox="0 0 520 90" preserveAspectRatio="none"><path d="M0 8Q260 80 520 12"/></svg>
       {Array.from({length:13},(_,i)=>{const t=i/12,x=t*520,y=(1-t)*(1-t)*8+2*(1-t)*t*80+t*t*12;return <i key={i} className="dhBulbDot" style={{left:x,top:y+2,animationDelay:`${(i*.37)%2}s`}}/>})}
-      {PRINTS.map((p,i)=>{const t=.12+i*.25,x=t*520,y=(1-t)*(1-t)*8+2*(1-t)*t*80+t*t*12;return <figure key={p.src} className="dhPrint" onClick={e=>{const f=e.currentTarget;f.classList.remove('isSwing');void f.offsetWidth;f.classList.add('isSwing')}} style={{left:x-40,top:y-4,'--r':`${p.r}deg`,'--sd':`${[5.6,6.9,6.2,7.4][i]}s`,animationDelay:`${-i*1.7}s`} as React.CSSProperties}><span className="dhPeg"/><img src={asset(p.src)} alt="" style={{objectPosition:p.pos}} loading="eager" decoding="async"/><figcaption>{p.cap}</figcaption></figure>})}
+      {PRINTS.map((p,i)=>{const t=.12+i*.25,x=t*520,y=(1-t)*(1-t)*8+2*(1-t)*t*80+t*t*12;return <figure key={p.src} className="dhPrint" onClick={e=>{const f=e.currentTarget;f.classList.remove('isSwing');void f.offsetWidth;f.classList.add('isSwing')}} style={{left:x-40,top:y-4,'--r':`${p.r}deg`} as React.CSSProperties}><span className="dhPeg"/><img src={asset(p.src)} alt="" style={{objectPosition:p.pos}} loading="eager" decoding="async"/><figcaption>{p.cap}</figcaption></figure>})}
      </div>
 
      <div className="dhShelf">

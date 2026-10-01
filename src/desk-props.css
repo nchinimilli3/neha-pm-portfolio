@@ -52,14 +52,12 @@
 @keyframes dhBreeze{0%{transform:none}22%{transform:skewX(-5deg) translateX(-10px) scaleX(1.05)}46%{transform:skewX(2.5deg) translateX(-3px)}66%{transform:skewX(-1.5deg) translateX(-4px)}84%{transform:skewX(.6deg)}100%{transform:none}}
 
 /* Polaroids swing once on their clothespins when touched, then settle. */
-.dhPrint{cursor:pointer;animation:dhSway var(--sd,6.4s) ease-in-out infinite alternate}
-/* At rest the prints drift on their pegs in the room's air, each at its own pace. */
-@keyframes dhSway{from{transform:rotate(calc(var(--r) - 1.3deg))}to{transform:rotate(calc(var(--r) + 1.3deg))}}
+.dhPrint{cursor:pointer}
 .dhPrint.isSwing{animation:dhSwing 2.4s cubic-bezier(.3,.6,.4,1);animation-delay:0s!important}
 @keyframes dhSwing{0%{transform:rotate(var(--r))}12%{transform:rotate(calc(var(--r) + 10deg))}30%{transform:rotate(calc(var(--r) - 7deg))}47%{transform:rotate(calc(var(--r) + 4deg))}63%{transform:rotate(calc(var(--r) - 2.2deg))}80%{transform:rotate(calc(var(--r) + 1deg))}100%{transform:rotate(var(--r))}}
 
 @media (prefers-reduced-motion:reduce){
- .dhGlobe.isShaken svg,.dhWindow.isAjar .dhCurtain,.dhPrint,.dhPrint.isSwing{animation:none}
+ .dhGlobe.isShaken svg,.dhWindow.isAjar .dhCurtain,.dhPrint.isSwing{animation:none}
  .dhCandle.isLit .dcFlame,.dhCandle.isLit .dcGlow{animation:none}
 }
 
