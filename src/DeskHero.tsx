@@ -63,6 +63,16 @@ const GREETING:Record<Tod,string>={morning:'good morning',day:'good afternoon',e
 const SW=420,SX=630,SCREEN_BOTTOM=572;
 const TRACK_VH=600,ANCHOR_P=.9,ROOM_ZOOM=.92;
 
+// The sun's path on the bay: sparkles crowd near the horizon and spread out and grow toward the viewer.
+const GLITTER=Array.from({length:30},(_,j)=>{const t=j/29,y=237+t*t*90,spread=3+t*24,x=226+Math.sin(j*12.99)*spread,w=2+t*9+Math.abs(Math.sin(j*7.3))*4;return [x-w/2,y,w,.7+t*.9]});
+// Soft clouds built from gradient puffs (no filters, so zooming in on the room stays cheap).
+const CLOUDS:[number,number,number,number][][]=[
+ [[44,62,34,7],[70,57,26,8],[96,63,30,6],[60,66,40,4]],
+ [[140,40,18,4],[156,37,14,4.5],[170,41,16,3.5]],
+ [[18,178,30,7],[44,172,22,9],[66,178,26,6]],
+ [[262,170,26,6],[282,166,20,8],[300,172,22,5]]
+];
+
 function GoldenGateView(){
  // Per-instance ids: the hero and the footer each draw this view at a different time of day.
  const u=React.useId().replace(/:/g,'');
@@ -77,29 +87,45 @@ function GoldenGateView(){
    <linearGradient id={`dhSheen${u}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" className="sheen1"/><stop offset="1" className="sheen2"/></linearGradient>
    <linearGradient id={`dhRefFade${u}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#fff" stopOpacity=".5"/><stop offset="1" stopColor="#fff" stopOpacity="0"/></linearGradient>
    <mask id={`dhRefMask${u}`}><rect y="232" width="300" height="80" fill={`url(#dhRefFade${u})`}/></mask>
+   <radialGradient id={`dhPuff${u}`} cx=".5" cy=".42" r=".5"><stop offset="0" className="cloud1"/><stop offset=".55" className="cloud2"/><stop offset="1" className="cloud3"/></radialGradient>
+   <radialGradient id={`dhCore${u}`}><stop offset="0" className="core1"/><stop offset=".6" className="core2"/><stop offset="1" className="core3"/></radialGradient>
+   <radialGradient id={`dhBloom${u}`}><stop offset="0" className="bloom1"/><stop offset="1" className="bloom2"/></radialGradient>
+   {/* Backlit hills: the face toward us sits in shade, darkest at the waterline. */}
+   <linearGradient id={`dhHillShade${u}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#000" stopOpacity="0"/><stop offset="1" stopColor="#000" stopOpacity=".28"/></linearGradient>
   </defs>
   <rect width="300" height="330" fill={`url(#dhSky${u})`}/>
-  <g className="dhSunDisc"><circle cx="226" cy="92" r="46" fill={`url(#dhHalo${u})`}/><circle cx="226" cy="92" r="17"/></g>
+  <g className="dhSunDisc"><circle cx="226" cy="92" r="150" fill={`url(#dhBloom${u})`}/><circle cx="226" cy="92" r="46" fill={`url(#dhHalo${u})`}/><circle cx="226" cy="92" r="17" fill={`url(#dhCore${u})`}/></g>
+  <g className="dhClouds">{CLOUDS.map((c,i)=><g key={i}>{c.map(([x,y,rx,ry],k)=><ellipse key={k} cx={x} cy={y} rx={rx} ry={ry} fill={`url(#dhPuff${u})`}/>)}</g>)}</g>
   <g className="dhStars">{[[30,40],[70,22],[120,52],[180,30],[250,46],[280,20],[150,14],[210,70]].map(([x,y],i)=><circle key={i} cx={x} cy={y} r={i%3?0.9:1.3}/>)}</g>
   {/* Distant ridge, far shore, then the near headland: each step back is paler and bluer. */}
   <path className="dhRidge" d="M150 224C176 206 200 200 226 204C252 208 276 196 300 192V236H150Z"/>
+  <path className="dhRim dhRimFar" d="M150 224C176 206 200 200 226 204C252 208 276 196 300 192"/>
   <path className="dhHillFar" d="M0 214C30 196 58 180 96 186C120 190 136 204 160 210L160 236H0Z"/>
   <path className="dhHillFar" d="M300 206C274 200 250 206 232 216C218 224 208 232 196 236H300Z"/>
+  <path d="M0 214C30 196 58 180 96 186C120 190 136 204 160 210L160 236H0ZM300 206C274 200 250 206 232 216C218 224 208 232 196 236H300Z" fill={`url(#dhHillShade${u})`}/>
+  <path className="dhRim" d="M0 214C30 196 58 180 96 186C120 190 136 204 160 210M300 206C274 200 250 206 232 216"/>
   <rect y="186" width="300" height="52" fill={`url(#dhHaze${u})`}/>
   <path className="dhHillNear" d="M0 226C22 208 44 200 70 206C88 210 98 222 112 232L112 250H0Z"/>
+  <path d="M0 226C22 208 44 200 70 206C88 210 98 222 112 232L112 250H0Z" fill={`url(#dhHillShade${u})`}/>
+  <path className="dhRim" d="M0 226C22 208 44 200 70 206C88 210 98 222 112 232"/>
   <rect y="234" width="300" height="96" fill={`url(#dhBay${u})`}/>
   {/* The sky's reflection brightens the water toward the horizon. */}
   <rect y="234" width="300" height="34" fill={`url(#dhSheen${u})`}/>
+  <g className="dhGlint dhGlitter">{GLITTER.map(([x,y,w,h],i)=><rect key={i} x={x} y={y} width={w} height={h} rx={h/2}/>)}</g>
   <g className="dhBridgeRef" mask={`url(#dhRefMask${u})`}><rect x="77" y="232" width="15" height="70"/><rect x="218" y="230" width="12.4" height="44"/><path d="M-6 232L306 222L306 226L-6 237Z"/></g>
   <g className="dhWaves">{[246,262,280,300,318].map((y,i)=><path key={y} d={`M-40 ${y}q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0`} style={{animationDuration:`${7+i*1.6}s`,opacity:.18+i*.03}}/>)}</g>
-  <g className="dhGlint">{[[40,258,30],[130,270,44],[210,262,26],[90,292,36],[240,300,40]].map(([x,y,w],i)=><rect key={i} x={x} y={y} width={w} height="1.4" rx=".7"/>)}</g>
+  <g className="dhGlint">{[[40,258,8],[130,270,12],[180,250,6],[90,292,10],[150,306,12],[60,318,14]].map(([x,y,w],i)=><rect key={i} x={x} y={y} width={w} height="1.2" rx=".6"/>)}</g>
   {/* The bridge, International Orange, receding from the Presidio side */}
   <g className="dhBridge">
    <path className="dhCable" d="M-6 196Q40 222 82 118Q150 214 222 136Q256 196 306 212"/>
+   <path className="dhCableRim" d="M-6 195Q40 221 82 117Q150 213 222 135Q256 195 306 211"/>
    <g className="dhHangers" clipPath={`url(#dhHangClip${u})`}>{Array.from({length:34},(_,i)=>{const x=-2+i*9;return <line key={i} x1={x} x2={x} y1="0" y2="226"/>})}</g>
    <path className="dhDeck" d="M-6 224L306 214L306 219L-6 230Z"/>
-   <g className="dhTower"><rect x="77" y="116" width="4" height="118"/><rect x="88" y="120" width="4" height="114"/><rect x="77" y="130" width="15" height="3"/><rect x="77" y="156" width="15" height="3"/><rect x="77" y="182" width="15" height="3"/><rect x="77" y="206" width="15" height="3"/><rect className="dhTowerShade" x="79.4" y="116" width="1.6" height="118"/><rect className="dhTowerShade" x="90.4" y="120" width="1.6" height="114"/></g>
-   <g className="dhTower dhTowerFar"><rect x="218" y="134" width="3.4" height="94"/><rect x="227" y="137" width="3.4" height="91"/><rect x="218" y="146" width="12.4" height="2.6"/><rect x="218" y="166" width="12.4" height="2.6"/><rect x="218" y="186" width="12.4" height="2.6"/><rect x="218" y="204" width="12.4" height="2.6"/></g>
+   <path className="dhTruss" d="M-6 229L306 218.6L306 221L-6 232.4Z"/>
+   <path className="dhCableRim" d="M-6 224L306 214"/>
+   <path className="dhPier" d="M72 229h25l1 7H71Z"/><path className="dhPier dhPierFar" d="M216 225.6h17l.6 4.6h-18.2Z"/>
+   <g className="dhTower"><rect x="77" y="116" width="4" height="118"/><rect x="88" y="120" width="4" height="114"/><rect x="77" y="130" width="15" height="3"/><rect x="77" y="156" width="15" height="3"/><rect x="77" y="182" width="15" height="3"/><rect x="77" y="206" width="15" height="3"/><rect x="76.5" y="115.5" width="16" height="2.8"/><rect className="dhTowerShade" x="79.4" y="116" width="1.6" height="118"/><rect className="dhTowerShade" x="90.4" y="120" width="1.6" height="114"/><rect className="dhTowerRim" x="80.3" y="118" width=".7" height="112"/><rect className="dhTowerRim" x="91.3" y="120" width=".7" height="110"/></g>
+   <g className="dhTower dhTowerFar"><rect x="218" y="134" width="3.4" height="94"/><rect x="227" y="137" width="3.4" height="91"/><rect x="218" y="146" width="12.4" height="2.6"/><rect x="218" y="166" width="12.4" height="2.6"/><rect x="218" y="186" width="12.4" height="2.6"/><rect x="218" y="204" width="12.4" height="2.6"/><rect x="217.6" y="133.6" width="13.2" height="2.2"/><rect className="dhTowerRim" x="220.8" y="137" width=".6" height="88"/><rect className="dhTowerRim" x="229.8" y="139" width=".6" height="86"/></g>
    <g className="dhBridgeLights">{Array.from({length:18},(_,i)=><circle key={i} cx={-2+i*18} cy={225-i*.55} r="1.2"/>)}<circle cx="84" cy="116" r="1.8"/><circle cx="224" cy="134" r="1.6"/></g>
   </g>
   <g className="dhFog" filter={`url(#dhFogBlur${u})`}><ellipse cx="60" cy="214" rx="90" ry="14"/><ellipse cx="220" cy="224" rx="110" ry="12"/><ellipse cx="150" cy="196" rx="70" ry="8"/></g>
@@ -741,6 +767,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
     <div className="dhStage" ref={stageRef} aria-hidden="true">
      <div className="dhWall"/>
      <div className="dhSunPatch"/>
+     <div className="dhShaft"/>
 
      <div className={`dhWindow ${air%2?'isAjar':''}`} data-tip="Change the time of day" onClick={()=>{manualTod.current=true;setTod(t=>ORDER[(ORDER.indexOf(t)+1)%4]);}}>
       <div className="dhGlass"><GoldenGateView/><div className="dhMuntins"/><div className="dhReflect"/><div className="dhGap"/><button type="button" className="dhLatch" tabIndex={-1} data-tip={air%2?'Close the window':'Open the window a crack'} aria-label={air%2?'Close the window':'Open the window a crack'} onClick={e=>{e.stopPropagation();setAir(v=>v+1)}}/></div>
@@ -768,11 +795,10 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
      <div className="dhGlow"/>
      <div className="dhImac"><div className="dhImacFace"><i className="dhImacCam"/></div><div className="dhImacChin"/><div className="dhImacStand"/><div className="dhImacFoot"/></div>
 
-     <div className="dhDesk"><div className="dhDeskEdge"/></div><div className="dhWood"/>
+     <div className="dhDesk"><div className="dhDeskEdge"/></div><div className="dhWood"><i className="dhSunDesk"/></div>
      <div className="dhLampPool"/><div className="dhPortraitLight"/>
      {/* Everything lying on the desk shares one plane, seen in perspective */}
      <div className="dhTop">
-      <div className="dhDaylight"/>
       <div className="dhMat" ref={keyboardRef}><DeskKeyboard onKey={pressKey}/><div className="dhMouse"/></div>
       <div className="dhNotebook"><span>ship-it list<br/>✓ commute<br/>✓ book club<br/>☐ your team?</span></div>
       <div className="dhPen"/>
@@ -856,7 +882,7 @@ export function DeskGoodnight(){
     <div className="dhShelf"><div className="dhBooks">{BOOKS.map((b,i)=><i key={i} style={{'--c':b.c,'--f':b.f,height:b.h,width:b.w} as React.CSSProperties}>{b.t&&<span>{b.t}</span>}</i>)}</div><div className="dhStack"><i style={{'--c':'#3d5a80'} as React.CSSProperties}/><i style={{'--c':'#e8dcc4'} as React.CSSProperties}/><Mustang/></div><div className="dhPlank"/></div>
     <div className="dhImac"><div className="dhImacFace"><i className="dhImacCam"/></div><div className="dhImacChin"/><div className="dhImacStand"/><div className="dhImacFoot"/></div>
     <div className="dhScreen"/>
-    <div className="dhDesk"><div className="dhDeskEdge"/></div><div className="dhWood"/>
+    <div className="dhDesk"><div className="dhDeskEdge"/></div><div className="dhWood"><i className="dhSunDesk"/></div>
     <div className="dhLampPool"/><div className="dhPortraitLight"/>
     <div className="dhTop"><div className="dhMat"><DeskKeyboard/><div className="dhMouse"/></div></div>
     <PhotoFrame eager={false}/>
