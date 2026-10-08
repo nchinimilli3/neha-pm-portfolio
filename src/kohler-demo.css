@@ -1,0 +1,190 @@
+/* The four screens from the supplied project plan share one owning surface. */
+.kohlerSurface.kd{--kd-line:#deddd8;--kd-muted:#777773;width:100%;border:1px solid var(--kd-line);border-radius:16px;background:#f6f5f1;color:#20201f;font:12px/1.35 Arial,Helvetica,sans-serif;letter-spacing:0;text-align:left;overflow:hidden;isolation:isolate}
+.kohlerSurface.kd *{box-sizing:border-box}
+.kohlerSurface.kd button,.kohlerSurface.kd input,.kohlerSurface.kd select,.kohlerSurface.kd textarea{font:inherit;letter-spacing:0}
+.kohlerSurface.kd button{cursor:pointer}
+.kohlerSurface.kd button:disabled{cursor:default;opacity:.45}
+.kohlerSurface.kd :is(button,input,select,textarea):focus-visible{outline:2px solid #528cac;outline-offset:3px}
+.kohlerSurface.kd svg{width:17px;height:17px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.kohlerSurface.kd .kd-header{height:60px;padding:0 24px;display:flex;align-items:center;gap:20px;background:#fff;border-bottom:1px solid #eeede9}
+.kohlerSurface.kd .kd-brand{font-size:20px;font-weight:900;letter-spacing:3px;line-height:1}
+.kohlerSurface.kd .kd-header>span{font-size:11px;color:var(--kd-muted);display:flex;align-items:center;gap:10px}
+.kohlerSurface.kd .kd-header small{border:1px solid #dddcd8;border-radius:4px;padding:3px 7px;font-size:9px}
+.kohlerSurface.kd .kd-role{margin-left:auto;display:flex;align-items:center;gap:8px}
+.kohlerSurface.kd .kd-role select{width:102px;border:0;background:transparent;font-size:10px;padding:4px;color:#555}
+.kohlerSurface.kd .kd-avatar{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#080808;color:#fff;font-size:11px;font-weight:bold}
+.kohlerSurface.kd .kd-layout{display:grid;grid-template-columns:155px minmax(0,1fr);min-height:620px}
+.kohlerSurface.kd .kd-nav{display:flex;flex-direction:column;gap:5px;background:#181818;padding:28px 12px 16px;color:#ccc}
+.kohlerSurface.kd .kd-nav>button{display:flex;gap:8px;align-items:center;background:transparent;border:0;border-radius:6px;color:#c9c9c7;padding:8px 7px;text-align:left;font-weight:600;font-size:10px;min-height:34px}
+.kohlerSurface.kd .kd-nav>button svg{width:18px;height:18px;border-radius:3px;padding:2px;background:#303030;color:#aaa}
+.kohlerSurface.kd .kd-nav>button[aria-current=page]{background:#303030;color:#fff}
+.kohlerSurface.kd .kd-nav>button[aria-current=page] svg{background:#fafafa;color:#333}
+.kohlerSurface.kd .kd-nav>button:hover{background:#303030}
+.kohlerSurface.kd .kd-nav-bottom{margin-top:auto;padding-top:80px;font-size:9px;color:#93938f;display:grid;gap:10px}
+.kohlerSurface.kd .kd-nav-bottom button{background:transparent;color:#d1d1ce;border:1px solid #41413e;border-radius:5px;padding:7px;font-size:10px}
+.kohlerSurface.kd .kd-main{min-width:0;padding:28px 24px 22px}
+.kohlerSurface.kd h2{font-family:Arial,Helvetica,sans-serif;font-weight:800;font-size:24px;line-height:1.15;letter-spacing:-.6px;margin:0 0 20px;color:#111}
+.kohlerSurface.kd h3{font-family:Arial,Helvetica,sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:.15px;font-weight:700;color:#777771;margin:0 0 10px;padding-bottom:7px;border-bottom:1px solid var(--kd-line);line-height:1.2}
+.kohlerSurface.kd p{font-family:inherit;font-size:12px;line-height:1.45;letter-spacing:0;margin:8px 0;color:inherit}
+.kohlerSurface.kd .kd-scan{width:min(490px,100%);height:46px;display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--kd-line);border-radius:8px;box-shadow:0 1px 2px #00000007;padding:0 12px;margin-bottom:24px}
+.kohlerSurface.kd .kd-scan input{flex:1;width:0;padding:0;border:0;outline:none;background:none}
+.kohlerSurface.kd .kd-scan button{display:grid;place-items:center;background:transparent;border:0;padding:6px}
+.kohlerSurface.kd .kd-filters{display:flex;gap:12px;margin:0 0 16px;align-items:center}
+.kohlerSurface.kd .kd-filters>input:first-child{flex:1;min-width:130px}
+.kohlerSurface.kd .kd-filters :is(input,select,button),.kohlerSurface.kd .kd-extra-filters select{height:34px;border:1px solid var(--kd-line);border-radius:7px;background:#fff;padding:0 10px;color:#6d6d68;font-size:10px;box-shadow:0 1px 2px #00000005}
+.kohlerSurface.kd .kd-filters select{width:120px}
+.kohlerSurface.kd .kd-filters input[type=date]{width:126px;min-width:0}
+.kohlerSurface.kd .kd-filters button{white-space:nowrap}
+.kohlerSurface.kd .kd-extra-filters{display:flex;gap:16px;margin-bottom:14px}
+.kohlerSurface.kd .kd-extra-filters label{display:flex;align-items:center;gap:8px;font-size:10px}
+.kohlerSurface.kd .kd-clear{color:#555;background:transparent;border:0;text-decoration:underline;padding:0 0 12px;font-size:10px}
+.kohlerSurface.kd .kd-card{padding:14px;background:#fff;border:1px solid var(--kd-line);border-radius:10px;box-shadow:0 1px 2px #00000004;min-width:0}
+.kohlerSurface.kd .kd-table-card{padding:0;overflow:hidden}
+.kohlerSurface.kd .kd-table-card>h3{margin:14px 14px 10px}
+.kohlerSurface.kd .kd-table-card>.kd-filters,.kohlerSurface.kd .kd-table-card>.kd-extra-filters{margin:12px 14px}
+.kohlerSurface.kd .kd-table-card>.kd-clear{margin-left:14px}
+.kohlerSurface.kd .kd-table-scroll{overflow-x:auto;padding:6px 8px 0;scrollbar-width:thin}
+.kohlerSurface.kd table{border-collapse:collapse;width:100%;font-size:10px;text-align:left;white-space:nowrap;margin:0;line-height:1.2}
+.kohlerSurface.kd thead{background:#f5f5f4}
+.kohlerSurface.kd th{font-size:8px;font-weight:600;text-transform:uppercase;color:#777773;letter-spacing:0;padding:8px 6px;text-align:left}
+.kohlerSurface.kd td{padding:8px 6px;border-bottom:1px solid #efeeeb;vertical-align:middle;color:#545450}
+.kohlerSurface.kd tbody tr:hover{background:#f8f8f5}
+.kohlerSurface.kd td b{display:block;font-size:10px;color:#383836;font-weight:600}
+.kohlerSurface.kd td small{display:block;font-size:9px;color:#88887f;margin-top:2px}
+.kohlerSurface.kd .kd-sort{border:0;background:transparent;color:inherit;text-transform:inherit;padding:0;font-size:inherit;display:flex;gap:3px;align-items:center}
+.kohlerSurface.kd .kd-sort span{font-size:10px}
+.kohlerSurface.kd .kd-row-link{border:0;background:none;padding:4px 0;color:#303030;font-size:10px;font-weight:600;text-align:left}
+.kohlerSurface.kd .kd-row-link:hover{text-decoration:underline}
+.kohlerSurface.kd .kd-pill{display:inline-block;padding:4px 6px;border-radius:4px;background:#efefed;font-size:9px;line-height:1;white-space:nowrap;color:#777773;font-weight:600}
+.kohlerSurface.kd :is(.kd-completed,.kd-ready-to-pick,.kd-loaded,.kd-approved){background:#dff0e6;color:#4c7b64}
+.kohlerSurface.kd :is(.kd-in-progress,.kd-assigned,.kd-staged,.kd-pending-review){background:#e0eef9;color:#5b8bb3}
+.kohlerSurface.kd :is(.kd-pending,.kd-backlogged){background:#f9ebd8;color:#a07a4b}
+.kohlerSurface.kd :is(.kd-halted,.kd-rejected,.kd-urgent){background:#fbdcda;color:#b5625e}
+.kohlerSurface.kd :is(.kd-needs-review,.kd-picked){background:#eee6f8;color:#8971a9}
+.kohlerSurface.kd .kd-high{background:#fbe7e7;color:#b77b7b}
+.kohlerSurface.kd .kd-normal{background:#f0f0ed;color:#84847e}
+.kohlerSurface.kd .kd-pagination{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 12px;font-size:9px;color:#777}
+.kohlerSurface.kd .kd-pagination>div{display:flex;gap:4px;align-items:center}
+.kohlerSurface.kd .kd-pagination button{border:0;background:none;color:#777;min-width:24px;height:25px;border-radius:4px;font-size:10px;padding:0 5px}
+.kohlerSurface.kd .kd-pagination button[aria-current=page]{background:#eeefec;color:#333;font-weight:bold}
+.kohlerSurface.kd .kd-empty{padding:45px 20px;font-size:12px;color:#777;text-align:center}
+.kohlerSurface.kd .kd-notice{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 12px;border:1px solid #d2dfd4;background:#edf4ee;border-radius:6px;font-size:11px;margin-bottom:16px}
+.kohlerSurface.kd .kd-notice button{background:transparent;border:0;font-size:18px;padding:0 4px;color:#555}
+.kohlerSurface.kd .kd-work-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.kohlerSurface.kd .kd-work-heading h2{margin:10px 0 6px}
+.kohlerSurface.kd .kd-work-heading>div>span{font-size:10px;color:#555}
+.kohlerSurface.kd .kd-muted{color:#888}
+.kohlerSurface.kd .kd-back{border:0;background:transparent;padding:0;color:#666;font-size:10px}
+.kohlerSurface.kd .kd-details-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:20px;margin-bottom:20px}
+.kohlerSurface.kd .kd-details-grid p{display:flex;align-items:flex-start;gap:8px;font-size:13px;margin:14px 0}
+.kohlerSurface.kd .kd-details-grid p:last-child{margin-bottom:3px}
+.kohlerSurface.kd .kd-document{display:block;width:100%;text-align:left;background:#090909;color:#fff;border:0;border-radius:6px;padding:8px 10px;margin-top:7px;font-size:12px}
+.kohlerSurface.kd .kd-document:hover{background:#333}
+.kohlerSurface.kd .kd-document b{font-weight:600;display:block}
+.kohlerSurface.kd .kd-document small{display:block;font-size:9px;color:#aaa;margin-top:2px}
+.kohlerSurface.kd .kd-instructions{padding:16px}
+.kohlerSurface.kd .kd-progress{display:flex;align-items:center;gap:10px;font-size:8px;text-transform:uppercase;color:#777;margin-bottom:14px}
+.kohlerSurface.kd progress{width:70px;height:5px;accent-color:#222;border:0}
+.kohlerSurface.kd .kd-step{display:grid;grid-template-columns:23px 1fr;gap:8px;position:relative;margin-bottom:14px}
+.kohlerSurface.kd .kd-step:not(:last-of-type):before{content:'';position:absolute;left:8px;top:19px;bottom:-14px;width:2px;background:#d5d5d0}
+.kohlerSurface.kd .kd-step-number{display:grid;place-items:center;background:#222;color:#fff;width:18px;height:18px;border-radius:50%;font-size:10px;position:relative;z-index:1;margin-top:6px}
+.kohlerSurface.kd .kd-step-body{padding:10px 14px;border:1px solid #e5e5e0;border-radius:7px}
+.kohlerSurface.kd .kd-step-meta{display:flex;gap:8px;margin-bottom:6px;font-size:7px;text-transform:uppercase}
+.kohlerSurface.kd .kd-step-meta>*{width:92px;text-align:center;border:1px solid #e5e5e1;border-radius:2px;padding:2px 6px;font-weight:500}
+.kohlerSurface.kd .kd-step-meta b{background:#171717;color:#fff;border-color:#171717}
+.kohlerSurface.kd .kd-step-body>strong{font-size:12px;font-weight:600}
+.kohlerSurface.kd .kd-step-body>p{font-size:10px;color:#898981;margin:4px 0 10px}
+.kohlerSurface.kd .kd-task-list{padding:3px 10px;background:#fafaf9;border:1px solid #edede9;border-radius:5px;max-width:450px}
+.kohlerSurface.kd .kd-task-list label{display:flex;align-items:flex-start;gap:8px;font-size:10px;padding:8px 0;border-bottom:1px solid #efefea;cursor:pointer}
+.kohlerSurface.kd .kd-task-list label:last-child{border-bottom:0}
+.kohlerSurface.kd .kd-task-list input{width:14px;height:14px;margin:0;accent-color:#222;flex-shrink:0}
+.kohlerSurface.kd .kd-task-list small{display:block;color:#aaa;font-size:9px;margin-top:2px}
+.kohlerSurface.kd .kd-upcoming .kd-step-body{background:#f6f5f1;color:#aaa}
+.kohlerSurface.kd .kd-upcoming .kd-step-meta b{background:#ddddd8;border-color:#ddddd8;color:#8d8d88}
+.kohlerSurface.kd .kd-work-footer,.kohlerSurface.kd .kd-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}
+.kohlerSurface.kd .kd-work-footer button,.kohlerSurface.kd .kd-actions button,.kd-dialog .kd-primary{padding:9px 13px;border:1px solid #d6d6d0;border-radius:5px;background:#fff;font-size:11px;color:#555}
+.kohlerSurface.kd .kd-primary,.kd-dialog .kd-primary{background:#151515!important;color:#fff!important;border-color:#151515!important}
+.kohlerSurface.kd .kd-exception{padding:16px;background:#fff3dd;border:1px solid #eed3a6;border-radius:8px;margin-bottom:20px}
+.kohlerSurface.kd .kd-exception label{display:block;font-size:11px;margin-top:12px}
+.kohlerSurface.kd textarea{display:block;width:100%;min-height:70px;resize:vertical;background:#fff;border:1px solid #d6d6d0;border-radius:5px;padding:9px;margin-top:6px}
+.kohlerSurface.kd .kd-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:20px}
+.kohlerSurface.kd .kd-metric{display:flex;gap:9px;margin-bottom:8px;align-items:flex-start}
+.kohlerSurface.kd .kd-metric:last-child{margin:0}
+.kohlerSurface.kd .kd-metric svg{width:21px;height:21px;margin-top:1px;color:#555}
+.kohlerSurface.kd .kd-metric b{font-size:17px;display:block;line-height:1.1;font-weight:700;color:#333}
+.kohlerSurface.kd .kd-metric small{display:block;font-size:9px;line-height:1.2;color:#999}
+.kohlerSurface.kd .kd-charts{display:grid;grid-template-columns:1fr 1.15fr;gap:20px;margin-top:20px}
+.kohlerSurface.kd .kd-distribution{display:flex;gap:18px;align-items:center;padding:7px 0}
+.kohlerSurface.kd .kd-donut{width:116px;height:116px;border-radius:50%;display:grid;place-items:center;flex-shrink:0}
+.kohlerSurface.kd .kd-donut>span{width:70px;height:70px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.kohlerSurface.kd .kd-donut b{font-size:20px}
+.kohlerSurface.kd .kd-donut small{font-size:9px;color:#888}
+.kohlerSurface.kd .kd-distribution ul{list-style:none;flex:1;padding:0;margin:0;font-size:9px}
+.kohlerSurface.kd .kd-distribution li{display:flex;align-items:center;gap:5px;padding:4px 0}
+.kohlerSurface.kd .kd-distribution li>i{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.kohlerSurface.kd .kd-distribution li>b{margin-left:auto;font-size:9px;white-space:nowrap}
+.kohlerSurface.kd .kd-chart-key{display:flex;justify-content:flex-end;gap:10px;font-size:8px;color:#333;margin-bottom:6px}
+.kohlerSurface.kd .kd-chart-key span:last-child{color:#bbb}
+.kohlerSurface.kd .kd-bars{height:114px;display:flex;align-items:flex-end;gap:4px;border-bottom:1px solid #ccc;background:repeating-linear-gradient(to top,transparent 0 27px,#ededeb 27px 28px)}
+.kohlerSurface.kd .kd-bars>span{position:relative;flex:1;background:#ddd;min-width:3px}
+.kohlerSurface.kd .kd-bars i{position:absolute;bottom:0;left:0;width:100%;background:#444}
+.kohlerSurface.kd .kd-chart-dates{display:flex;justify-content:space-between;font-size:8px;color:#888;margin-top:7px}
+.kohlerSurface.kd .kd-dashboard-note{color:#999;font-size:9px;margin-top:12px}
+.kohlerSurface.kd .kd-audit-table{font-size:9px}
+.kohlerSurface.kd .kd-audit-table td{padding:10px 5px}
+.kohlerSurface.kd .kd-event-link{display:flex;align-items:center;gap:6px;border:0;background:none;font-size:9px;color:#777;padding:0;text-align:left;white-space:normal;min-width:110px;max-width:170px}
+.kohlerSurface.kd .kd-event-link:hover{color:#111;text-decoration:underline}
+.kohlerSurface.kd .kd-event-link span{margin-left:auto;color:#555}
+.kohlerSurface.kd .kd-demo-footer{padding:9px 16px;border-top:1px solid var(--kd-line);background:#fff;color:#888;font-size:9px;text-align:right}
+.kohlerSurface.kd .kd-app-frame{position:relative;isolation:isolate}
+.kohlerSurface.kd .kd-modal-layer{position:absolute;inset:0;z-index:10;display:flex;align-items:flex-start;justify-content:center;padding:76px 24px 24px;background:#17171755;border-radius:0;overflow:hidden}
+.kd-dialog{position:relative;border:1px solid #ddd;border-radius:12px;padding:0;margin:0;width:min(540px,100%);max-height:min(80vh,calc(100% - 100px));overflow-y:auto;overscroll-behavior:contain;background:#f6f5f1;color:#333;font:13px/1.5 Arial,Helvetica,sans-serif;box-shadow:0 15px 50px #0003;text-align:left}
+.kd-dialog .kd-dialog-content{padding:28px}
+.kd-dialog .kd-dialog-close{position:absolute;right:12px;top:10px;border:0;background:transparent;font-size:25px;color:#777;cursor:pointer}
+.kd-dialog .kd-eyebrow{font-size:10px;text-transform:uppercase;color:#999;letter-spacing:1px}
+.kd-dialog h2{font:700 24px/1.2 Arial,Helvetica,sans-serif;margin:10px 0 20px;letter-spacing:-.5px;color:#111}
+.kd-dialog h3{font:700 15px/1.4 Arial,Helvetica,sans-serif;margin:12px 0}
+.kd-dialog .kd-sample-paper{padding:22px;background:#fff;border:1px solid #ddd;margin-bottom:18px}
+.kd-dialog .kd-sample-paper>strong{letter-spacing:2px;font-size:17px}
+.kd-dialog dl{display:grid;grid-template-columns:115px 1fr;gap:8px;margin:16px 0;font-size:12px}
+.kd-dialog dt{color:#888}
+.kd-dialog dd{margin:0;overflow-wrap:anywhere}
+.kd-dialog .kd-sample-paper p,.kd-dialog form p{font:12px/1.5 Arial,Helvetica,sans-serif;margin:16px 0;color:#666}
+.kd-dialog .kd-sample-paper aside{font-size:10px;padding:10px;background:#f7f3e8;color:#8a7451;border-radius:4px}
+.kd-dialog .kd-primary{cursor:pointer;font:12px Arial,Helvetica,sans-serif}
+.kd-dialog label{display:block;font-size:12px}
+.kd-dialog textarea{display:block;width:100%;min-height:120px;border:1px solid #ddd;border-radius:6px;padding:12px;margin:8px 0 16px;font:12px/1.5 Arial,Helvetica,sans-serif;resize:vertical}
+.kd-dialog .kd-document{width:100%;border:0;background:#111;color:#fff;border-radius:5px;padding:10px;margin:5px 0;cursor:pointer;text-align:left;font:12px Arial,Helvetica,sans-serif}
+@media(max-width:1100px){.kohlerSurface.kd .kd-layout{grid-template-columns:135px minmax(0,1fr)}.kohlerSurface.kd .kd-main{padding:24px 18px}.kohlerSurface.kd .kd-nav{padding:24px 8px 16px}.kohlerSurface.kd .kd-nav>button{font-size:9px;gap:5px}.kohlerSurface.kd .kd-filters{gap:7px}.kohlerSurface.kd .kd-filters select{width:105px}.kohlerSurface.kd .kd-distribution{gap:10px}.kohlerSurface.kd .kd-donut{width:92px;height:92px}.kohlerSurface.kd .kd-donut>span{width:58px;height:58px}.kohlerSurface.kd .kd-charts{gap:12px}.kohlerSurface.kd .kd-distribution li{font-size:8px}.kohlerSurface.kd .kd-distribution li>b{font-size:8px}}
+@media(max-width:850px){.kohlerSurface.kd .kd-header>span{display:none}.kohlerSurface.kd .kd-layout{grid-template-columns:120px minmax(0,1fr)}.kohlerSurface.kd .kd-nav>button{font-size:8px}.kohlerSurface.kd .kd-filters{flex-wrap:wrap}.kohlerSurface.kd .kd-filters>input:first-child{flex-basis:100%}.kohlerSurface.kd .kd-charts{grid-template-columns:1fr}.kohlerSurface.kd .kd-main h2{font-size:21px}.kohlerSurface.kd .kd-metrics{gap:8px}.kohlerSurface.kd .kd-details-grid{gap:10px}}
+.kohlerSurface.kd .kd-guide-controls{display:flex;align-items:center;gap:16px;padding:14px 22px;background:#eaeae5;border-bottom:1px solid #d9d9d2;font-size:11px}
+.kohlerSurface.kd .kd-guide-controls>span{font-weight:700;color:#666}
+.kohlerSurface.kd .kd-guide-controls>div{display:flex;padding:3px;border:1px solid #d7d7d0;background:#f7f7f2;border-radius:6px}
+.kohlerSurface.kd .kd-guide-controls button{border:0;background:transparent;border-radius:4px;padding:7px 10px;font-size:10px;color:#777}
+.kohlerSurface.kd .kd-guide-controls button[aria-pressed=true]{background:#fff;color:#222;box-shadow:0 1px 3px #0002;font-weight:600}
+.kohlerSurface.kd .kd-guide-controls .kd-guide-toggle{margin-left:auto;text-decoration:underline;text-underline-offset:3px}
+.kohlerSurface.kd .kd-guide{padding:18px 22px 20px;border-bottom:1px solid #deded7;background:#efefe9}
+.kohlerSurface.kd .kd-guide ol{display:flex;gap:18px;list-style:none;margin:0 0 14px;padding:0;font-size:9px;color:#aaa}
+.kohlerSurface.kd .kd-guide li{display:flex;align-items:center;gap:5px}
+.kohlerSurface.kd .kd-guide li>b{font-size:9px;display:grid;place-items:center;width:17px;height:17px;border-radius:50%;background:#ddded6;font-weight:500}
+.kohlerSurface.kd .kd-guide li.active{color:#222;font-weight:700}
+.kohlerSurface.kd .kd-guide li.active>b{background:#222;color:#fff}
+.kohlerSurface.kd .kd-guide li.done{color:#578068}
+.kohlerSurface.kd .kd-guide li.done>b{background:#dce8de;color:#578068}
+.kohlerSurface.kd .kd-guide-prompt{display:flex;gap:24px;justify-content:space-between;align-items:center}
+.kohlerSurface.kd .kd-guide-prompt strong{font-size:16px;font-weight:600;letter-spacing:-.2px}
+.kohlerSurface.kd .kd-guide-prompt p{font-size:11px;color:#777;margin:4px 0 0;max-width:650px}
+.kohlerSurface.kd .kd-guide-prompt>button{flex-shrink:0;padding:10px 14px;border:0;border-radius:5px;font-size:11px;min-height:36px}
+.kohlerSurface.kd .kd-scan-demo{display:flex;align-items:center;gap:18px;padding:14px;background:#eeeee8;border:1px solid #e1e1d9;border-radius:8px;margin:-8px 0 24px}
+.kohlerSurface.kd .kd-barcode-label{position:relative;overflow:hidden;padding:12px 15px 8px;background:#fff;box-shadow:0 1px 4px #0001;border:1px solid #deded9;border-radius:3px;width:190px;flex-shrink:0;text-align:center}
+.kohlerSurface.kd .kd-barcode-label>span{display:block;font-size:7px;letter-spacing:.6px;margin-bottom:9px;color:#777}
+.kohlerSurface.kd .kd-barcode-label svg{width:100%;height:35px;fill:#171717;stroke:none;display:block}
+.kohlerSurface.kd .kd-barcode-label>b{display:block;font:10px/1.3 monospace;letter-spacing:2px;margin-top:6px}
+.kohlerSurface.kd .kd-scan-demo>div>strong{font-size:12px;color:#555}
+.kohlerSurface.kd .kd-scan-demo p{font-size:10px;color:#888;max-width:340px;margin:3px 0 8px}
+.kohlerSurface.kd .kd-scan-demo button{padding:6px 9px;background:#fff;border:1px solid #ccc;border-radius:4px;font-size:10px;color:#555}
+.kohlerSurface.kd .kd-scan-line{display:none;position:absolute;left:0;right:0;top:16px;height:2px;background:#c74c43;box-shadow:0 0 12px #c74c4399}
+.kohlerSurface.kd .is-scanning .kd-scan-line{display:block;animation:kd-scan-sweep .45s ease-in-out infinite alternate}
+@keyframes kd-scan-sweep{to{transform:translateY(66px)}}
+@media(prefers-reduced-motion:reduce){.kohlerSurface.kd .is-scanning .kd-scan-line{animation:none;top:45px}}
+@media(max-width:850px){.kohlerSurface.kd .kd-guide-controls{gap:8px;padding:12px}.kohlerSurface.kd .kd-guide-controls>span{display:none}.kohlerSurface.kd .kd-guide{padding:16px}.kohlerSurface.kd .kd-guide-prompt{gap:12px}.kohlerSurface.kd .kd-guide-prompt strong{font-size:14px}.kohlerSurface.kd .kd-guide-prompt p{font-size:10px}.kohlerSurface.kd .kd-barcode-label{width:150px}}

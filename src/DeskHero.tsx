@@ -53,7 +53,6 @@ const cl=(v:number)=>Math.max(0,Math.min(1,v));
 const L=(a:number,b:number,t:number)=>a+(b-a)*t;
 const io=(t:number)=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
 const out3=(t:number)=>1-Math.pow(1-t,3);
-const back=(t:number)=>{const c=1.35;return 1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2)};
 
 const ORDER:Tod[]=['morning','day','evening','night'];
 const todFor=(h:number):Tod=>h>=5&&h<11?'morning':h>=11&&h<17?'day':h>=17&&h<20?'evening':'night';
@@ -61,7 +60,7 @@ const GREETING:Record<Tod,string>={morning:'good morning',day:'good afternoon',e
 
 // Room geometry, in stage pixels (the stage is a 1600×1000 set).
 const SW=420,SX=630,SCREEN_BOTTOM=572;
-const TRACK_VH=600,ANCHOR_P=.9,ROOM_ZOOM=.92;
+const TRACK_VH=280,ANCHOR_P=.9,ROOM_ZOOM=.92;
 
 // The sun's path on the bay: sparkles crowd near the horizon and spread out and grow toward the viewer.
 const GLITTER=Array.from({length:30},(_,j)=>{const t=j/29,y=237+t*t*90,spread=3+t*24,x=226+Math.sin(j*12.99)*spread,w=2+t*9+Math.abs(Math.sin(j*7.3))*4;return [x-w/2,y,w,.7+t*.9]});
@@ -76,7 +75,18 @@ const CLOUDS:[number,number,number,number][][]=[
 function GoldenGateView(){
  // Per-instance ids: the hero and the footer each draw this view at a different time of day.
  const u=React.useId().replace(/:/g,'');
- return <svg className="dhView" viewBox="0 0 300 330" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+ // Decorative weather, shared by both windows and stable for the visitor's local day.
+ // Three days out of each seven get a marine layer; this is not a live forecast.
+ const [foggy]=useState(()=>{const d=new Date();return Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/86400000)%7<3});
+ const viewRef=useRef<SVGSVGElement>(null);
+ useEffect(()=>{
+  const view=viewRef.current;if(!view)return;
+  const observer=new IntersectionObserver(([entry])=>{
+   view.getAnimations({subtree:true}).forEach(a=>{if(a.effect?.getTiming().iterations===Infinity)entry.isIntersecting?a.play():a.pause()});
+  });
+  observer.observe(view);return()=>observer.disconnect();
+ },[]);
+ return <svg ref={viewRef} className={`dhView ${foggy?'isFoggy':'isClear'}`} viewBox="0 0 300 330" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
   <defs>
    <linearGradient id={`dhSky${u}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" className="sky1"/><stop offset=".7" className="sky2"/><stop offset="1" className="sky3"/></linearGradient>
    <linearGradient id={`dhBay${u}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" className="bay1"/><stop offset="1" className="bay2"/></linearGradient>
@@ -92,11 +102,14 @@ function GoldenGateView(){
    <radialGradient id={`dhBloom${u}`}><stop offset="0" className="bloom1"/><stop offset="1" className="bloom2"/></radialGradient>
    {/* Backlit hills: the face toward us sits in shade, darkest at the waterline. */}
    <linearGradient id={`dhHillShade${u}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#000" stopOpacity="0"/><stop offset="1" stopColor="#000" stopOpacity=".28"/></linearGradient>
+   <linearGradient id={`dhMeteor${u}`}><stop stopColor="#fff4cf" stopOpacity="0"/><stop offset="1" stopColor="#fff4cf"/></linearGradient>
   </defs>
   <rect width="300" height="330" fill={`url(#dhSky${u})`}/>
   <g className="dhSunDisc"><circle cx="226" cy="92" r="150" fill={`url(#dhBloom${u})`}/><circle cx="226" cy="92" r="46" fill={`url(#dhHalo${u})`}/><circle cx="226" cy="92" r="17" fill={`url(#dhCore${u})`}/></g>
   <g className="dhClouds">{CLOUDS.map((c,i)=><g key={i}>{c.map(([x,y,rx,ry],k)=><ellipse key={k} cx={x} cy={y} rx={rx} ry={ry} fill={`url(#dhPuff${u})`}/>)}</g>)}</g>
   <g className="dhStars">{[[30,40],[70,22],[120,52],[180,30],[250,46],[280,20],[150,14],[210,70]].map(([x,y],i)=><circle key={i} cx={x} cy={y} r={i%3?0.9:1.3}/>)}</g>
+  <g className="dhNightSky"><g className="dhMeteor"><path d="M-34 -16L0 0" stroke={`url(#dhMeteor${u})`} strokeWidth="1.2"/><circle r="1.2" fill="#fff4cf"/></g></g>
+  <g className="dhDayLife dhGulls">{[0,1,2].map(i=><g key={i} className="dhGullFlight" style={{animationDelay:`${-i*11}s`}}><g transform={`translate(${-i*13} ${i*6})`}><path className="dhGullWings" d="M-5 -1Q-2 -4 0 0Q2 -4 5 -1"/></g></g>)}</g>
   {/* Distant ridge, far shore, then the near headland: each step back is paler and bluer. */}
   <path className="dhRidge" d="M150 224C176 206 200 200 226 204C252 208 276 196 300 192V236H150Z"/>
   <path className="dhRim dhRimFar" d="M150 224C176 206 200 200 226 204C252 208 276 196 300 192"/>
@@ -115,6 +128,19 @@ function GoldenGateView(){
   <g className="dhBridgeRef" mask={`url(#dhRefMask${u})`}><rect x="77" y="232" width="15" height="70"/><rect x="218" y="230" width="12.4" height="44"/><path d="M-6 232L306 222L306 226L-6 237Z"/></g>
   <g className="dhWaves">{[246,262,280,300,318].map((y,i)=><path key={y} d={`M-40 ${y}q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0`} style={{animationDuration:`${7+i*1.6}s`,opacity:.18+i*.03}}/>)}</g>
   <g className="dhGlint">{[[40,258,8],[130,270,12],[180,250,6],[90,292,10],[150,306,12],[60,318,14]].map(([x,y,w],i)=><rect key={i} x={x} y={y} width={w} height="1.2" rx=".6"/>)}</g>
+  <g className="dhDayLife dhBoats">
+   <g className="dhSailCrossing"><g className="dhBoatBob">
+    <path className="dhBoatWake" d="M-25 2Q-17 0 -9 2M-31 5L-13 4"/>
+    <path className="dhBoatHull" d="M-10 0H10L6 4H-6Z"/>
+    <path className="dhBoatMast" d="M0 0V-25"/>
+    <path className="dhBoatSail" d="M-1 -24L-1 -3H-12ZM2 -21L11 -3H2Z"/>
+   </g></g>
+   <g className="dhLaunchCrossing"><g className="dhBoatBob">
+    <path className="dhBoatWake" d="M9 2Q20 0 32 3M13 5L39 6"/>
+    <path className="dhBoatHull" d="M-9 0H9L6 3H-5Z"/>
+    <path className="dhBoatSail" d="M-3 0V-4H4L7 0Z"/>
+   </g></g>
+  </g>
   {/* The bridge, International Orange, receding from the Presidio side */}
   <g className="dhBridge">
    <path className="dhCable" d="M-6 196Q40 222 82 118Q150 214 222 136Q256 196 306 212"/>
@@ -123,6 +149,11 @@ function GoldenGateView(){
    <path className="dhDeck" d="M-6 224L306 214L306 219L-6 230Z"/>
    <path className="dhTruss" d="M-6 229L306 218.6L306 221L-6 232.4Z"/>
    <path className="dhCableRim" d="M-6 224L306 214"/>
+   {/* Two lanes follow the deck's perspective; towers occlude the tiny cars. */}
+   <g className="dhTraffic">{Array.from({length:6},(_,i)=><g key={i} className={`dhCar ${i%2?'dhCarWest':'dhCarEast'}`} style={{animationDelay:`${-i*7.7}s`,animationDuration:`${36+i%3*5}s`}}>
+    <path className="dhCarBody" d="M-3 0V-1H-1.5L-.7 -2H1.2L2 -1H3V0Z" style={{fill:['#efe1c3','#596a75','#d3aa68'][i%3]}}/>
+    <circle className="dhHeadlight" cx={i%2?-3:3} cy="-.6" r=".75"/><circle className="dhTaillight" cx={i%2?3:-3} cy="-.6" r=".55"/>
+   </g>)}</g>
    <path className="dhPier" d="M72 229h25l1 7H71Z"/><path className="dhPier dhPierFar" d="M216 225.6h17l.6 4.6h-18.2Z"/>
    <g className="dhTower"><rect x="77" y="116" width="4" height="118"/><rect x="88" y="120" width="4" height="114"/><rect x="77" y="130" width="15" height="3"/><rect x="77" y="156" width="15" height="3"/><rect x="77" y="182" width="15" height="3"/><rect x="77" y="206" width="15" height="3"/><rect x="76.5" y="115.5" width="16" height="2.8"/><rect className="dhTowerShade" x="79.4" y="116" width="1.6" height="118"/><rect className="dhTowerShade" x="90.4" y="120" width="1.6" height="114"/><rect className="dhTowerRim" x="80.3" y="118" width=".7" height="112"/><rect className="dhTowerRim" x="91.3" y="120" width=".7" height="110"/></g>
    <g className="dhTower dhTowerFar"><rect x="218" y="134" width="3.4" height="94"/><rect x="227" y="137" width="3.4" height="91"/><rect x="218" y="146" width="12.4" height="2.6"/><rect x="218" y="166" width="12.4" height="2.6"/><rect x="218" y="186" width="12.4" height="2.6"/><rect x="218" y="204" width="12.4" height="2.6"/><rect x="217.6" y="133.6" width="13.2" height="2.2"/><rect className="dhTowerRim" x="220.8" y="137" width=".6" height="88"/><rect className="dhTowerRim" x="229.8" y="139" width=".6" height="86"/></g>
@@ -140,6 +171,7 @@ function CanonAE1({onShoot}:{onShoot:()=>void}){
     <linearGradient id="aeChrome" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#f4f4f2"/><stop offset=".45" stopColor="#c9c9c6"/><stop offset=".55" stopColor="#e9e9e6"/><stop offset="1" stopColor="#9d9d9a"/></linearGradient>
     <linearGradient id="aeChromeV" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#a9a9a6"/><stop offset=".35" stopColor="#f1f1ee"/><stop offset=".7" stopColor="#c4c4c1"/><stop offset="1" stopColor="#8f8f8c"/></linearGradient>
     <pattern id="aeLeather" width="3" height="3" patternUnits="userSpaceOnUse"><rect width="3" height="3" fill="#1b1b1c"/><circle cx="1.5" cy="1.5" r=".7" fill="#262628"/></pattern>
+    <linearGradient id="aeBarrel" x1="0" y1="0" x2="1" y2=".8"><stop stopColor="#57585a"/><stop offset=".2" stopColor="#191a1c"/><stop offset=".6" stopColor="#070809"/><stop offset="1" stopColor="#323337"/></linearGradient>
     <radialGradient id="aeGlass" cx=".4" cy=".35" r=".7"><stop offset="0" stopColor="#6d7fb8"/><stop offset=".25" stopColor="#2b2f55"/><stop offset=".6" stopColor="#101118"/><stop offset="1" stopColor="#050506"/></radialGradient>
    </defs>
    <path d="M14 118Q100 140 186 118" fill="none" stroke="#060607" strokeWidth="7"/>
@@ -152,6 +184,9 @@ function CanonAE1({onShoot}:{onShoot:()=>void}){
    <FlatText viewBox="0 0 200 150" markup={`<text x="100" y="31" text-anchor="middle" font-family="'Times New Roman',Georgia,serif" font-weight="700" font-size="13" fill="#161616" letter-spacing="-.2" transform="translate(100 0) scale(1.06 1) translate(-100 0)">Canon</text>`}/>
    <rect x="8" y="40" width="184" height="14" rx="4" fill="url(#aeChrome)" stroke="#8a8a87" strokeWidth=".6"/>
    <FlatText viewBox="0 0 200 150" markup={`<text x="20" y="50.5" font-family="Helvetica,Arial,sans-serif" font-weight="700" font-style="italic" font-size="7.4" fill="#161616">AE-1</text><text x="40" y="50.5" font-family="Helvetica,Arial,sans-serif" font-size="5.2" fill="#161616" letter-spacing="1">PROGRAM</text>`}/>
+   {/* The right return and raised top plate make the body a solid casting. */}
+   <path d="M192 44L198 49V118L192 124Z" fill="#0c0d0e" stroke="#525355" strokeWidth=".6"/>
+   <path d="M8 40L15 35H64L62 40ZM138 40L135 35H183L192 40Z" fill="url(#aeChromeV)"/>
    {/* body */}
    <rect x="8" y="52" width="184" height="72" rx="7" fill="url(#aeLeather)"/>
    <rect x="8" y="52" width="184" height="72" rx="7" fill="none" stroke="#000" strokeOpacity=".5"/>
@@ -161,14 +196,20 @@ function CanonAE1({onShoot}:{onShoot:()=>void}){
    <circle cx="28" cy="75" r="6" fill="url(#aeChromeV)"/><path d="M28 74l-3 17" stroke="#b9b9b6" strokeWidth="3"/>
    {[16,184].map(x=><g key={x}><circle cx={x} cy="47" r="1.5" fill="#686868"/><path d={`M${x-1} 47h2`} stroke="#d9d9d4" strokeWidth=".5"/></g>)}
    <ellipse cx="103" cy="95" rx="39" ry="36" fill="#070708"/>
+   {/* A projecting lens barrel: rear mount behind the offset front ring. */}
+   <circle cx="103" cy="89" r="38" fill="url(#aeChromeV)"/>
+   <path d="M68 81C63 102 75 126 99 126C123 126 138 107 138 85L135 78C131 58 72 58 68 81Z" fill="url(#aeBarrel)"/>
+   <path d="M72 104Q103 129 131 104M73 108Q103 132 128 109" fill="none" stroke="#747478" strokeOpacity=".35" strokeWidth=".8"/>
    {/* FD 50mm f/1.8 */}
    <circle cx="100" cy="90" r="35" fill="#101011"/>
    <circle cx="100" cy="90" r="35" fill="none" stroke="#2c2c2e" strokeWidth="5" strokeDasharray="1.4 1.4"/>
    <circle cx="100" cy="90" r="28.5" fill="#18181a" stroke="url(#aeChromeV)" strokeWidth="2.2"/>
+   <circle cx="100" cy="90" r="22.2" fill="#030406" stroke="#6a6870" strokeWidth=".7"/>
    <circle cx="100" cy="90" r="21" fill="url(#aeGlass)"/>
    <path d="M99 81l8 3 3 8-6 7-9-1-5-8 4-7Z" fill="#03050b" opacity=".7"/><path d="M85 82q11-13 23-4" stroke="#98aecb" strokeOpacity=".4" fill="none"/>
    <circle cx="100" cy="90" r="13.5" fill="none" stroke="#3a4274" strokeOpacity=".7"/>
-   <ellipse cx="93" cy="82" rx="6" ry="3.6" fill="#fff" opacity=".28" transform="rotate(-30 93 82)"/>
+   <path d="M85 75L94 72L99 82L89 86Z" fill="#dbeaf6" opacity=".22"/>
+   <path d="M86 76L96 82M91 74L95 83" stroke="#fff" strokeOpacity=".3" strokeWidth=".6"/>
    <circle cx="108" cy="98" r="1.8" fill="#fff" opacity=".18"/>
    <FlatText viewBox="0 0 200 150" markup={`<defs><path id="arc" d="M76 90a24 24 0 0 1 48 0"/></defs><text font-family="Helvetica,Arial,sans-serif" font-size="3.6" fill="#cfcfcc" letter-spacing=".5"><textPath href="#arc" startOffset="50%" text-anchor="middle">CANON LENS FD 50mm 1:1.8</textPath></text>`}/>
   </svg>
@@ -303,12 +344,28 @@ function Lamp({on=true,disco=false,onToggle}:{on?:boolean;disco?:boolean;onToggl
    <path d="M150 292L126 176L64 104" fill="none" stroke="#3a3836" strokeWidth="6.5" strokeLinecap="round" strokeLinejoin="round"/>
    <path d="M160 290L137 176L73 103" fill="none" stroke="#242423" strokeWidth="4"/><path d="M152 282L131 182L69 111" fill="none" stroke="#797772" strokeWidth="1"/>
    <path d="M142 280L122 186M118 170L74 118" fill="none" stroke="#8d8a86" strokeWidth="1.6" strokeDasharray="1.2 1.6"/>
-   <circle cx="126" cy="176" r="7" fill="#2f2e2c" stroke="#5a5754"/><circle cx="126" cy="176" r="2.4" fill="#8d8a86"/>
+   <path d="M126 181L143 270M122 170L83 124" stroke="#111212" strokeWidth="3.2" fill="none"/>
+   <path d="M126 181L143 270M122 170L83 124" stroke="#b1aba1" strokeWidth="2" strokeDasharray=".8 2.8" fill="none"/>
+   <circle cx="126" cy="176" r="7" fill="#2f2e2c" stroke="#5a5754"/><circle cx="126" cy="176" r="2.4" fill="#8d8a86"/><path d="M124.5 176h3" stroke="#222" strokeWidth=".7"/>
    <circle cx="150" cy="290" r="5" fill="#2f2e2c"/><circle cx="66" cy="106" r="5" fill="#2f2e2c"/>
    <g transform="rotate(51 58 98)"><path d="M40 78h36l2 8H38Z" fill="#2f2e2c"/><path d="M36 86h44l22 40H14Z" fill="url(#lampShade)"/><path d="M78 87l21 37" stroke="#8d8a86" strokeOpacity=".55" strokeWidth="1.2"/><ellipse cx="58" cy="126" rx="44" ry="7" fill="#1b1a19"/><ellipse cx="58" cy="126" rx="41" ry="5.8" className="dhShadeInner" fill="url(#lampInner)"/><ellipse cx="58" cy="126.5" rx="14" ry="3.2" className="dhBulb"/></g>
    </g>
   </svg>
  </div>
+}
+
+function SucculentFoliage(){
+ const u=React.useId().replace(/:/g,'');
+ return <svg className="dhRosette" viewBox="0 0 68 64" aria-hidden="true">
+  <defs><linearGradient id={`rosette${u}`} x1="0" y1="0" x2="1" y2=".7"><stop stopColor="#c2ccb2"/><stop offset=".35" stopColor="#9bad8b"/><stop offset=".6" stopColor="#6f8b68"/><stop offset="1" stopColor="#3e614c"/></linearGradient></defs>
+  <ellipse cx="34" cy="46" rx="21" ry="7" fill="#203928" opacity=".28"/>
+  {[[-78,1],[-43,1.02],[0,1.04],[43,.98],[78,.96],[-108,.75],[108,.78],[-58,.65],[58,.65],[0,.67]].map(([a,k],i)=><g key={i} transform={`translate(34 44) rotate(${a}) scale(${k})`}>
+   <path d="M0 3C-9 1-12-10-8-20Q-4-30 0-35Q7-26 9-16C12-4 7 3 0 3Z" fill={`url(#rosette${u})`} stroke="#cbd2b3" strokeWidth=".65"/>
+   <path d="M0 1Q-2-15 0-32" fill="none" stroke="#dce0c5" strokeOpacity=".32" strokeWidth=".8"/>
+   <path d="M0 2Q7-1 7-14" fill="none" stroke="#2b4d3e" strokeOpacity=".35"/>
+  </g>)}
+  <path d="M34 46Q23 34 34 25Q45 34 34 46Z" fill={`url(#rosette${u})`} stroke="#d4dcc3" strokeWidth=".7"/>
+ </svg>
 }
 
 function PhotoFrame({eager=true}:{eager?:boolean}){
@@ -319,7 +376,7 @@ function PhotoFrame({eager=true}:{eager?:boolean}){
 }
 function Mustang(){
  const [rev,setRev]=useState(0);
- return <div className={`dhMustang dh3d ${rev?'isRev':''}`} key={rev} data-tip="’67 Shelby GT500" onClick={()=>setRev(v=>v+1)}><ShelbyMark/><img className="dhFordScript" src={asset('desk/ford-script.png')} alt="" aria-hidden="true"/>{rev>0&&<span className="dhVroom">vroom!</span>}</div>
+ return <div className={`dhMustang dh3d ${rev?'isRev':''}`} key={rev} data-tip="’67 Shelby GT500" onClick={()=>setRev(v=>v+1)}><div className="dhToyBody"><ShelbyMark/><img className="dhFordScript" src={asset('desk/ford-script.png')} alt="" aria-hidden="true"/></div>{rev>0&&<span className="dhVroom">vroom!</span>}</div>
 }
 
 // Where each click's bite lands, as [angle in degrees, depth] around the cookie's edge.
@@ -507,7 +564,7 @@ function WaveWallpaper({id}:{id:string}){
 export default function DeskHero({projects,openCase,onSimple}:{projects:Project[];openCase:(id:string)=>void;onSimple?:()=>void}){
  const trackRef=useRef<HTMLElement>(null),stageRef=useRef<HTMLDivElement>(null),sceneRef=useRef<HTMLDivElement>(null);
  const copyRef=useRef<HTMLDivElement>(null),osRef=useRef<HTMLDivElement>(null);
- const helloRef=useRef<HTMLDivElement>(null),progRef=useRef<HTMLDivElement>(null),dockRef=useRef<HTMLElement>(null),toastRef=useRef<HTMLDivElement>(null);
+ const progRef=useRef<HTMLDivElement>(null),dockRef=useRef<HTMLElement>(null),toastRef=useRef<HTMLDivElement>(null);
  const winRefs=useRef<(HTMLElement|null)[]>([]),iconRefs=useRef<(HTMLElement|null)[]>([]);
  const drag=useRef<{x:number,y:number}[]>(projects.map(()=>({x:0,y:0})));
  const zTop=useRef(10);
@@ -522,6 +579,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
  });
  const manualTod=useRef(false);
  const [flash,setFlash]=useState(0);
+ useEffect(()=>{if(!flash)return;const timer=window.setTimeout(()=>setFlash(0),2000);return()=>window.clearTimeout(timer)},[flash]);
  // Window latch: every other click opens it a crack; each opening replays the curtain's breeze.
  const [air,setAir]=useState(0);
  const [lampOn,setLampOn]=useState(true);
@@ -565,7 +623,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
   // The camera follows the scroll position exactly; Lenis (smoothScroll.ts) does the smoothing.
   let shown=-1,lastT=0,snap=true;
   let promotedAt=0,restTimer=0;
-  let SH=262,SY=334,CX0=740,START_SCALE=1,HELLO_DY=0,TRACK_TOP=0,TRACK_H=1;
+  let SH=262,SY=334,CX0=740,START_SCALE=1,TRACK_TOP=0,TRACK_H=1;
   const measure=()=>{
    const vw=window.innerWidth,vh=window.innerHeight;
    SH=isStatic?262:Math.max(220,Math.min(285,SW*vh/vw));SY=SCREEN_BOTTOM-SH;
@@ -577,9 +635,6 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
    const s0=Math.min(Math.max(vw/1600,vh/1000)*ROOM_ZOOM,Math.max(.35,(vw-copyRight-44)/1000));
    START_SCALE=s0;
    CX0=Math.min(vw/vh>1.9?800:760,450-(copyRight+28-vw/2)/s0);
-   // How far the hello note drops so it shrinks into the middle of the dock (it scales from its bottom edge).
-   const hello=helloRef.current,dock=dockRef.current;
-   if(hello&&dock)HELLO_DY=dock.offsetTop+dock.offsetHeight/2-(hello.offsetTop+hello.offsetHeight)+hello.offsetHeight*.06/2;
    // Where the track sits on the page: measured here, not read back on every frame.
    TRACK_TOP=track.getBoundingClientRect().top+window.scrollY;TRACK_H=track.offsetHeight;
    lastKey='';
@@ -595,8 +650,14 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
 
   const frameStatic=()=>{
    const scene=sceneRef.current;if(!scene)return;
-   const w=scene.clientWidth,h=scene.clientHeight,s=Math.max(w/1400,h/760);
-   stage.style.transform=`translate(${w/2-900*s}px,${h/2-520*s}px) scale(${s})`;
+   const w=scene.clientWidth,h=scene.clientHeight,phone=w<=600;
+   const s=phone?w/1280:Math.max(w/1400,h/760),cx=phone?850:900,cy=phone?480:520;
+   // Fit the lamp, monitor and camera together; touch controls stay outside this scaled art.
+   stage.style.transform=`translate(${w/2-cx*s}px,${h/2-cy*s}px) scale(${s})`;
+   scene.style.setProperty('--screen-left',`${w/2+(SX-cx)*s}px`);
+   scene.style.setProperty('--screen-top',`${h/2+(SY-cy)*s}px`);
+   scene.style.setProperty('--screen-width',`${SW*s}px`);
+   scene.style.setProperty('--screen-height',`${SH*s}px`);
   };
   // Draw only when something can have changed: a scroll, a resize, or the toast's timer.
   // A loop that ran every frame forced a layout read on every frame of the whole page.
@@ -624,7 +685,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
 
    // Camera: the visible part of the room shrinks from the whole set to exactly the screen.
    const s0=START_SCALE,s1=Math.max(vw/SW,vh/SH);
-   const e=io(cl((p-.07)/.35));
+   const e=io(cl((p-.08)/.62));
    const s=s0*Math.pow(s1/s0,e);
    const k=(1/s0-1/s)/(1/s0-1/s1||1);
    const cx=L(CX0,SX+SW/2,k),cy=L(510,SY+SH/2,k);
@@ -635,34 +696,37 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
    window.clearTimeout(restTimer);restTimer=window.setTimeout(()=>{stage.style.willChange='auto'},180);
    stage.style.transform=`translate(${vw/2-cx*s}px,${vh/2-cy*s}px) scale(${s})`;
 
-   const ct=cl((p-.03)/.09);
+   // Keep the introduction until the camera starts filling the left side.
+   // Reuse the camera's progress: no extra animation loop or layout measurement.
+   const ct=cl((e-.12)/.34);
    if(copyRef.current){copyRef.current.style.opacity=String(1-ct);copyRef.current.style.transform=`translate(${-ct*80}px,-50%)`;copyRef.current.style.visibility=ct>=1?'hidden':''}
    // A quiet progress rail: where you are in the walk-in, and a way out of it.
-   if(progRef.current){progRef.current.style.setProperty('--p',String(p));const po=1-cl((p-.97)/.03);progRef.current.style.opacity=String(po);progRef.current.style.visibility=po>0?'':'hidden';progRef.current.dataset.chapter=p<.07?'0':p<.42?'1':p<.56?'2':'3';progRef.current.classList.toggle('isDone',p>=.88)}
+   if(progRef.current){progRef.current.style.setProperty('--p',String(p));const po=1-cl((p-.97)/.03);progRef.current.style.opacity=String(po);progRef.current.style.visibility=po>0?'':'hidden';progRef.current.dataset.chapter=p<.08?'0':p<.7?'1':'3';progRef.current.classList.toggle('isDone',p>=.84)}
 
    // Neha OS takes over once the screen fills the view.
-   const ot=cl((p-.38)/.05),os=osRef.current;
+   const ot=cl((p-.63)/.1),os=osRef.current;
    if(os){os.style.opacity=String(ot);os.style.visibility=ot>0?'visible':'hidden';os.classList.toggle('isLive',ot>.9)}
    // Once the OS fully covers the room, the room isn't drawn underneath it.
-   track.classList.toggle('osCovers',ot>=1);holdRoom(ot>=1);
+   track.classList.toggle('osCovers',ot>=1);holdRoom(p>.08);
    setOsLive(ot>.5&&p<.999);
-   const dockY=(1-out3(cl((p-.43)/.06)))*140;
+   const dockY=(1-out3(cl((p-.7)/.12)))*24;
    if(dockRef.current)dockRef.current.style.transform=`translate(-50%,${dockY}px)`;
-   // The hello note minimizes into the dock before the work opens.
-   const hm=io(cl((p-.51)/.06)),hello=helloRef.current;
-   if(hello){hello.style.transform=`translateY(${hm*(HELLO_DY||vh*.5)}px) scale(${L(1,.06,hm)})`;hello.style.opacity=String(1-cl((hm-.7)/.3))}
-   winRefs.current.forEach((w,i)=>{if(!w)return;const t=cl((p-.56-i*.05)/.06),b=back(t),d=drag.current[i];
-    w.style.opacity=String(cl(t*3));w.style.visibility=t>0?'visible':'hidden';
-    w.style.transform=`translate(${d.x}px,${d.y+(1-b)*110}px) scale(${L(.55,1,b)})`});
-   iconRefs.current.forEach((d,i)=>{if(!d)return;const t=cl((p-.84-i*.02)/.04);d.style.opacity=String(t);d.style.transform=`scale(${L(.6,1,back(t))})`});
-   if(toastRef.current){const t=cl((p-.87)/.04);toastRef.current.style.opacity=String(toastGone?0:t);toastRef.current.style.visibility=toastGone||t===0?'hidden':'';toastRef.current.style.transform=`translateX(${(1-out3(t))*120}%)`}
+   // The work arrives together without a separate greeting/minimization interlude.
+   winRefs.current.forEach((w,i)=>{if(!w)return;const t=cl((p-.7-i*.008)/.1),b=out3(t),d=drag.current[i];
+    w.style.opacity=String(t);w.style.visibility=t>0?'visible':'hidden';
+    w.style.transform=`translate(${d.x}px,${d.y+(1-b)*18}px) scale(${L(.98,1,b)})`});
+   iconRefs.current.forEach((d)=>{if(!d)return;const t=cl((p-.7)/.14);d.style.opacity=String(t);d.style.transform=`scale(${L(.98,1,out3(t))})`});
+   if(toastRef.current){const t=cl((p-.8)/.04);toastRef.current.style.opacity=String(toastGone?0:t);toastRef.current.style.visibility=toastGone||t===0?'hidden':'';toastRef.current.style.transform=`translateX(${(1-out3(t))*12}px)`}
   };
 
   measure();
   if(isStatic){frameStatic();const onR=()=>{measure();frameStatic()};window.addEventListener('resize',onR);setOsLive(false);
    // Clear anything the scroll version wrote.
-   for(const el of [copyRef.current,osRef.current,helloRef.current,dockRef.current,toastRef.current,...winRefs.current,...iconRefs.current])if(el){el.style.opacity='';el.style.transform='';el.style.visibility=''}
-   return()=>window.removeEventListener('resize',onR)}
+   for(const el of [copyRef.current,osRef.current,dockRef.current,toastRef.current,...winRefs.current,...iconRefs.current])if(el){el.style.opacity='';el.style.transform='';el.style.visibility=''}
+   // On a phone the room scrolls away before the projects do; stop its ambient loops there.
+   const observer=new IntersectionObserver(([entry])=>holdRoom(reduced||!entry.isIntersecting),{rootMargin:'80px'});
+   if(sceneRef.current)observer.observe(sceneRef.current);
+   return()=>{window.removeEventListener('resize',onR);observer.disconnect();holdRoom(false)}}
   const onResize=()=>{measure();snap=true;request()};
   // Back from a case: draw now, so the closing transition shrinks into the window where it sits.
   const onShown=()=>{measure();snap=true;update()};
@@ -760,11 +824,11 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
     <p className="dhEdu"><i aria-hidden="true"/><span>Computer Science + Supply Chain Management<br/>Michigan State University · 2027</span></p>
     <div className="dhLinks"><a href="#projects">See my work <span aria-hidden="true">↓</span></a><a href="#about">About me</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume <span aria-hidden="true">↗</span></a></div>
     {onSimple&&<p className="dhQuick">{reduced?'Reduced motion is on.':'Short on time?'} <button type="button" onClick={onSimple}>Switch to Simple view</button></p>}
-    <span className="dhPoke" aria-hidden="true">this is my desk. poke around <i>↘</i></span>
+    <span className="dhPoke" aria-hidden="true">{isStatic?'a little corner of my world':'this is my desk. poke around'} <i>↘</i></span>
    </div>
 
    <div className="dhScene" ref={sceneRef}>
-    <div className="dhStage" ref={stageRef} aria-hidden="true">
+    <div className="dhStage" ref={stageRef} aria-hidden="true" inert={isStatic}>
      <div className="dhWall"/>
      <div className="dhSunPatch"/>
      <div className="dhShaft"/>
@@ -772,7 +836,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
      <div className={`dhWindow ${air%2?'isAjar':''}`} data-tip="Change the time of day" onClick={()=>{manualTod.current=true;setTod(t=>ORDER[(ORDER.indexOf(t)+1)%4]);}}>
       <div className="dhGlass"><GoldenGateView/><div className="dhMuntins"/><div className="dhReflect"/><div className="dhGap"/><button type="button" className="dhLatch" tabIndex={-1} data-tip={air%2?'Close the window':'Open the window a crack'} aria-label={air%2?'Close the window':'Open the window a crack'} onClick={e=>{e.stopPropagation();setAir(v=>v+1)}}/></div>
       <div className="dhCurtain" key={Math.ceil(air/2)}/>
-      <div className="dhSill"><div className={`dhSucculent ${watered?'isWatered':''} ${watering?'isWatering':''}`} data-tip={watered?'Water it again':'Water me'} onClick={e=>{e.stopPropagation();setWatering(v=>v+1)}}><i/><i/><i/><i/><i/><b className="dhBloom"/><b className="dhBloom"/><b className="dhBloom"/>
+      <div className="dhSill"><div className={`dhSucculent ${watered?'isWatered':''} ${watering?'isWatering':''}`} data-tip={watered?'Water it again':'Water me'} onClick={e=>{e.stopPropagation();setWatering(v=>v+1)}}><SucculentFoliage/><b className="dhBloom"/><b className="dhBloom"/><b className="dhBloom"/>
        {watering>0&&<span className="dhCan" key={watering}><svg viewBox="0 0 48 30" aria-hidden="true"><defs><linearGradient id="dhCanG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#dfe4e6"/><stop offset=".5" stopColor="#a9b2b7"/><stop offset="1" stopColor="#7d878d"/></linearGradient></defs><path d="M2 9L14 14" stroke="#8d969b" strokeWidth="2.6" strokeLinecap="round"/><ellipse cx="2" cy="9" rx="2.2" ry="3" fill="#6f787d"/><path d="M14 8H40V27Q27 30 14 27Z" fill="url(#dhCanG)"/><ellipse cx="27" cy="8" rx="13" ry="2.6" fill="#c9d0d3"/><path d="M38 6C48 2 50 18 40 20" fill="none" stroke="#8d969b" strokeWidth="2.4"/></svg><span className="dhDrops"><em/><em/><em/></span></span>}
       </div></div>
      </div>
@@ -788,7 +852,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
       <div className="dhBooks">{BOOKS.map((b,i)=><i key={i} style={{'--c':b.c,'--f':b.f,height:b.h,width:b.w} as React.CSSProperties}>{b.t&&<span>{b.t}</span>}</i>)}<i className="dhLean" style={{'--c':'#e3a88f','--f':'#6b2d1f',height:100,width:20} as React.CSSProperties}/></div>
       <b className="dhCanvas"/>
       <div className="dhStack"><i style={{'--c':'#3d5a80'} as React.CSSProperties}/><i style={{'--c':'#e8dcc4'} as React.CSSProperties}/><Mustang/></div>
-      <div className="dhPothos"><svg viewBox="0 0 90 230" aria-hidden="true"><path className="dhVine" d="M40 30C44 70 30 96 36 130S52 180 44 222"/><path className="dhVine" d="M52 30C62 60 66 84 60 110"/>{[[36,48,-30],[44,70,40],[32,94,-40],[40,120,30],[38,148,-35],[48,172,35],[42,198,-30],[46,220,20],[62,56,40],[64,84,-20],[58,106,30]].map(([x,y,r],i)=><path key={i} className="dhLeaf" transform={`translate(${x} ${y}) rotate(${r})`} d="M0 0C-15-6-16-24-5-23Q-1-23 0-18Q5-29 12-20C18-10 7-3 0 0Z"/>)}</svg><div className="dhPot"/></div>
+      <div className="dhPothos"><svg viewBox="0 0 90 230" aria-hidden="true"><defs><linearGradient id="dhLeafFace" x1="0" y1="0" x2="1" y2=".5"><stop stopColor="#34523b"/><stop offset=".44" stopColor="#77925b"/><stop offset=".5" stopColor="#abc280"/><stop offset=".56" stopColor="#65824d"/><stop offset="1" stopColor="#385a3c"/></linearGradient></defs><path className="dhVine" d="M40 30C44 70 30 96 36 130S52 180 44 222"/><path className="dhVine" d="M52 30C62 60 66 84 60 110"/>{[[36,48,-30],[44,70,40],[32,94,-40],[40,120,30],[38,148,-35],[48,172,35],[42,198,-30],[46,220,20],[62,56,40],[64,84,-20],[58,106,30]].map(([x,y,r],i)=><g key={i} transform={`translate(${x} ${y}) rotate(${r}) scale(${i%3===0?.88:1} ${i%2?.94:1})`}><path d="M0 5Q-1 2 0-2" fill="none" stroke="#66794c" strokeWidth="1.2"/><path className="dhLeaf" d="M0 0C-12-4-15-18-8-23Q-2-27 0-18Q6-29 13-20C17-10 8-3 0 0Z"/><path d="M0-1Q-2-10 0-18M-1-8L-9-15M-1-11L8-18" fill="none" stroke="#c4d19a" strokeOpacity=".42" strokeWidth=".6"/></g>)}</svg><div className="dhPot"/></div>
       <div className="dhPlank"/><i className="dhBracket"/><i className="dhBracket dhBracketR"/>
      </div>
 
@@ -821,13 +885,23 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
      <div className="dhSticky dhStickyA">71% → 94% accuracy ✓<small>kohler</small></div>
      <div className="dhSticky dhStickyB">vanderpump reunion 9pm!!</div>
     </div>
-    {flash>0&&<div className="dhFlash" key={flash} aria-hidden="true"/>}
+    {isStatic&&<a href="#projects" className="dhEnterWork" aria-label="Open my selected work"><div className="dhPocketMenu" aria-hidden="true"><b>Neha</b><span>{time}</span></div><div className="dhPocketFolder" aria-hidden="true"><i><span/></i><span>Selected work</span></div></a>}
+    {flash>0&&!reduced&&<div className="dhFlash" key={flash} aria-hidden="true"/>}
    </div>
+   {isStatic&&<div className="dhDeskControls" role="group" aria-label="Play with my desk">
+    <div className="dhDeskCaption"><span>Make yourself at home.</span><a href="#projects">View projects <span aria-hidden="true">↓</span></a></div>
+    <div className="dhDeskButtons">
+     <button type="button" aria-label="Desk lamp" aria-pressed={lampOn} onClick={()=>{setDisco(false);setLampOn(v=>!v)}}><span aria-hidden="true">☼</span> Lamp {lampOn?'on':'off'}</button>
+     <button type="button" aria-label="Night mode" aria-pressed={tod==='night'} onClick={()=>{manualTod.current=true;setTod(tod==='night'?'day':'night')}}><span aria-hidden="true">{tod==='night'?'☾':'☀'}</span> {tod==='night'?'Night':'Day'} view</button>
+     <button type="button" onClick={shoot}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h4l2-3h4l2 3h4v13H4Z"/><circle cx="12" cy="13" r="4"/></svg> Say cheese</button>
+    </div>
+    <span className="dhDeskStatus" role="status">{flash>0?'Click!':''}</span>
+   </div>}
    {!isStatic&&<div className="dhShield" aria-hidden="true"/>}
    {!isStatic&&<div className="dhProgress" ref={progRef} data-chapter="0">
     <span className="dhChapter" aria-hidden="true"><b>scroll to walk in</b><b>walking in</b><b>hello</b><b>the work</b></span>
-    <div className="dhRail" onClick={scrub} role="presentation"><i/>{[.07,.42,.56].map(t=><em key={t} style={{left:`${t*100}%`}}/>)}</div>
-    <button type="button" className="dhSkip" onClick={()=>jumpTo(1)}>Skip to the work ↓</button>
+    <div className="dhRail" onClick={scrub} role="presentation"><i/>{[.08,.7,.84].map(t=><em key={t} style={{left:`${t*100}%`}}/>)}</div>
+    <button type="button" className="dhSkip" onClick={()=>jumpTo(ANCHOR_P)}>Skip to the work ↓</button>
    </div>}
 
    <div className="dhOs" ref={osRef}>
@@ -839,7 +913,6 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
     </nav>
     {isStatic&&<span id="projects" className="dhAnchor" aria-hidden="true"/>}
     <h2 className="dhOsTitle">Selected work</h2>
-    <div className="dhHello dhHelloOs" ref={helloRef} aria-hidden="true">{hello}</div>
     <div className="dhWindows">
      {projects.map((p,i)=>{const w=WINDOWS[p.id];if(!w)return null;const [x,y]=SLOTS[i]||[10,10];
       return <article key={p.id} className="dhWin" data-case={p.id} ref={el=>{winRefs.current[i]=el}} style={isStatic?undefined:{left:`${x}vw`,top:`${y}vh`}}>
@@ -878,7 +951,7 @@ export function DeskGoodnight(){
   <div className="dhScene" ref={sceneRef}>
    <div className="dhStage" ref={stageRef} style={{'--sh':'262px','--sy':'310px'} as React.CSSProperties} aria-hidden="true">
     <div className="dhWall"/>
-    <div className="dhWindow"><div className="dhGlass"><GoldenGateView/><div className="dhMuntins"/><div className="dhReflect"/></div><div className="dhCurtain"/><div className="dhSill"><div className="dhSucculent"><i/><i/><i/><i/><i/></div></div></div>
+    <div className="dhWindow"><div className="dhGlass"><GoldenGateView/><div className="dhMuntins"/><div className="dhReflect"/></div><div className="dhCurtain"/><div className="dhSill"><div className="dhSucculent"><SucculentFoliage/></div></div></div>
     <div className="dhShelf"><div className="dhBooks">{BOOKS.map((b,i)=><i key={i} style={{'--c':b.c,'--f':b.f,height:b.h,width:b.w} as React.CSSProperties}>{b.t&&<span>{b.t}</span>}</i>)}</div><div className="dhStack"><i style={{'--c':'#3d5a80'} as React.CSSProperties}/><i style={{'--c':'#e8dcc4'} as React.CSSProperties}/><Mustang/></div><div className="dhPlank"/></div>
     <div className="dhImac"><div className="dhImacFace"><i className="dhImacCam"/></div><div className="dhImacChin"/><div className="dhImacStand"/><div className="dhImacFoot"/></div>
     <div className="dhScreen"/>

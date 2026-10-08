@@ -8,10 +8,10 @@
 .lampOn .dhFrame{z-index:41}
 .dhTrack .dhFrameFace img{filter:brightness(var(--printDim)) saturate(.98)}
 .lampOn .dhFrameFace img{filter:brightness(.95) saturate(.98)}
-.dhFrameFace::after{background:linear-gradient(117deg,#ffe7bd25,transparent 36%,#ffffff06 65%,transparent 66%)}
+.dhFrameFace::after{background:linear-gradient(117deg,#ffe7bd18,transparent 36%,#ffffff06 65%,transparent 66%);box-shadow:inset 0 0 0 .6px #ffffff30}
 /* Ceramic, powder coat, leather and glass each catch light differently. */
 .dhStage .dhCappa{left:1078px;top:632px;width:99px;height:87px}
-.dhStage .dhCamera{left:1301px;top:637px;width:125px;height:92px;filter:drop-shadow(-2px 3px 2px #231d1940)}
+.dhStage .dhCamera{left:1301px;top:641px;width:125px;height:92px;filter:drop-shadow(-2px 3px 2px #231d1940)}
 .dhCandle::after{content:"";position:absolute;left:10%;right:8%;bottom:1px;height:6px;border-radius:50%;background:#251b1438;filter:blur(2px);z-index:-1;pointer-events:none}
 .dhStage .dhGlobe{left:1218px;top:386px;width:72px;height:86px;filter:drop-shadow(-2px 3px 2px #1c25312b)}
 /* Leave open working space between the keyboard and paper; avoid edge tangencies. */
@@ -25,10 +25,12 @@
 .dhPrint{box-shadow:1px 1px 0 #d0c5b4,-2px 4px 5px -3px #281d1760}
 
 /* Small bevels and edge thickness remain legible at the room's final scale. */
-.dhKeyRow span{background:linear-gradient(155deg,#fffef9,#efeeea 68%,#dbdbd5);box-shadow:0 1.3px 0 #8f9392,inset 0 .6px 0 #fff,0 0 0 .4px #b8bcba}
+.dhKeyRow span{background:linear-gradient(160deg,#fffef9,#efeeea 58%,#d8d9d5);box-shadow:0 1.3px 0 #8f9392,inset 0 .6px 0 #fff,inset 0 -.6px .6px #adb0ab55,0 0 0 .4px #b8bcba}
 .dhTop .dhPen{box-shadow:-1px 3px 2px -1px #33221860}
 .dhStage .dhMatches{filter:drop-shadow(-1px 2px 1px #31231840)}
-.dhStage .dhCamera::after{height:5px;bottom:1px;filter:blur(2px)}
+/* The camera body ends at SVG y=126, above the padded viewBox bottom. */
+.dhStage .dhCamera::after{left:5%;right:2%;height:4px;bottom:13px;filter:blur(1px);background:#21170f88}
+.dhStage .dhCamera::before{top:calc(100% - 16px)}
 .dhStage .dhGlobe::after{content:"";position:absolute;left:24%;right:20%;bottom:4px;height:3px;border-radius:50%;background:#27221930;filter:blur(1px);pointer-events:none}
 
 /* Sticky paper is attached along the top and lifts a little at the lower corner. */

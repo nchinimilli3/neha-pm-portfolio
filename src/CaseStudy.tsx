@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useSta
 /* Everything only a case study page uses. Loaded on demand (preloaded once home is idle),
    so the home page doesn't download, parse, or style it before its first frame. */
 import LaptopOnly from './LaptopOnly';
+import KohlerDemo from './KohlerDemo';
 import EsteeCompact from './EsteeCompact';
 import EsteeDemo from './EsteeDemo';
 import FCVFCase from './FCVFCase';
@@ -230,33 +231,6 @@ function CommutePreview(){
   return <figure className="commuteHeroCover"><img src={assetUrl('project-media/supplied-covers/commute.jpg')} alt="A person holding a phone showing Commute's morning plan: wake at 7:16 AM and take BART"/></figure>
 }
 
-
-
-
-const kohlerMarkets={
-  india:{label:'Bengaluru, India',language:'English + Hindi',page:'A4',warranty:'India market warranty',readiness:82},
-  china:{label:'Shanghai, China',language:'Chinese + English',page:'A4',warranty:'China market warranty',readiness:74},
-  uae:{label:'Dubai, UAE',language:'Arabic + English',page:'A4',warranty:'GCC market warranty',readiness:67}
-};
-
-function KohlerProductSurface({compact=false}){
- const [market,setMarket]=useState('india');
- const detail=kohlerMarkets[market];
- const requirements=[`Translated installation guide`,`${detail.page} specification sheet`,detail.warranty,'Destination compliance label'];
- return <div className={`kohlerSurface ${compact?'compact':''}`} aria-label="Portfolio reconstruction of the Ship Anywhere export preparation workspace">
-  <header className="kohlerSurfaceBar"><img src={assetUrl('company-logos/kohler.svg')} alt="Kohler"/><div><strong>Ship Anywhere</strong><span>AI export compliance assistant</span></div><small>WORKFLOW PROTOTYPE · SAMPLE DATA</small></header>
-  <div className="kohlerSurfaceBody">
-   <aside><span>PREPARATION</span>{['Overview','Requirements','Documents','Validation','Audit'].map((item,index)=><div className={index===0?'active':''} key={item}><b>{String(index+1).padStart(2,'0')}</b>{item}</div>)}</aside>
-   <div className="kohlerSurfaceMain">
-    <div className="kohlerWorkspaceHead"><div><span>ORDER SO-28471</span><strong>Export preparation for this order</strong></div><i>Workflow prototype</i></div>
-    <div className="kohlerMarketControl"><div className="kohlerMarketPrompt"><span>Try another destination</span><small>Choose a market to update the checklist and document <i aria-hidden="true">↓</i></small></div><div className="kohlerMarketTabs" role="group" aria-label="Choose a sample destination">{Object.entries(kohlerMarkets).map(([key,value])=><button type="button" className={key===market?'selected':''} onClick={()=>setMarket(key)} aria-pressed={key===market} key={key}>{value.label}</button>)}</div></div>
-    <div className="kohlerFieldRail"><div><span>PRODUCT</span><strong>Purist single-handle faucet</strong></div><div><span>DESTINATION</span><strong>{detail.label}</strong></div><div><span>ORDER SOURCE</span><strong>SAP ECC</strong></div></div>
-    <div className="kohlerWorkspaceGrid"><section className="kohlerRoute"><header><span>REQUIREMENT PACKET</span><b>{detail.readiness}% ready</b></header><div className="kohlerRouteLine"><i></i><strong>US</strong><em></em><strong>{market==='india'?'IN':market==='china'?'CN':'AE'}</strong></div><ul>{requirements.slice(0,compact?3:4).map((item,index)=><li key={item}><span>{index<2?'✓':index===2?'↻':'!'}</span><div><strong>{item}</strong><small>{index<2?'Validated against source':'Prepared for review'}</small></div></li>)}</ul></section><section className="kohlerDocument"><header><span>GENERATED DOCUMENT</span><b>{detail.page}</b></header><div className="kohlerPaper"><span>SPECIFICATION</span><strong>Purist® faucet</strong><i></i><small>{detail.language}</small><p>Regional contacts, warranty language, compliance notes, and approved product attributes assembled for the destination.</p></div><footer><span>Validation</span><strong>Human review required</strong></footer></section></div>
-   </div>
-   {!compact&&<section className="kohlerStatusRail"><span>WORKFLOW STATUS</span><strong>{detail.readiness}%</strong><i><b style={{width:`${detail.readiness}%`}}></b></i><div><small>Product data</small><b>Ready</b></div><div><small>Regional packet</small><b>Review</b></div><div><small>Audit record</small><b>Open</b></div></section>}
-  </div>
- </div>
-}
 
 
 
@@ -617,7 +591,7 @@ function CaseSkimDemo({id}:{id:string}){
  if(id==='commute')return <section className="caseSkimDemo caseSkimCommute" aria-label="Try the Commute product"><header><h2>Try the product</h2></header><div className="cmDemoStage"><LaptopOnly><CommutePhoneDemo m={morning} app={<CommuteAppDemo/>}/></LaptopOnly></div></section>;
  if(id==='scheduler')return <section className="caseSkimDemo schedulerDemo" aria-label="Try the scheduler"><header><h2>Try the product</h2></header><LaptopOnly><SchedulerDemo/></LaptopOnly></section>;
  if(id==='chat')return <section className="caseSkimDemo" aria-label="Try the chat product"><header><h2>Try the product</h2></header><LaptopOnly><ChatSandbox/></LaptopOnly></section>;
- if(id==='kohler')return <section className="caseSkimDemo kohlerProductStage" aria-label="Try the export workflow"><header><h2>Try the product</h2></header><LaptopOnly><KohlerProductSurface compact/></LaptopOnly></section>;
+ if(id==='kohler')return <section className="caseSkimDemo kohlerProductStage" aria-label="Try the export workflow"><header><h2>Try the product</h2></header><LaptopOnly><KohlerDemo/></LaptopOnly></section>;
  if(id==='marketExpansion')return <section className="caseSkimDemo" aria-label="Explore the market comparison"><header><h2>Try the scorecard</h2></header><LaptopOnly><GrazeScorecardDemo/></LaptopOnly></section>;
  if(id==='fcvf')return <section className="caseSkimDemo" aria-label="Try the assessment decision"><header><h2>Try the key decision</h2></header><LaptopOnly><SurveyDemo/></LaptopOnly></section>;
  if(id==='accenture')return <section className="caseSkimDemo" aria-label="Try the request workflow"><header><h2>Try the workflow</h2></header><LaptopOnly><AccentureRequestRelay/></LaptopOnly></section>;
@@ -935,8 +909,8 @@ function KohlerCase(){
    </DecisionMoment>
   </div>
 
-  <CaseChapter id="kx-design" className="kxStage kxProduct" title="The product in use" lead="Change the destination to see the market packet update without touching the product record.">
-   <section className="kohlerProductStage"><LaptopOnly><KohlerProductSurface/></LaptopOnly></section>
+  <CaseChapter id="kx-design" className="kxStage kxProduct" title="The product in use" lead="Find a shipment, prepare its documents, and follow the work through completion or supervisor review.">
+   <section className="kohlerProductStage"><LaptopOnly><KohlerDemo/></LaptopOnly></section>
    <KohlerRoles/>
   </CaseChapter>
 

@@ -93,9 +93,8 @@
 
 /* The succulent: a little can tips over it, a few drops fall, and it perks up, greens and flowers. */
 .dhSucculent{cursor:pointer}
-.dhSucculent i{transition:transform 1s cubic-bezier(.3,1.3,.5,1),filter 1.2s}
-.dhSucculent.isWatered i{filter:saturate(1.5) brightness(1.08) hue-rotate(-8deg)}
-.dhSucculent.isWatered i:nth-child(1){transform:rotate(-2deg) scale(1.06)}.dhSucculent.isWatered i:nth-child(2){transform:rotate(-28deg) scale(1.05)}.dhSucculent.isWatered i:nth-child(3){transform:rotate(27deg) scale(1.05)}.dhSucculent.isWatered i:nth-child(4){transform:rotate(-52deg) scale(.86)}.dhSucculent.isWatered i:nth-child(5){transform:rotate(50deg) scale(.86)}
+.dhSucculent .dhRosette{transition:transform 1s cubic-bezier(.3,1.3,.5,1),filter 1.2s}
+.dhSucculent.isWatered .dhRosette{transform:scale(1.07);filter:saturate(1.2) brightness(1.05) drop-shadow(-1px 1px .6px #20362933)}
 .dhBloom{position:absolute;z-index:2;width:7px;height:7px;border-radius:50%;background:radial-gradient(circle,#ffe08a 0 1.2px,#f59ab7 1.6px 2.6px,transparent 2.8px),radial-gradient(circle at 50% 0,#f7a9c0 0 1.6px,transparent 1.8px),radial-gradient(circle at 100% 50%,#f7a9c0 0 1.6px,transparent 1.8px),radial-gradient(circle at 50% 100%,#f7a9c0 0 1.6px,transparent 1.8px),radial-gradient(circle at 0 50%,#f7a9c0 0 1.6px,transparent 1.8px);transform:scale(0);transition:transform .5s cubic-bezier(.3,1.6,.5,1)}
 .dhBloom:nth-of-type(1){left:17px;bottom:49px}.dhBloom:nth-of-type(2){left:3px;bottom:40px}.dhBloom:nth-of-type(3){left:33px;bottom:41px}
 .dhSucculent.isWatered .dhBloom{transform:scale(1)}
