@@ -202,7 +202,7 @@ html:not([data-view="simple"]):has(.homeKeep:not([data-parked]) .homePage){--pag
 .scrollTopButton>span{position:relative}
 
 /* Nav: one underline that slides to the section you're reading */
-#primaryNav{position:relative}
+@media(min-width:1101px){#primaryNav{position:relative}}
 /* Active section: a quiet ink-tinted pill behind the link, sliding between
    links, instead of a hot-pink underline that appeared nowhere else. */
 .navIndicator{position:absolute;z-index:-1;left:0;top:50%;height:32px;margin-top:-16px;border-radius:999px;background:rgba(35,42,39,.07);transition:transform .45s var(--ease-out),width .45s var(--ease-out),opacity .25s;pointer-events:none}

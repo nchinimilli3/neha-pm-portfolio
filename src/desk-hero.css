@@ -487,6 +487,9 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 .isStatic .dhPoke i{transform:rotate(45deg) translateX(2px)}
 .isStatic .dhCopy h1{font-size:clamp(56px,15vw,96px)}
 .isStatic .dhScene{position:relative;height:min(64vh,540px);margin:0 24px;overflow:hidden;background:var(--wallB);border-radius:16px}
+/* Small illustrated props are decorative on mobile. Only the separate,
+   full-size lamp/window/camera touch targets receive input. */
+.isStatic .dhStage{pointer-events:none}
 /* The miniature desktop lives inside the real screen, beneath the bezel notes. */
 .isStatic .dhMiniBar{height:24px;gap:12px;padding:0 12px 0 52px;font:400 11px/1 -apple-system,BlinkMacSystemFont,sans-serif;white-space:nowrap;box-sizing:border-box}
 .isStatic .dhMiniBar time{margin-left:auto;font:inherit}

@@ -917,7 +917,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
     <p className="dhEdu"><i aria-hidden="true"/><span>Computer Science + Supply Chain Management<br/>Michigan State University · 2027</span></p>
     <div className="dhLinks"><a href="#projects">See my work <span aria-hidden="true">↓</span></a><a href="#about">About me</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume <span aria-hidden="true">↗</span></a></div>
     {onSimple&&<p className="dhQuick">{reduced?'Reduced motion is on.':'Short on time?'} <button type="button" onClick={onSimple}>Switch to Simple view</button></p>}
-    <span className="dhPoke" aria-hidden="true">{isStatic?'tap around my little corner':'this is my desk. poke around'} <i>↘</i></span>
+    <span className="dhPoke" aria-hidden="true">{isStatic?'tap the lamp, window, or camera':'this is my desk. poke around'} <i>↘</i></span>
    </div>
 
    <div className="dhScene" ref={sceneRef}>

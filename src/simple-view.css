@@ -107,7 +107,7 @@ html[data-view="simple"] *{animation:none!important;transition-duration:0s!impor
  .homeHeader>.viewModeToggle{order:2;min-height:44px;padding:8px 12px;font-size:12.5px}
  .homeHeader>.navToggle{order:3;display:grid;place-content:center;gap:4px;flex:none;width:40px;height:44px;margin:0 -6px 0 0;padding:0;border:0;background:none;color:inherit;cursor:pointer}
  .homeHeader>.navToggle span{display:block;width:20px;height:2px;border-radius:2px;background:currentColor}
- .homeHeader>nav{position:absolute;top:100%;left:0;right:0;display:none!important;max-width:none!important;width:auto!important;margin:0!important;flex-direction:column;align-items:stretch;gap:0!important;padding:6px 20px 16px;background:#faf9f5;border-bottom:1px solid #daddd2;box-shadow:0 12px 22px #26362b0a}
+ .homeHeader>nav{position:absolute;top:100%;left:0;right:0;display:none!important;max-width:none!important;width:auto!important;margin:0!important;max-height:calc(100dvh - 64px);overflow-x:hidden;overflow-y:auto;flex-direction:column;align-items:stretch;gap:0!important;padding:6px 20px 16px;background:#faf9f5;border-bottom:1px solid #daddd2;box-shadow:0 12px 22px #26362b0a}
  .homeHeader.navIsOpen>nav{display:flex!important}
  .homeHeader>nav a{display:flex!important;align-items:center;min-height:48px;padding:0!important;font-size:14px!important;border-bottom:1px solid #26362b12}
  .homeHeader>nav .navIndicator,.homeHeader>nav a:after{display:none!important}
