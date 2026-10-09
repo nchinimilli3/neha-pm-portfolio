@@ -810,12 +810,15 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
 
   measure();
   if(isStatic){frameStatic();const onR=()=>{measure();frameStatic()};window.addEventListener('resize',onR);setOsLive(false);
+   // Fonts and responsive layout can resize the room without a window resize.
+   const sceneResize=new ResizeObserver(onR);
+   if(sceneRef.current)sceneResize.observe(sceneRef.current);
    // Clear anything the scroll version wrote.
    for(const el of [copyRef.current,osRef.current,dockRef.current,toastRef.current,...winRefs.current,...iconRefs.current])if(el){el.style.opacity='';el.style.transform='';el.style.visibility=''}
    // On a phone the room scrolls away before the projects do; stop its ambient loops there.
    const observer=new IntersectionObserver(([entry])=>holdRoom(reduced||!entry.isIntersecting),{rootMargin:'80px'});
    if(sceneRef.current)observer.observe(sceneRef.current);
-   return()=>{window.removeEventListener('resize',onR);observer.disconnect();holdRoom(false)}}
+   return()=>{window.removeEventListener('resize',onR);sceneResize.disconnect();observer.disconnect();holdRoom(false)}}
 
   const onResize=()=>{measure();snap=true;request()};
   // Back from a case: draw now, so the closing transition shrinks into the window where it sits.

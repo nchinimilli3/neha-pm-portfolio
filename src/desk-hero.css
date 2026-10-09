@@ -479,6 +479,9 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 /* Phones, portrait tablets, reduced motion: the same room and desktop, no pinned zoom. */
 .dhTrack.isStatic{height:auto;--ink:#221d19;--muted:#6d6258;--accent:#b0452f}
 .isStatic .dhPin{position:relative;height:auto;overflow:visible;background:none}
+/* The phone room is framed before paint. Show its illustration immediately;
+   the desktop loading cover would otherwise hide an already-visible scene. */
+.isStatic .dhPin::before{display:none}
 /* Stacked, the copy sits on the cream page, not the wall: its pills take the page color at any time of day. */
 .isStatic .dhCopy{--wallA:var(--surf-paper,#f3ede3);position:relative;left:auto;top:auto;transform:none;width:auto;max-width:640px;padding:88px 24px 22px}
 .isStatic .dhPoke i{transform:rotate(45deg) translateX(2px)}
