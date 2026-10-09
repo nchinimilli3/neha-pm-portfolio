@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 /* Everything only a case study page uses. Loaded on demand (preloaded once home is idle),
    so the home page doesn't download, parse, or style it before its first frame. */
-import LaptopOnly from './LaptopOnly';
+import LaptopOnly,{usePhone} from './LaptopOnly';
 import KohlerDemo from './KohlerDemo';
 import EsteeCompact from './EsteeCompact';
 import EsteeDemo from './EsteeDemo';
@@ -98,6 +98,8 @@ function IOSStatusIcons(){
 }
 
 function CommuteAppDemo(){
+  const phone=usePhone();
+  const mobileAppRef=useRef<HTMLDivElement>(null);
   const defaults={
     name:'Neha',
     origin:'Whole Foods Oakland / Lake Merritt',
@@ -135,6 +137,30 @@ function CommuteAppDemo(){
   const [toast,setToast]=useState('');
   const [demoNow]=useState(7*60+22);
   const [todayLabel]=useState(()=>new Intl.DateTimeFormat(undefined,{weekday:'long',month:'short',day:'numeric'}).format(new Date()));
+
+  useEffect(()=>{
+    if(!phone)return;
+    const heading=mobileAppRef.current?.querySelector<HTMLElement>('.iosFullSheet h2')||mobileAppRef.current?.querySelector<HTMLElement>('.iosScreenContent h2, .appTop h3');
+    if(heading){heading.tabIndex=-1;heading.focus({preventScroll:true});heading.scrollIntoView({block:'nearest',behavior:'instant'})}
+  },[phone,stage,detail,tab]);
+  useEffect(()=>{
+    if(!phone||(!permission&&!detail))return;
+    const modal=mobileAppRef.current?.querySelector<HTMLElement>(permission?'.iosPermissionDialog':'.iosFullSheet');
+    const controls=modal?.querySelectorAll<HTMLElement>('button:not(:disabled),input:not(:disabled),select:not(:disabled)');
+    if(!controls?.length)return;
+    const previous=document.activeElement as HTMLElement;
+    controls[0].focus({preventScroll:true});
+    const trap=(event:KeyboardEvent)=>{
+      if(event.key==='Escape'){event.preventDefault();permission?setPermission(null):setDetail(null);return}
+      if(event.key==='Tab'){
+        const first=controls[0],last=controls[controls.length-1];
+        if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}
+        else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
+      }
+    };
+    modal?.addEventListener('keydown',trap);
+    return()=>{modal?.removeEventListener('keydown',trap);if(previous?.isConnected)previous.focus({preventScroll:true})};
+  },[phone,permission,detail]);
 
   const routineMinutes=routine.reduce((n,x)=>n+x.minutes,0);
   const minRoutine=Math.max(18,routineMinutes-12);
@@ -207,7 +233,7 @@ function CommuteAppDemo(){
     if(name==='history')return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 9A8 8 0 1 1 5 16"/><path d="M4 4v5h5"/><path d="M12 8v5l3 2"/></svg>;
     return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/></svg>;
   };
-  const chrome=(content)=><div className="iosPhoneDevice"><div className="iosDemoShell"><div className="iosStatus"><span>{shortFmt(demoNow)}</span><StatusIcons/></div><div className="iosScreenContent" inert={permission?true:undefined}>{content}</div>{dialog}{toast&&<div className="iosToast" role="status" aria-live="polite">{toast}</div>}<div className="iosHomeIndicator" aria-hidden="true"></div></div><img className="iosHardwareFrame" src="project-media/iphone-frame-v31.png" alt="" aria-hidden="true" loading="lazy" decoding="async"/></div>;
+  const chrome=(content)=><div className="iosPhoneDevice" ref={phone?mobileAppRef:undefined}><div className="iosDemoShell"><div className="iosStatus"><span>{shortFmt(demoNow)}</span><StatusIcons/></div><div className="iosScreenContent" inert={permission?true:undefined}>{content}</div>{dialog}{toast&&<div className="iosToast" role="status" aria-live="polite">{toast}</div>}<div className="iosHomeIndicator" aria-hidden="true"></div></div><img className="iosHardwareFrame" src="project-media/iphone-frame-v31.png" alt="" aria-hidden="true" loading="lazy" decoding="async"/></div>;
 
   if(stage==='welcome') return chrome(<div className="iosOnboarding iosWelcome"><div className="iosBrandMark">C</div><div className="welcomeCopy"><h3>Commute</h3><h2>Know when to get up.</h2><p>Tell it where you need to be. It works backward from arrival time, transit, traffic, and your routine.</p></div><label className="iosField"><span>Your name</span><input value={name} onChange={e=>setName(e.target.value)} /></label><button className="iosPrimary" type="button" onClick={next}>Set up my morning</button><button className="iosTextBtn" type="button" onClick={()=>setStage('app')}>Use current plan</button></div>);
   if(stage==='routine') return chrome(<div className="iosOnboarding"><div className="iosNavRow"><button type="button" aria-label="Back" onClick={()=>setStage('welcome')}>‹</button><span>1 of 6</span></div><h2>Your routine</h2><p className="iosSub">About how long do you need before leaving?</p><div className="routineEditor">{routine.map(x=><div className="routineItem" key={x.id}><span>{x.name}</span><div><button type="button" aria-label={`Decrease ${x.name} duration`} onClick={()=>changeRoutine(x.id,-1)}>−</button><strong>{x.minutes}m</strong><button type="button" aria-label={`Increase ${x.name} duration`} onClick={()=>changeRoutine(x.id,1)}>+</button></div></div>)}</div><div className="routineSummary"><span>Total</span><strong>{routineMinutes} min</strong></div><button className="iosPrimary" type="button" onClick={next}>Continue</button></div>);
@@ -588,10 +614,10 @@ function useCaseCanvas(id:string){
 
 function CaseSkimDemo({id}:{id:string}){
  const morning=useMorning();
- if(id==='commute')return <section className="caseSkimDemo caseSkimCommute" aria-label="Try the Commute product"><header><h2>Try the product</h2></header><div className="cmDemoStage"><LaptopOnly><CommutePhoneDemo m={morning} app={<CommuteAppDemo/>}/></LaptopOnly></div></section>;
+ if(id==='commute')return <section className="caseSkimDemo caseSkimCommute" aria-label="Try the Commute product"><header><h2>Try the product</h2></header><div className="cmDemoStage"><LaptopOnly mobile={<CommutePhoneDemo m={morning} app={<CommuteAppDemo/>}/>}><CommutePhoneDemo m={morning} app={<CommuteAppDemo/>}/></LaptopOnly></div></section>;
  if(id==='scheduler')return <section className="caseSkimDemo schedulerDemo" aria-label="Try the scheduler"><header><h2>Try the product</h2></header><LaptopOnly><SchedulerDemo/></LaptopOnly></section>;
  if(id==='chat')return <section className="caseSkimDemo" aria-label="Try the chat product"><header><h2>Try the product</h2></header><LaptopOnly><ChatSandbox/></LaptopOnly></section>;
- if(id==='kohler')return <section className="caseSkimDemo kohlerProductStage" aria-label="Try the export workflow"><header><h2>Try the product</h2></header><LaptopOnly><KohlerDemo/></LaptopOnly></section>;
+ if(id==='kohler')return <section className="caseSkimDemo kohlerProductStage" aria-label="Try the export workflow"><header><h2>Try the product</h2></header><LaptopOnly mobile={<KohlerDemo/>}><KohlerDemo/></LaptopOnly></section>;
  if(id==='marketExpansion')return <section className="caseSkimDemo" aria-label="Explore the market comparison"><header><h2>Try the scorecard</h2></header><LaptopOnly><GrazeScorecardDemo/></LaptopOnly></section>;
  if(id==='fcvf')return <section className="caseSkimDemo" aria-label="Try the assessment decision"><header><h2>Try the key decision</h2></header><LaptopOnly><SurveyDemo/></LaptopOnly></section>;
  if(id==='accenture')return <section className="caseSkimDemo" aria-label="Try the request workflow"><header><h2>Try the workflow</h2></header><LaptopOnly><AccentureRequestRelay/></LaptopOnly></section>;
@@ -910,7 +936,7 @@ function KohlerCase(){
   </div>
 
   <CaseChapter id="kx-design" className="kxStage kxProduct" title="The product in use" lead="Find a shipment, prepare its documents, and follow the work through completion or supervisor review.">
-   <section className="kohlerProductStage"><LaptopOnly><KohlerDemo/></LaptopOnly></section>
+   <section className="kohlerProductStage"><LaptopOnly mobile={<KohlerDemo/>}><KohlerDemo/></LaptopOnly></section>
    <KohlerRoles/>
   </CaseChapter>
 

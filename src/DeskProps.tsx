@@ -200,6 +200,8 @@ export function SnowGlobe(){
      {Array.from({length:22},(_,i)=><rect key={i} x={15+(i%11)*6.6} y={78+Math.floor(i/11)*4} width="1.2" height="1.8" fill={i%4?'#e4d8b0':'#405b68'}/>)}
      <ellipse cx="50" cy="86" rx="33" ry="4" fill="#e8e4d6"/>
      <path d="M19 86Q50 80 81 86" fill="none" stroke="#faf9f0" strokeWidth="1"/>
+     {/* A quiet, continuous snowfall for the phone's ambient desk frame. */}
+     <g className="sgAmbientSnow">{FLAKES.slice(0,18).map((f,i)=><circle key={i} cx={f.x1} cy="0" r={1.25+f.s*.45} fill="#fffdf5" style={{'--snow-d':`${4.2+f.d*.45}s`,'--snow-delay':`${-i*.53}s`,'--snow-drift':`${(i%2?1:-1)*(2+i%4)}px`,'--snow-rest':`${16+i*3.6}px`} as React.CSSProperties}/>)}</g>
      {/* Snow, resting until the globe is shaken. */}
      <g className="sgFlakes">{FLAKES.map((f,i)=><circle key={i} r={f.s} cx="0" cy="0" fill="#fff" style={{'--x0':`${f.x0}px`,'--x1':`${f.x1}px`,'--y1':`${f.y1}px`,'--x2':`${f.x2}px`,'--d':`${f.d}s`,'--dl':`${f.dl}s`} as React.CSSProperties}/>)}</g>
     </g>

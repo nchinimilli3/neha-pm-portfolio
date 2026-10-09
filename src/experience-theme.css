@@ -46,13 +46,15 @@
    detail text keeps the full width and every open role fits one desktop screen. */
 .v28Experience .expBranded .experienceDetail>div{display:flow-root!important;padding-bottom:22px!important;max-width:none!important;border-top-color:color-mix(in srgb,var(--exp-accent) 22%,transparent)!important}
 .v28Experience .expBranded .expStory{display:block!important}
+.expMobileStory{display:none}
+.v28Experience .experienceSummary .expMobileMeta{display:none!important}
 .v28Experience .expBranded .expStory>*+*{margin-top:16px!important}
 .v28Experience .expBranded .expStory>p{max-width:62ch!important;font-size:15px!important;line-height:1.6!important;color:#3d443f!important}
 .v28Experience .expBranded .expColumns{clear:right;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))!important}
 /* Five clients: 3 + 2 rather than whatever fits, which left Private equity alone on a row. */
 @media(min-width:901px){.v28Experience .expBranded .expColumns.spectrumColumns{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
-.v28Experience .expBranded .expColumns>div{line-height:1.5!important}
-.v28Experience .expBranded .expColumns span{display:block;margin-top:6px;font-size:13px!important;line-height:1.5!important;color:#4b514b!important}
+.v28Experience .expBranded .expColumns>div{line-height:1.5!important;border-top-color:color-mix(in srgb,var(--exp-accent) 22%,transparent)!important}
+.v28Experience .expBranded .expColumns span{display:block;margin-top:6px;font-size:14px!important;line-height:1.55!important;color:#4b514b!important}
 /* Keep the summary sentence clear of the floated number. */
 .v28Experience .expBranded.open .experienceSummary p{max-width:calc(100% - 170px)!important}
 .expBrandHero{position:relative;z-index:2;float:right;display:grid;gap:10px;width:clamp(240px,21vw,280px);margin:calc(78px - var(--sumH,228px)) 0 10px clamp(28px,3vw,48px)}
@@ -124,10 +126,12 @@
 .expCarTag small{display:none}
 /* Narrow enough to sit beside the floated number instead of dropping below it. */
 .v28Experience .expBranded .expMetricRow{max-width:calc(100% - clamp(240px,21vw,280px) - clamp(28px,3vw,48px))!important;grid-template-columns:repeat(auto-fit,minmax(110px,1fr))!important}
-.v28Experience .expBranded .expMetricRow span{font-size:12px!important;line-height:1.35!important;color:#5b635d!important}
+.v28Experience .expBranded .expMetricRow span{font-size:12px!important;line-height:1.35!important;color:#5b635d!important;border-left:1px solid color-mix(in srgb,var(--exp-accent) 22%,transparent);padding-left:14px}
+.v28Experience .expBranded .expMetricRow span:first-child{border-left:0;padding-left:0}
 .v28Experience .expBranded .expMetricRow b{display:block;margin-bottom:3px;font-family:var(--font-serif,Georgia,serif);font-size:24px;font-weight:400;line-height:1.1;color:var(--exp-ink)}
-.v28Experience .expBranded .expNote{clear:both;max-width:72ch;margin-top:18px!important;padding-top:14px!important;font-size:13px!important;color:#4b514b!important}
-.v28Experience .expBranded .expColumns strong{color:var(--exp-ink)}
+.v28Experience .expBranded .expNote{clear:both;max-width:72ch;margin-top:18px!important;padding-top:14px!important;font-size:17px!important;line-height:1.4!important;color:#4b514b!important;transform:none;white-space:normal}
+.v28Experience .expBranded .expColumns strong{font-size:14px!important;color:var(--exp-ink)}
+.v28Experience .expBranded :is(.expStory,.expMobileStory) .expEmphasis{display:inline!important;margin:0!important;font-size:inherit!important;font-weight:600!important;color:var(--exp-ink)}
 .v28Experience .expBranded .expCaseStudyLink{display:inline-flex;align-items:center;gap:6px;margin-top:20px;padding:11px 20px!important;border:0!important;border-radius:999px!important;background:var(--exp-accent)!important;color:#fff!important;text-decoration:none!important;cursor:pointer}
 .v28Experience .expBranded .expCaseStudyLink:hover{background:var(--exp-ink)!important}
 @media(prefers-reduced-motion:reduce){.v28Experience .experienceItem.expBranded::before,.v28Experience .expToggle{transition:none}}
@@ -140,7 +144,7 @@
  .v28Experience .experienceIntro{grid-template-columns:1fr;gap:12px;margin-bottom:28px}
  .v28Experience .experienceIntro p{max-width:54ch}
  /* Identity stays together; the story gets the full reading width below it. */
- .v28Experience .experienceSummary{grid-template-columns:44px minmax(0,1fr) 44px!important;column-gap:12px!important;row-gap:6px!important;padding:24px 0!important;align-items:start!important}
+ .v28Experience .experienceSummary{grid-template-columns:44px minmax(0,1fr) 44px!important;column-gap:12px!important;row-gap:6px!important;padding:20px 0!important;align-items:start!important}
  .v28Experience .experienceSummary .experienceIndex{display:none!important}
  .v28Experience .experienceSummary .companyLogo{grid-column:1;grid-row:1;width:44px!important;height:36px!important;margin-top:3px}
  .v28Experience .experienceSummary>.experienceText{display:contents}
@@ -148,26 +152,57 @@
  .v28Experience .experienceSummary .expHead h3{font-size:20px!important;line-height:1.2!important;overflow-wrap:normal;word-break:normal}
  .v28Experience .experienceSummary .expHead .expChip{justify-self:start;white-space:normal}
  .v28Experience .experienceSummary .experienceRole{grid-column:2;grid-row:2;margin:0!important;font-size:14px!important;line-height:1.45!important}
- .v28Experience .experienceSummary .experienceLocation{grid-column:2;grid-row:3;margin:0!important;font-size:13px!important;line-height:1.4!important}
- .v28Experience .experienceSummary time{grid-column:2!important;grid-row:4!important;display:block!important;margin:0!important;padding:0;font-size:13px!important;line-height:1.4!important;white-space:normal!important}
- .homePage .v28Experience .experienceItem .experienceSummary .experienceText>p{grid-column:1/-1;grid-row:5;margin:12px 0 0!important;font-size:15px!important;line-height:1.6!important;max-width:none!important}
+ .v28Experience .experienceSummary .experienceLocation{display:none!important}
+ .v28Experience .experienceSummary .expMobileMeta{display:flex!important;flex-wrap:wrap;gap:2px 10px;grid-column:2;grid-row:3;font-size:13px;line-height:1.4;color:#68716a}
+ .v28Experience .experienceSummary>time{display:none!important}
+ .homePage .v28Experience .experienceItem .experienceSummary .experienceText>p{grid-column:1/-1;grid-row:4;margin:12px 0 0!important;font-size:15px!important;line-height:1.6!important;max-width:none!important}
  .v28Experience .experienceSummary .expToggle{grid-column:3!important;grid-row:1!important;width:44px!important;height:44px!important;box-sizing:border-box;margin:0!important;justify-self:end!important;transform:none!important}
  .v28Experience .experienceSummary:focus-visible{outline:2px solid var(--exp-accent,#89523d);outline-offset:4px;border-radius:4px}
  .v28Experience .experienceDetail>div{padding:0 0 28px!important}
  .v28Experience .expBranded.open .experienceSummary p{max-width:none!important}
- .v28Experience .experienceItem.expBranded::before{left:-9px}
+ .v28Experience .experienceItem.expBranded{padding-left:16px}
+ .v28Experience .experienceItem.expBranded::before{left:0;top:20px;bottom:24px;width:2px}
  .v28Experience .expBranded .expColumns{grid-template-columns:1fr!important;gap:20px!important}
  .v28Experience .expBranded .expStory>p{font-size:15px!important;line-height:1.6!important}
  .v28Experience .expBranded .expColumns span{font-size:14px!important;line-height:1.6!important}
  .v28Experience .expBranded .expNote{font:400 14px/1.6 Inter,system-ui,sans-serif!important;transform:none;white-space:normal}
  .v28Experience .expBranded .expMetricRow{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px 12px!important}
+ .v28Experience .expBranded .expMetricRow span:nth-child(3n+1){border-left:0;padding-left:0}
  .v28Experience .expBranded .expCaseStudyLink{min-height:44px;box-sizing:border-box;justify-content:center;max-width:100%;margin-top:24px}
  /* A consistent outcome -> illustration -> ownership reading order. */
- .v28Experience .expBrandHero{display:grid;grid-template-columns:minmax(0,1fr);justify-content:start;gap:16px;width:100%;margin:0 0 24px;float:none}
+ .v28Experience .expBrandHero{display:grid;grid-template-columns:minmax(0,1fr) 140px;align-items:center;justify-content:start;gap:16px;width:100%;margin:0 0 18px;float:none}
  .expBrandHero>p{min-width:0}
- .expBrandHero b{white-space:nowrap}
+ .expBrandHero b{white-space:nowrap;font-size:40px}
+ .expBrandHero>p span{font-size:12px;line-height:1.4}
+ .v28Experience .expBrandHero .expArt{width:140px;max-height:110px}
+ .v28Experience .expBrandHero .expSparty img{height:85px}
+ .v28Experience .expBrandHero .expSpartyBubble{display:none}
+ .v28Experience .expBrandHero .expChat{width:140px;font-size:11px}
+ .v28Experience .expBrandHero .expChatBody{padding:8px;gap:6px;min-height:60px}
+ .v28Experience .expBrandHero .expChatBar{padding:6px;font-size:10px}
+ .v28Experience .expBrandHero .expChat :is(.expChatMe,.expChatBot p){font-size:11px!important}
+ .v28Experience .expBrandHero .expCarTag{display:none}
  .expBrandHero .expArt{justify-self:center;max-width:100%;margin:0!important}
  .expChat{width:min(290px,100%)}
+ .homePage .v28Experience .experienceItem.open .experienceSummary .experienceText>p{display:none}
+ .v28Experience .expBranded .expStory{display:none!important}
+ .expMobileStory{display:block}
+ .expMobilePoints{display:grid;gap:14px;margin:18px 0 0}
+ .expMobilePoints>div{padding-top:12px;border-top:1px solid color-mix(in srgb,var(--exp-accent) 18%,transparent)}
+ .expMobilePoints dt{font-size:14px;font-weight:650;line-height:1.4;color:var(--exp-ink)}
+ .expMobilePoints dd{margin:4px 0 0;font-size:14px;line-height:1.5;color:#4b514b}
+ .v28Experience .expBranded .expCaseStudyLink{margin-top:18px}
+
 }
 
 @media(prefers-reduced-motion:reduce){.v28Experience .open :is(.expStory,.expBrandHero){animation:none}}
+
+@media(max-width:430px){
+ .v28Experience .expBrandHero{grid-template-columns:minmax(0,1fr) 110px;gap:12px}
+ .v28Experience .expBrandHero .expArt{width:110px}
+ .v28Experience .expBrandHero b{font-size:34px}
+ .v28Experience .expBrandHero .expChat{width:110px}
+ .v28Experience .expBranded .expMetricRow{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px 16px!important}
+ .v28Experience .expBranded .expMetricRow span:nth-child(n){border-left:1px solid color-mix(in srgb,var(--exp-accent) 22%,transparent);padding-left:12px}
+ .v28Experience .expBranded .expMetricRow span:nth-child(odd){border-left:0;padding-left:0}
+}

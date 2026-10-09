@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './commute-surfaces.css';
+import './mobile-demos.css';
+import {usePhone} from './LaptopOnly';
 
 /* One morning model, rendered on every surface the app ships to: the Lock
    Screen Live Activity, the Dynamic Island, the Home Screen widget, and the
@@ -113,8 +115,9 @@ function LockScreen({ m, onOpen }: { m: Morning; onOpen: () => void }) {
 }
 
 export function MorningControls({ m, compact = false }: { m: Morning; compact?: boolean }) {
+ const phone=usePhone();
  return <div className={`csControls${compact ? ' isCompact' : ''}`}>
-  <button type="button" className="csPlay" onClick={() => { if (m.t >= MORNING_END) m.setT(MORNING_START); m.setPlaying(p => !p); }} aria-pressed={m.playing}>
+  <button type="button" className="csPlay" onClick={() => { if (m.t >= MORNING_END) m.setT(MORNING_START); m.setPlaying(p => !p); }} aria-pressed={m.playing} aria-label={phone?(m.playing?'Pause morning':'Play the morning'):undefined}>
    {m.playing ? '❚❚' : '▶'}<span>{m.playing ? 'Pause' : 'Play the morning'}</span>
   </button>
   <label className="csScrub">
@@ -130,8 +133,10 @@ export function MorningControls({ m, compact = false }: { m: Morning; compact?: 
 /* The demo phone: starts on the Lock Screen, because that is where the app
    actually lives. The full app is one tap away. */
 export function CommutePhoneDemo({ m, app }: { m: Morning; app: React.ReactNode }) {
+ const phone = usePhone();
  const [view, setView] = useState<'lock' | 'app'>('lock');
- return <div className="csDemo">
+ return <div className={`csDemo${phone?' mobileCommuteDemo':''}`}>
+  {phone&&<p className="mobileDemoIntro">Interactive sample · Tap App to plan a morning, or play the Lock Screen timeline.</p>}
   <div className="csViewSwitch" role="tablist" aria-label="Demo view">
    <button type="button" role="tab" aria-selected={view === 'lock'} onClick={() => setView('lock')}>Lock Screen</button>
    <button type="button" role="tab" aria-selected={view === 'app'} onClick={() => setView('app')}>App</button>
@@ -153,4 +158,3 @@ export function CommutePhoneDemo({ m, app }: { m: Morning; app: React.ReactNode 
   {view === 'lock' ? <MorningControls m={m} compact/> : <p className="cmDemoHint">Tap through the real app. <button type="button" className="csBack" onClick={() => setView('lock')}>Back to the Lock Screen</button></p>}
  </div>;
 }
-

@@ -249,7 +249,7 @@ export default function CommuteCase({demo}:{demo:React.ReactNode}){
    </div>
    <PlatformBoard/>
    <div className="cmDemoStage">
-    <LaptopOnly><CommutePhoneDemo m={m} app={demo}/></LaptopOnly>
+    <LaptopOnly mobile={<CommutePhoneDemo m={m} app={demo}/>}><CommutePhoneDemo m={m} app={demo}/></LaptopOnly>
     <p className="cmDemoHint cmDemoLead">The real morning, playable. It opens on the Lock Screen because that is where the app lives: the full app is one tap away, and a normal morning never needs it.</p>
    </div>
   </section>

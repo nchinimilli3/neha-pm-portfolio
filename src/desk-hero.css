@@ -429,6 +429,7 @@ html.isScrolling .dhTrack:not(.isStatic) .dhShield{display:block}
 .dhWinBar:active{cursor:grabbing}
 .dhWinBar span{flex:1;text-align:center;margin-right:40px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .dhWinBody{display:block;color:inherit;text-decoration:none}
+.dhCaseCue{display:none}
 .dhWinBody img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;transition:transform .5s}
 .dhWin:hover .dhWinBody img{transform:scale(1.03)}
 .dhWinCap{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;padding:11px 15px 13px;position:relative;background:#fffdf8}
@@ -478,37 +479,36 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 .dhTrack.isStatic{height:auto;--ink:#221d19;--muted:#6d6258;--accent:#b0452f}
 .isStatic .dhPin{position:relative;height:auto;overflow:visible;background:none}
 /* Stacked, the copy sits on the cream page, not the wall: its pills take the page color at any time of day. */
-.isStatic .dhCopy{--wallA:var(--surf-paper,#f3ede3);position:relative;left:auto;top:auto;transform:none;width:auto;max-width:640px;padding:88px 20px 22px}
+.isStatic .dhCopy{--wallA:var(--surf-paper,#f3ede3);position:relative;left:auto;top:auto;transform:none;width:auto;max-width:640px;padding:88px 24px 22px}
 .isStatic .dhPoke i{transform:rotate(45deg) translateX(2px)}
 .isStatic .dhCopy h1{font-size:clamp(56px,15vw,96px)}
-.isStatic .dhScene{position:relative;height:min(64vh,540px);margin:0 20px;overflow:hidden;background:var(--wallB);border-radius:18px 18px 0 0}
-.isStatic :is(.dhHelloMini,.dhMiniBar){display:none}
-/* A working miniature desktop inside the monitor; its entire screen is the touch target. */
-.dhEnterWork{position:absolute;left:var(--screen-left);top:var(--screen-top);width:var(--screen-width);height:var(--screen-height);z-index:70;display:flex;flex-direction:column;text-decoration:none;color:#fff;text-align:center;border-radius:2px;overflow:hidden}
-.dhPocketMenu{height:14%;min-height:10px;display:flex;justify-content:space-between;align-items:center;padding:0 5px;background:#f3f0ebdc;color:#34313a;font:500 clamp(5px,1.3vw,9px)/1 Inter,sans-serif}
-.dhPocketFolder{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding-top:4px}
-.dhPocketFolder>i{position:relative;width:28%;height:38%;max-height:42px;border-radius:2px 3px 3px 3px;background:linear-gradient(#8bd3f2,#409fd3);box-shadow:0 2px 3px #15295266,inset 0 1px 0 #d1efff;transition:transform .18s}
-.dhPocketFolder>i::before{content:"";position:absolute;left:0;top:-4px;width:43%;height:6px;border-radius:3px 3px 0 0;background:#80c5e9}
-.dhPocketFolder>i>span{position:absolute;inset:3px 3px 4px;border-radius:1px;background:linear-gradient(#eff7fb,#cbe5f1);box-shadow:0 -1px 0 #fff8}
-.dhPocketFolder>i::after{content:"";position:absolute;inset:6px -1px -1px;border-radius:2px 2px 3px 3px;background:linear-gradient(#8fd8f5,#52b0e1);box-shadow:inset 0 1px 0 #c9eeff,inset 0 -1px 0 #328abf}
-.dhPocketFolder>span{font:500 clamp(8px,2.3vw,13px)/1.2 Inter,sans-serif;text-shadow:0 1px 3px #151c44}
-.dhEnterWork:active .dhPocketFolder>i{transform:translateY(-2px)}
-.dhDeskControls{position:relative;margin:0 20px;padding:16px;background:#fffdf8;border:1px solid #e5dcd0;border-top:0;border-radius:0 0 18px 18px;color:#221d19}
-.dhDeskCaption{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
-.dhDeskCaption>span{font:500 22px/1.2 Caveat,cursive;color:#8b4935}
-.dhDeskCaption a{font:600 12px/1.4 Inter,sans-serif;color:#51483e;text-underline-offset:3px;min-height:44px;display:flex;align-items:center;gap:5px}
-.dhDeskButtons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
-.dhDeskButtons button{min-height:46px;padding:9px 4px;display:flex;align-items:center;justify-content:center;gap:5px;border:1px solid #ddd3c5;border-radius:10px;background:#f8f3eb;color:#51483e;font:500 11px/1.3 Inter,sans-serif;cursor:pointer;touch-action:manipulation}
-.dhDeskButtons button[aria-pressed=true]{background:#efe4d0;border-color:#cbb28b;color:#473723}
-.dhDeskButtons button:active{background:#e8dbc8}
-.dhDeskButtons button>span{font-size:18px;line-height:1}
-.dhDeskButtons svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.6;flex:none}
-:is(.dhEnterWork,.dhDeskButtons button,.dhDeskCaption a):focus-visible{outline:3px solid #b0452f;outline-offset:3px}
-.dhDeskStatus{display:block;position:absolute;right:20px;top:-34px;padding:4px 9px;border-radius:6px;background:#fffdf8;color:#51483e;font:500 13px/1.3 Caveat,cursive;pointer-events:none}
+.isStatic .dhScene{position:relative;height:min(64vh,540px);margin:0 24px;overflow:hidden;background:var(--wallB);border-radius:16px}
+/* The miniature desktop lives inside the real screen, beneath the bezel notes. */
+.isStatic .dhMiniBar{height:24px;gap:12px;padding:0 12px 0 52px;font:400 11px/1 -apple-system,BlinkMacSystemFont,sans-serif;white-space:nowrap;box-sizing:border-box}
+.isStatic .dhMiniBar time{margin-left:auto;font:inherit}
+.isStatic .dhHelloMini{width:300px;left:60px;top:30%}
+.isStatic .dhHelloMini .dhHelloBar{height:22px}
+.isStatic .dhHelloMini .dhHelloBar span{font-size:9px;margin-left:auto;margin-right:auto}
+.isStatic .dhHelloMini .dhHelloBody{padding:18px 16px 20px}
+.isStatic .dhHelloMini .dhHelloBody p{font-size:24px;line-height:1.1}
+.isStatic .dhHelloMini .dhHelloBody small{font-size:16px;line-height:1.2}
+.dhObjectTouch{position:absolute;z-index:71;min-width:44px;min-height:44px;padding:0;border:0;background:transparent;cursor:pointer;touch-action:manipulation;border-radius:8px}
+.dhTouchLamp{left:var(--lamp-left);top:var(--lamp-top);width:var(--lamp-width);height:var(--lamp-height)}
+.dhTouchWindow{left:var(--window-left);top:var(--window-top);width:var(--window-width);height:var(--window-height)}
+.dhTouchCamera{left:var(--camera-left);top:var(--camera-top);width:var(--camera-width);height:var(--camera-height);transform:translate(-4px,-4px)}
+.dhObjectTouch:focus-visible{outline:2px solid #b0452f;outline-offset:2px}
+.dhDeskStatus{position:absolute;right:18px;bottom:18px;padding:4px 9px;border-radius:6px;background:#fffdf8;color:#51483e;font:500 15px/1.3 Caveat,cursive;pointer-events:none;z-index:72}
 .dhDeskStatus:empty{display:none}
+/* A short invitation on the objects themselves, then the room settles. */
+.isStatic .dhLamp svg{animation:dhTouchInvite 1.3s 1s 2;transform-origin:50% 100%}
+.isStatic .dhCamera svg{animation:dhTouchInvite 1.3s 2.2s 2;transform-origin:50% 100%}
+.isStatic .dhWindow .dhGlass{animation:dhWindowInvite 1.3s 3.4s 2}
+@keyframes dhTouchInvite{0%,70%,100%{transform:translateY(0)}35%{transform:translateY(-5px) rotate(-1deg)}}
+@keyframes dhWindowInvite{0%,70%,100%{filter:brightness(1)}35%{filter:brightness(1.1)}}
+@media(prefers-reduced-motion:reduce){.isStatic :is(.dhLamp svg,.dhCamera svg,.dhWindow .dhGlass){animation:none}}
 .isStatic .dhLinks a{min-height:44px;display:inline-flex;align-items:center;gap:6px;box-sizing:border-box}
 .isStatic .dhQuick button{min-height:44px}
-.isStatic .dhOs{position:relative;inset:auto;opacity:1;visibility:visible;padding:32px 20px 24px;--su:1px}
+.isStatic .dhOs{position:relative;inset:auto;opacity:1;visibility:visible;padding:32px 24px 24px;--su:1px}
 .isStatic .dhOs>.dhWallpaper,.isStatic .dhMenuBar,.isStatic .dhHelloOs,.isStatic .dhIcons,.isStatic .dhToast,.isStatic .dhDock{display:none}
 .isStatic .dhOsTitle{display:block;margin:0 0 20px;font:400 44px/1 'Instrument Serif',Georgia,serif;color:#221d19}
 .isStatic .dhWindows{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:20px}
@@ -524,9 +524,55 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
  .isStatic .dhLinks a:first-child{padding:9px 14px}
  .isStatic .dhQuick{display:none}
  .isStatic .dhScene{height:clamp(220px,68vw,340px)}
+ .isStatic .dhWindows{grid-template-columns:minmax(0,1fr)}
+ .isStatic .dhWinBar{touch-action:pan-y}
+ .isStatic .dhWinBar:active{cursor:default}
+ .isStatic .dhWinCap{flex-direction:column;align-items:flex-start;gap:10px}
+ .isStatic .dhWinCap small{font-size:12px}
+ .isStatic .dhWinCap em{max-width:100%;text-align:left;line-height:1.2}
+ .isStatic .dhCaseCue{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 15px 8px;font-size:14px;font-weight:600;color:#b0452f}
+ .isStatic .dhWinBody:focus-visible{outline:3px solid #b0452f;outline-offset:-3px}
 }
-@media(max-width:360px){.dhDeskControls{padding:12px}.dhDeskCaption>span{font-size:19px}.dhDeskButtons button{font-size:10px;gap:3px}}
+
+
+@media(max-width:430px){.isStatic .dhCopy{padding-left:20px;padding-right:20px}.isStatic .dhScene{margin-left:20px;margin-right:20px}.isStatic .dhOs{padding-left:20px;padding-right:20px}}
 @media (prefers-reduced-motion:reduce){.dhFog ellipse,.dhWaves path,.dhGlint rect,.dhSteam path,.dhCaret{animation:none}}
+
+/* A small landscape painting complements the original right-hand SF window. */
+.dhSummerScene,.dhBayExtension,.dhBayPainting{display:none}
+.sfSummerWindow{fill:#607b84}
+@media(max-width:600px){
+ .isStatic .dhBayPainting{display:block;left:294px;top:198px;width:278px;height:190px;margin:0;padding:13px;z-index:16;pointer-events:none;transform:rotate(-2deg);background:linear-gradient(135deg,#967858,#5c422c 48%,#795a3d);border:2px solid #a68a65;border-radius:2px;box-shadow:inset 0 0 0 2px #422e1d,2px 5px 8px #211b1850;filter:brightness(var(--printDim))}
+ .dhBayPaintingCanvas{position:relative;width:100%;height:100%;overflow:hidden;border:7px solid #e9dfcb;box-shadow:0 0 0 1px #392818,inset 0 1px 3px #39281845;background:#e9dfcb}
+ .dhBayPaintingCanvas::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,#fff2de18 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,#332b2410 0 1px,transparent 1px 3px);mix-blend-mode:soft-light}
+ .isStatic .dhGlass>.dhView:not(.dhSummerScene){display:none}
+ .isStatic .dhGlass>.dhSummerScene,.isStatic .dhBayPaintingCanvas>.dhBayExtension{display:block}
+ .dhBayPaintingCanvas .dhBayExtension{--sky1:#b4c5ce;--sky3:#e0dbc7;--bay1:#7594a0;--bay2:#536d7c;--starOp:0;filter:saturate(.68);opacity:.94}
+}
+.sfSummerNight{display:none}
+.tod-night .sfSummerSun{fill:#f5ead0;opacity:.8}
+.tod-night .sfSummerNight,.tod-evening .sfSummerNight{display:inline}
+.tod-night .sfSummerWindow,.tod-evening .sfSummerWindow{fill:#f0cd85}
+.sfSummerFog{animation:sfSummerFog 24s ease-in-out infinite alternate}
+.sfSummerFerry{animation:sfSummerFerry 44s linear infinite;animation-delay:-15s}
+.sfSummerCableCar{animation:sfSummerCableCar 22s linear infinite;animation-delay:-6s}
+.sfShootingStar{opacity:0;animation:sfSummerMeteor 16s linear -12s infinite}
+.sfSummerFirework{opacity:0;transform-origin:0 0;animation:sfSummerFirework 18s ease-out infinite}
+@keyframes sfSummerFog{from{transform:translateX(-18px)}to{transform:translateX(16px)}}
+@keyframes sfSummerFerry{from{transform:translate(-45px,0)}to{transform:translate(325px,-8px)}}
+@keyframes sfSummerCableCar{from{transform:translate(-65px,299px)}to{transform:translate(330px,238px)}}
+@keyframes sfSummerMeteor{0%,5%{opacity:0;transform:translate(38px,24px)}6%{opacity:.9}13%,100%{opacity:0;transform:translate(253px,98px)}}
+@keyframes sfSummerFirework{0%,2%{opacity:0;transform:scale(.1)}4%{opacity:.85;transform:scale(.45)}8%{opacity:.55;transform:scale(1)}12%,100%{opacity:0;transform:scale(1.25)}}
+@media(max-width:600px){
+ .isStatic .dhGlass>.dhView:not(.dhSummerScene){display:none}
+ .isStatic .dhGlass>.dhSummerScene{display:block}
+}
+@media(prefers-reduced-motion:reduce){
+ .dhSummerScene *{animation:none!important}
+ .sfShootingStar,.sfSummerFirework{display:none}
+ .sfSummerFerry{transform:translate(123px,-3px)}
+ .sfSummerCableCar{transform:translate(106px,273px)}
+}
 
 /* Below the hero: fun builds wear the same window chrome as Neha OS; each role gets a margin note. */
 .osWin{border-radius:12px;overflow:hidden;background:#fffdf8;box-shadow:0 22px 40px -22px rgba(40,24,14,.45),0 0 0 .5px rgba(0,0,0,.14);transition:box-shadow .25s,transform .25s}

@@ -1,0 +1,90 @@
+/* All rules stay inside the existing phone cutoff. Desktop demo CSS is untouched. */
+@media(max-width:760px){
+ .mobileDemoIntro{font:500 13px/1.5 Inter,system-ui,sans-serif;color:#626660;margin:0;text-align:left}
+ .mobileShipmentDemo{width:100%;min-width:0;box-sizing:border-box;border:1px solid #d8d9d4;border-radius:16px;overflow:hidden;background:#f8f9f6;color:#202721;font:400 15px/1.5 Inter,system-ui,sans-serif;text-align:left}
+ .mobileShipmentDemo *{box-sizing:border-box}
+ .mobileShipmentBrand{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#202721;color:#fff;padding:16px}
+ .mobileShipmentBrand strong{font-size:20px;letter-spacing:.04em}.mobileShipmentBrand span{font-size:13px}
+ .mobileShipmentDemo>.mobileDemoIntro{padding:14px 16px 0}
+ .mobileDemoProgress{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));list-style:none;margin:16px 0 0;padding:0 12px 16px;gap:3px;border-bottom:1px solid #d8d9d4}
+ .mobileDemoProgress li{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10px;color:#666d65}
+ .mobileDemoProgress span{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#e6e9e2;font-size:12px}
+ .mobileDemoProgress [aria-current=step]{color:#202721;font-weight:700}.mobileDemoProgress [aria-current=step] span{background:#202721;color:white}
+ .mobileShipmentBody{padding:20px 16px}.mobileShipmentBody h3{font-size:23px;line-height:1.2;margin:0 0 16px;letter-spacing:-.025em;scroll-margin-top:80px}.mobileShipmentBody h3:focus{outline:none}
+ .mobileShipmentBody p{margin:14px 0;font-size:14px;line-height:1.55}.mobileShipmentRecord{display:grid;gap:5px;padding:14px;border:1px solid #d8d9d4;background:white;border-radius:10px}
+ .mobileShipmentRecord span{font-size:12px;color:#5c635b}.mobileShipmentRecord strong{font-size:16px}.mobileShipmentRecord b{font-size:12px;color:#385b43}
+ .mobileShipmentDemo button{min-height:44px;border:1px solid #cbd0c6;border-radius:8px;background:white;color:#202721;font:600 14px/1.3 Inter,system-ui,sans-serif;padding:12px;cursor:pointer;touch-action:manipulation}
+ .mobileShipmentDemo button:focus-visible{outline:3px solid #64856e;outline-offset:2px}.mobileShipmentDemo button:active{background:#e6e9e2}
+ .mobileShipmentDemo .mobileDemoPrimary{width:100%;background:#202721;color:white;border-color:#202721}.mobileShipmentDemo button:disabled{opacity:.45;cursor:default}
+ .mobileBarcode{height:48px;margin:20px 24px;background:repeating-linear-gradient(90deg,#202721 0 2px,transparent 2px 5px,#202721 5px 6px,transparent 6px 10px,#202721 10px 14px,transparent 14px 17px)}
+ .mobileDocumentList{display:grid;gap:8px}.mobileDocumentList button{display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left}.mobileDocumentList b{font-size:11px;white-space:nowrap}
+ .mobileSampleDocument{margin-top:14px;padding:16px;background:white;border:1px solid #cbd0c6;border-radius:8px}.mobileSampleDocument>span{font-size:11px;letter-spacing:.1em;color:#666d65}.mobileSampleDocument h4{margin:12px 0;font-size:18px}
+ .mobileShipmentDemo dl{display:grid;grid-template-columns:1fr;gap:3px;margin:12px 0}.mobileShipmentDemo dt{font-size:11px;color:#666d65}.mobileShipmentDemo dd{font-size:14px;margin:0 0 10px;overflow-wrap:anywhere}
+ .mobileTaskList{display:grid;gap:8px}.mobileTaskList label{display:flex;align-items:center;gap:12px;min-height:56px;padding:12px;border:1px solid #d8d9d4;border-radius:8px;background:white;font-size:14px}.mobileTaskList input{width:22px;height:22px;flex:none;accent-color:#385b43}.mobileTaskList .isUnavailable{opacity:.5}
+ .mobileAuditList{list-style:none;padding:0;margin:16px 0;display:grid;gap:12px}.mobileAuditList li{padding:12px;background:white;border-left:3px solid #64856e}.mobileAuditList strong,.mobileAuditList span{display:block}.mobileAuditList span{font-size:12px;color:#626660}.mobileAuditList p{font-size:12px;margin:6px 0 0}
+ .mobileDemoFooter{display:flex;justify-content:space-between;gap:8px;padding:0 16px 16px}.mobileDemoFinePrint{font-size:11px;line-height:1.5;color:#626660;margin:0;padding:0 16px 16px}
+ /* Keep the iPhone presentation on phones, with touch-sized controls inside. */
+ .mobileCommuteDemo{gap:14px}.mobileCommuteDemo .iphoneDemoStage{padding:0!important}
+ .mobileCommuteDemo .iosPhoneDevice{width:calc(100% - 12px)!important;max-width:340px!important;aspect-ratio:630/1302!important;filter:none!important;border-radius:14% / 6.8%;background:#131315;box-shadow:0 0 0 1px #757578,0 0 0 3px #d1d0ce,0 12px 24px -12px rgba(28,28,27,.30)}
+ .mobileCommuteDemo .iosHardwareFrame{display:none!important}
+ .mobileCommuteDemo .iosPhoneDevice::after{content:"";position:absolute;z-index:81;top:3.15%;left:50%;width:29.6%;height:4.4%;transform:translateX(-50%);border-radius:999px;background:#000;box-shadow:0 0 0 1px #000;pointer-events:none}
+ .mobileCommuteDemo .csIsland{z-index:82;top:3.15%;height:4.4%;background:#000}
+ .mobileCommuteDemo .iosDemoShell{position:absolute!important;left:2.7%!important;top:1.3%!important;width:94.6%!important;height:97.4%!important;border-radius:12.5% / 6%!important;border:0!important;background:#f2f2f7!important;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif!important}
+ .mobileCommuteDemo .iosDemoShell.csLockShell{background:linear-gradient(165deg,#2e2a52 0%,#4a3f78 38%,#6b5a8e 58%,#3f6f68 100%)!important}
+ .mobileCommuteDemo .iosStatus{height:58px!important;padding:23px 22px 0!important}.mobileCommuteDemo .iosStatus>span:first-child{font-size:12px!important}.mobileCommuteDemo .status5g{display:none!important}
+ .mobileCommuteDemo .iosScreenContent{height:calc(100% - 58px)!important;overflow:hidden!important}
+ .mobileCommuteDemo .iosOnboarding,.mobileCommuteDemo .iosAppScreen{height:100%!important;min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;padding:16px 14px 84px!important}
+ .mobileCommuteDemo .iosWelcome{min-height:0!important}
+ .mobileCommuteDemo button{min-height:44px!important;touch-action:manipulation}
+ .mobileCommuteDemo .routineItem button,.mobileCommuteDemo .bufferRow button{width:44px!important;height:44px!important}
+ .mobileCommuteDemo .routineItem>div{gap:4px!important}.mobileCommuteDemo .routineItem strong{min-width:30px!important}
+ .mobileCommuteDemo .iosNavRow button{width:44px!important}
+ .mobileCommuteDemo input:not([type=range]),.mobileCommuteDemo select{font-size:16px!important;min-height:44px!important;max-width:100%}
+ .mobileCommuteDemo .iosField label,.mobileCommuteDemo .iosField>span{font-size:12px!important}
+ .mobileCommuteDemo .iosTabBar{height:76px!important;padding:8px 8px 22px!important;bottom:0!important;background:rgba(249,249,251,.98)!important;border-top:1px solid #dcdce0!important}.mobileCommuteDemo .iosTabBar svg{width:21px!important;height:21px!important}.mobileCommuteDemo .iosHomeIndicator{bottom:9px;width:34%;height:4px}
+ .mobileCommuteDemo .iosTabBar small{font-size:11px!important;line-height:1.2!important}
+ /* A coherent phone scale, instead of the miniature desktop-preview metrics. */
+ .mobileCommuteDemo .iosAppScreen{background:#f2f2f7!important}
+ .mobileCommuteDemo .iosAppScreen>*{flex-shrink:0!important}
+ .mobileCommuteDemo .appTop{margin-bottom:14px!important;align-items:center!important}
+ .mobileCommuteDemo .appTop>div>span{font-size:12px!important;color:#63636b!important}
+ .mobileCommuteDemo .appTop h3{font-size:22px!important;line-height:1.2!important;letter-spacing:-.025em!important;margin-top:5px!important}
+ .mobileCommuteDemo .avatarBtn{width:44px!important;height:44px!important;min-width:44px!important;background:#e4e3ed!important;font-size:14px!important;color:#58516f!important}
+ .mobileCommuteDemo .destinationLine{padding:8px 0!important;margin:0 0 4px!important}
+ .mobileCommuteDemo .destinationLine span{font-size:12px!important;color:#63636b!important}
+ .mobileCommuteDemo .destinationLine strong{font-size:15px!important;line-height:1.35!important}
+ .mobileCommuteDemo .destinationLine>b{font-size:14px!important}
+ .mobileCommuteDemo .bigMoment{margin:8px 0 10px!important;padding:18px 16px!important;border-radius:18px!important;background:#eae7f2!important;text-align:left!important}
+ .mobileCommuteDemo .bigMoment>span{font-size:13px!important;line-height:1.4!important;color:#585366!important}
+ .mobileCommuteDemo .bigMoment strong{font-size:40px!important;line-height:1.15!important;letter-spacing:-.045em!important;font-weight:700!important;color:#302c42!important}
+ .mobileCommuteDemo .bigMoment small{font-size:13px!important;line-height:1.4!important;margin-top:6px!important;color:#585366!important}
+ .mobileCommuteDemo .routeRecommendation{grid-template-columns:36px minmax(0,1fr)!important;gap:4px 10px!important;padding:12px!important;margin:0!important;background:#fff!important;border-radius:16px!important;box-shadow:none!important;color:#1c1c1e!important}
+ .mobileCommuteDemo .routeBadge{grid-row:1/3;width:36px!important;height:36px!important;border-radius:10px!important;font-size:15px!important;background:#357567!important}
+ .mobileCommuteDemo .routeRecommendation>span{grid-column:2!important;gap:3px!important}
+ .mobileCommuteDemo .routeRecommendation>span>small{font-size:11px!important;color:#63636b!important}
+ .mobileCommuteDemo .routeRecommendation strong{font-size:17px!important;line-height:1.2!important}
+ .mobileCommuteDemo .routeRecommendation>span em{font-size:12px!important;line-height:1.35!important;color:#63636b!important}
+ .mobileCommuteDemo .routeTimes{grid-column:2;display:flex!important;flex-direction:row!important;flex-wrap:wrap;align-items:baseline;gap:4px 10px!important;text-align:left!important}
+ .mobileCommuteDemo .routeTimes b{font-size:13px!important}.mobileCommuteDemo .routeTimes small{font-size:12px!important;color:#63636b!important}
+ .mobileCommuteDemo .routeReason{font-size:12px!important;line-height:1.45!important;color:#63636b!important;margin:8px 2px!important}
+ .mobileCommuteDemo .liveStrip{gap:8px!important;margin:2px 0 8px!important;border:0!important;padding:0!important}
+ .mobileCommuteDemo .liveStrip button{flex:1;min-height:44px!important;font-size:12px!important;padding:10px 8px!important;background:#fff!important;border:0!important;border-radius:12px!important}
+ .mobileCommuteDemo .liveStrip .freshness{font-size:12px!important}
+ .mobileCommuteDemo .sleepAction{margin-top:auto!important;padding:12px 12px!important;border-radius:12px!important;background:#fff!important;font-size:14px!important;color:#5d4c89!important}
+ .mobileCommuteDemo .sleepAction>span{font-size:14px!important}
+ .mobileCommuteDemo .iosPermissionDialog{background:#fafafa!important}
+ .mobileCommuteDemo .routeWhy,.mobileCommuteDemo .liveSources *,.mobileCommuteDemo .settingsList span,.mobileCommuteDemo .sleepChoices span{font-size:12px!important}
+ .mobileCommuteDemo .iosFullSheet{inset:58px 0 0!important;padding:16px 12px 80px!important;overflow:auto!important}
+ .mobileCommuteDemo .sheetLead,.mobileCommuteDemo .iosFinePrint,.mobileCommuteDemo .conditionRows label,.mobileCommuteDemo .routeFacts span,.mobileCommuteDemo .routeFacts b,.mobileCommuteDemo .routeFacts small{font-size:12px!important}
+ .mobileCommuteDemo .iosPermissionBackdrop{position:absolute!important;inset:0!important;z-index:1000!important;padding:12px!important}.mobileCommuteDemo .iosPermissionDialog{width:100%;max-height:100%;overflow:auto}
+ .mobileCommuteDemo h2,.mobileCommuteDemo h3{scroll-margin-top:80px}.mobileCommuteDemo h2:focus,.mobileCommuteDemo h3:focus{outline:none}
+ .mobileCommuteDemo .csViewSwitch button{min-width:100px}.mobileCommuteDemo .csControls{gap:12px;max-width:100%}.mobileCommuteDemo .csDelay{flex-wrap:wrap}
+ .mobileCommuteDemo .csControls input[type=range]{min-height:44px}.mobileCommuteDemo .csBack{display:none}
+}
+@media(max-width:360px){
+ .mobileCommuteDemo .iosStatus{padding-left:18px!important;padding-right:16px!important}
+ .mobileCommuteDemo .iosStatusIcons{gap:3px!important}
+ .mobileCommuteDemo .statusSignal,.mobileCommuteDemo .statusWifi{width:14px!important}
+ .mobileCommuteDemo .statusBattery{width:20px!important}
+ .mobileCommuteDemo .appTop h3{font-size:20px!important}
+}

@@ -40,6 +40,16 @@
 .dhGlobe.isShaken .sgFlakes circle{animation:sgFlake var(--d) var(--dl) cubic-bezier(.25,.1,.35,1) both}
 @keyframes sgFlake{0%{opacity:0;transform:translate(var(--x0),84px)}6%{opacity:1}20%{transform:translate(var(--x1),var(--y1))}50%{transform:translate(calc((var(--x1) + var(--x2)) / 2),calc(var(--y1) + 22px))}88%{opacity:1}100%{opacity:0;transform:translate(var(--x2),84px)}}
 
+.sgAmbientSnow{display:none}
+@media(max-width:600px){
+ .isStatic .dhGlobe .sgAmbientSnow{display:inline}
+ .sgAmbientSnow circle{opacity:0;animation:sgAmbientFall var(--snow-d) var(--snow-delay) linear infinite}
+}
+@keyframes sgAmbientFall{0%{opacity:0;transform:translate(0,8px)}12%{opacity:.9}86%{opacity:.85}100%{opacity:0;transform:translate(var(--snow-drift),88px)}}
+@media(prefers-reduced-motion:reduce){
+ .sgAmbientSnow circle{animation:none;opacity:.65;transform:translate(0,var(--snow-rest))}
+}
+
 /* Window: a brass latch on the bottom rail. Open, the lower sash rises a crack and the
    curtain lifts once in the air coming in. */
 .dhLatch{position:absolute;left:calc(50% - 13px);bottom:2px;width:26px;height:10px;padding:0;border:0;border-radius:3px;cursor:pointer;z-index:3;

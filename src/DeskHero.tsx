@@ -72,6 +72,83 @@ const CLOUDS:[number,number,number,number][][]=[
  [[262,170,26,6],[282,166,20,8],[300,172,22,5]]
 ];
 
+// A little illustrated postcard of Neha's SF summer, shown only on phones.
+// Motion stays inside the window: bay traffic, a cable car, marine fog and night sky.
+/* The quieter bay to the left of the original SF neighborhood view. */
+function SummerBayExtension(){
+ const id=React.useId().replace(/:/g,'');
+ return <svg className="dhView dhBayExtension" viewBox="-300 0 300 330" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs>
+   <linearGradient id={`${id}Sky`} x2="0" y2="1"><stop className="sky1"/><stop offset="1" className="sky3"/></linearGradient>
+   <linearGradient id={`${id}Bay`} x2="0" y2="1"><stop className="bay1"/><stop offset="1" className="bay2"/></linearGradient>
+  </defs>
+  <rect x="-300" width="300" height="330" fill={`url(#${id}Sky)`}/>
+  <g className="sfSummerNight" fill="#fff6d9" opacity=".65"><circle cx="-218" cy="29" r="1"/><circle cx="-119" cy="51" r="1.2"/><circle cx="-49" cy="26" r="1"/></g>
+  <path d="M-300 143Q-250 109-204 120T-113 130Q-55 112 0 134V184H-300Z" fill="#738e88" opacity=".55"/>
+  <rect x="-300" y="148" width="300" height="103" fill={`url(#${id}Bay)`}/>
+  <path d="M-175 158H0M-175 150Q-91 166 0 146M-131 155V158M-89 155V158M-45 153V158" fill="none" stroke="#c66648" strokeWidth="1.5"/>
+  <g fill="#e1e6e0" opacity=".22"><ellipse cx="-145" cy="143" rx="115" ry="9"/><ellipse cx="-16" cy="145" rx="55" ry="7"/></g>
+  <g fill="none" stroke="#e0ece7" strokeWidth=".8" opacity=".22"><path d="M-254 187h44M-134 204h37M-224 222h53M-66 190h28"/></g>
+  <path d="M-300 277Q-237 270-191 258T-95 244Q-45 234 0 239V330H-300Z" fill="#596c62"/>
+  <path d="M-300 321L0 306V330H-300Z" fill="#505760"/>
+ </svg>;
+}
+
+function SanFranciscoSummerView(){
+ const id=React.useId().replace(/:/g,''),view=useRef<SVGSVGElement>(null);
+ useEffect(()=>{
+  const node=view.current;if(!node)return;
+  const observer=new IntersectionObserver(([entry])=>node.getAnimations({subtree:true}).forEach(a=>{
+   if(a.effect?.getTiming().iterations===Infinity)entry.isIntersecting?a.play():a.pause();
+  }));observer.observe(node);return()=>observer.disconnect();
+ },[]);
+ return <svg ref={view} className="dhView dhSummerScene" viewBox="0 0 300 330" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs>
+   <linearGradient id={`${id}Sky`} x2="0" y2="1"><stop className="sky1"/><stop offset="1" className="sky3"/></linearGradient>
+   <linearGradient id={`${id}Bay`} x2="0" y2="1"><stop className="bay1"/><stop offset="1" className="bay2"/></linearGradient>
+   <linearGradient id={`${id}Streak`}><stop stopColor="#fff4cf" stopOpacity="0"/><stop offset="1" stopColor="#fff4cf"/></linearGradient>
+  </defs>
+  <rect width="300" height="330" fill={`url(#${id}Sky)`}/>
+  <circle className="sfSummerSun" cx="65" cy="61" r="21" fill="#ffdfaa" opacity=".85"/>
+  <g className="sfSummerNight" fill="#fff6d9">{[[22,25],[48,43],[105,24],[138,52],[182,31],[231,19],[268,48]].map(([x,y],i)=><circle key={i} cx={x} cy={y} r={i%2?1.2:1.7}/>)}</g>
+  <g className="sfSummerNight"><g className="sfShootingStar"><path d="M-38 -14L0 0" stroke={`url(#${id}Streak)`} strokeWidth="1.5"/><circle r="1.6" fill="#fff4cf"/></g></g>
+  <path d="M0 134Q46 99 92 119T188 126Q236 98 300 124V184H0Z" fill="#738e88" opacity=".55"/>
+  <rect y="148" width="300" height="103" fill={`url(#${id}Bay)`}/>
+  {/* The bridge remains a small, familiar landmark beyond the neighborhood. */}
+  <g fill="none" stroke="#c66648" strokeWidth="2"><path d="M0 158H155M39 157V115H46V157M113 157V119H120V157M0 146Q25 147 42 117Q76 168 116 121Q136 152 155 150"/><path d="M18 151V158M61 142V158M80 150V158M97 143V158M136 147V158" strokeWidth=".8"/></g>
+  <g fill="#536977"><path d="M180 151V129H191V119H202V151M205 151V115H216V107H223V151M231 151L241 91L251 151M261 151V118Q261 90 273 88Q285 90 285 118V151M288 151V126H300V151"/><path d="M273 88V151" stroke="#98b2ba" strokeWidth="1"/></g>
+  <g className="sfSummerFog" fill="#e1e6e0" opacity=".25"><ellipse cx="85" cy="143" rx="100" ry="9"/><ellipse cx="241" cy="148" rx="86" ry="7"/></g>
+  <g className="sfSummerFerry"><path d="M0 200H36L30 209H8Z" fill="#faf2da"/><path d="M7 199V190H28V199M13 189V184H22V189" fill="#d2ddd8"/><path d="M10 194H25" stroke="#536977" strokeWidth="3"/><path d="M-12 212H34" stroke="#e0ece7" strokeWidth="1" opacity=".65"/></g>
+  <path d="M0 239L300 201V330H0Z" fill="#596c62"/>
+  {/* Painted Lady silhouettes, bay windows and warm rooms on a sloping street. */}
+  {[['#bd958c',-7,205],['#d3bb80',43,199],['#94b8b1',93,193],['#a898bc',143,187],['#caa286',193,181],['#9aaf99',243,175]].map(([color,x,y],i)=>{
+   const left=x as number,top=y as number;
+   return <g key={i} transform={`translate(${left} ${top})`}>
+    <path d="M0 21L24 0L48 21V84H0Z" fill={color as string}/>
+    <path d="M-3 22L24-2L51 22M0 29H48M0 61H48" fill="none" stroke="#f4e3c6" strokeWidth="3"/>
+    <path d="M18 14L24 8L30 14V22H18Z" fill="#405b64" stroke="#ead6b7" strokeWidth="2"/>
+    <path d="M10 34L19 31H31L39 34V58L31 61H19L10 58Z" fill="#f1ddba"/>
+    {[14,25,34].map(wx=><rect key={wx} className="sfSummerWindow" x={wx-3} y="36" width="6" height="17" rx=".6"/>)}
+    <path d="M22 84V67H32V84" fill="#4d6064"/><path d="M5 84V70H14V84" fill="#6c8285"/>
+   </g>;
+  })}
+  <path d="M0 306L300 259V330H0Z" fill="#505760"/>
+  <path d="M0 313L300 266M0 323L300 276" stroke="#9eacac" strokeWidth="1.1"/>
+  <g className="sfSummerCableCar"><g transform="rotate(-9)">
+   <path d="M0 0H51V25H0Z" fill="#b9603f" stroke="#392e29" strokeWidth="1"/><path d="M-3-4H54V1H-3Z" fill="#efc781"/>
+   <path d="M3 3H47V14H3Z" fill="#edd7a4"/>
+   {[7,18,29,40].map(x=><rect key={x} x={x-3} y="4" width="6" height="9" fill="#43575e"/>)}
+   <path d="M0 19H51" stroke="#e7b461" strokeWidth="3"/><circle cx="9" cy="26" r="3" fill="#303738"/><circle cx="43" cy="26" r="3" fill="#303738"/>
+   <circle cx="48" cy="17" r="1.7" fill="#fff1b5"/>
+  </g></g>
+  <g className="sfSummerNight">{[[87,101,'#f1cf8e',-16],[174,86,'#e5a999',-10]].map(([x,y,color,delay],i)=><g key={i} transform={`translate(${x} ${y})`}>
+   <g className="sfSummerFirework" style={{animationDelay:`${delay}s`}} stroke={color as string} strokeWidth="1.2" strokeLinecap="round">
+    {Array.from({length:12},(_,j)=>{const a=j*Math.PI/6;return <path key={j} d={`M${Math.cos(a)*9} ${Math.sin(a)*9}L${Math.cos(a)*22} ${Math.sin(a)*22}`}/>})}
+   </g>
+  </g>)}</g>
+ </svg>;
+}
+
 function GoldenGateView(){
  // Per-instance ids: the hero and the footer each draw this view at a different time of day.
  const u=React.useId().replace(/:/g,'');
@@ -645,19 +722,30 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
   // by one: a class with an `… *` rule restyled the whole page each time it flipped (~120ms).
   const holder=(root:Element)=>{let on=false,held:Animation[]=[];return(v:boolean)=>{if(v===on)return;on=v;
    if(v)held=root.getAnimations({subtree:true}).filter(a=>a.playState==='running'&&a.effect?.getTiming().iterations===Infinity);
-   held.forEach(a=>v?a.pause():a.play());if(!v)held=[]}};
+   held.forEach(a=>{if(v)a.pause();else if(a.playState==='paused')a.play()});if(!v)held=[]}};
   const holdAll=holder(track),holdRoom=holder(stage);
 
-  const frameStatic=()=>{
+  const touchControls=([['lamp',280,416,200,320],['window',1130,58,380,410],['camera',1268,622,128,96]] as const).map(([name,x,y,w,h])=>({name,x,y,w,h,el:sceneRef.current?.querySelector<HTMLElement>(`.dhTouch${name[0].toUpperCase()+name.slice(1)}`)}));
+  let staticFrame='';
+  const frameStatic=(zoom=1)=>{
    const scene=sceneRef.current;if(!scene)return;
    const w=scene.clientWidth,h=scene.clientHeight,phone=w<=600;
    const s=phone?w/1280:Math.max(w/1400,h/760),cx=phone?850:900,cy=phone?480:520;
-   // Fit the lamp, monitor and camera together; touch controls stay outside this scaled art.
-   stage.style.transform=`translate(${w/2-cx*s}px,${h/2-cy*s}px) scale(${s})`;
-   scene.style.setProperty('--screen-left',`${w/2+(SX-cx)*s}px`);
-   scene.style.setProperty('--screen-top',`${h/2+(SY-cy)*s}px`);
-   scene.style.setProperty('--screen-width',`${SW*s}px`);
-   scene.style.setProperty('--screen-height',`${SH*s}px`);
+   // Fit the room; accessible touch targets follow the same object coordinates.
+   // Zoom around the monitor, keeping the original room framing at rest.
+   const tx=w/2-cx*s+(1-zoom)*(SX+SW/2)*s;
+   const ty=h/2-cy*s+(1-zoom)*(SY+SH/2)*s;
+   const scaled=s*zoom;
+   const key=`${tx}|${ty}|${scaled}`;if(key===staticFrame)return;staticFrame=key;
+   stage.style.transform=`translate(${tx}px,${ty}px) scale(${scaled})`;
+   // Scope changing variables to the empty buttons, not the whole illustrated room.
+   for(const {name,x,y,w:ow,h:oh,el} of touchControls){
+    if(!el)continue;
+    el.style.setProperty(`--${name}-left`,`${tx+x*scaled}px`);
+    el.style.setProperty(`--${name}-top`,`${ty+y*scaled}px`);
+    el.style.setProperty(`--${name}-width`,`${ow*scaled}px`);
+    el.style.setProperty(`--${name}-height`,`${oh*scaled}px`);
+   }
   };
   // Draw only when something can have changed: a scroll, a resize, or the toast's timer.
   // A loop that ran every frame forced a layout read on every frame of the whole page.
@@ -727,6 +815,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
    const observer=new IntersectionObserver(([entry])=>holdRoom(reduced||!entry.isIntersecting),{rootMargin:'80px'});
    if(sceneRef.current)observer.observe(sceneRef.current);
    return()=>{window.removeEventListener('resize',onR);observer.disconnect();holdRoom(false)}}
+
   const onResize=()=>{measure();snap=true;request()};
   // Back from a case: draw now, so the closing transition shrinks into the window where it sits.
   const onShown=()=>{measure();snap=true;update()};
@@ -824,17 +913,18 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
     <p className="dhEdu"><i aria-hidden="true"/><span>Computer Science + Supply Chain Management<br/>Michigan State University · 2027</span></p>
     <div className="dhLinks"><a href="#projects">See my work <span aria-hidden="true">↓</span></a><a href="#about">About me</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume <span aria-hidden="true">↗</span></a></div>
     {onSimple&&<p className="dhQuick">{reduced?'Reduced motion is on.':'Short on time?'} <button type="button" onClick={onSimple}>Switch to Simple view</button></p>}
-    <span className="dhPoke" aria-hidden="true">{isStatic?'a little corner of my world':'this is my desk. poke around'} <i>↘</i></span>
+    <span className="dhPoke" aria-hidden="true">{isStatic?'tap around my little corner':'this is my desk. poke around'} <i>↘</i></span>
    </div>
 
    <div className="dhScene" ref={sceneRef}>
     <div className="dhStage" ref={stageRef} aria-hidden="true" inert={isStatic}>
      <div className="dhWall"/>
+     {isStatic&&<figure className="dhBayPainting"><div className="dhBayPaintingCanvas"><SummerBayExtension/></div></figure>}
      <div className="dhSunPatch"/>
      <div className="dhShaft"/>
 
      <div className={`dhWindow ${air%2?'isAjar':''}`} data-tip="Change the time of day" onClick={()=>{manualTod.current=true;setTod(t=>ORDER[(ORDER.indexOf(t)+1)%4]);}}>
-      <div className="dhGlass"><GoldenGateView/><div className="dhMuntins"/><div className="dhReflect"/><div className="dhGap"/><button type="button" className="dhLatch" tabIndex={-1} data-tip={air%2?'Close the window':'Open the window a crack'} aria-label={air%2?'Close the window':'Open the window a crack'} onClick={e=>{e.stopPropagation();setAir(v=>v+1)}}/></div>
+      <div className="dhGlass"><GoldenGateView/>{isStatic&&<SanFranciscoSummerView/>}<div className="dhMuntins"/><div className="dhReflect"/><div className="dhGap"/><button type="button" className="dhLatch" tabIndex={-1} data-tip={air%2?'Close the window':'Open the window a crack'} aria-label={air%2?'Close the window':'Open the window a crack'} onClick={e=>{e.stopPropagation();setAir(v=>v+1)}}/></div>
       <div className="dhCurtain" key={Math.ceil(air/2)}/>
       <div className="dhSill"><div className={`dhSucculent ${watered?'isWatered':''} ${watering?'isWatering':''}`} data-tip={watered?'Water it again':'Water me'} onClick={e=>{e.stopPropagation();setWatering(v=>v+1)}}><SucculentFoliage/><b className="dhBloom"/><b className="dhBloom"/><b className="dhBloom"/>
        {watering>0&&<span className="dhCan" key={watering}><svg viewBox="0 0 48 30" aria-hidden="true"><defs><linearGradient id="dhCanG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#dfe4e6"/><stop offset=".5" stopColor="#a9b2b7"/><stop offset="1" stopColor="#7d878d"/></linearGradient></defs><path d="M2 9L14 14" stroke="#8d969b" strokeWidth="2.6" strokeLinecap="round"/><ellipse cx="2" cy="9" rx="2.2" ry="3" fill="#6f787d"/><path d="M14 8H40V27Q27 30 14 27Z" fill="url(#dhCanG)"/><ellipse cx="27" cy="8" rx="13" ry="2.6" fill="#c9d0d3"/><path d="M38 6C48 2 50 18 40 20" fill="none" stroke="#8d969b" strokeWidth="2.4"/></svg><span className="dhDrops"><em/><em/><em/></span></span>}
@@ -879,24 +969,21 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
 
      <div className="dhScreen" data-tip="Come on in" onClick={()=>{const t=trackRef.current;if(t&&!isStatic){const to=t.offsetTop+(t.offsetHeight-window.innerHeight)*.5;window.scrollTo({top:to,behavior:'smooth'})}}}>
       <WaveWallpaper id="dhMiniWp"/>
-      <div className="dhMiniBar"><b>Neha</b><span>Selected work</span><span>Experience</span></div>
-      <div className="dhHello dhHelloMini">{hello}</div>
+      <div className="dhMiniBar">{isStatic?<><b>Finder</b><span>File</span><span>Edit</span><span>View</span><time>{time}</time></>:<><b>Neha</b><span>Selected work</span><span>Experience</span></>}</div>
+      <div className="dhHello dhHelloMini">{isStatic?<><div className="dhHelloBar"><i/><i/><i/><span>hello.txt</span></div><div className="dhHelloBody"><p>{GREETING[tod]}, i’m neha.</p><small>make yourself at home.</small></div></>:hello}</div>
      </div>
      <div className="dhSticky dhStickyA">71% → 94% accuracy ✓<small>kohler</small></div>
      <div className="dhSticky dhStickyB">vanderpump reunion 9pm!!</div>
     </div>
-    {isStatic&&<a href="#projects" className="dhEnterWork" aria-label="Open my selected work"><div className="dhPocketMenu" aria-hidden="true"><b>Neha</b><span>{time}</span></div><div className="dhPocketFolder" aria-hidden="true"><i><span/></i><span>Selected work</span></div></a>}
+
+    {isStatic&&<>
+     <button className="dhObjectTouch dhTouchLamp" type="button" aria-label="Desk lamp" aria-pressed={lampOn} onClick={()=>{setDisco(false);setLampOn(v=>!v)}}/>
+     <button className="dhObjectTouch dhTouchWindow" type="button" aria-label="Change the time of day" onClick={()=>{manualTod.current=true;setTod(t=>ORDER[(ORDER.indexOf(t)+1)%4])}}/>
+     <button className="dhObjectTouch dhTouchCamera" type="button" aria-label="Say cheese" onClick={shoot}/>
+     <span className="dhDeskStatus" role="status">{flash>0?'Click!':''}</span>
+    </>}
     {flash>0&&!reduced&&<div className="dhFlash" key={flash} aria-hidden="true"/>}
    </div>
-   {isStatic&&<div className="dhDeskControls" role="group" aria-label="Play with my desk">
-    <div className="dhDeskCaption"><span>Make yourself at home.</span><a href="#projects">View projects <span aria-hidden="true">↓</span></a></div>
-    <div className="dhDeskButtons">
-     <button type="button" aria-label="Desk lamp" aria-pressed={lampOn} onClick={()=>{setDisco(false);setLampOn(v=>!v)}}><span aria-hidden="true">☼</span> Lamp {lampOn?'on':'off'}</button>
-     <button type="button" aria-label="Night mode" aria-pressed={tod==='night'} onClick={()=>{manualTod.current=true;setTod(tod==='night'?'day':'night')}}><span aria-hidden="true">{tod==='night'?'☾':'☀'}</span> {tod==='night'?'Night':'Day'} view</button>
-     <button type="button" onClick={shoot}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h4l2-3h4l2 3h4v13H4Z"/><circle cx="12" cy="13" r="4"/></svg> Say cheese</button>
-    </div>
-    <span className="dhDeskStatus" role="status">{flash>0?'Click!':''}</span>
-   </div>}
    {!isStatic&&<div className="dhShield" aria-hidden="true"/>}
    {!isStatic&&<div className="dhProgress" ref={progRef} data-chapter="0">
     <span className="dhChapter" aria-hidden="true"><b>scroll to walk in</b><b>walking in</b><b>hello</b><b>the work</b></span>
@@ -920,6 +1007,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
        <a href={`#/projects/${p.id}`} onClick={open(p.id)} className="dhWinBody" aria-label={`Open ${p.title} case study`}>
         <img src={isStatic?asset(w.img):undefined} data-src={asset(w.img)} alt="" loading="lazy" decoding="async" style={w.pos?{objectPosition:w.pos}:undefined}/>
         <div className="dhWinCap"><div><h3>{p.title}</h3><small>{p.company.split(' · ')[0]}</small></div><em>{w.note}</em></div>
+        <span className="dhCaseCue">View case study <span aria-hidden="true">→</span></span>
        </a>
       </article>})}
     </div>
