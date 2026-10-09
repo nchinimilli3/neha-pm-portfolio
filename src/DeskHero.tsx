@@ -1,6 +1,7 @@
 import React,{useCallback,useEffect,useLayoutEffect,useRef,useState} from 'react';
 import {getLenis,initAnchors} from './smoothScroll';
 import {pageY} from './perfMode';
+import {waitForSceneImages} from './sceneReadiness';
 import './desk-hero.css';
 import {createPortal} from 'react-dom';
 import WatercolorPaper,{watercolorName} from './WatercolorPaper';
@@ -448,7 +449,7 @@ function SucculentFoliage(){
 function PhotoFrame({eager=true}:{eager?:boolean}){
  // A 5×7 frame with my headshot. It is just a photo on the desk.
  return <div className="dhFrame" aria-hidden="true">
-  <div className="dhFrameFace"><div className="dhFramePhoto"><img src={asset('headshot.jpg')} width={1200} height={1800} alt="" loading={eager?'eager':'lazy'} decoding="async"/></div></div>
+  <div className="dhFrameFace"><div className="dhFramePhoto"><img src={asset('headshot.jpg')} srcSet={`${asset('desk/headshot-600.jpg')} 600w, ${asset('headshot.jpg')} 1200w`} sizes="(max-width: 900px) 120px, 240px" width={1200} height={1800} alt="" loading={eager?'eager':'lazy'} decoding="async"/></div></div>
  </div>
 }
 function Mustang(){
@@ -672,13 +673,13 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
  // The succulent: watered, it perks up, greens and flowers.
  const [watering,setWatering]=useState(0),[watered,setWatered]=useState(false);
  useEffect(()=>{if(!watering)return;const g=window.setTimeout(()=>setWatered(true),1500),d=window.setTimeout(()=>setWatering(0),2400);return()=>{window.clearTimeout(g);window.clearTimeout(d)}},[watering]);
- // The room fades in once its fonts and photos are ready, instead of filling in piece by piece.
+ // Only opening-room images gate the reveal. Later/lazy images and unrelated
+ // fonts must not hold the desk behind its loading cover on a slow connection.
  const [ready,setReady]=useState(false);
  useEffect(()=>{
-  const stage=stageRef.current;let done=false;const finish=()=>{if(!done){done=true;setReady(true)}};
-  const imgs=stage?[...stage.querySelectorAll('img')].filter(i=>i.getAttribute('src')):[];
-  Promise.all([document.fonts?.ready,...imgs.map(i=>i.decode().catch(()=>{}))]).then(finish);
-  const cap=window.setTimeout(finish,1500);return()=>window.clearTimeout(cap);
+  const stage=stageRef.current;
+  const imgs=stage?[...stage.querySelectorAll('img')].filter(i=>i.getAttribute('src')&&i.loading!=='lazy'):[];
+  return waitForSceneImages(imgs.map(i=>i.decode()),()=>setReady(true),800);
  },[]);
  const [clock,setClock]=useState(()=>new Date());
 
@@ -994,7 +995,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
    <div className="dhOs" ref={osRef}>
     <WaveWallpaper id="dhOsWp"/>
     <nav className="dhMenuBar" aria-label="Neha OS">
-     <a href="#top" className="dhMenuLogo"><img src={asset('favicon.svg')} alt=""/><b>Neha</b></a>
+     <a href="#top" className="dhMenuLogo"><img src={asset('favicon-32.png')} width={32} height={32} alt=""/><b>Neha</b></a>
      <a href="#projects">Selected work</a><a href="#experience">Experience</a><a href="#fun">Fun builds</a><a href="#about">About</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume</a>
      <span className="dhMenuRight">{onSimple&&<button type="button" className="dhMenuView" onClick={onSimple}>Simple view</button>}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9a15 15 0 0 1 20 0M5.5 12.5a10 10 0 0 1 13 0M9 16a5 5 0 0 1 6 0M12 19.5h.01"/></svg><svg viewBox="0 0 30 16" aria-hidden="true"><rect x="1" y="2" width="24" height="12" rx="3.5"/><rect x="3.5" y="4.5" width="15" height="7" rx="1.6" className="dhBatt"/><path d="M27.5 6v4"/></svg><span>{day}</span><span>{time}</span></span>
     </nav>
@@ -1015,7 +1016,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
      {[['resume.pdf','PDF','Neha_Chinimilli_Resume.pdf',null],['Commute','iOS','#/projects/commute','commute'],['Bookclub','APP','#/projects/bookclub','bookclub'],['film roll','35MM','#about',null]].map(([label,tag,href,id],i)=>
       <a key={label} ref={el=>{iconRefs.current[i]=el}} href={href as string} onClick={id?open(id as string):undefined} target={href==='Neha_Chinimilli_Resume.pdf'?'_blank':undefined} rel="noreferrer"><i data-t={tag}/>{label}</a>)}
     </div>
-    <div className="dhToast" ref={toastRef} role="status"><img src={asset('favicon.svg')} alt=""/><div><b>Neha</b><span>Drag the windows around, or click one to open the case study.</span></div><small>now</small></div>
+    <div className="dhToast" ref={toastRef} role="status"><img src={asset('favicon-32.png')} width={32} height={32} alt=""/><div><b>Neha</b><span>Drag the windows around, or click one to open the case study.</span></div><small>now</small></div>
     <nav className="dhDock" ref={dockRef} aria-label="Dock">
      {[['Selected work','#projects',G.work,'#e0634f,#b23a2c'],['Experience','#experience',G.exp,'#4f7fd6,#2b4c9a'],['Fun things I built','#fun',G.fun,'#7cc27a,#3f8a45'],['About me','#about',G.about,'#f5b94f,#d9861c'],['Resume','Neha_Chinimilli_Resume.pdf',G.resume,'#f4f1ea,#d8d2c6'],['Email','mailto:chinimi2@msu.edu',G.mail,'#6ec1f2,#2a86d0'],['GitHub','https://github.com/nchinimilli3',null,'#f4f1ea,#d8d2c6'],['LinkedIn','https://www.linkedin.com/in/nchinimilli',G.li,'#3a7dc0,#1d5a96']].map(([label,href,d,bg])=>
       <a key={label} href={href} target={href.startsWith('http')||href.endsWith('.pdf')?'_blank':undefined} rel="noreferrer" style={{'--bg':`linear-gradient(160deg,${bg})`} as React.CSSProperties} className={label==='Resume'?'dhDockLight':''}>{label==='GitHub'?<GithubGlyph/>:<Glyph d={d as string}/>}<span>{label}</span></a>)}

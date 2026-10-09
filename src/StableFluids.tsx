@@ -56,7 +56,7 @@ export default function StableFluids({live=true}:{live?:boolean}){
   const dye=[0,1,2].map(()=>new Float32Array(N)),tmp=new Float32Array(N),p=new Float32Array(N),div=new Float32Array(N);
   const img=ctx.createImageData(W,H);
   const dt=.1,visc=.00001;
-  let raf=0,visible=false,t=0,hue=0,idle=0;
+  let raf=0,visible=false,inView=false,t=0,hue=0,idle=0;
   const pointer={x:0,y:0,px:0,py:0,down:false,active:false};
 
   const hsl=(h:number)=>{const f=(n:number)=>{const k=(n+h/30)%12;return .5-.45*Math.max(-1,Math.min(k-3,9-k,1))};return [f(0),f(8),f(4)]};
@@ -110,9 +110,9 @@ export default function StableFluids({live=true}:{live?:boolean}){
   // Seed a little color so the first frame isn't empty.
   for(let k=0;k<6;k++)splat(10+k*16,H/2+Math.sin(k)*14,1.6,Math.cos(k)*.8,hsl(k*55),.6,5);
   step();draw();
-  const io=new IntersectionObserver(([en])=>{visible=en.isIntersecting&&document.visibilityState==='visible';if(visible)kick();else{cancelAnimationFrame(raf);raf=0}},{threshold:.15});
+  const onVis=()=>{visible=inView&&document.visibilityState==='visible';if(visible)kick();else{cancelAnimationFrame(raf);raf=0}};
+  const io=new IntersectionObserver(([en])=>{inView=en.isIntersecting;onVis()},{threshold:.15});
   io.observe(canvas);
-  const onVis=()=>{if(document.visibilityState!=='visible'){visible=false;cancelAnimationFrame(raf);raf=0}};
   document.addEventListener('visibilitychange',onVis);
   return()=>{io.disconnect();cancelAnimationFrame(raf);document.removeEventListener('visibilitychange',onVis);
    canvas.removeEventListener('pointermove',onMove);canvas.removeEventListener('pointerdown',onDown);canvas.removeEventListener('pointerup',onUp);canvas.removeEventListener('pointerleave',onLeave);canvas.removeEventListener('pointercancel',onLeave)};

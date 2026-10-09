@@ -584,10 +584,20 @@ function App(){
  const closeRoute=()=>{restoreHomeScroll.current=true;history.pushState(null,'',window.location.pathname+window.location.search);setCurrent({type:'home'})};
  // Once home has been shown it stays mounted, parked under any case (see isParked).
  // Landing straight on a case (or opening one from Simple view) loads its chunk on demand;
- // otherwise it's preloaded once the browser is idle after the first paint.
+ // otherwise it's warmed when the visitor starts exploring the work.
  const [,caseLoaded]=useState(0);
  useEffect(()=>{if(current.type==='case'&&!CaseStudy)loadCaseStudy().then(()=>caseLoaded(n=>n+1),()=>{})},[current]);
- useEffect(()=>{const ric=window.requestIdleCallback,warm=()=>{loadCaseStudy().catch(()=>{})};const id=ric?ric(warm,{timeout:2500}):window.setTimeout(warm,1500);return()=>{if(ric)window.cancelIdleCallback(id);else clearTimeout(id)}},[]);
+ // Fetch case code on intent, rather than spending mobile bandwidth just
+ // because the homepage has been open for 1.5 seconds.
+ useEffect(()=>{
+  const warm=(event:Event)=>{if((event.target as Element)?.closest?.('a[href^="#/projects/"],.expCaseStudyLink,.projectCardAction'))loadCaseStudy().catch(()=>{})};
+  // Touch visitors have no hover: begin warming while they scroll toward
+  // the work, so the first tap can still open a prepared case.
+  const onScroll=()=>{if(pageY()>window.innerHeight*.5){loadCaseStudy().catch(()=>{});window.removeEventListener('scroll',onScroll)}};
+  document.addEventListener('pointerover',warm);document.addEventListener('focusin',warm);
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  return()=>{document.removeEventListener('pointerover',warm);document.removeEventListener('focusin',warm);window.removeEventListener('scroll',onScroll)};
+ },[]);
  const homeMounted=useRef(false);
  const isCase=current.type==='case';
  if(!isCase)homeMounted.current=true;

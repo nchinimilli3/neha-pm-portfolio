@@ -5,6 +5,7 @@ import StableFluids from './StableFluids';
 import './after-hours.css';
 import {HOME_SHOWN,isParked} from './CaseWindow';
 import {pageY} from './perfMode';
+import {waitForSceneImages} from './sceneReadiness';
 import {currentLenis} from './smoothScroll';
 
 /* "After hours": the same desk as the hero, now at night and seen from straight above.
@@ -29,7 +30,7 @@ const LAYOUT:Record<string,Omit<Device,'id'|'title'|'eyebrow'|'line'|'caseId'|'h
 // on the device for the rest, so a visitor who stops scrolling anywhere in that stretch sees
 // it framed. A jump from the list lands at HOLD, inside the rest.
 const TRAVEL=.6,HOLD=.8;
-const FUN_IMAGES=['desk/fun-scheduler.jpg','desk/fun-bookclub.jpg','desk/fun-spartan.jpg','project-media/sparty.png','project-media/um-enemy.png'];
+const FUN_IMAGES=['desk/fun-scheduler.jpg','desk/fun-spartan.jpg','project-media/sparty.png','project-media/um-enemy.png'];
 const ORDER=['commute','bookclub','scheduler','chat','game','fluids'];
 const EXTRA:Record<string,{title:string;eyebrow:string;line:string;hint:string}>={
  game:{title:'Spartan Touchdown',eyebrow:'MSU · CSE 335',line:'A C++ team game with player movement, collisions, enemies, scoring, and a shared level state.',hint:'Click the screen to play. Space jumps.'},
@@ -99,7 +100,7 @@ const PadStatus=()=><div className="ahPadStatus" aria-hidden="true"><span><b>9:4
 function Screen({id,focus=true}:{id:string;focus?:boolean}){
  if(id==='commute')return <CommuteScreen/>;
  if(id==='bookclub')return <BookclubScreen/>;
- if(id==='scheduler')return <img className="ahShot ahShotCover" src="desk/fun-scheduler.jpg" alt="" decoding="async"/>;
+ if(id==='scheduler')return <img className="ahShot ahShotCover" src="desk/fun-scheduler.jpg" alt="" loading="lazy" decoding="async"/>;
  if(id==='chat')return <IMessageScreen/>;
  if(id==='game')return <SpartanGame/>;
  if(id==='fluids')return <StableFluids live={focus}/>;
@@ -278,13 +279,15 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
  const activeRef=useRef(0);
  const [listOpen,setListOpen]=useState(false);
  // The desk fades in once its screens are downloaded and decoded, instead of filling in on arrival.
- // Fetched right when this section mounts (after the hero), long before the walk-in reaches it.
+ // Warm it shortly before arrival, without competing with the opening desk.
  const [ready,setReady]=useState(false);
  useEffect(()=>{
-  let done=false;const finish=()=>{if(!done){done=true;setReady(true)}};
-  const load=(src:string)=>{const i=new Image();i.src=src;return i.decode().catch(()=>{})};
-  Promise.all([document.fonts?.ready,...FUN_IMAGES.map(load)]).then(finish);
-  const cap=window.setTimeout(finish,2500);return()=>window.clearTimeout(cap);
+  let started=false,cancel=()=>{};
+  const load=(src:string)=>{const i=new Image();i.src=src;return i.decode()};
+  const start=()=>{if(started)return;started=true;cancel=waitForSceneImages(FUN_IMAGES.map(load),()=>setReady(true),2500)};
+  const observer=new IntersectionObserver(([entry])=>{if(entry.isIntersecting){start();observer.disconnect()}},{rootMargin:'1200px 0px'});
+  if(trackRef.current)observer.observe(trackRef.current);else start();
+  return()=>{observer.disconnect();cancel()};
  },[]);
  const listRef=useRef<HTMLDivElement>(null);
 
