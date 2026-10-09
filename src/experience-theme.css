@@ -10,6 +10,13 @@
 .v28Experience .experienceItem{border-bottom:1px solid rgba(65,56,44,.2)!important}
 .v28Experience .experienceItem.open{border-top:0!important;border-bottom:1px solid rgba(65,56,44,.3)!important}
 .v28Experience .experienceSummary{grid-template-columns:34px 58px minmax(0,1fr) minmax(90px,auto) 30px!important;gap:clamp(12px,1.8vw,26px)!important;align-items:start!important;padding:clamp(22px,3vw,36px) 8px!important;transition:background .2s ease!important}
+/* Own child placement too: legacy tablet rules otherwise move the copy into
+   the logo track and auto-place the index in an extra column. */
+.v28Experience .experienceSummary>.experienceIndex{grid-column:1!important;grid-row:1!important}
+.v28Experience .experienceSummary>.companyLogo{grid-column:2!important;grid-row:1!important}
+.v28Experience .experienceSummary>.experienceText{grid-column:3!important;grid-row:1!important;min-width:0!important}
+.v28Experience .experienceSummary>time{grid-column:4!important;grid-row:1!important;justify-self:end!important}
+.v28Experience .experienceSummary>.expToggle{grid-column:5!important;grid-row:1!important}
 .v28Experience .experienceSummary:hover{background:rgba(255,253,247,.42)!important}
 .v28Experience .experienceIndex{padding-top:7px;color:#aa745d!important;font:600 12px/1.2 ui-monospace,SFMono-Regular,monospace!important;letter-spacing:.04em}
 .v28Experience .experienceSummary .companyLogo{align-self:start;width:58px!important;height:44px!important}
@@ -140,13 +147,13 @@
  .expBrandHero{float:none;width:auto;margin:0 0 12px;grid-template-columns:auto auto;align-items:center;justify-content:space-between}
  .expBrandHero .expArt{margin:0}.expChat{width:250px}.expSvg{width:220px}.expSparty img{height:120px}.expShelby{width:230px;margin:0!important}.expCar{width:220px;margin:0!important}
 }
-@media(max-width:760px){
+@media(max-width:900px){
  .v28Experience .experienceIntro{grid-template-columns:1fr;gap:12px;margin-bottom:28px}
  .v28Experience .experienceIntro p{max-width:54ch}
  /* Identity stays together; the story gets the full reading width below it. */
  .v28Experience .experienceSummary{grid-template-columns:44px minmax(0,1fr) 44px!important;column-gap:12px!important;row-gap:6px!important;padding:20px 0!important;align-items:start!important}
  .v28Experience .experienceSummary .experienceIndex{display:none!important}
- .v28Experience .experienceSummary .companyLogo{grid-column:1;grid-row:1;width:44px!important;height:36px!important;margin-top:3px}
+ .v28Experience .experienceSummary .companyLogo{grid-column:1!important;grid-row:1!important;width:44px!important;height:36px!important;margin-top:3px}
  .v28Experience .experienceSummary>.experienceText{display:contents}
  .v28Experience .experienceSummary .expHead{grid-column:2;grid-row:1;display:grid;gap:8px;align-items:start}
  .v28Experience .experienceSummary .expHead h3{font-size:20px!important;line-height:1.2!important;overflow-wrap:normal;word-break:normal}
