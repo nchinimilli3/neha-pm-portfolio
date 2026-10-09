@@ -448,7 +448,7 @@ function SucculentFoliage(){
 function PhotoFrame({eager=true}:{eager?:boolean}){
  // A 5×7 frame with my headshot. It is just a photo on the desk.
  return <div className="dhFrame" aria-hidden="true">
-  <div className="dhFrameFace"><img src={asset('desk/headshot.jpg')} alt="" loading={eager?'eager':'lazy'} decoding="async"/></div>
+  <div className="dhFrameFace"><div className="dhFramePhoto"><img src={asset('headshot.jpg')} width={1200} height={1800} alt="" loading={eager?'eager':'lazy'} decoding="async"/></div></div>
  </div>
 }
 function Mustang(){
