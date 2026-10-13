@@ -1030,12 +1030,14 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
 }
 
 /* The end of the page: the same desk, at night. When it comes into view the
-   portrait lamp stays warm, and a note on the wall says thanks, with how to reach me. */
+   portrait lamp stays warm, and a note stuck on the iMac screen says thanks, with how to reach me. */
 export function DeskGoodnight(){
- const rootRef=useRef<HTMLElement>(null),sceneRef=useRef<HTMLDivElement>(null),stageRef=useRef<HTMLDivElement>(null);
+ const rootRef=useRef<HTMLElement>(null),sceneRef=useRef<HTMLDivElement>(null),stageRef=useRef<HTMLDivElement>(null),noteRef=useRef<HTMLDivElement>(null);
  useEffect(()=>{
   const scene=sceneRef.current,stage=stageRef.current;if(!scene||!stage)return;
-  const fit=()=>{const w=scene.clientWidth,h=scene.clientHeight,s=Math.max(w/1500,h/780),cx=w<760?900:760;stage.style.transform=`translate(${w/2-cx*s}px,${h/2-500*s}px) scale(${s})`};
+  const fit=()=>{const w=scene.clientWidth,h=scene.clientHeight,s=Math.max(w/1500,h/780),cx=w<760?900:760,tx=w/2-cx*s,ty=h/2-500*s;stage.style.transform=`translate(${tx}px,${ty}px) scale(${s})`;
+   // center the note on the iMac screen (stage coords 630+420/2, 310+262/2), kept inside the viewport
+   const note=noteRef.current;if(note){const half=note.offsetWidth/2+16;note.style.left=`${Math.min(Math.max(tx+840*s,half),w-half)}px`;note.style.top=`${ty+441*s}px`}};
   fit();const ro=new ResizeObserver(fit);ro.observe(scene);
   return()=>ro.disconnect();
  },[]);
@@ -1057,7 +1059,7 @@ export function DeskGoodnight(){
     <div className="dhShade"/>
    </div>
   </div>
-  <div className="gnNote">
+  <div className="gnNote" ref={noteRef}>
    <p className="gnThanks">thanks for stopping by ♡</p>
    <p className="gnLead">If you’re hiring for product, or want to trade book recs, I’d love to hear from you.</p>
    <div className="gnLinks"><a href="mailto:chinimi2@msu.edu">chinimi2@msu.edu</a><a href="https://github.com/nchinimilli3" target="_blank" rel="noreferrer">GitHub ↗</a><a href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer">LinkedIn ↗</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume ↗</a></div>

@@ -640,7 +640,7 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 .dhGoodnight .dhShade{transition:opacity .25s steps(2,end)}
 .dhGoodnight .dhCappa .dhSteam{display:none}
 .dhGoodnight .dhGlow{display:none}
-.gnNote{position:absolute;left:max(24px,7vw);top:50%;z-index:5;width:min(420px,calc(100% - 48px));padding:26px 28px 22px;transform:translateY(-50%) rotate(-2deg);background:#f7dc6f;color:#3a2f1a;box-shadow:0 22px 40px -18px rgba(0,0,0,.65),inset 0 -14px 20px -16px rgba(120,90,20,.35)}
+.gnNote{position:absolute;left:50%;top:50%;z-index:5;width:min(420px,calc(100% - 48px));padding:26px 28px 22px;transform:translate(-50%,-50%) rotate(-2deg);background:#f7dc6f;color:#3a2f1a;box-shadow:0 22px 40px -18px rgba(0,0,0,.65),inset 0 -14px 20px -16px rgba(120,90,20,.35)}
 .gnNote::before{content:"";position:absolute;left:50%;top:-12px;width:90px;height:26px;margin-left:-45px;background:rgba(240,230,210,.7);transform:rotate(3deg)}
 .gnThanks{margin:0;font:600 38px/1 Caveat,cursive;color:#3a2f1a}
 .gnLead{margin:12px 0 0;font:400 15.5px/1.5 Inter,sans-serif;color:#4a3d22}
@@ -649,7 +649,7 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 .gnLinks a:first-child{background:#3a2f1a;color:#f7dc6f;border-color:#3a2f1a}
 .gnLinks a:hover{transform:translateY(-2px)}
 .gnSign{display:block;margin-top:14px;text-align:right;font:500 24px/1 Caveat,cursive;color:#6b5421}
-@media(max-width:760px){.dhGoodnight .dhScene{height:560px}.gnNote{top:auto;bottom:24px;transform:rotate(-1.5deg)}}
+@media(max-width:760px){.dhGoodnight .dhScene{height:560px}.gnNote{transform:translate(-50%,-50%) rotate(-1.5deg)}}
 
 /* Touchable desk: objects tilt toward the pointer in perspective, lift, and do one real thing when clicked */
 .dh3d{cursor:pointer;transition:transform .45s cubic-bezier(.2,.8,.2,1),filter .45s}
