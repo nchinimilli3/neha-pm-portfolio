@@ -375,6 +375,9 @@ function BookRecForm(){
  </form>
 }
 
+// When the desk hero drops its scroll walk-in for one still scene (same query as DeskHero and AfterHours).
+const STATIC_DESK='(max-width: 900px), (max-aspect-ratio: 23/20), (prefers-reduced-motion: reduce)';
+
 function Home({openCase,onChangeView}){
  // Phone nav: every link lives in a sheet behind a menu button.
  const [navOpen,setNavOpen]=useState(false);
@@ -400,7 +403,12 @@ function Home({openCase,onChangeView}){
  useEffect(()=>{if(rest)return;const go=()=>setRest(true);const ric=window.requestIdleCallback;let r2=0,id=0;
   // After the hero's first frame has painted, once the browser is idle (at most 1.2s later).
   const r1=requestAnimationFrame(()=>{r2=requestAnimationFrame(()=>{id=ric?ric(go,{timeout:1200}):window.setTimeout(go,300)})});
-  return()=>{cancelAnimationFrame(r1);cancelAnimationFrame(r2);if(ric)window.cancelIdleCallback(id);else clearTimeout(id)}},[rest]);
+  // The static desk (phones, narrow windows) has no walk-in, so a first swipe reaches the end of
+  // the hero at once: build on the first touch or scroll instead of waiting for idle.
+  const early=window.matchMedia(STATIC_DESK).matches;const opt={passive:true,once:true};
+  if(early){window.addEventListener('touchstart',go,opt);window.addEventListener('scroll',go,opt)}
+  return()=>{cancelAnimationFrame(r1);cancelAnimationFrame(r2);if(ric)window.cancelIdleCallback(id);else clearTimeout(id);
+   if(early){window.removeEventListener('touchstart',go);window.removeEventListener('scroll',go)}}},[rest]);
  // Paused animation by animation: an attribute with an `… *` rule restyled the whole section
  // each time it crossed the edge, and a fast scroll crossed several at once (half-drawn sections).
  useEffect(()=>{const secs=document.querySelectorAll<HTMLElement>('.homePage>section:not(#top)');if(!secs.length)return;
@@ -415,6 +423,7 @@ function Home({openCase,onChangeView}){
  <header className={`siteHeader homeHeader${navOpen?' navIsOpen':''}`}><a className="wordmark" href="#top">Neha Chinimilli</a><button ref={navToggleRef} type="button" className="navToggle" aria-expanded={navOpen} aria-controls="primaryNav" aria-label={navOpen?'Close menu':'Open menu'} onClick={()=>setNavOpen(o=>!o)}><span/><span/></button><nav id="primaryNav" ref={navRef} aria-label="Primary" onClick={e=>{if((e.target as HTMLElement).closest('a'))setNavOpen(false)}}><i className="navIndicator" aria-hidden="true" style={navInd}/><a href="#projects" className={activeSection==='projects'?'isActive':''}>Selected work</a><a href="#experience" className={activeSection==='experience'?'isActive':''}>Experience</a><a href="#fun" className={activeSection==='fun'?'isActive':''}>Fun things I’ve built</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume</a><a href="mailto:chinimi2@msu.edu">Email</a><a className="headerLinkedIn" href="https://github.com/nchinimilli3" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on GitHub"><img src={assetUrl('github.svg')} alt="GitHub"/></a><a className="headerLinkedIn" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on LinkedIn"><img src={assetUrl('linkedin.svg')} alt="LinkedIn"/></a></nav><ViewModeToggle simple={false} onChange={onChangeView}/></header>
  <main id="main-content" className="homePage">
   <DeskHero projects={serious} openCase={openCase} onSimple={()=>onChangeView(true)}/>
+  {!rest&&<div className="homeRestHold" aria-hidden="true"/>}
   {rest&&<><CompanyBanner/>
   <ExperienceSection onOpen={openCase}/><EducationSection/>
   <AfterHours projects={fun} onOpen={openCase}/>

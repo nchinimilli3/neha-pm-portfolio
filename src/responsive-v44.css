@@ -50,3 +50,9 @@
      back-to-top button occupies, so a tap on Send could land on it instead. */
   body:has(:is(input,textarea):focus) .scrollTopButton{opacity:0!important;pointer-events:none!important}
 }
+
+/* Static desk (phones, narrow windows): until the sections below the hero are built, hold
+   room for them so an early swipe glides on instead of stopping at the end of the hero. */
+@media (max-width:900px),(max-aspect-ratio:23/20),(prefers-reduced-motion:reduce){
+  .homeRestHold{height:250vh}
+}

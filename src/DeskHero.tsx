@@ -24,12 +24,12 @@ type Tod='morning'|'day'|'evening'|'night';
 
 // Metrics match the case pages (and the resume); cases without one say what they were.
 const WINDOWS:Record<string,{img:string;note:string;pos?:string}>={
- fcvf:{img:'project-media/fcvf-home-mockup.png',note:'+25% feedback submitted'},
+ fcvf:{img:'project-media/fcvf-home-mockup.webp',note:'+25% feedback submitted'},
  accenture:{img:'project-media/accenture-innovation-hub.jpg',note:'~60 min saved per request'},
- finsimple:{img:'project-media/finsimple-home-mockup.png',note:'6% fewer write failures'},
+ finsimple:{img:'project-media/finsimple-home-mockup.webp',note:'6% fewer write failures'},
  kohler:{img:'project-media/supplied-covers/kohler.jpg',note:'71% → 94% accuracy'},
- marketExpansion:{img:'project-media/graze-scorecard.png',note:'3 markets, 1 scorecard',pos:'0 0'},
- estee:{img:'project-media/estee-home-mockup.png',note:'Top 5 finalist'}
+ marketExpansion:{img:'project-media/graze-scorecard.webp',note:'3 markets, 1 scorecard',pos:'0 0'},
+ estee:{img:'project-media/estee-home-mockup.webp',note:'Top 5 finalist'}
 };
 // Where each window lands on the desktop, in viewport percent.
 // Second row stays above the dock: the middle window sits directly over it.

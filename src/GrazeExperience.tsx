@@ -102,8 +102,8 @@ export function GrazeProjectPreview(){
   return <figure className="grazeProjectPreview" aria-label="Graze Craze franchise strategy: original location scorecard, scoring rubric, and Michigan shortlist presented together">
     <div className="grazePreviewHeading"><img src={asset('project-media/graze/logo.png')} alt="Graze Craze" loading="lazy" decoding="async"/><span>FRANCHISE STRATEGY<br/><b>A repeatable location decision.</b></span></div>
     <div className="grazePreviewMap"><span>MICHIGAN SHORTLIST</span><img src={asset('project-media/graze/michigan.png')} alt="Original map of the three candidate Michigan markets" loading="lazy" decoding="async"/><div>Northville · Ann Arbor<br/>Traverse City</div></div>
-    <div className="grazePreviewRubric"><span>SCORING RUBRIC</span><img src={asset('project-media/graze-rubric.png')} alt="Original evaluation rubric" loading="lazy" decoding="async"/></div>
-    <div className="grazePreviewWorkbook"><header><span>▦</span><strong>Location scorecard</strong><small>Excel</small></header><img src={asset('project-media/graze-scorecard.png')} alt="Original Excel scorecard with weighted location criteria" loading="lazy" decoding="async"/><footer><b>Evaluation</b><span>Criticality</span><span>Rubric</span></footer></div>
+    <div className="grazePreviewRubric"><span>SCORING RUBRIC</span><img src={asset('project-media/graze-rubric.webp')} alt="Original evaluation rubric" loading="lazy" decoding="async"/></div>
+    <div className="grazePreviewWorkbook"><header><span>▦</span><strong>Location scorecard</strong><small>Excel</small></header><img src={asset('project-media/graze-scorecard.webp')} alt="Original Excel scorecard with weighted location criteria" loading="lazy" decoding="async"/><footer><b>Evaluation</b><span>Criticality</span><span>Rubric</span></footer></div>
   </figure>;
 }
 
@@ -133,13 +133,13 @@ export function GrazePrepSteps(){
 
 // Original deck artifacts, laid out like printouts taped to the table.
 // Intrinsic sizes so each printout reserves its space before the image loads.
-const paperDims:Record<string,[number,number]>={'project-media/graze-scorecard.png':[1668,818],'project-media/graze-rubric.png':[2380,794],'project-media/graze-map.png':[692,748]};
+const paperDims:Record<string,[number,number]>={'project-media/graze-scorecard.webp':[1668,818],'project-media/graze-rubric.webp':[2380,794],'project-media/graze-map.webp':[692,748]};
 export function GrazeArtifacts(){
   const asset=(path:string)=>`${import.meta.env.BASE_URL}${path}`;
   const items=[
-    {src:'project-media/graze-scorecard.png',alt:'Original interactive Excel scorecard from the Graze Craze presentation',title:'Interactive scorecard',note:'The weighted criteria roll into one location score.',cls:'isScore'},
-    {src:'project-media/graze-rubric.png',alt:'Original scoring rubric from the Graze Craze presentation',title:'Supplemental rubric',note:'Each score has a concrete benchmark, making the model repeatable.',cls:'isRubric'},
-    {src:'project-media/graze-map.png',alt:'Original Michigan location map from the Graze Craze presentation',title:'Location shortlist',note:'Northville, Ann Arbor, and Traverse City.',cls:'isMap'}
+    {src:'project-media/graze-scorecard.webp',alt:'Original interactive Excel scorecard from the Graze Craze presentation',title:'Interactive scorecard',note:'The weighted criteria roll into one location score.',cls:'isScore'},
+    {src:'project-media/graze-rubric.webp',alt:'Original scoring rubric from the Graze Craze presentation',title:'Supplemental rubric',note:'Each score has a concrete benchmark, making the model repeatable.',cls:'isRubric'},
+    {src:'project-media/graze-map.webp',alt:'Original Michigan location map from the Graze Craze presentation',title:'Location shortlist',note:'Northville, Ann Arbor, and Traverse City.',cls:'isMap'}
   ];
   return <div className="grazeArtifacts">{items.map((item,i)=><div key={item.src} className={`grazePrintout ${item.cls}`}>
     <div className="grazePaper"><i className="grazeTape" aria-hidden="true"/><img src={asset(item.src)} alt={item.alt} width={paperDims[item.src]?.[0]} height={paperDims[item.src]?.[1]} loading="lazy" decoding="async"/></div>

@@ -268,12 +268,12 @@ function ProjectVisual({type}){
   if(type==='fcvf') return <CaseHeroLogo src="company-logos/ford-white-source.png" alt="Ford Motor Company" className="fcvfHeroMark"/>;
   if(type==='accenture') return <AccentureSFHero/>;
   if(type==='kohler') return <KohlerBoxOpen/>;
-  if(type==='finsimple') return <figure className="homepageMockup"><img loading="eager" decoding="async" src={assetUrl('project-media/finsimple-home-mockup.png')} alt="FinSimple Previous Estimates shown on a laptop"/></figure>;
+  if(type==='finsimple') return <figure className="homepageMockup"><img loading="eager" decoding="async" src={assetUrl('project-media/finsimple-home-mockup.webp')} alt="FinSimple Previous Estimates shown on a laptop"/></figure>;
   if(type==='scheduler') return <SchedulerPlannerHero/>;
   if(type==='chat') return <MiniChat/>;
   if(type==='bookclub') return <BookclubPhoneHero/>;
   if(type==='marketExpansion') return <GrazeHero/>;
-  if(type==='estee') return <figure className="esteeHeroMockup"><img loading="eager" decoding="async" src={assetUrl('project-media/estee-home-mockup.png')} alt="Double Wear discovery experience shown on a laptop"/></figure>;
+  if(type==='estee') return <figure className="esteeHeroMockup"><img loading="eager" decoding="async" src={assetUrl('project-media/estee-home-mockup.webp')} alt="Double Wear discovery experience shown on a laptop"/></figure>;
   return <EsteeVisual/>;
 }
 
