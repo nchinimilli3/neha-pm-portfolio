@@ -80,31 +80,6 @@
    composition never distorts and never spills past the clipped edge. */
 .project-marketExpansion .projectCardMedia{container-type:size;display:grid;place-items:center;background:radial-gradient(ellipse at 68% 24%,#f5f6ef,transparent 65%),linear-gradient(145deg,#dadfd6,#e8e7dd)}
 
-.grazeProjectPreview{container-type:inline-size;position:relative;isolation:isolate;width:min(100cqw,133.333cqh);height:min(75cqw,100cqh);margin:0;overflow:hidden;background:radial-gradient(ellipse at 68% 24%,#f5f6ef,transparent 65%),linear-gradient(145deg,#dadfd6,#e8e7dd);color:#345744}
-
-.grazePreviewHeading{position:absolute;left:6cqw;right:6cqw;top:5cqw;display:flex;justify-content:space-between;gap:4cqw;align-items:flex-start}
-.grazePreviewHeading>img{width:24cqw;height:12cqw;object-fit:contain;object-position:left center}
-.grazePreviewHeading>span{font-size:2.1cqw;line-height:1.4;letter-spacing:.13em;text-align:right;color:#798770}
-.grazePreviewHeading b{display:block;margin-top:1cqw;font:400 4.2cqw/1.15 Georgia,serif;letter-spacing:0;color:#3f5c4b}
-
-/* Rubric sits under the workbook's left corner, so it only shows its top edge. */
-.grazePreviewRubric{position:absolute;left:7cqw;top:23cqw;width:50cqw;padding:3.4cqw 2.8cqw;background:#fdfbf3;box-shadow:0 2cqw 6cqw #26351e22;transform:rotate(-9deg)}
-.grazePreviewRubric>img{display:block;width:100%;margin-top:2cqw}
-
-.grazePreviewMap{position:absolute;right:5cqw;top:20cqw;width:29cqw;height:38cqw;padding:2.8cqw;background:#fffefa;box-shadow:.8cqw 3cqw 6cqw #3c493322;transform:rotate(8deg);display:flex;flex-direction:column}
-.grazePreviewMap>span,.grazePreviewRubric>span{font:700 2.1cqw/1.3 system-ui;letter-spacing:.08em;color:#72856d}
-.grazePreviewMap>img{display:block;width:100%;height:70%;object-fit:contain;margin:2cqw 0}
-.grazePreviewMap>div{font:2.3cqw/1.45 system-ui;color:#7c8773}
-
-/* Front paper. Its height is header + image + footer, and the image's own 2:1
-   ratio drives it, so top + height stays inside the 75cqw box at every size. */
-.grazePreviewWorkbook{position:absolute;left:6cqw;top:29.5cqw;width:50cqw;padding:0;background:#fff;border:.25cqw solid #94a595;border-radius:1.2cqw;box-shadow:2cqw 4cqw 8cqw #253c332e;transform:rotate(-4deg);overflow:hidden}
-.grazePreviewWorkbook>header{display:flex;align-items:center;gap:2cqw;padding:2.2cqw 2.8cqw;background:#27644b;color:#f1f8f1;font-size:2.6cqw;line-height:1.2}
-.grazePreviewWorkbook>header>small{margin-left:auto;opacity:.7}
-.grazePreviewWorkbook>img{display:block;width:100%;height:auto;padding:2cqw 1.2cqw}
-.grazePreviewWorkbook>footer{display:flex;gap:3.5cqw;align-items:center;padding:1.8cqw 2.8cqw;background:#f2f5ef;color:#778272;font-size:2cqw;line-height:1.2;border-top:.25cqw solid #d9e0d7}
-.grazePreviewWorkbook>footer>b{color:#2b6147}
-
 /* Lifecycle road in Graze plum, gold, and sage */
 .grazeStory{--lc-ink:#2d2226;--lc-road:#6c394c;--lc-accent:#d9a441;--lc-accent-2:#f0cf86;--lc-muted:#625a56;--lc-tint:#f4e6ecf2;--lc-glass:#f6ecef}
 .gzStage{scroll-margin-top:112px}

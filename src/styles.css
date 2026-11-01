@@ -604,7 +604,6 @@ small,.freshness,.liveSources,.morningTimeline span,.iosTabBar small{font-size:m
 .projectCardAction,.moreBuildAction{border-radius:var(--r-md)!important;overflow:visible!important}
 .projectCardMedia,.moreBuildVisual{position:relative!important;aspect-ratio:16/10!important;min-height:0!important;height:auto!important;padding:0!important;border-radius:var(--r-md)!important;overflow:hidden!important;background:var(--surf-warm)!important;isolation:isolate}
 .projectCardMedia>*:not(.grazeProjectPreview),.moreBuildVisual>*{width:100%!important;height:100%!important;min-height:0!important;border-radius:inherit!important;overflow:hidden!important}
-.projectCardMedia>.grazeProjectPreview{min-height:0!important;border-radius:inherit!important;overflow:hidden!important}
 .projectCardMedia img:not(.grazeProjectPreview img),.moreBuildVisual img,.homepageMockup img,.accenturePhotoCover>img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important;border-radius:inherit!important;display:block}
 .homepageMockup,.editorialCover,.accenturePhotoCover{margin:0!important;width:100%!important;height:100%!important;border-radius:inherit!important;overflow:hidden!important}
 .projectCardBody,.moreBuildCopy{padding:20px 4px 8px!important;background:transparent!important}

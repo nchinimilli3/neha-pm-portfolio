@@ -97,16 +97,6 @@ export function GrazeGrowth(){
   </div>;
 }
 
-export function GrazeProjectPreview(){
-  const asset=(path:string)=>`${import.meta.env.BASE_URL}${path}`;
-  return <figure className="grazeProjectPreview" aria-label="Graze Craze franchise strategy: original location scorecard, scoring rubric, and Michigan shortlist presented together">
-    <div className="grazePreviewHeading"><img src={asset('project-media/graze/logo.png')} alt="Graze Craze" loading="lazy" decoding="async"/><span>FRANCHISE STRATEGY<br/><b>A repeatable location decision.</b></span></div>
-    <div className="grazePreviewMap"><span>MICHIGAN SHORTLIST</span><img src={asset('project-media/graze/michigan.png')} alt="Original map of the three candidate Michigan markets" loading="lazy" decoding="async"/><div>Northville · Ann Arbor<br/>Traverse City</div></div>
-    <div className="grazePreviewRubric"><span>SCORING RUBRIC</span><img src={asset('project-media/graze-rubric.webp')} alt="Original evaluation rubric" loading="lazy" decoding="async"/></div>
-    <div className="grazePreviewWorkbook"><header><span>▦</span><strong>Location scorecard</strong><small>Excel</small></header><img src={asset('project-media/graze-scorecard.webp')} alt="Original Excel scorecard with weighted location criteria" loading="lazy" decoding="async"/><footer><b>Evaluation</b><span>Criticality</span><span>Rubric</span></footer></div>
-  </figure>;
-}
-
 const glyphs={
   area:<path d="M4 18 20 6l2 12z M9 15h.01M15 12h.01M17 16h.01"/>,
   pin:<path d="M12 22s7-6.5 7-12.5a7 7 0 0 0-14 0C5 15.5 12 22 12 22zM12 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>,
