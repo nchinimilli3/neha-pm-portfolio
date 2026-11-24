@@ -21,10 +21,12 @@
 /* As in the hero (.dhShield): a clear sheet over the desk while the page glides, so props
    sliding under the still cursor don't start their hovers mid-pan. */
 .ahShield{position:absolute;inset:0;z-index:1;display:none}
-html.isScrolling .ahShield{display:block}
+.ahShield.scrollShield{display:block}
 
 /* The desk top: the hero's walnut, seen from above. */
-.ahDesk{inset:-3000px;background:
+/* Only as much walnut as the widest overview shot reveals (camFor in AfterHours.tsx: up to ~1700px left on
+   21:9, ~1300px above at the 23:20 cutoff). -3000px all round was a 67 Mpx layer whose raster froze the scroll. */
+.ahDesk{inset:-1400px -700px -1100px -2000px;background:
  repeating-linear-gradient(90deg,transparent 0 16px,#4f2f1710 17px 19px,transparent 20px 38px),
  repeating-linear-gradient(0deg,transparent 0 118px,#3a22122e 118px 120px),
  linear-gradient(#b3845b,#9a6d45)}
@@ -64,6 +66,45 @@ html.isScrolling .ahShield{display:block}
 .ahButtons::after{content:"";position:absolute;right:0;top:27%;width:2.5px;height:11%;border-radius:0 2px 2px 0;background:#86817a}
 .ahIsland{position:absolute;top:5px;left:50%;width:56px;height:16.5px;margin-left:-28px;border-radius:9px;background:#000;z-index:8}
 .ahIos{position:absolute;left:0;top:0;width:393px;height:837px;transform:scale(.44784);transform-origin:0 0;overflow:hidden;font-family:-apple-system,"SF Pro Text",system-ui,sans-serif;color:#000;-webkit-font-smoothing:antialiased}
+/* Apple Watch 45mm, face up, matched to Apple's silver aluminium + black Sport Band product shot:
+   squared-off corners, a thin bright rim, black glass with a reflected arc at the top edge,
+   a knurled crown a quarter of the way down, and straps that flare into the case.
+   The case is its own layer so the straps sit under it inside the rotated device. */
+.ah-watch{box-shadow:none;border-radius:22px}
+.ahCase{position:absolute;inset:0;z-index:2;border-radius:22px;padding:3px;box-sizing:border-box;background:linear-gradient(200deg,#fdfdfd 0,#d4d5d8 26%,#9fa1a6 58%,#c9cacd 82%,#eeeff0 100%);box-shadow:inset 0 0 0 .6px #fffffff0,inset 0 0 0 1.4px #00000014,0 0 0 .5px #7d7f84,-8px 13px 16px #000a,-2px 3px 4px #0008}
+.ahGlass{position:relative;height:100%;border-radius:19px;padding:4.2px 4px;box-sizing:border-box;background:#000;box-shadow:inset 0 2.6px 1.6px -1px #ffffff5c,inset 0 -2.2px 1.6px -1px #ffffff2e,inset 0 0 0 .5px #000}
+.ahGlass::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:9;background:linear-gradient(205deg,#ffffff1a 0,#ffffff06 24%,transparent 38%)}
+.ah-watch .ahScreen{border-radius:15.5px}
+.ah-watch.isOn .ahScreen{box-shadow:none}
+.ahCrown{position:absolute;right:-5.2px;top:28px;width:6px;height:19px;border-radius:1.5px 3px 3px 1.5px;background:linear-gradient(90deg,#9c9ea2,#eceded 40%,#c4c6c9 75%,#8f9195),repeating-linear-gradient(0deg,#0000 0 .6px,#0000004d .6px 1.2px);background-blend-mode:multiply;box-shadow:inset 0 .7px 0 #fffc,inset 0 -.7px 0 #0005,-2px 4px 4px #0009}
+.ahSideBtn{position:absolute;right:-.9px;top:55px;width:1.2px;height:17px;border-radius:0 1px 1px 0;background:#c9cbce}
+/* Sport Band straps: the fill is clipped to the real outline; the shadow comes from the parent's filter. */
+.ahBand{position:absolute;left:17.5px;width:66px;z-index:1;filter:drop-shadow(-6px 10px 9px #0009)}
+.ahBand::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='66' height='36'%3E%3Cpath d='M18 8.6c0-2.4-3.4-3-4-.6-.6-2.4-4-1.8-4 .6 0 2.4 4 4.8 4 4.8s4-2.4 4-4.8ZM56 26.6c0-2.4-3.4-3-4-.6-.6-2.4-4-1.8-4 .6 0 2.4 4 4.8 4 4.8s4-2.4 4-4.8Z' fill='%23fff' fill-opacity='.75'/%3E%3Cpath d='M18 26.6c0-2.4-3.4-3-4-.6-.6-2.4-4-1.8-4 .6 0 2.4 4 4.8 4 4.8s4-2.4 4-4.8ZM56 8.6c0-2.4-3.4-3-4-.6-.6-2.4-4-1.8-4 .6 0 2.4 4 4.8 4 4.8s4-2.4 4-4.8Z' fill='%23ff5fa2' fill-opacity='.55'/%3E%3C/svg%3E") 0 0/66px 36px,linear-gradient(90deg,#c98a9b 0,#eab3c1 9%,#f6c9d4 45%,#fbd7df 82%,#fde6ec 95%,#d79caa 100%)}
+.ahBand.isTop{bottom:calc(100% - 9px);height:210px}
+.ahBand.isTop::before{clip-path:path("M0 210H66C66 196 61 192 61 180V28A28 28 0 0 0 5 28V180C5 192 0 196 0 210Z")}
+.ahBand.isTop::after{content:"";position:absolute;left:50%;top:19px;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fde3ea,#d996a8 75%);box-shadow:-.6px 1px 1px #8a4a5c80}
+.ahBand.isBot{top:calc(100% - 9px);height:305px}
+.ahBand.isBot::before{clip-path:path("M0 0H66C66 14 61 18 61 30V277A28 28 0 0 1 5 277V30C5 18 0 14 0 0Z")}
+.ahBand.isBot::after{content:"";position:absolute;left:0;right:0;top:150px;height:126px;background:radial-gradient(circle at 50% 46%,#5a2a38 1.7px,#c98a9b 2.3px,transparent 2.9px) 50% 0/100% 18px repeat-y}
+.ahWos{position:absolute;left:0;top:0;width:162px;height:197px;transform:scale(.532);transform-origin:0 0;overflow:hidden;background:#000;color:#fff;font-family:-apple-system,"SF Pro Rounded","SF Pro Text",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.wTime{position:absolute;right:12px;top:7px;font:600 15px/1 -apple-system,system-ui,sans-serif}
+.wEx{position:absolute;left:10px;right:6px;top:32px;display:flex;align-items:flex-start;gap:12px}
+.wEx svg{width:14px;height:22px;margin-top:4px;fill:#ff2d8a;flex:none}
+.wEx h5{margin:0;flex:1;font:700 15.5px/1.2 -apple-system,system-ui,sans-serif;letter-spacing:-.01em}
+.wPages{display:flex;flex-direction:column;gap:3px;margin-top:6px}
+.wPages i{width:6px;height:6px;border-radius:50%;background:#5c5c60}
+.wPages i:first-child{background:#fff}
+.wMeta{position:absolute;left:10px;right:12px;top:73px;display:flex;align-items:center;justify-content:space-between}
+.wDots{display:flex;gap:4px}
+.wDots i{width:5px;height:5px;border-radius:50%;background:#48484c}
+.wDots i:nth-child(-n+2){background:#ff2d8a}
+.wMeta b{font:700 12.5px/1 -apple-system,system-ui,sans-serif;color:#ff2d8a}
+.wNums{position:absolute;left:0;right:0;top:96px;display:flex}
+.wNums div{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.wNums strong{font:700 21px/1 -apple-system,"SF Pro Rounded",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.wNums small{font:500 12.5px/1 -apple-system,system-ui,sans-serif;color:#8e8e93}
+.wDone{position:absolute;left:9px;right:9px;bottom:10px;height:36px;border-radius:18px;background:#ff2d8a;color:#1a0510;display:flex;align-items:center;justify-content:center;font:700 15px/1 -apple-system,system-ui,sans-serif}
 .ahHome{position:absolute;left:50%;bottom:8px;width:134px;height:5px;margin-left:-67px;border-radius:3px;background:#111;z-index:3}
 .ahStatus{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;height:54px;padding:4px 30px 0 52px;box-sizing:border-box;font:600 17px/1 -apple-system,system-ui,sans-serif;color:#000}
 .ahStatus>span{display:flex;align-items:center;gap:6px}

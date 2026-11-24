@@ -12,7 +12,7 @@ import {currentLenis} from './smoothScroll';
    The desk light warms as the section arrives; scrolling moves the camera from device to device. */
 
 type Project={id:string;title:string;company:string;blurb?:string;summary:string};
-type Device={id:string;kind:'phone'|'laptop'|'tablet';x:number;y:number;w:number;h:number;rot:number;fy?:number;title:string;eyebrow:string;line:string;hint?:string;caseId?:string};
+type Device={id:string;kind:'phone'|'laptop'|'tablet'|'watch';x:number;y:number;w:number;h:number;rot:number;fy?:number;title:string;eyebrow:string;line:string;hint?:string;caseId?:string};
 
 // The desk is a 1800 × 1150 set, in stage pixels.
 // Everything is drawn at one true scale, about 2.65 px per mm (an iPhone 15 Pro is 71.6 mm → 190 px).
@@ -21,7 +21,8 @@ const LAYOUT:Record<string,Omit<Device,'id'|'title'|'eyebrow'|'line'|'caseId'|'h
  commute:{kind:'phone',x:560,y:150,w:190,h:389,rot:-4},
  bookclub:{kind:'phone',x:250,y:250,w:190,h:389,rot:4},
  scheduler:{kind:'laptop',x:950,y:120,w:806,h:1124,rot:0},
- chat:{kind:'phone',x:1880,y:150,w:190,h:389,rot:5},
+ // Apple Watch 45mm: the case is 38 × 45 mm; the Sport Band straps lie flat above and below it.
+ rep:{kind:'watch',x:1925,y:230,w:101,h:119,rot:5},
  game:{kind:'tablet',x:1900,y:720,w:656,h:473,rot:-2,fy:150},
  fluids:{kind:'tablet',x:150,y:900,w:656,h:473,rot:2},
 };
@@ -31,7 +32,7 @@ const LAYOUT:Record<string,Omit<Device,'id'|'title'|'eyebrow'|'line'|'caseId'|'h
 // it framed. A jump from the list lands at HOLD, inside the rest.
 const TRAVEL=.6,HOLD=.8;
 const FUN_IMAGES=['desk/fun-scheduler.jpg','desk/fun-spartan.jpg','project-media/sparty.png','project-media/um-enemy.png'];
-const ORDER=['commute','bookclub','scheduler','chat','game','fluids'];
+const ORDER=['commute','bookclub','scheduler','rep','game','fluids'];
 const EXTRA:Record<string,{title:string;eyebrow:string;line:string;hint:string}>={
  game:{title:'Spartan Touchdown',eyebrow:'MSU · CSE 335',line:'A C++ team game with player movement, collisions, enemies, scoring, and a shared level state.',hint:'Click the screen to play. Space jumps.'},
  fluids:{title:'Stable Fluids',eyebrow:'MSU · CSE 476',line:'Interactive 2D fluid simulation in C++ using the Stam method, with live emitters and obstacles.',hint:'Drag across the screen to stir it.'},
@@ -53,6 +54,21 @@ function CommuteScreen(){
   <p className="acSleep">Can I sleep longer?</p>
   <nav className="acTabs">{['Today','Plan','History','Settings'].map((t,i)=><span key={t} className={i===0?'isOn':''}><svg viewBox="0 0 24 24">{i===0?<path d="M4 10.5 12 4l8 6.5V20h-5v-6H9v6H4z"/>:i===1?<path d="M6 4h12v16H6zM9 9h6M9 13h6M9 17h3"/>:i===2?<path d="M4.5 9A8 8 0 1 1 5 16M4 4v5h5M12 8v5l3 2"/>:<><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2 2M16.4 16.4l2 2M18.4 5.6l-2 2M7.6 16.4l-2 2"/></>}</svg>{t}</span>)}</nav>
   <i className="ahHome"/>
+ </div>;
+}
+
+/* REP's set logger, laid out in real watchOS points (162 × 197) like the phone screens. */
+function RepWatchScreen(){
+ return <div className="ahWos">
+  <b className="wTime">9:41</b>
+  <div className="wEx">
+   <svg viewBox="0 0 14 22" aria-hidden="true"><circle cx="6" cy="2.6" r="2.6"/><path d="M3.2 6.4h4.6v5.4h5.4v3.4H3.2z"/><rect x="2" y="17.4" width="10.4" height="4.2" rx="1"/></svg>
+   <h5>Hamstring<br/>Curl Machine</h5>
+   <span className="wPages"><i/><i/><i/></span>
+  </div>
+  <div className="wMeta"><span className="wDots"><i/><i/><i/><i/></span><b>Last: 35lbs</b></div>
+  <div className="wNums"><div><strong>35</strong><small>Lbs</small></div><div><strong>10</strong><small>Reps</small></div></div>
+  <div className="wDone">✓ Set Done</div>
  </div>;
 }
 
@@ -102,6 +118,7 @@ function Screen({id,focus=true}:{id:string;focus?:boolean}){
  if(id==='bookclub')return <BookclubScreen/>;
  if(id==='scheduler')return <img className="ahShot ahShotCover" src="desk/fun-scheduler.jpg" alt="" loading="lazy" decoding="async"/>;
  if(id==='chat')return <IMessageScreen/>;
+ if(id==='rep')return <RepWatchScreen/>;
  if(id==='game')return <SpartanGame/>;
  if(id==='fluids')return <StableFluids live={focus}/>;
  return null;
@@ -116,6 +133,8 @@ function DeviceView({d,on,focus,onPick}:{d:Device;on:boolean;focus:boolean;onPic
  const label=`${d.title}: ${d.line}`;
  const inner=d.kind==='laptop'
   ?<><div className="ahLid"><i className="ahCam" aria-hidden="true"/><div className="ahScreen"><Screen id={d.id} focus={focus}/></div><span className="ahLidName" aria-hidden="true">MacBook Air</span></div><div className="ahDeck" aria-hidden="true"><div className="ahKeys">{KEY_ROWS.map((row,r)=><div key={r} className="ahKeyRow">{row.map((k,i)=><i key={i} style={{flex:k}} className={r===0&&i===row.length-1?'ahTouchId':''}/>)}</div>)}</div><i className="ahTrackpad"/></div></>
+  :d.kind==='watch'
+  ?<><i className="ahBand isTop" aria-hidden="true"/><i className="ahBand isBot" aria-hidden="true"/><div className="ahCase"><i className="ahCrown" aria-hidden="true"/><i className="ahSideBtn" aria-hidden="true"/><div className="ahGlass"><div className="ahScreen"><Screen id={d.id} focus={focus}/></div></div></div></>
   :<>{d.kind==='phone'&&<i className="ahButtons" aria-hidden="true"/>}<div className="ahScreen"><Screen id={d.id} focus={focus}/>{d.kind==='phone'&&<i className="ahIsland" aria-hidden="true"/>}{d.kind==='tablet'&&<><PadStatus/><i className="ahIndicator" aria-hidden="true"/></>}</div></>;
  // Live screens stay interactive, so they are not wrapped in a button; the others are one.
  return live
@@ -314,7 +333,7 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
    const d=devices[i-1];
    // Phones get a closer look so their type reads; bigger devices keep some desk around them.
    // fy nudges the framing down to include a prop that belongs with the device (the controller).
-   const fy=d.fy||0,s=Math.min(2.6,vw*.46/d.w,h*(d.kind==='phone'?.82:.68)/(d.h+fy*2));
+   const fy=d.fy||0,s=d.kind==='watch'?Math.min(4,vw*.3/d.w,h*.5/d.h):Math.min(2.6,vw*.46/d.w,h*(d.kind==='phone'?.82:.68)/(d.h+fy*2));
    return {s,cx:d.x+d.w/2,cy:d.y+d.h/2+fy,X:vw*.63,Y:midY};
   };
   let raf=0,idleTimer=0,pendingActive=0,lastTransform='',cameraReady=false,promotedAt=0;

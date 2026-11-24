@@ -25,6 +25,8 @@ import CommuteCase from './CommuteCase';
 import { CommutePhoneDemo, useMorning } from './CommuteSurfaces';
 import { CaseAnswer, CaseChapter, CaseResults, CountUp, DecisionMoment, Tradeoff } from './CaseDecision';
 import { CarBand } from './CarArt';
+import { RepWatchDemo } from './RepWatch';
+import RepCase from './RepCase';
 import { assetUrl, metrics, projects } from './main';
 
 const BOOKCLUB_LIVE_URL='https://book-club-cog.pages.dev/';
@@ -268,12 +270,13 @@ function ProjectVisual({type}){
   if(type==='fcvf') return <CaseHeroLogo src="company-logos/ford-white-source.png" alt="Ford Motor Company" className="fcvfHeroMark"/>;
   if(type==='accenture') return <AccentureSFHero/>;
   if(type==='kohler') return <KohlerBoxOpen/>;
-  if(type==='finsimple') return <figure className="homepageMockup"><img loading="eager" decoding="async" src={assetUrl('project-media/finsimple-home-mockup.png')} alt="FinSimple Previous Estimates shown on a laptop"/></figure>;
+  if(type==='finsimple') return <figure className="homepageMockup"><img loading="eager" decoding="async" src={assetUrl('project-media/finsimple-home-mockup.jpg')} alt="FinSimple Previous Estimates shown on a laptop"/></figure>;
   if(type==='scheduler') return <SchedulerPlannerHero/>;
   if(type==='chat') return <MiniChat/>;
+  if(type==='rep') return <RepWatchDemo/>;
   if(type==='bookclub') return <BookclubPhoneHero/>;
   if(type==='marketExpansion') return <GrazeHero/>;
-  if(type==='estee') return <figure className="esteeHeroMockup"><img loading="eager" decoding="async" src={assetUrl('project-media/estee-home-mockup.png')} alt="Double Wear discovery experience shown on a laptop"/></figure>;
+  if(type==='estee') return <figure className="esteeHeroMockup"><img loading="eager" decoding="async" src={assetUrl('project-media/estee-home-mockup.jpg')} alt="Double Wear discovery experience shown on a laptop"/></figure>;
   return <EsteeVisual/>;
 }
 
@@ -349,7 +352,7 @@ function CaseDecisionNotes({id}){
   estee:[['Problem','Without a tester, online shoppers have to decide on finish, coverage, and shade from the page alone.'],['Decision','Build the site around the shopper’s question, keep benefits scannable, and hand checkout to the retailers they already trust.'],['Outcome','The concept finished as a Top 5 challenge finalist.']]
  }[id];
  if(!notes)return null;
- return <CaseSection title="Decisions and tradeoffs"><div className="decisionNoteGrid">{notes.map(([k,v])=><div key={k}><span>{k}</span><p>{v}</p></div>)}</div></CaseSection>
+ return <CaseSection id={`${id}-decisions`} title="Decisions and tradeoffs"><div className="decisionNoteGrid">{notes.map(([k,v])=><div key={k}><span>{k}</span><p>{v}</p></div>)}</div></CaseSection>
 }
 
 const caseCompanyInfo={
@@ -362,7 +365,8 @@ const caseCompanyInfo={
   bookclub:{name:'Independent product · designed, built, and deployed',logo:''},
   marketExpansion:{name:'Graze Craze · Spectrum Consulting Group',logo:'project-media/graze/logo.png'},
   scheduler:{name:'Michigan State University · CSE 477',logo:''},
-  chat:{name:'Michigan State University · CSE 477',logo:''}
+  chat:{name:'Michigan State University · CSE 477',logo:''},
+  rep:{name:'Personal app · watchOS + iOS',logo:''}
 };
 function CaseCompanyBar({id,fallback=''}){
   const info=caseCompanyInfo[id]||{name:fallback,logo:''};
@@ -444,6 +448,7 @@ const toolSets={
   accenture:['salesforce','slack','googlecalendar','googlesheets','googleslides','openai','powerbi'],
   finsimple:['adobe','ucl','salesforce','graphapi','graphql','postman','googlecloud','rally','github'],
   scheduler:['python','flask','mysql','socketio','html','css','javascript','docker','googlecloud','github'],
+  rep:['swift','swiftui','healthkit','github'],
   chat:['javascript','html','css','socketio','github'],
   estee:['html','css','javascript','figma','github'],
   commute:['swift','swiftui','swiftdata','activitykit','widgetkit','eventkit','healthkit','corelocation','weatherkit','notifications','alarmkit','googlemaps','gtfs','python','typescript','node','figma','github'],
@@ -543,6 +548,14 @@ const caseAnswers={
   evidence:'Seven one-on-one student interviews with live task walkthroughs.',
   result:'Two study groups ran their meetings on it for a semester, carrying one group record from availability through to a recommended time, venue vote, and calendar event.'
  },
+ rep:{
+  problem:'Apple’s strength workout tracks time, heart rate, and calories but saves no weights, sets, or reps. I was remembering loads or writing them down, and phone gym apps meant unlocking my phone every set.',
+  owned:'I defined the product, designed the Watch and iPhone experience, built both natively in Swift and SwiftUI, and published it on GitHub for anyone to install.',
+  call:'One tap logs a set. I count the reps, not the Watch.',
+  callHref:'#rep-decisions',
+  evidence:'Auto rep counting guesses badly on machines, and a wrong count is worse than none. Most sets repeat last time’s weight, so the numbers come filled in and Set Done is one tap.',
+  result:'It’s open source on GitHub with a beginner install guide, and anyone can build their own routines in it. I use it every day. Every workout saves as one Apple Health strength session, and the iPhone shows every set over time.'
+ },
  chat:{
   problem:'The CSE 477 brief was open-ended: build a real-time chat room with messages and join and leave events. A generic chat app would meet it, but there would be no clear bar for “good.”',
   owned:'I chose the direction, defined the scope, and built it solo in HTML, CSS, JavaScript, and Socket.IO.',
@@ -629,7 +642,7 @@ function CaseSkimDemo({id}:{id:string}){
 
 /* Previous / next case study, in the same order as the home page (Selected work,
    then the fun builds), wrapping at the ends, so no case is a dead end. */
-const CASE_ORDER=['fcvf','accenture','finsimple','kohler','marketExpansion','estee','commute','bookclub','scheduler','chat'];
+const CASE_ORDER=['fcvf','accenture','finsimple','kohler','marketExpansion','estee','commute','bookclub','scheduler','rep'];
 function CaseNav({id}:{id:string}){
  const i=CASE_ORDER.indexOf(id);
  if(i<0)return null;
@@ -681,10 +694,11 @@ function CaseStudy({id,onBack}){
  {id==='scheduler'&&<SchedulerCase/>}
  {id==='finsimple'&&<FinSimpleCase setLightbox={setLightbox}/>}
  {id==='chat'&&<ChatCase/>}
+ {id==='rep'&&<RepCase/>}
  {id==='estee'&&<EsteeCase/>}
  {id==='bookclub'&&<BookclubCase/>}
  {id==='marketExpansion'&&<MarketExpansionCase/>}
- {id!=='commute'&&!['fcvf','chat','estee','bookclub','marketExpansion','finsimple','scheduler','accenture'].includes(id)&&<CaseDecisionNotes id={id}/>}</>}
+ {id!=='commute'&&!['fcvf','chat','rep','estee','bookclub','marketExpansion','finsimple','scheduler','accenture'].includes(id)&&<CaseDecisionNotes id={id}/>}</>}
  <CaseNav id={id}/>
  <ImageLightbox image={lightbox} onClose={()=>setLightbox(null)}/></main>
 }

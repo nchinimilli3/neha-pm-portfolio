@@ -169,6 +169,14 @@ export const projects = [
     media:'chat'
   },
   {
+    id:'rep',
+    title:'REP.',
+    company:'Personal app · watchOS + iOS',
+    summary:'An open-source Apple Watch strength-training app with an iPhone companion. Anyone can install it from GitHub, set up their own routines, log a set with one tap, and track their lifts over time.',
+    blurb:'Free on GitHub and customizable for anyone. Remembers every load and logs a set with one tap. I use it every day.',
+    media:'rep'
+  },
+  {
     id:'estee',
     title:'Double Wear Foundation',
     company:'Estée Lauder × Kode With Klossy',
@@ -380,7 +388,10 @@ function Home({openCase,onChangeView}){
  const [navOpen,setNavOpen]=useState(false);
  const navToggleRef=useRef<HTMLButtonElement>(null);
  const navRef=useRef(null);const [activeSection,setActiveSection]=useState('');const [navInd,setNavInd]=useState<React.CSSProperties>({opacity:0});
- useEffect(()=>{const ids=['projects','experience','fun'];const onScroll=()=>{if(isParked(navRef.current))return;const y=window.innerHeight*.35;let cur='';for(const id of ids){const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<y)cur=id}const about=document.getElementById('about');if(about&&about.getBoundingClientRect().top<y)cur='';setActiveSection(cur)};onScroll();window.addEventListener('scroll',onScroll,{passive:true});return()=>window.removeEventListener('scroll',onScroll)},[]);
+ useEffect(()=>{const ids=['projects','experience','fun'];const onScroll=()=>{if(isParked(navRef.current))return;const y=window.innerHeight*.35;let cur='';for(const id of ids){const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<y)cur=id}const about=document.getElementById('about');if(about&&about.getBoundingClientRect().top<y)cur='';setActiveSection(cur)};
+  // One measure per frame, not per scroll event: four rect reads each time could force layouts mid-scroll.
+  let raf=0;const request=()=>{if(!raf)raf=requestAnimationFrame(()=>{raf=0;onScroll()})};
+  onScroll();window.addEventListener('scroll',request,{passive:true});return()=>{cancelAnimationFrame(raf);window.removeEventListener('scroll',request)}},[]);
  useEffect(()=>{const nav=navRef.current;if(!nav)return;const a=activeSection&&nav.querySelector(`a[href="#${activeSection}"]`);if(!a){setNavInd(v=>({...v,opacity:0}));return}setNavInd({opacity:1,width:`${a.offsetWidth}px`,transform:`translateX(${a.offsetLeft}px)`})},[activeSection]);
  useEffect(()=>{if(!navOpen)return;const k=e=>{if(e.key==='Escape'){setNavOpen(false);navToggleRef.current?.focus()}};window.addEventListener('keydown',k);return()=>window.removeEventListener('keydown',k)},[navOpen]);
  // The About photo can be taken over by the film camera, the bookshelf, or the TV: one at a time.
@@ -410,7 +421,7 @@ function Home({openCase,onChangeView}){
    else if(!held.has(s)){const as=s.getAnimations({subtree:true}).filter(a=>a.playState==='running'&&a.effect?.getTiming().iterations===Infinity);as.forEach(a=>a.pause());held.set(s,as)}}),{rootMargin:'200px 0px'});
   secs.forEach(s=>io.observe(s));return()=>{io.disconnect();held.forEach(as=>as.forEach(a=>a.play()))}},[rest]);
  const serious=['fcvf','accenture','finsimple','kohler','marketExpansion','estee'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
- const fun=['commute','bookclub','scheduler','chat'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
+ const fun=['commute','bookclub','scheduler','rep'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
  return <><button type="button" className="viewSkip" onClick={()=>onChangeView(true)}>Skip the animation: switch to Simple view</button>
  <header className={`siteHeader homeHeader${navOpen?' navIsOpen':''}`}><a className="wordmark" href="#top">Neha Chinimilli</a><button ref={navToggleRef} type="button" className="navToggle" aria-expanded={navOpen} aria-controls="primaryNav" aria-label={navOpen?'Close menu':'Open menu'} onClick={()=>setNavOpen(o=>!o)}><span/><span/></button><nav id="primaryNav" ref={navRef} aria-label="Primary" onClick={e=>{if((e.target as HTMLElement).closest('a'))setNavOpen(false)}}><i className="navIndicator" aria-hidden="true" style={navInd}/><a href="#projects" className={activeSection==='projects'?'isActive':''}>Selected work</a><a href="#experience" className={activeSection==='experience'?'isActive':''}>Experience</a><a href="#fun" className={activeSection==='fun'?'isActive':''}>Fun things I’ve built</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume</a><a href="mailto:chinimi2@msu.edu">Email</a><a className="headerLinkedIn" href="https://github.com/nchinimilli3" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on GitHub"><img src={assetUrl('github.svg')} alt="GitHub"/></a><a className="headerLinkedIn" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on LinkedIn"><img src={assetUrl('linkedin.svg')} alt="LinkedIn"/></a></nav><ViewModeToggle simple={false} onChange={onChangeView}/></header>
  <main id="main-content" className="homePage">
@@ -486,7 +497,7 @@ function SimpleHome({openCase,onChangeView}:{openCase:(id:string)=>void,onChange
  const navToggleRef=useRef<HTMLButtonElement>(null);
  useEffect(()=>{if(!navOpen)return;const close=(e:KeyboardEvent)=>{if(e.key==='Escape'){setNavOpen(false);navToggleRef.current?.focus()}};window.addEventListener('keydown',close);return()=>window.removeEventListener('keydown',close)},[navOpen]);
  const selected=['fcvf','accenture','finsimple','kohler','marketExpansion','estee'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
- const independent=['commute','bookclub','scheduler','chat'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
+ const independent=['commute','bookclub','scheduler','rep'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
  const caseLink=(id:string)=>({href:`#/projects/${id}`,onClick:(e:React.MouseEvent)=>{if(e.button===0&&!e.metaKey&&!e.ctrlKey&&!e.shiftKey&&!e.altKey){e.preventDefault();openCase(id)}}});
  const head=(id:string,title:string,note?:string)=><div className="sHead"><h2 id={`${id}-h`}>{title}</h2>{note&&<p>{note}</p>}</div>;
  return <><a className="viewSkip" href="#main-content">Skip to content</a>
@@ -614,7 +625,7 @@ function App(){
 // calls you back when you wander off (per case, restored on return).
 console.log('%cHi 👋','font:700 28px system-ui;color:#7b4bd1');
 console.log("%cIf you're reading the console, you're the kind of person I want to work with.\nnchinimilli5@gmail.com",'font:15px/1.5 system-ui;color:#444');
-const AWAY_TITLES:Record<string,string>={commute:'⏰ your alarm is going off',bookclub:'📚 come back, the book club is waiting',scheduler:'📅 still free at 2?',chat:'💬 typing…',fcvf:'🏁 the Mustang is idling',finsimple:'🧾 your estimate is ready',estee:'💄 touch-up time',kohler:'🚿 still shipping anywhere',accenture:'🚋 one request still in the queue',marketExpansion:'🧀 the cheese is getting warm'};
+const AWAY_TITLES:Record<string,string>={commute:'⏰ your alarm is going off',bookclub:'📚 come back, the book club is waiting',scheduler:'📅 still free at 2?',chat:'💬 typing…',rep:'🏋️ one more set',fcvf:'🏁 the Mustang is idling',finsimple:'🧾 your estimate is ready',estee:'💄 touch-up time',kohler:'🚿 still shipping anywhere',accenture:'🚋 one request still in the queue',marketExpansion:'🧀 the cheese is getting warm'};
 let homeTitle=document.title;
 document.addEventListener('visibilitychange',()=>{
  if(document.hidden){homeTitle=document.title;const id=location.hash.match(/^#\/projects\/([^/?#]+)/)?.[1];document.title=(id&&AWAY_TITLES[id])||'👀 come back, there’s more'}

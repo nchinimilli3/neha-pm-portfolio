@@ -112,7 +112,7 @@ html:not([data-view="simple"]):has(.homeKeep:not([data-parked]) .homePage){--pag
 /* Warm home aura: warm pink/coral/peach/light orange; no purple, which muddies against orange so overlaps stay clean, not muddy */
 .homePage>.auraField.tone-default .bloom1{background:radial-gradient(circle,rgba(245,150,180,.8),transparent 68%)!important}.homePage>.auraField.tone-default .bloom2{background:radial-gradient(circle,rgba(255,140,120,.78),transparent 68%)!important}.homePage>.auraField.tone-default .bloom3{background:radial-gradient(circle,rgba(255,190,140,.75),transparent 68%)!important}.homePage>.auraField.tone-default .bloom4{background:radial-gradient(circle,rgba(255,200,170,.72),transparent 68%)!important}.homePage>.auraField.tone-default .bloom5{background:radial-gradient(circle,rgba(250,130,130,.7),transparent 68%)!important}.homePage>.auraField.tone-default .bloom6{background:radial-gradient(circle,rgba(240,160,190,.65),transparent 68%)!important}.homePage>.auraField.tone-default .bloom7{background:radial-gradient(circle,rgba(255,175,150,.72),transparent 68%)!important}
 
-.siteHeader{background:rgba(243,237,227,.74)!important;-webkit-backdrop-filter:blur(20px) saturate(1.5);backdrop-filter:blur(20px) saturate(1.5);border-bottom:1px solid rgba(65,56,44,.14)!important;border-image:none!important;box-shadow:none!important}
+.siteHeader{background:rgba(243,237,227,.95)!important;border-bottom:1px solid rgba(65,56,44,.14)!important;border-image:none!important;box-shadow:none!important}
 .siteHeader,.siteHeader .wordmark{color:#22160F!important}
 .siteHeader .wordmark{font-weight:700;letter-spacing:-.01em}
 .siteHeader nav a{color:#4f3e35!important}

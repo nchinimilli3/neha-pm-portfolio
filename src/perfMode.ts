@@ -5,7 +5,7 @@ import {currentLenis} from './smoothScroll';
 
    - pageY(): the scroll position from Lenis, which sets it earlier in the same frame, so
      the scenes neither force a layout to learn it nor draw a frame behind it.
-   - html.isScrolling: set while the page moves, so the hero's rooms stop taking the
+   - .scrollShield on the shields: set while the page moves, so the hero's rooms stop taking the
      pointer (see .dhShield in desk-hero.css).
    - html.lowFx: set when this device can't keep up (it drops frames during the first
      scroll) or asks for reduced motion. low-fx.css then swaps the costly effects (blend
@@ -30,7 +30,9 @@ function watchFrames(){
    done=true;
    const sorted=[...gaps].sort((a,b)=>a-b),median=sorted[sorted.length>>1];
    // Under ~45fps at the median: this device needs the light scene.
-   if(median>22){html.classList.add('lowFx');try{sessionStorage.setItem(LOW_KEY,'low')}catch{}}
+   const p90=sorted[Math.floor(sorted.length*.9)];
+   // Or frequent long stalls (1 in 10 frames over two vsyncs): smooth at the median, still stuttery.
+   if(median>22||p90>33){html.classList.add('lowFx');try{sessionStorage.setItem(LOW_KEY,'low')}catch{}}
    return;
   }
   if(moving)raf=requestAnimationFrame(tick);
@@ -43,10 +45,12 @@ export function startPerfMode(){
  const html=root();
  const onFrames=watchFrames();
  let idle=0,scrolling=false;
+ // Only the shields get the flag: a class on <html> restyled all ~4,000 elements at every scroll start and stop.
+ const shields=(on:boolean)=>document.querySelectorAll('.dhShield,.ahShield').forEach(e=>e.classList.toggle('scrollShield',on));
  const onScroll=()=>{
-  if(!scrolling){scrolling=true;html.classList.add('isScrolling');onFrames(true)}
+  if(!scrolling){scrolling=true;shields(true);onFrames(true)}
   window.clearTimeout(idle);
-  idle=window.setTimeout(()=>{scrolling=false;html.classList.remove('isScrolling');onFrames(false)},180);
+  idle=window.setTimeout(()=>{scrolling=false;shields(false);onFrames(false)},180);
  };
  window.addEventListener('scroll',onScroll,{passive:true});
 }

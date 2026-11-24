@@ -199,7 +199,7 @@ main.casePage>.caseLead,main.casePage .caseLead{padding-bottom:0!important}
    Space does the grouping: 128 between chapters, 48 between a chapter's
    header and its body, 8–24 inside a block. No rules or boxes between
    ordinary chapters; the decision moment is the one that earns a rule. */
-main.casePage :is(.axStage,.bcStage,.chStage,.cmStage,.elStage,.fvStage,.fseStage,.kxStage,.gzStage,.scStage){padding-top:clamp(64px,7vw,96px)!important;padding-bottom:var(--s-4)!important}
+main.casePage :is(.axStage,.bcStage,.chStage,.cmStage,.elStage,.fvStage,.fseStage,.kxStage,.gzStage,.scStage,.rpStage){padding-top:clamp(64px,7vw,96px)!important;padding-bottom:var(--s-4)!important}
 main.casePage :is(.elProof,.fvSurveySection){padding-top:clamp(64px,7vw,96px)!important;padding-bottom:var(--s-4)!important}
 main.casePage{padding-bottom:var(--s-6)!important}
 main.casePage :is(.sandboxSection,.schedulerDemo,.chatRuleStage,.schedulerProblemStage){margin-bottom:var(--s-5)!important;padding-bottom:0!important}
@@ -211,7 +211,7 @@ main.casePage .cdSupporting:last-child{margin-bottom:0;padding-bottom:0!importan
 .casePage .schedulerStory>.schedulerDemo{margin-top:56px!important}  /* the demo draws 8px of its own inset */
 .casePage .cdAnswer+.carBand{margin-top:40px!important}              /* the car art sits 24px inside its band */
 .casePage .cmEditorial>.cmShowcase{margin-top:var(--s-2)!important}  /* the train sits 48px inside its band */
-.casePage .accentureStory{margin-top:0!important;padding-top:0!important}
+.casePage :is(.accentureStory,.repStory){margin-top:0!important;padding-top:0!important}
 
 /* Several case sections are 12-column grids; a decision moment dropped into
    one spans the whole track. Harmless where the parent is not a grid. */
