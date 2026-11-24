@@ -10,7 +10,7 @@ import './case-brand.css';
 export const CASE_FILES:Record<string,string>={
  fcvf:'customer-value-framework',accenture:'trainer-matching.app',finsimple:'previous-estimates',kohler:'ship-anywhere',
  marketExpansion:'market-scorecard.xlsx',estee:'double-wear',commute:'commute.app',bookclub:'bookclub — live',
- scheduler:'scheduler.html',chat:'imessage.html'
+ scheduler:'scheduler.html',chat:'imessage.html',rep:'rep.app'
 };
 
 /* Home stays mounted under an open case, parked with content-visibility:hidden

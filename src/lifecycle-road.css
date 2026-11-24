@@ -54,7 +54,7 @@
 .lcBubble{fill:#0a84ff}.lcTypeDot{fill:#fff;animation:lcType 1.2s ease-in-out infinite}
 .lcTypeDot:nth-of-type(2){animation-delay:.15s}.lcTypeDot:nth-of-type(3){animation-delay:.3s}
 @keyframes lcType{0%,60%,100%{opacity:.45;transform:none}30%{opacity:1;transform:translateY(-1.5px)}}
-.lcRoad.isMoving[data-traveler=box] .lcCar svg,.lcRoad.isMoving[data-traveler=bottle] .lcCar svg,.lcRoad.isMoving[data-traveler=cheese] .lcCar svg{animation:lcBob .3s ease-in-out infinite}
+.lcRoad.isMoving[data-traveler=box] .lcCar svg,.lcRoad.isMoving[data-traveler=bottle] .lcCar svg,.lcRoad.isMoving[data-traveler=dumbbell] .lcCar svg,.lcRoad.isMoving[data-traveler=cheese] .lcCar svg{animation:lcBob .3s ease-in-out infinite}
 @keyframes lcBob{50%{transform:translateY(-1.2px) rotate(-1deg)}}
 .lcRoad.isMoving[data-traveler=calendar] .lcCar svg,.lcRoad.isMoving[data-traveler=book] .lcCar svg,.lcRoad.isMoving[data-traveler=bubble] .lcCar svg{animation:lcHop .36s ease-in-out infinite}
 @keyframes lcHop{50%{transform:translateY(-2px)}}
@@ -171,6 +171,7 @@
 .lcRoad{position:fixed;left:0;right:0;top:var(--cw-bar,0px);width:auto;margin:0;padding-left:max(24px,calc((100vw - 1184px)/2));padding-right:max(24px,calc((100vw - 1184px)/2));transform:translateY(-110%);transition:opacity .5s var(--ease-out),transform .6s var(--ease-out),visibility 0s linear .6s;visibility:hidden}
 .lcRoad.isShown{visibility:visible;transition:opacity .5s var(--ease-out),transform .6s var(--ease-out),visibility 0s}
 .lcRoad:before,.lcRoad:after{left:0;width:100%}
+.lcRoad[data-traveler=dumbbell] .lcCar{width:38px;top:-7px}.lcRoad[data-traveler=dumbbell] .lcCar svg{width:38px;height:38px}
 .lcRoad[data-traveler=bottle] .lcCar{width:34px;top:-7px}.lcRoad[data-traveler=bottle] .lcCar svg{width:34px;height:38px}
 /* Mustang smoke: puffs are placed at the tailpipe where they were emitted and stay
    there as the car moves on, billowing up and fading out toward the top of the bar. */

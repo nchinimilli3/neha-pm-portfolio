@@ -4,15 +4,6 @@
    look-alike. Blend modes become plain translucent layers, animated blurs go, and the
    frosted glass becomes solid glass. The room reads the same; it just costs a fraction
    to draw. */
-html.lowFx .dhSunPatch{mix-blend-mode:normal;opacity:calc(var(--sunOp) * .7)}
-html.lowFx .dhSunDesk{mix-blend-mode:normal;filter:none;opacity:calc(var(--sunOp) * .45)}
-html.lowFx .dhShaft{display:none}
-html.lowFx .dhGlow{mix-blend-mode:normal;opacity:calc(var(--glowOp) * .6)}
-html.lowFx .dhLampPool{mix-blend-mode:normal}
-html.lowFx .lampOn .dhLampPool{opacity:.6}
-/* Multiply darkens; a plain layer of the same colour would haze instead, so it gets a deeper mix. */
-html.lowFx .dhShade{mix-blend-mode:normal;background:color-mix(in srgb,var(--shadeC) 35%,#04050b);opacity:calc(var(--shadeOp) * .75)}
-html.lowFx .dhWall::after{display:none}
 html.lowFx .dhSteam path{filter:none}
 html.lowFx :is(.dhMenuBar,.dhToast,.dhDock,.sfHint){-webkit-backdrop-filter:none;backdrop-filter:none}
 html.lowFx .dhMenuBar{background:rgba(246,242,236,.88)}

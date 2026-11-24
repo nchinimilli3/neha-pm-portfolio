@@ -29,7 +29,7 @@
 /* Safari lets the desk's 3D-tilted planes (desk top, keyboard, mouse) escape overflow:hidden,
    so the scene clips with clip-path; once Neha OS covers the room it isn't drawn at all.
    Opacity, not visibility: hiding it that way restyled every object in the room (~70ms). */
-.dhTrack.osCovers .dhPin>.dhScene{opacity:0}
+.dhTrack.osCovers .dhPin>.dhScene{visibility:hidden}
 .dhScene::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse 75% 70% at 55% 50%,transparent 60%,rgba(40,24,10,.16))}
 .isStatic .dhScene::after{display:none}
 /* Promoted to its own layer only while the camera moves (DeskHero.tsx). Kept promoted at rest,
@@ -43,13 +43,13 @@
 /* What fades and slides over the room on every frame of the walk-in sits on its own layer,
    so moving it doesn't repaint (and re-raster) the room or the desktop under it. */
 .dhTrack:not(.isStatic) :is(.dhCopy,.dhOs,.dhHello,.dhWin,.dhDock,.dhIcons a,.dhToast){will-change:transform,opacity}
-/* A clear sheet over the room and Neha OS while the page scrolls (html.isScrolling, perfMode.ts).
+/* A clear sheet over the room and Neha OS while the page scrolls (.scrollShield, perfMode.ts).
    The cursor sits still while the room zooms under it, so desk objects kept sliding beneath it,
    each starting its hover lift, drop shadow and tooltip mid-zoom. Below the progress rail, so
    skipping still works. One element to show, where a pointer-events rule on every object in
    the room restyled the whole page at the start and end of each scroll. */
 .dhShield{position:absolute;inset:0;z-index:60;display:none}
-html.isScrolling .dhTrack:not(.isStatic) .dhShield{display:block}
+.dhTrack:not(.isStatic) .dhShield.scrollShield{display:block}
 
 /* Room shell */
 .dhWall{inset:-200px -300px 0;background:
@@ -57,8 +57,8 @@ html.isScrolling .dhTrack:not(.isStatic) .dhShield{display:block}
  linear-gradient(90deg,rgba(40,26,12,.12),transparent 38%,transparent 86%,rgba(40,26,12,.06)),
  linear-gradient(rgba(40,26,12,.1),transparent 34%),
  linear-gradient(var(--wallA),var(--wallB) 72%);}
-.dhWall::after{content:"";position:absolute;inset:0;opacity:.35;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .42 0 0 0 0 .34 0 0 0 .16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-.dhSunPatch{left:10px;top:150px;width:560px;height:430px;opacity:var(--sunOp);transform:skewY(-14deg) skewX(8deg);filter:blur(9px);mix-blend-mode:screen;
+.dhWall::after{content:"";position:absolute;inset:0;opacity:.2;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .42 0 0 0 0 .34 0 0 0 .16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.dhSunPatch{left:10px;top:150px;width:560px;height:430px;opacity:calc(var(--sunOp) * .7);transform:skewY(-14deg) skewX(8deg);filter:blur(9px);
  background:
   linear-gradient(90deg,transparent 47%,var(--wallB) 47% 53%,transparent 53%),
   linear-gradient(transparent 46%,var(--wallB) 46% 52%,transparent 52%),
@@ -204,7 +204,7 @@ html.isScrolling .dhTrack:not(.isStatic) .dhShield{display:block}
 .dhLeaf{fill:url(#dhLeafFace)}
 
 /* Monitor */
-.dhGlow{left:470px;top:180px;width:760px;height:620px;z-index:8;border-radius:50%;background:radial-gradient(closest-side,rgba(255,222,196,.5),transparent);opacity:var(--glowOp);mix-blend-mode:screen;pointer-events:none}
+.dhGlow{left:470px;top:180px;width:760px;height:620px;z-index:8;border-radius:50%;background:radial-gradient(closest-side,rgba(255,222,196,.5),transparent);opacity:calc(var(--glowOp) * .6);pointer-events:none}
 /* Post-it notes at real size: 76mm square is ~62px at this room's scale (the 24" iMac's
    display, 54.7cm across, is 440px). Only the adhesive strip along the top is stuck down,
    so it sits flat; the rest of the sheet curls very slightly away, shading toward the
@@ -240,8 +240,8 @@ html.isScrolling .dhTrack:not(.isStatic) .dhShield{display:block}
   url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='380'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0016 .05' numOctaves='5' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .16 0 0 0 0 .06 0 0 0 .55 -.19'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23w)'/%3E%3C/svg%3E"),
   linear-gradient(#c29467,#b3845b 40%,#a57449)}
 .dhDeskEdge{position:absolute;left:0;right:0;top:0}
-.dhLampPool{left:334px;top:680px;width:318px;height:82px;z-index:16;border-radius:50%;background:radial-gradient(ellipse,rgba(255,216,153,.42),rgba(255,201,127,.15) 48%,transparent 74%);mix-blend-mode:screen;opacity:0;pointer-events:none}
-.lampOn .dhLampPool{opacity:1}
+.dhLampPool{left:334px;top:680px;width:318px;height:82px;z-index:16;border-radius:50%;background:radial-gradient(ellipse,rgba(255,216,153,.42),rgba(255,201,127,.15) 48%,transparent 74%);opacity:0;pointer-events:none}
+.lampOn .dhLampPool{opacity:.6}
 .dhSteam{position:absolute;left:1px;top:-78px;width:60px;height:80px;overflow:visible}
 .dhSteam path{fill:none;stroke:rgba(255,255,255,.75);stroke-width:3.5;stroke-linecap:round;filter:blur(1.5px);animation:dhSteam 4.2s ease-in-out infinite}
 .dhSteam path+path{animation-delay:2.1s}
@@ -252,7 +252,8 @@ html.isScrolling .dhTrack:not(.isStatic) .dhShield{display:block}
 .lampOn .dhBulb{fill:#fffaf0;filter:drop-shadow(0 0 8px #ffd27a)}
 .dhShadeInner{filter:brightness(.3) saturate(.3);transition:filter .3s}
 .lampOn .dhShadeInner{filter:drop-shadow(0 2px 6px #ffd27aaa)}
-.dhShade{inset:-300px -1000px;z-index:40;background:var(--shadeC);opacity:var(--shadeOp);mix-blend-mode:multiply;pointer-events:none;transition:opacity 1s}
+/* Plain layer, not multiply (a 3600x1600 blend over the moving room); a deeper mix darkens like multiply did. */
+.dhShade{inset:-300px -1000px;z-index:40;background:color-mix(in srgb,var(--shadeC) 35%,#04050b);opacity:calc(var(--shadeOp) * .75);pointer-events:none;transition:opacity 1s}
 .dhFlash{position:absolute;inset:0;background:#fff;pointer-events:none;z-index:80;animation:dhFlash .7s ease-out forwards}
 @keyframes dhFlash{0%{opacity:.95}100%{opacity:0}}
 
@@ -315,14 +316,14 @@ html.isScrolling .dhTrack:not(.isStatic) .dhShield{display:block}
  /* The muntins' shadows are gaps in the light, not dark paint. */
  -webkit-mask:linear-gradient(90deg,#000 calc(50% - 5px),transparent calc(50% - 5px) calc(50% + 5px),#000 calc(50% + 5px)),linear-gradient(#000 calc(52% - 6px),transparent calc(52% - 6px) calc(52% + 6px),#000 calc(52% + 6px)),linear-gradient(#000 72%,transparent);-webkit-mask-composite:source-in;
  mask:linear-gradient(90deg,#000 calc(50% - 5px),transparent calc(50% - 5px) calc(50% + 5px),#000 calc(50% + 5px)),linear-gradient(#000 calc(52% - 6px),transparent calc(52% - 6px) calc(52% + 6px),#000 calc(52% + 6px)),linear-gradient(#000 72%,transparent);mask-composite:intersect;
- mix-blend-mode:overlay;opacity:calc(var(--sunOp) * 1.45);filter:blur(4px);transition:opacity 1s}
+ opacity:calc(var(--sunOp) * .45);transition:opacity 1s}
 .tod-morning .dhSunDesk{height:330px;transform:skewX(-30deg);opacity:.48}
 .tod-evening .dhSunDesk{left:2700px;height:360px;transform:skewX(-12deg);opacity:.5;background:linear-gradient(rgba(255,170,96,.95) 50%,rgba(255,150,80,.5))}
 /* A faint shaft of sunlit air between the window and the patch on the desk. */
 .dhShaft{left:940px;top:74px;width:600px;height:807px;z-index:44;pointer-events:none;
  clip-path:polygon(206px 0,554px 0,554px 378px,537px 662px,486px 807px,50px 807px);
  background:linear-gradient(rgba(255,240,210,0),var(--sunC) 55%,rgba(255,240,210,0));
- mix-blend-mode:screen;opacity:calc(var(--sunOp) * .32);filter:blur(10px);transition:opacity 1s}
+ opacity:calc(var(--sunOp) * .2);filter:blur(10px);transition:opacity 1s}
 .dhImacCam{position:absolute;left:50%;top:5px;width:4px;height:4px;transform:translateX(-50%);border-radius:50%;background:#2b2b2d;box-shadow:inset 0 0 0 1px #4a4a4d}
 .dhImac::before{content:"";position:absolute;left:-30px;right:22px;top:18px;bottom:-6px;border-radius:18px;background:rgba(60,40,20,.22);filter:blur(22px);z-index:-1}
 .dhBracket{position:absolute;left:60px;bottom:-18px;width:10px;height:22px;background:linear-gradient(90deg,#3b3632,#57504a);clip-path:polygon(0 0,100% 0,100% 100%,0 20%)}
@@ -744,7 +745,7 @@ button.dhCappa:focus-visible,button.dhPaints:focus-visible{outline:2px solid #e2
 
 /* The shade points down and right from the left of the portrait. Light lands on the
    print and nearby wood; it stays local rather than washing out the entire room. */
-.dhPortraitLight{left:449px;top:491px;width:170px;height:230px;z-index:42;pointer-events:none;border-radius:5px;background:radial-gradient(ellipse at 0 12%,#ffd79836,transparent 78%);mix-blend-mode:screen}
+.dhPortraitLight{left:449px;top:491px;width:170px;height:230px;z-index:42;pointer-events:none;border-radius:5px;background:radial-gradient(ellipse at 0 12%,#ffd79836,transparent 78%)}
 .dhTrack .dhFrameFace img{filter:brightness(1.04) saturate(.98)}
 .dhFrame{z-index:41;box-shadow:inset 2px 1px 1px #ffe6b7,inset -2px -2px 2px #71502d,2px 3px 0 #805a32,7px 7px 12px -7px #28180a99}
 

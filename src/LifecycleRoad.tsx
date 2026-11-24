@@ -133,6 +133,18 @@ const travelers:Record<string,React.ReactNode>={
   <path d="M20 15.2h40M20 17.4h26" stroke="#e8cf8f" strokeWidth=".9"/><path d="M9.5 16v18" stroke="#e8cf8f" strokeWidth=".6" strokeOpacity=".7"/>
   <path d="M70 11.5h5v25l-2.5-2.6-2.5 2.6z" fill="url(#lcRibbonG)"/>
   <path d="M11 12.4h72" stroke="#fff" strokeOpacity=".22" strokeWidth=".8"/></svg>,
+ dumbbell:<svg viewBox="28 0 40 40"><defs>{ground}
+  <G id="lcPlateG" x2="1" y2="0" stops={[['0','#141618'],['.35','#3a3f44'],['.6','#2a2e32'],['1','#0e1012']]}/>
+  <G id="lcBarG" stops={[['0','#f4f6f7'],['.45','#a9b0b6'],['1','#5f666d']]}/>
+  </defs>{shadow(48,18,38.4)}
+  {/* Chrome handle with knurling */}
+  <rect x="38" y="24.6" width="20" height="4.2" rx="1" fill="url(#lcBarG)"/>
+  <path d="M43 25v3.4M45 25v3.4M47 25v3.4M49 25v3.4M51 25v3.4M53 25v3.4" stroke="#5f666d" strokeWidth=".5" strokeOpacity=".7"/>
+  {/* Rubber plates, outer then inner, with REP's lime ring */}
+  <rect x="30" y="15" width="5.5" height="23" rx="1.6" fill="url(#lcPlateG)"/><rect x="60.5" y="15" width="5.5" height="23" rx="1.6" fill="url(#lcPlateG)"/>
+  <rect x="35.2" y="18.5" width="3.4" height="16" rx="1.2" fill="url(#lcPlateG)"/><rect x="57.4" y="18.5" width="3.4" height="16" rx="1.2" fill="url(#lcPlateG)"/>
+  <path d="M32.75 17.5v18M63.25 17.5v18" stroke="#c4fa26" strokeWidth=".9" strokeLinecap="round"/>
+  <path d="M31.2 16.8v6M61.7 16.8v6" stroke="#fff" strokeOpacity=".25" strokeWidth=".7" strokeLinecap="round"/></svg>,
  bottle:<svg viewBox="30 0 36 40"><defs>{ground}
   <G id="lcCapG" x2="1" y2="0" stops={[['0','#6f4f20'],['.18','#c9a25d'],['.38','#f7e7bd'],['.55','#d4b06a'],['.8','#9c7a3d'],['1','#5e421a']]}/>
   <G id="lcGlassG" x2="1" y2="0" stops={[['0','#d8cdbd'],['.12','#f7f3ec'],['.5','#fbf8f3'],['.88','#efe8dc'],['1','#c9bca6']]}/>
@@ -162,8 +174,8 @@ const travelers:Record<string,React.ReactNode>={
   <text x="84" y="37.5" textAnchor="end" style={{font:'500 4.4px -apple-system,sans-serif',fill:'#8896a8'}}>Delivered</text></svg>
 };
 
-export type Traveler='car'|'mustang'|'mache'|'ev'|'cablecar'|'box'|'cheese'|'train'|'calendar'|'book'|'bottle'|'bubble';
-const HONKS:Record<string,string>={train:'ding ding!',cablecar:'clang clang!',book:'shh!',calendar:'ding!',bubble:'…',mustang:'vroom!',mache:'…whirr (it’s electric)',box:'beep beep!',bottle:'clink!',cheese:'squeak!'};
+export type Traveler='car'|'mustang'|'mache'|'ev'|'cablecar'|'box'|'cheese'|'train'|'calendar'|'book'|'bottle'|'dumbbell'|'bubble';
+const HONKS:Record<string,string>={train:'ding ding!',cablecar:'clang clang!',book:'shh!',calendar:'ding!',bubble:'…',mustang:'vroom!',mache:'…whirr (it’s electric)',box:'beep beep!',bottle:'clink!',dumbbell:'clank!',cheese:'squeak!'};
 
 export default function LifecycleRoad({stages,vehicle='car',label='Product lifecycle stages in this case study'}:{stages:{id:string,name:string,did:string}[],vehicle?:Traveler,label?:string}){
  const [progress,setProgress]=useState(0);

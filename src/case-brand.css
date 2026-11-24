@@ -12,6 +12,7 @@ body:has(.case-estee){--b-band:#e1e4ef;--b-page:#f6f3ee;--b-title-font:'Instrume
 body:has(.case-commute){--b-band:#e6dff5;--b-page:#f9f0ea;--b-title-font:-apple-system,BlinkMacSystemFont,Inter,sans-serif;--b-title-weight:700;--b-title-track:-.03em}
 body:has(.case-bookclub){--b-band:#dde8df;--b-page:#f4f1e8;--b-title-font:'Instrument Serif',Georgia,serif;--b-title-weight:400;--b-title-track:-.01em}
 body:has(.case-scheduler){--b-band:#e9efd0;--b-page:#f7f7ea;--b-title-font:Poppins,Inter,sans-serif;--b-title-weight:600;--b-title-track:-.03em}
+body:has(.case-rep){--b-band:#e4f5d6;--b-page:#f3f8ec;--b-title-font:-apple-system,BlinkMacSystemFont,Inter,sans-serif;--b-title-weight:700;--b-title-track:-.03em}
 body:has(.case-chat){--b-band:#d9e8fb;--b-page:#f1f6fd;--b-title-font:-apple-system,BlinkMacSystemFont,Inter,sans-serif;--b-title-weight:700;--b-title-track:-.03em}
 
 body:has(.casePage){background:var(--b-page,#f3ede3)}
@@ -76,3 +77,5 @@ html[data-vt=fade]::view-transition-old(root){animation:cwFadeOut .24s ease both
  .caseWinFile{display:none}
  .caseWinBar{gap:8px;padding:0 10px}
 }
+
+/* REP screenshots sit straight on the page: two Watch faces and the iPhone history. */

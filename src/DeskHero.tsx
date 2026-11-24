@@ -760,6 +760,8 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
    const away=r.bottom<-50||r.top>vh+50;
    if(progRef.current&&away){progRef.current.style.opacity='0';progRef.current.style.visibility='hidden'}
    holdAll(away);
+   // Off screen, the room isn't drawn at all: paused loops still kept its huge GPU layers alive.
+   if(stage.style.visibility!==(away?'hidden':''))stage.style.visibility=away?'hidden':'';
    if(away){snap=true;return}
    const target=cl(-r.top/total),dt=Math.min(.05,Math.max(0,(now-lastT)/1000));lastT=now;
    shown=target;
@@ -831,7 +833,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
   // Draw the first frame now, not on the next animation frame, so a view
   // transition back to the desktop snapshots the windows in place.
   update();
-  return()=>{offLenis?.();cancelAnimationFrame(raf);window.clearTimeout(toastTimer);window.removeEventListener('resize',onResize);window.removeEventListener('scroll',request);window.removeEventListener(HOME_SHOWN,onShown);toastEl?.removeEventListener('mouseleave',request);holdRoom(false);holdAll(false);track.classList.remove('osCovers');setOsLive(false)};
+  return()=>{offLenis?.();cancelAnimationFrame(raf);window.clearTimeout(toastTimer);window.removeEventListener('resize',onResize);window.removeEventListener('scroll',request);window.removeEventListener(HOME_SHOWN,onShown);toastEl?.removeEventListener('mouseleave',request);holdRoom(false);holdAll(false);stage.style.visibility='';track.classList.remove('osCovers');setOsLive(false)};
  },[isStatic]);
 
  // Windows drag by their title bar, like the real thing.
@@ -1039,7 +1041,9 @@ export function DeskGoodnight(){
    // center the note on the iMac screen (stage coords 630+420/2, 310+262/2), kept inside the viewport
    const note=noteRef.current;if(note){const half=note.offsetWidth/2+16;note.style.left=`${Math.min(Math.max(tx+840*s,half),w-half)}px`;note.style.top=`${ty+441*s}px`}};
   fit();const ro=new ResizeObserver(fit);ro.observe(scene);
-  return()=>ro.disconnect();
+  // Not drawn while off screen: this copy of the room otherwise keeps its GPU layers alive all page long.
+  const io=new IntersectionObserver(([e])=>{stage.style.visibility=e.isIntersecting?'':'hidden'},{rootMargin:'200px 0px'});io.observe(scene);
+  return()=>{ro.disconnect();io.disconnect()};
  },[]);
  return <section ref={rootRef} className="dhTrack tod-night dhGoodnight lampOn" aria-label="Contact">
   <div className="dhScene" ref={sceneRef}>
