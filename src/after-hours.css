@@ -2,8 +2,9 @@
 .ahSection{--ahInk:#f4ede4;--ahMuted:#c9bfb4;--ahAccent:#f09a7a;position:relative;margin-top:clamp(64px,8vw,120px)}
 .ahTrack{position:relative;height:calc(100vh + var(--stops) * 80vh)}
 .ahPin{position:sticky;top:0;height:100vh;overflow:hidden;background:#141219}
-/* A soft shade behind the caption so its type reads over the wood. */
-.ahPin::after{content:"";position:absolute;inset:0;z-index:35;pointer-events:none;background:linear-gradient(90deg,#141219e0 0,#14121999 24%,transparent 46%)}
+/* A shade behind the caption: near-solid to the caption's right edge, so neighbouring devices
+   on the desk never read through its type, then clear before the focused device (centred at 63vw). */
+.ahPin::after{--capEnd:calc(var(--home-edge,max(24px,calc((100vw - 1180px) / 2))) + min(380px,30vw) + 24px);content:"";position:absolute;inset:0;z-index:35;pointer-events:none;background:linear-gradient(90deg,#141219f2 0,#141219e0 var(--capEnd),#14121966 calc(var(--capEnd) + 6vw),transparent calc(var(--capEnd) + 14vw))}
 .isStatic .ahPin::after{display:none}
 .ahView{position:absolute;inset:0;visibility:hidden;opacity:0;transition:opacity .45s ease}
 /* Shown once every screen on the desk has decoded (see FUN_IMAGES), in one fade. */
@@ -42,9 +43,9 @@
 .ahBooks i{position:absolute;inset:0;border-radius:4px;background:linear-gradient(90deg,#6d2f28,#8a3d33 12%,#7a352d);box-shadow:-8px 14px 22px -8px #000a,inset -9px 0 0 #e7ddc8,inset -10px 0 0 #00000030,inset -11px 0 0 #d9ceb6}
 .ahBooks i:nth-child(2){inset:14px -10px -14px 10px;background:linear-gradient(90deg,#24416c,#2f5288 12%,#274676);transform:rotate(3deg);z-index:-1}
 .ahBooks i:nth-child(3){inset:28px -20px -26px 18px;background:linear-gradient(90deg,#355b40,#44704f 12%,#3a6045);transform:rotate(-2deg);z-index:-2}
-.ahMug{left:1600px;top:1330px;width:286px;height:286px;z-index:6;filter:drop-shadow(-7px 11px 9px #0008)}
+.ahMug{left:1600px;top:1330px;width:286px;height:286px;z-index:6;overflow:visible}
 .ahPad{left:900px;top:60px;width:906px;height:1250px;border-radius:20px;background:linear-gradient(120deg,#46454a,#333236);box-shadow:-10px 18px 30px -12px #000a;opacity:.85}
-.ahController{left:2100px;top:1262px;width:405px;height:283px;transform:rotate(-6deg);z-index:6;filter:drop-shadow(-7px 11px 9px #0009)}
+.ahController{left:2100px;top:1262px;width:405px;height:283px;transform:rotate(-6deg);z-index:6;overflow:visible}
 .ahSticky{left:590px;top:640px;width:200px;height:200px;padding:30px 22px;box-sizing:border-box;background:#f2d36b;color:#5b4212;font:500 34px/1.05 Caveat,cursive;transform:rotate(-5deg);box-shadow:-5px 12px 14px -8px #000a;z-index:6}
 .ahPen{left:1010px;top:1450px;width:370px;height:24px;border-radius:12px;background:linear-gradient(90deg,#712e22 0 8%,#a54631 8% 80%,#e0dfd9 80% 90%,#303132 90%);transform:rotate(-8deg);box-shadow:-5px 8px 8px -3px #000a;z-index:6}
 
@@ -78,13 +79,14 @@
 .ah-watch.isOn .ahScreen{box-shadow:none}
 .ahCrown{position:absolute;right:-5.2px;top:28px;width:6px;height:19px;border-radius:1.5px 3px 3px 1.5px;background:linear-gradient(90deg,#9c9ea2,#eceded 40%,#c4c6c9 75%,#8f9195),repeating-linear-gradient(0deg,#0000 0 .6px,#0000004d .6px 1.2px);background-blend-mode:multiply;box-shadow:inset 0 .7px 0 #fffc,inset 0 -.7px 0 #0005,-2px 4px 4px #0009}
 .ahSideBtn{position:absolute;right:-.9px;top:55px;width:1.2px;height:17px;border-radius:0 1px 1px 0;background:#c9cbce}
-/* Sport Band straps: the fill is clipped to the real outline; the shadow comes from the parent's filter. */
-.ahBand{position:absolute;left:17.5px;width:66px;z-index:1;filter:drop-shadow(-6px 10px 9px #0009)}
-.ahBand::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='66' height='36'%3E%3Cpath d='M18 8.6c0-2.4-3.4-3-4-.6-.6-2.4-4-1.8-4 .6 0 2.4 4 4.8 4 4.8s4-2.4 4-4.8ZM56 26.6c0-2.4-3.4-3-4-.6-.6-2.4-4-1.8-4 .6 0 2.4 4 4.8 4 4.8s4-2.4 4-4.8Z' fill='%23fff' fill-opacity='.75'/%3E%3Cpath d='M18 26.6c0-2.4-3.4-3-4-.6-.6-2.4-4-1.8-4 .6 0 2.4 4 4.8 4 4.8s4-2.4 4-4.8ZM56 8.6c0-2.4-3.4-3-4-.6-.6-2.4-4-1.8-4 .6 0 2.4 4 4.8 4 4.8s4-2.4 4-4.8Z' fill='%23ff5fa2' fill-opacity='.55'/%3E%3C/svg%3E") 0 0/66px 36px,linear-gradient(90deg,#c98a9b 0,#eab3c1 9%,#f6c9d4 45%,#fbd7df 82%,#fde6ec 95%,#d79caa 100%)}
-.ahBand.isTop{bottom:calc(100% - 9px);height:210px}
+/* Sport Band straps: the fill is clipped to the real outline. The shadow is a box-shadow on the strap
+   body (cheaper than a drop-shadow filter); the flared lug ends it skips sit under the case. */
+.ahBand{position:absolute;left:22.5px;width:56px;z-index:1;box-shadow:-6px 10px 9px #0009}
+.ahBand::before{content:"";position:absolute;inset:0 -5px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='66' height='36'%3E%3Cpath d='M18 8.6c0-2.4-3.4-3-4-.6-.6-2.4-4-1.8-4 .6 0 2.4 4 4.8 4 4.8s4-2.4 4-4.8ZM56 26.6c0-2.4-3.4-3-4-.6-.6-2.4-4-1.8-4 .6 0 2.4 4 4.8 4 4.8s4-2.4 4-4.8Z' fill='%23fff' fill-opacity='.75'/%3E%3Cpath d='M18 26.6c0-2.4-3.4-3-4-.6-.6-2.4-4-1.8-4 .6 0 2.4 4 4.8 4 4.8s4-2.4 4-4.8ZM56 8.6c0-2.4-3.4-3-4-.6-.6-2.4-4-1.8-4 .6 0 2.4 4 4.8 4 4.8s4-2.4 4-4.8Z' fill='%23ff5fa2' fill-opacity='.55'/%3E%3C/svg%3E") 0 0/66px 36px,linear-gradient(90deg,#c98a9b 0,#eab3c1 9%,#f6c9d4 45%,#fbd7df 82%,#fde6ec 95%,#d79caa 100%)}
+.ahBand.isTop{bottom:calc(100% - 9px);height:210px;border-radius:28px 28px 0 0}
 .ahBand.isTop::before{clip-path:path("M0 210H66C66 196 61 192 61 180V28A28 28 0 0 0 5 28V180C5 192 0 196 0 210Z")}
 .ahBand.isTop::after{content:"";position:absolute;left:50%;top:19px;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fde3ea,#d996a8 75%);box-shadow:-.6px 1px 1px #8a4a5c80}
-.ahBand.isBot{top:calc(100% - 9px);height:305px}
+.ahBand.isBot{top:calc(100% - 9px);height:305px;border-radius:0 0 28px 28px}
 .ahBand.isBot::before{clip-path:path("M0 0H66C66 14 61 18 61 30V277A28 28 0 0 1 5 277V30C5 18 0 14 0 0Z")}
 .ahBand.isBot::after{content:"";position:absolute;left:0;right:0;top:150px;height:126px;background:radial-gradient(circle at 50% 46%,#5a2a38 1.7px,#c98a9b 2.3px,transparent 2.9px) 50% 0/100% 18px repeat-y}
 .ahWos{position:absolute;left:0;top:0;width:162px;height:197px;transform:scale(.532);transform-origin:0 0;overflow:hidden;background:#000;color:#fff;font-family:-apple-system,"SF Pro Rounded","SF Pro Text",system-ui,sans-serif;-webkit-font-smoothing:antialiased}

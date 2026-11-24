@@ -391,10 +391,13 @@ function Home({openCase,onChangeView}){
  const [navOpen,setNavOpen]=useState(false);
  const navToggleRef=useRef<HTMLButtonElement>(null);
  const navRef=useRef(null);const [activeSection,setActiveSection]=useState('');const [navInd,setNavInd]=useState<React.CSSProperties>({opacity:0});
- useEffect(()=>{const ids=['projects','experience','fun'];const onScroll=()=>{if(isParked(navRef.current))return;const y=window.innerHeight*.35;let cur='';for(const id of ids){const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<y)cur=id}const about=document.getElementById('about');if(about&&about.getBoundingClientRect().top<y)cur='';setActiveSection(cur)};
-  // One measure per frame, not per scroll event: four rect reads each time could force layouts mid-scroll.
+ useEffect(()=>{const ids=['projects','experience','fun','about'];
+  // Section tops are measured when the page resizes, not read every scroll frame (each read forced a layout).
+  let tops:number[]=[],stale=true;const measure=()=>{if(isParked(navRef.current)){stale=true;return}stale=false;const y=pageY();tops=ids.map(id=>{const el=document.getElementById(id);return el?el.getBoundingClientRect().top+y:Infinity})};
+  const onScroll=()=>{if(isParked(navRef.current))return;if(stale)measure();const y=pageY()+window.innerHeight*.35;let cur='';ids.forEach((id,i)=>{if(tops[i]<y)cur=id==='about'?'':id});setActiveSection(cur)};
   let raf=0;const request=()=>{if(!raf)raf=requestAnimationFrame(()=>{raf=0;onScroll()})};
-  onScroll();window.addEventListener('scroll',request,{passive:true});return()=>{cancelAnimationFrame(raf);window.removeEventListener('scroll',request)}},[]);
+  const ro=new ResizeObserver(()=>{measure();request()});ro.observe(document.body);measure();onScroll();
+  window.addEventListener('scroll',request,{passive:true});return()=>{cancelAnimationFrame(raf);ro.disconnect();window.removeEventListener('scroll',request)}},[]);
  useEffect(()=>{const nav=navRef.current;if(!nav)return;const a=activeSection&&nav.querySelector(`a[href="#${activeSection}"]`);if(!a){setNavInd(v=>({...v,opacity:0}));return}setNavInd({opacity:1,width:`${a.offsetWidth}px`,transform:`translateX(${a.offsetLeft}px)`})},[activeSection]);
  useEffect(()=>{if(!navOpen)return;const k=e=>{if(e.key==='Escape'){setNavOpen(false);navToggleRef.current?.focus()}};window.addEventListener('keydown',k);return()=>window.removeEventListener('keydown',k)},[navOpen]);
  // The About photo can be taken over by the film camera, the bookshelf, or the TV: one at a time.
@@ -476,7 +479,8 @@ function ScrollToTopButton(){
  // event, and the page height is measured when it changes, not read (a forced layout) per scroll.
  useEffect(()=>{let raf=0,max=1;
   const measure=()=>{max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight)};
-  const draw=()=>{raf=0;const y=pageY();setVisible(y>520);fillRef.current?.style.setProperty('stroke-dashoffset',String(138.2*(1-Math.min(1,y/max))))};
+  // The ring is only redrawn when it moves a whole unit (about a pixel), not every scroll frame.
+  let last=-1;const draw=()=>{raf=0;const y=pageY();setVisible(y>520);const off=Math.round(138.2*(1-Math.min(1,y/max)));if(off!==last){last=off;fillRef.current?.style.setProperty('stroke-dashoffset',String(off))}};
   const request=()=>{if(!raf)raf=requestAnimationFrame(draw)};
   const onResize=()=>{measure();request()};
   const ro=new ResizeObserver(onResize);ro.observe(document.body);measure();draw();

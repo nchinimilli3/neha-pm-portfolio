@@ -826,14 +826,16 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
   // Back from a case: draw now, so the closing transition shrinks into the window where it sits.
   const onShown=()=>{measure();snap=true;update()};
   const toastEl=toastRef.current;
-  window.addEventListener('resize',onResize);window.addEventListener('scroll',request,{passive:true});window.addEventListener(HOME_SHOWN,onShown);
+  window.addEventListener('resize',onResize);window.addEventListener('scroll',request,{passive:true});
+  // The camera is framed from the copy's width, so re-frame when a web font swaps in.
+  document.fonts.addEventListener('loadingdone',onResize);window.addEventListener(HOME_SHOWN,onShown);
   // With Lenis, draw in the same frame it moves the page (a scroll event would arrive a frame later).
   const offLenis=lenis?.on('scroll',()=>{cancelAnimationFrame(raf);raf=0;update()});
  toastEl?.addEventListener('mouseleave',request);
   // Draw the first frame now, not on the next animation frame, so a view
   // transition back to the desktop snapshots the windows in place.
   update();
-  return()=>{offLenis?.();cancelAnimationFrame(raf);window.clearTimeout(toastTimer);window.removeEventListener('resize',onResize);window.removeEventListener('scroll',request);window.removeEventListener(HOME_SHOWN,onShown);toastEl?.removeEventListener('mouseleave',request);holdRoom(false);holdAll(false);stage.style.visibility='';track.classList.remove('osCovers');setOsLive(false)};
+  return()=>{offLenis?.();cancelAnimationFrame(raf);window.clearTimeout(toastTimer);window.removeEventListener('resize',onResize);window.removeEventListener('scroll',request);document.fonts.removeEventListener('loadingdone',onResize);window.removeEventListener(HOME_SHOWN,onShown);toastEl?.removeEventListener('mouseleave',request);holdRoom(false);holdAll(false);stage.style.visibility='';track.classList.remove('osCovers');setOsLive(false)};
  },[isStatic]);
 
  // Windows drag by their title bar, like the real thing.

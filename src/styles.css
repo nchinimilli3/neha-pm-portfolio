@@ -1530,7 +1530,7 @@ input,select,button{accent-color:var(--color-focus)}
 .caseSkimDemo{width:min(1120px,100%);margin:40px auto 96px;padding:32px 0 0;border-top:1px solid color-mix(in srgb,var(--case-accent) 28%,transparent)}
 .caseSkimDemo>header{margin-bottom:32px}.caseSkimDemo>header h2{margin:0;font-size:clamp(28px,3.4vw,42px);font-weight:500;letter-spacing:-.03em}
 .caseSkimCommute .cmDemoStage{margin:0!important}.caseSkimDemo.schedulerDemo{padding-top:32px!important}
-.caseSkimFinish{display:flex;justify-content:flex-start;align-items:center;gap:24px;width:min(1120px,100%);margin:16px auto 96px;padding:24px 0;border-top:1px solid color-mix(in srgb,var(--case-accent) 26%,transparent);border-bottom:1px solid color-mix(in srgb,var(--case-accent) 26%,transparent)}
+.caseSkimFinish{display:flex;justify-content:flex-start;align-items:center;gap:24px;width:min(1120px,100%);margin:16px auto 96px;padding:24px 0;border-top:1px solid color-mix(in srgb,var(--case-accent) 26%,transparent)}
 .caseSkimFinish button{padding:0 0 4px;border:0;border-bottom:1px solid var(--case-accent);background:transparent;color:var(--cd-ink,#232a27);font-weight:700;cursor:pointer}
 @media(max-width:700px){.caseReadingBar{align-items:center;margin-bottom:32px}.caseReadingLabel{display:none}.caseReadingToggle button{padding:8px 16px}.caseSkimFinish{display:block}}
 
@@ -2957,11 +2957,10 @@ input,select,button{accent-color:var(--color-focus)}
   place-items:center;
   border:1px solid rgba(31,38,34,.16);
   border-radius:50%;
-  background:rgba(246,241,231,.88);
+  /* Solid, not a backdrop blur: blurring the moving desk behind it repainted the whole page every frame. */
+  background:#f6f1e7;
   color:#202723;
   box-shadow:var(--shadow-soft);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
   cursor:pointer;
   opacity:0;
   pointer-events:none;

@@ -31,7 +31,10 @@ const LAYOUT:Record<string,Omit<Device,'id'|'title'|'eyebrow'|'line'|'caseId'|'h
 // on the device for the rest, so a visitor who stops scrolling anywhere in that stretch sees
 // it framed. A jump from the list lands at HOLD, inside the rest.
 const TRAVEL=.6,HOLD=.8;
-const FUN_IMAGES=['desk/fun-scheduler.jpg','desk/fun-spartan.jpg','project-media/sparty.png','project-media/um-enemy.png'];
+// The desk props' shadows and textures are baked images (public/desk/ah), not live SVG filters:
+// filters re-render every time the camera settles at a new zoom, which hitched the scroll.
+const AH_BAKED=['mug-cork','mug-foam','mug-heart-soft','mug-handle-cast','controller-shadow','tin-cast','portra-cast','canister-cast'].map(n=>`desk/ah/${n}.png`);
+const FUN_IMAGES=[...AH_BAKED,'desk/fun-scheduler.jpg','desk/fun-spartan.jpg','project-media/sparty.png','project-media/um-enemy.png'];
 const ORDER=['commute','bookclub','scheduler','rep','game','fluids'];
 const EXTRA:Record<string,{title:string;eyebrow:string;line:string;hint:string}>={
  game:{title:'Spartan Touchdown',eyebrow:'MSU · CSE 335',line:'A C++ team game with player movement, collisions, enemies, scoring, and a shared level state.',hint:'Click the screen to play. Space jumps.'},
@@ -153,6 +156,7 @@ function XboxController(){
  </g>;
  const face=(cx:number,cy:number,l:string,c:string)=><g><circle cx={cx} cy={cy} r="8.6" fill="url(#xbFace)" stroke="#060607" strokeWidth=".8"/><text x={cx} y={cy+3.4} textAnchor="middle" fontFamily="Arial,sans-serif" fontWeight="700" fontSize="9.5" fill={c}>{l}</text></g>;
  return <svg className="ahController" viewBox="0 0 240 168" aria-hidden="true">
+  <image href="desk/ah/controller-shadow.png" x="-27.85" y="-17.19" width="287.4" height="215.1"/>
   <defs>
    <linearGradient id="xbBody" x1="0" y1="0" x2=".3" y2="1"><stop offset="0" stopColor="#2e2f34"/><stop offset=".55" stopColor="#1b1c20"/><stop offset="1" stopColor="#111114"/></linearGradient>
    <radialGradient id="xbStick" cx=".4" cy=".35" r=".7"><stop offset="0" stopColor="#3c3d43"/><stop offset=".7" stopColor="#1d1e22"/><stop offset="1" stopColor="#141518"/></radialGradient>
@@ -184,35 +188,38 @@ function MsuMug(){
  const heart='M104 128c-15-8-25-16-25-27 0-8 6-13 13-13 5 0 9 3 12 7 3-4 7-7 12-7 7 0 13 5 13 13 0 11-10 19-25 27z';
  return <svg className="ahMug" viewBox="0 0 220 220" aria-hidden="true">
   <defs>
-   <filter id="amCork" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="3"/><feColorMatrix values="0 0 0 0 .35 0 0 0 0 .22 0 0 0 0 .1 0 0 0 1.2 -.55"/><feComposite in2="SourceGraphic" operator="in"/></filter>
-   <filter id="amFoamTex" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="2" seed="9"/><feColorMatrix values="0 0 0 0 1 0 0 0 0 .95 0 0 0 0 .86 0 0 0 .9 -.45"/><feComposite in2="SourceGraphic" operator="in"/></filter>
-   <filter id="amSoft"><feGaussianBlur stdDeviation="1.4"/></filter>
-   <filter id="amCast" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="5"/></filter>
+   <pattern id="amCork" width="64" height="64" patternUnits="userSpaceOnUse"><image href="desk/ah/mug-cork.png" width="64" height="64"/></pattern>
+   <pattern id="amFoamTex" width="64" height="64" patternUnits="userSpaceOnUse"><image href="desk/ah/mug-foam.png" width="64" height="64"/></pattern>
+   {/* Gaussian-blurred discs drawn as radial gradients with the same falloff (stops at R±σ, R±2σ). */}
+   <radialGradient id="amDrop" cx="104.6" cy="118.5" r="112.4" gradientUnits="userSpaceOnUse"><stop offset=".846" stopOpacity=".977"/><stop offset=".877" stopOpacity=".84"/><stop offset=".9075" stopOpacity=".5"/><stop offset=".938" stopOpacity=".16"/><stop offset=".969" stopOpacity=".023"/><stop offset="1" stopOpacity="0"/></radialGradient>
+   <radialGradient id="amCast" cx="98" cy="118" r="78" gradientUnits="userSpaceOnUse"><stop offset=".679" stopOpacity=".977"/><stop offset=".744" stopOpacity=".84"/><stop offset=".808" stopOpacity=".5"/><stop offset=".872" stopOpacity=".16"/><stop offset=".936" stopOpacity=".023"/><stop offset="1" stopOpacity="0"/></radialGradient>
+   <radialGradient id="amGleam"><stop offset=".46" stopColor="#fff" stopOpacity=".977"/><stop offset=".58" stopColor="#fff" stopOpacity=".84"/><stop offset=".7" stopColor="#fff" stopOpacity=".5"/><stop offset=".82" stopColor="#fff" stopOpacity=".16"/><stop offset=".94" stopColor="#fff" stopOpacity=".023"/><stop offset="1" stopColor="#fff" stopOpacity="0"/></radialGradient>
    <radialGradient id="amGlaze" cx=".7" cy=".3" r=".8"><stop offset="0" stopColor="#3a7e67"/><stop offset=".45" stopColor="#1f5b4a"/><stop offset="1" stopColor="#0d2f26"/></radialGradient>
    <radialGradient id="amInside" cx=".62" cy=".38" r=".62"><stop offset=".7" stopColor="#f7f4ec"/><stop offset="1" stopColor="#bfb8aa"/></radialGradient>
    <radialGradient id="amCrema" cx=".5" cy=".5" r=".5"><stop offset="0" stopColor="#c9a174"/><stop offset=".72" stopColor="#a8784a"/><stop offset=".92" stopColor="#6e4424"/><stop offset="1" stopColor="#4a2c16"/></radialGradient>
    <radialGradient id="amHeart" cx=".5" cy=".45" r=".6"><stop offset="0" stopColor="#fbf4e6"/><stop offset=".8" stopColor="#f1e2c6"/><stop offset="1" stopColor="#dcc19a"/></radialGradient>
    <path id="amTopArc" d="M34 110a76 76 0 0 1 152 0"/><path id="amBotArc" d="M28 110a82 82 0 0 0 164 0"/>
   </defs>
+  <circle cx="104.6" cy="118.5" r="112.4" fill="url(#amDrop)" opacity=".533"/>
   <circle cx="110" cy="110" r="102" fill="#c79b6d"/>
-  <circle cx="110" cy="110" r="102" fill="#c79b6d" filter="url(#amCork)"/>
+  <circle cx="110" cy="110" r="102" fill="url(#amCork)"/>
   <circle cx="110" cy="110" r="92" fill="none" stroke="#1d4d40" strokeWidth="1.6"/>
   <text fontFamily="Helvetica,Arial,sans-serif" fontWeight="800" fontSize="12.5" letterSpacing="3.2" fill="#1d4d40"><textPath href="#amTopArc" startOffset="50%" textAnchor="middle">MICHIGAN STATE</textPath></text>
   <text fontFamily="Helvetica,Arial,sans-serif" fontWeight="800" fontSize="12.5" letterSpacing="4" fill="#1d4d40"><textPath href="#amBotArc" startOffset="50%" textAnchor="middle" dominantBaseline="hanging">SPARTANS</textPath></text>
-  <circle cx="98" cy="118" r="63" fill="#000" opacity=".45" filter="url(#amCast)"/>
-  <rect x="150" y="100" width="44" height="20" rx="10" fill="#000" opacity=".35" filter="url(#amCast)" transform="translate(-6 6)"/>
+  <circle cx="98" cy="118" r="78" fill="url(#amCast)" opacity=".45"/>
+  <image href="desk/ah/mug-handle-cast.png" x="126" y="89" width="80" height="56"/>
   <rect x="154" y="101" width="40" height="18" rx="9" fill="url(#amGlaze)"/>
   <path d="M160 104h28" stroke="#6fa892" strokeWidth="2" strokeLinecap="round" opacity=".7"/>
   <circle cx="106" cy="110" r="60" fill="url(#amGlaze)"/>
   <circle cx="106" cy="110" r="55.5" fill="#f1ede3"/>
   <circle cx="106" cy="110" r="53" fill="url(#amInside)"/>
   <circle cx="106" cy="111" r="47" fill="url(#amCrema)"/>
-  <circle cx="106" cy="111" r="47" fill="#fff" filter="url(#amFoamTex)" opacity=".35"/>
-  <path d={heart} fill="url(#amHeart)" filter="url(#amSoft)"/>
+  <circle cx="106" cy="111" r="47" fill="url(#amFoamTex)" opacity=".35"/>
+  <image href="desk/ah/mug-heart-soft.png" x="72" y="80" width="64" height="56"/>
   <path d={heart} fill="url(#amHeart)" transform="translate(104 108) scale(.82) translate(-104 -108)"/>
   <path d="M104 72v58" stroke="#b98a5b" strokeWidth="1.4" strokeLinecap="round" opacity=".75"/>
   <path d="M130 62a53 53 0 0 1 26 30" stroke="#fff" strokeWidth="3" strokeLinecap="round" fill="none" opacity=".8"/>
-  <ellipse cx="128" cy="92" rx="10" ry="5" fill="#fff" opacity=".22" transform="rotate(-35 128 92)" filter="url(#amSoft)"/>
+  <ellipse cx="128" cy="92" rx="14.2" ry="9.2" fill="url(#amGleam)" opacity=".22" transform="rotate(-35 128 92)"/>
  </svg>;
 }
 
@@ -221,9 +228,8 @@ function MsuMug(){
 function WatercolorTin(){
  const pans=['#f2c230','#e8862a','#d5452f','#b8325a','#7c3f8f','#2f5aa8','#2c8ec4','#2f8a5a','#7ea83a','#a5692f','#6b3f25','#2b2b2e'];
  return <svg className="ahPaints" viewBox="0 0 280 180" aria-hidden="true">
-  <defs><filter id="wtCast" x="-20%" y="-30%" width="140%" height="160%"><feGaussianBlur stdDeviation="5"/></filter>
-   <radialGradient id="wtPan" cx=".4" cy=".35" r=".7"><stop offset="0" stopColor="#fff" stopOpacity=".35"/><stop offset=".5" stopColor="#fff" stopOpacity="0"/></radialGradient></defs>
-  <rect x="4" y="20" width="266" height="138" rx="10" fill="#000" opacity=".45" filter="url(#wtCast)" transform="translate(-10 10)"/>
+  <defs><radialGradient id="wtPan" cx=".4" cy=".35" r=".7"><stop offset="0" stopColor="#fff" stopOpacity=".35"/><stop offset=".5" stopColor="#fff" stopOpacity="0"/></radialGradient></defs>
+  <image href="desk/ah/tin-cast.png" x="-24" y="12" width="300" height="174"/>
   <rect x="10" y="16" width="126" height="140" rx="9" fill="#1b1b1e"/>
   <rect x="17" y="23" width="112" height="126" rx="6" fill="#f4f2ec"/>
   {[[20,26],[74,26],[20,88],[74,88]].map(([x,y],i)=><rect key={i} x={x} y={y} width="52" height="58" rx="8" fill="#fbfaf6" stroke="#dcd8cf"/>)}
@@ -243,10 +249,9 @@ function WatercolorTin(){
 function PortraBox({speed}:{speed:'400'|'800'}){
  const kp=(x:number,y:number,size:number)=><text x={x} y={y} fontFamily="'Helvetica Neue',Arial,sans-serif" fontSize={size}><tspan fontWeight="800" fill="#d6261b">Kodak</tspan><tspan dx={size*.25} fontWeight="400" fill="#2b1a10">Professional</tspan></text>;
  return <svg className={`ahPortra is${speed}`} viewBox="0 0 170 128" aria-hidden="true">
-  <defs><filter id={`pbCast${speed}`} x="-20%" y="-30%" width="140%" height="160%"><feGaussianBlur stdDeviation="4"/></filter>
-   <linearGradient id={`pbOrange${speed}`} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#fbb535"/><stop offset="1" stopColor="#f39c16"/></linearGradient>
+  <defs><linearGradient id={`pbOrange${speed}`} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#fbb535"/><stop offset="1" stopColor="#f39c16"/></linearGradient>
    <linearGradient id={`pbViolet${speed}`} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#7669de"/><stop offset="1" stopColor="#6457cf"/></linearGradient></defs>
-  <rect x="4" y="10" width="150" height="110" rx="2" fill="#000" opacity=".45" filter={`url(#pbCast${speed})`} transform="translate(-6 6)"/>
+  <image href="desk/ah/portra-cast.png" x="-14" y="4" width="174" height="134"/>
   <rect x="10" y="8" width="150" height="110" rx="2" fill={`url(#pbOrange${speed})`}/>
   {kp(18,22,9)}
   <rect x="10" y="34" width="150" height="58" fill={`url(#pbViolet${speed})`}/>
@@ -266,9 +271,8 @@ function FilmCanister(){
   <defs>
    <linearGradient id="fcBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#050505"/><stop offset=".28" stopColor="#2c2c2e"/><stop offset=".42" stopColor="#141415"/><stop offset="1" stopColor="#050505"/></linearGradient>
    <linearGradient id="fcFilm" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#6c3426"/><stop offset=".5" stopColor="#8a4a38"/><stop offset="1" stopColor="#6c3426"/></linearGradient>
-   <filter id="fcCast" x="-20%" y="-30%" width="140%" height="160%"><feGaussianBlur stdDeviation="4"/></filter>
   </defs>
-  <path d="M40 66h120v64H40z" fill="#000" opacity=".45" filter="url(#fcCast)" transform="translate(-6 6)"/>
+  <image href="desk/ah/canister-cast.png" x="20" y="58" width="148" height="92"/>
   <path d="M52 66V20c0-10 6-16 16-16h14c8 0 12 4 12 12v16h48v34z" fill="url(#fcFilm)"/>
   {[12,24,36,48].map(y=><rect key={y} x="56" y={y} width="6" height="7" rx="1.2" fill="#2b1d14"/>)}
   {[40,52].map(y=><rect key={y} x="134" y={y} width="6" height="7" rx="1.2" fill="#2b1d14"/>)}

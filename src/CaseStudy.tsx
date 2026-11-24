@@ -666,6 +666,8 @@ function CaseStudy({id,onBack}){
   try{return localStorage.getItem('case-reading-mode')==='deep'?'deep':'skim'}catch{return 'skim'}
  });
  useEffect(()=>{try{localStorage.setItem('case-reading-mode',readingMode)}catch{}},[readingMode]);
+ // Each case gets its own tab title, so open tabs and shared links say which case they are.
+ useEffect(()=>{if(!p)return;const prev=document.title;document.title=`${p.title} · Neha Chinimilli`;return()=>{document.title=prev}},[p]);
  if(!p)return null;
  const openClickedImage=(e)=>{const img=e.target instanceof HTMLImageElement?e.target:null;if(!img||img.closest('.caseCompanyBar')||img.closest('.toolLogoSection')||img.closest('[data-no-lightbox]')||img.closest('.kohlerStory')||img.closest('.caseHeroLogoWrap')||img.classList.contains('companyLogo'))return;setLightbox({src:img.currentSrc||img.src,alt:img.alt||'Project image'})};
  const openDeepSection=(e)=>{
