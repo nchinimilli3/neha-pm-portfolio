@@ -6,9 +6,11 @@
 .fsdPrompt{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0;font-size:15px;line-height:1.5;color:#4b4f5c}
 .fsdPrompt b{color:var(--fsd-navy)}
 .fsdDay{padding:4px 10px;border-radius:999px;background:#e8ebf7;font:600 12px/1.2 Inter,system-ui,sans-serif;color:var(--fsd-navy);font-variant-numeric:tabular-nums}
-.fsdNext{padding:6px 14px;border:0;border-radius:999px;background:var(--fsd-navy);color:#fff;font:600 13px/1.2 Inter,system-ui,sans-serif;cursor:pointer;animation:fsdPulse 2.4s ease-in-out 1s infinite}
+.fsdNext{padding:6px 14px;border:0;border-radius:999px;background:var(--fsd-navy);color:#fff;font:600 13px/1.2 Inter,system-ui,sans-serif;cursor:pointer;position:relative}
 .fsdNext:hover{background:#1b2a8f}
-@keyframes fsdPulse{0%,100%{box-shadow:0 0 0 0 #00095b00}50%{box-shadow:0 0 0 5px #00095b22}}
+/* Pulse and cue are fixed marks faded in and out: GPU-only. */
+.fsdNext:after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;box-shadow:0 0 0 5px #00095b22;animation:fsdFade 2.4s ease-in-out 1s infinite}
+@keyframes fsdFade{50%{opacity:1}}
 .fsdModes{flex:none;display:inline-flex;padding:4px;border-radius:999px;background:#e8ebf7}
 .fsdModes button{min-height:32px;padding:0 16px;border:0;border-radius:999px;background:transparent;font:500 13px/1 Inter,system-ui,sans-serif;color:#4b5075;cursor:pointer}
 .fsdModes button[aria-pressed=true]{background:#fff;color:var(--fsd-navy);box-shadow:0 1px 3px #00095b26}
@@ -35,8 +37,8 @@
 .fsdTabs button{padding:0 0 10px;border:0;border-bottom:2px solid transparent;background:none;font:400 13px/1.2 Inter,sans-serif;font-family:inherit;color:#4b4f5c;cursor:pointer}
 .fsdTabs button[aria-selected=true]{border-bottom-color:var(--fsd-blue);color:var(--fsd-navy)}
 .fsdTabs button:hover{color:var(--fsd-navy)}
-.fsdTabs .isCue{color:var(--fsd-blue);animation:fsdCue 1.6s ease-in-out infinite}
-@keyframes fsdCue{0%,100%{border-bottom-color:transparent}50%{border-bottom-color:#066fef66}}
+.fsdTabs .isCue{position:relative;color:var(--fsd-blue)}
+.fsdTabs .isCue:after{content:'';position:absolute;left:0;right:0;bottom:-2px;height:2px;background:#066fef66;opacity:0;animation:fsdFade 1.6s ease-in-out infinite}
 .fsdBody{flex:1;padding:24px 32px 32px}
 .fsdCard{padding:20px 16px 16px;background:#fff;border:1px solid var(--fsd-line);border-radius:6px;box-shadow:0 2px 6px #00000010;animation:fsdIn .35s ease both}
 @keyframes fsdIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -86,4 +88,4 @@ button.fsdPdf:hover{background:#eef4ff}
 .fsdToast{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);padding:10px 16px;border-radius:4px;background:var(--fsd-navy);color:#fff;font-size:13px;box-shadow:0 6px 16px #00095b40;animation:fsdIn .3s ease both}
 
 @media(max-width:900px){.fsdBar{flex-direction:column;align-items:flex-start}.fsdHeader,.fsdTitle{padding-left:20px;padding-right:20px}.fsdBody{padding:16px}.fsdFields{grid-template-columns:1fr}.fsdResult{flex-wrap:wrap;gap:16px}}
-@media(prefers-reduced-motion:reduce){.fsdNext,.fsdTabs .isCue,.fsdCard,.fsdResult,.fsdTable tr.isNew td,.fsdToast{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.fsdNext:after,.fsdTabs .isCue:after,.fsdCard,.fsdResult,.fsdTable tr.isNew td,.fsdToast{animation:none!important}}

@@ -3,6 +3,7 @@ import './lifecycle-road.css';
 import { ShelbyMark } from './CarArt';
 import MachEArtwork from './MachEArtwork';
 import RollingVehicle from './RollingVehicle';
+import { glideToHash } from './smoothScroll';
 
 // A sticky road across the top of the case. The car drives continuously with the scroll,
 // the road fills behind it, and the readout names the stage on screen.
@@ -226,7 +227,7 @@ export default function LifecycleRoad({stages,vehicle='car',label='Product lifec
   return ()=>window.clearInterval(emit);
  },[moving,vehicle]);
  const current=Math.min(stages.length-1,Math.floor(progress+.02));
- const go=(id:string)=>document.getElementById(id)?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+ const go=(id:string)=>glideToHash('#'+id);
  const pos=`${(progress+.5)/stages.length*100}%`;
  posRef.current=pos;
  return <nav ref={navRef} className={`lcRoad${shown?' isShown':''}${moving?' isMoving':''}`} data-traveler={vehicle} aria-label={label}>

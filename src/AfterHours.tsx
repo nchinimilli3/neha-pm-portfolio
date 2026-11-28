@@ -1,15 +1,14 @@
 import React,{useEffect,useLayoutEffect,useRef,useState} from 'react';
-import {glideTo} from './smoothScroll';
+import {glideToHash} from './smoothScroll';
+import {rasterPin} from './rasterPin';
 import SpartanGame from './SpartanGame';
 import StableFluids from './StableFluids';
 import './after-hours.css';
-import {HOME_SHOWN,isParked} from './CaseWindow';
-import {pageY} from './perfMode';
+import {HOME_SHOWN} from './CaseWindow';
 import {waitForSceneImages} from './sceneReadiness';
-import {currentLenis} from './smoothScroll';
 
 /* "After hours": the same desk as the hero, now at night and seen from straight above.
-   The desk light warms as the section arrives; scrolling moves the camera from device to device. */
+   It holds on the whole desk; clicking a device flies the camera to it, and back. */
 
 type Project={id:string;title:string;company:string;blurb?:string;summary:string};
 type Device={id:string;kind:'phone'|'laptop'|'tablet'|'watch';x:number;y:number;w:number;h:number;rot:number;fy?:number;title:string;eyebrow:string;line:string;hint?:string;caseId?:string};
@@ -26,14 +25,11 @@ const LAYOUT:Record<string,Omit<Device,'id'|'title'|'eyebrow'|'line'|'caseId'|'h
  game:{kind:'tablet',x:1900,y:720,w:656,h:473,rot:-2,fy:150},
  fluids:{kind:'tablet',x:150,y:900,w:656,h:473,rot:2},
 };
-// Every image the desk shows, so they can be fetched and decoded before it appears.
-// Each device's share of the tour: the camera travels for the first TRAVEL of it and rests
-// on the device for the rest, so a visitor who stops scrolling anywhere in that stretch sees
-// it framed. A jump from the list lands at HOLD, inside the rest.
-const TRAVEL=.6,HOLD=.8;
+const FLY_MS=1100;
 // The desk props' shadows and textures are baked images (public/desk/ah), not live SVG filters:
 // filters re-render every time the camera settles at a new zoom, which hitched the scroll.
 const AH_BAKED=['mug-cork','mug-foam','mug-heart-soft','mug-handle-cast','controller-shadow','tin-cast','portra-cast','canister-cast'].map(n=>`desk/ah/${n}.png`);
+// Every image the desk shows, so they can be fetched and decoded before it appears.
 const FUN_IMAGES=[...AH_BAKED,'desk/fun-scheduler.jpg','desk/fun-spartan.jpg','project-media/sparty.png','project-media/um-enemy.png'];
 const ORDER=['commute','bookclub','scheduler','rep','game','fluids'];
 const EXTRA:Record<string,{title:string;eyebrow:string;line:string;hint:string}>={
@@ -141,7 +137,7 @@ function DeviceView({d,on,focus,onPick}:{d:Device;on:boolean;focus:boolean;onPic
   :<>{d.kind==='phone'&&<i className="ahButtons" aria-hidden="true"/>}<div className="ahScreen"><Screen id={d.id} focus={focus}/>{d.kind==='phone'&&<i className="ahIsland" aria-hidden="true"/>}{d.kind==='tablet'&&<><PadStatus/><i className="ahIndicator" aria-hidden="true"/></>}</div></>;
  // Live screens stay interactive, so they are not wrapped in a button; the others are one.
  return live
-  ?<div className={`ahDevice ah-${d.kind} ah-${d.id} ${on?'isOn':''}`} style={style} role="group" aria-label={label}>{inner}</div>
+  ?<div className={`ahDevice ah-${d.kind} ah-${d.id} ${on?'isOn':''}`} style={style} role="group" aria-label={label}>{inner}{!focus&&<button type="button" className="ahZoomHit" onClick={onPick} aria-label={`Zoom in on ${d.title}`}/>}</div>
   :<button type="button" className={`ahDevice ah-${d.kind} ah-${d.id} ${on?'isOn':''}`} style={style} onClick={onPick} aria-label={label}>{inner}</button>;
 }
 
@@ -299,7 +295,7 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
  const [active,setActive]=useState(0);
  // Decided before the first paint, so a phone never flashes the pinned desktop layout.
  const [isStatic,setStatic]=useState(()=>window.matchMedia('(max-width: 900px), (max-aspect-ratio: 23/20), (prefers-reduced-motion: reduce)').matches);
- const activeRef=useRef(0);
+ const flyRef=useRef<(i:number)=>void>(()=>{});
  const [listOpen,setListOpen]=useState(false);
  // The desk fades in once its screens are downloaded and decoded, instead of filling in on arrival.
  // Warm it shortly before arrival, without competing with the opening desk.
@@ -329,10 +325,11 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
    fit();window.addEventListener('resize',fit);return()=>window.removeEventListener('resize',fit);
   }
   const HEAD=72;
-  // Quintic easing has zero velocity AND acceleration at either end of a pan.
-  const cl=(v:number)=>Math.max(0,Math.min(1,v)),ease=(t:number)=>(1-Math.cos(Math.PI*t))/2;
-  const camFor=(i:number,vw:number,vh:number)=>{
-   const h=vh-HEAD,midY=HEAD+h/2;
+  type Cam={s:number;cx:number;cy:number;X:number;Y:number};
+  // Zero velocity at either end of a flight.
+  const ease=(t:number)=>(1-Math.cos(Math.PI*t))/2;
+  const camFor=(i:number):Cam=>{
+   const vw=window.innerWidth,vh=window.innerHeight,h=vh-HEAD,midY=HEAD+h/2;
    if(i===0){const s=Math.min(vw*.6/SW,h*.9/SH);return {s,cx:SW/2,cy:SH/2,X:vw*.64,Y:midY}}
    const d=devices[i-1];
    // Phones get a closer look so their type reads; bigger devices keep some desk around them.
@@ -340,94 +337,47 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
    const fy=d.fy||0,s=d.kind==='watch'?Math.min(4,vw*.3/d.w,h*.5/d.h):Math.min(2.6,vw*.46/d.w,h*(d.kind==='phone'?.82:.68)/(d.h+fy*2));
    return {s,cx:d.x+d.w/2,cy:d.y+d.h/2+fy,X:vw*.63,Y:midY};
   };
-  let raf=0,idleTimer=0,pendingActive=0,lastTransform='',cameraReady=false,promotedAt=0;
-  // Pre-rendered while the camera moves (no half-drawn desk mid-scroll); released once it
-  // settles so the desk redraws sharp at its new zoom instead of staying an upscaled copy.
-  const settle=()=>{
-   // Promoted only while moving. Left promoted at rest, the 2700px desk is too big a GPU
-   // layer to keep fully rastered, and scrolling near it shows undrawn (dark) tiles.
-   stage.style.willChange='auto';
-   if(pendingActive!==activeRef.current){activeRef.current=pendingActive;setActive(pendingActive)}
-  };
-  let dirty=true,TRACK_TOP=0,TRACK_H=1;
-  const pageResize=new ResizeObserver(()=>{dirty=true});pageResize.observe(document.body);
-  const update=()=>{
-   raf=0;
-   if(isParked(track)){window.clearTimeout(idleTimer);return}
-   // The track's place on the page is measured only when the page's height changes
-   // (an Experience role opening, a resize), never read back on every frame.
-   if(dirty){dirty=false;TRACK_TOP=track.getBoundingClientRect().top+window.scrollY;TRACK_H=track.offsetHeight}
-   const vw=window.innerWidth,vh=window.innerHeight,rt=TRACK_TOP-pageY(),r={top:rt,bottom:rt+TRACK_H},total=TRACK_H-vh;
-   // Frame the desk once while it is still offscreen, so its first visible
-   // frame already has the correct camera position.
-   if(cameraReady&&(r.bottom<-50||r.top>vh+50)){window.clearTimeout(idleTimer);return}
-   // Follow the browser's scroll position directly. An extra easing loop made wheel input
-   // lag behind the page and kept repainting the whole desk after scrolling stopped.
-   const top=r.top;
-   // Give the pan room to breathe, followed by a stable, readable hold.
-   const p=cl(-top/Math.max(1,total))*stops,seg=Math.min(stops-1,Math.floor(p)),t=p-seg;
-   let a=camFor(seg,vw,vh),b=a,k=0;
-   if(seg>0){const prev=camFor(seg-1,vw,vh);b=a;a=prev;k=ease(cl(t/TRAVEL))}
-   const s=a.s*Math.pow(b.s/a.s,k);
-   // A dolly, not a slide: the point the camera looks at moves in step with 1/scale, so
-   // during a big zoom (the whole desk to the first phone, ~7x) the target stays steady
-   // on screen instead of sliding early and lurching late. Monotonic, so no overshoot;
-   // both endpoints keep their exact framing.
-   const kk=Math.abs(1/a.s-1/b.s)<1e-6?k:(1/a.s-1/s)/(1/a.s-1/b.s);
-   const cx=a.cx+(b.cx-a.cx)*kk,cy=a.cy+(b.cy-a.cy)*kk,X=a.X+(b.X-a.X)*k,Y=a.Y+(b.Y-a.Y)*k;
-   const x=X-cx*s,y=Y-cy*s;
+  // The desk and the laptop's tilted lid (a 3D layer of its own) stay rastered at a fixed zoom (rasterPin.ts).
+  const raster=rasterPin([stage,...stage.querySelectorAll<HTMLElement>('.ahLid')]);
+  let cam=camFor(0),target=0,raf=0;
+  const draw=(c:Cam)=>{
+   cam=c;raster.move(c.s);
    // Whole-pixel translation keeps the desk's edges and objects from shimmering apart.
-   const transform=`translate(${Math.round(x)}px,${Math.round(y)}px) scale(${s.toFixed(4)})`;
-   if(transform!==lastTransform){
-    // The browser rasters a promoted layer at the zoom it had when promoted. Zooming out from
-    // a close-up, that raster would cover the whole desk at close-up resolution (~9000px wide),
-    // too big to draw in time, so undrawn tiles flash. Once the zoom falls well below the
-    // promoted one, drop the promotion for a frame so it re-rasters at the current zoom.
-    if(stage.style.willChange!=='transform'){stage.style.willChange='transform';promotedAt=s}
-    else if(s<promotedAt*.6)stage.style.willChange='auto';
-    stage.style.transform=transform;lastTransform=transform}
-   view.style.visibility='visible';
-   cameraReady=true;
-   // Update React only after scrolling settles so the live demos do not restart mid-pan.
-   pendingActive=seg>0&&k<.5?seg-1:seg;
-   window.clearTimeout(idleTimer);
-   idleTimer=window.setTimeout(settle,160);
+   stage.style.transform=`translate(${Math.round(c.X-c.cx*c.s)}px,${Math.round(c.Y-c.cy*c.s)}px) scale(${c.s.toFixed(4)})`;
   };
-  const onScroll=()=>{if(!raf)raf=requestAnimationFrame(update)};
-  const redraw=()=>{cancelAnimationFrame(raf);raf=0;dirty=true;update()};
-  // With Lenis, draw in the same frame it moves the page.
-  const offLenis=currentLenis()?.on('scroll',()=>{cancelAnimationFrame(raf);raf=0;update()});
-  update();window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',redraw);window.addEventListener(HOME_SHOWN,redraw);
-  return()=>{offLenis?.();pageResize.disconnect();window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',redraw);window.removeEventListener(HOME_SHOWN,redraw);cancelAnimationFrame(raf);window.clearTimeout(idleTimer)};
+  draw(cam);view.style.visibility='visible';
+  flyRef.current=(i:number)=>{
+   cancelAnimationFrame(raf);target=i;
+   // Leaving a device: drop its caption and stop its demo before the camera pulls back.
+   if(i===0)setActive(0);
+   const a=cam,b=camFor(i),t0=performance.now();
+   const step=(now:number)=>{
+    const k=ease(Math.min(1,(now-t0)/FLY_MS)),s=a.s*Math.pow(b.s/a.s,k);
+    // A dolly, not a slide: the point the camera looks at moves in step with 1/scale, so during
+    // a big zoom (the whole desk to a phone, ~7x) the target stays steady instead of lurching late.
+    const kk=Math.abs(1/a.s-1/b.s)<1e-6?k:(1/a.s-1/s)/(1/a.s-1/b.s);
+    draw({s,cx:a.cx+(b.cx-a.cx)*kk,cy:a.cy+(b.cy-a.cy)*kk,X:a.X+(b.X-a.X)*k,Y:a.Y+(b.Y-a.Y)*k});
+    if(k<1)raf=requestAnimationFrame(step);else{raf=0;setActive(i)}
+   };
+   raf=requestAnimationFrame(step);
+  };
+  const reframe=()=>{cancelAnimationFrame(raf);raf=0;draw(camFor(target));setActive(target)};
+  // Off screen: free the desk's GPU layer; it's rebuilt on the next flight or frame.
+  const seen=new IntersectionObserver(([e])=>{if(!e.isIntersecting)raster.release()});seen.observe(track);
+  window.addEventListener('resize',reframe);window.addEventListener(HOME_SHOWN,reframe);
+  return()=>{seen.disconnect();window.removeEventListener('resize',reframe);window.removeEventListener(HOME_SHOWN,reframe);cancelAnimationFrame(raf);raster.dispose();flyRef.current=()=>{}};
  },[isStatic]);
 
- // Where each stop holds: the middle of its hold, as a page y.
- const stopY=(i:number)=>{
-  const track=trackRef.current;if(!track)return 0;
-  const total=track.offsetHeight-window.innerHeight,top=track.getBoundingClientRect().top+window.scrollY;
-  return top+total*((i===0?.2:i+HOLD)/stops)+1;
- };
  const goTo=(i:number)=>{
   if(isStatic){const d=devices[i-1];if(d?.caseId)onOpen(d.caseId);return}
-  glideTo(stopY(i),{duration:1.1});
+  flyRef.current(i);
  };
- /* The camera follows the scroll, like the hero: it moves only while you scroll, as fast as
-    you scroll, and rests on each device for a stretch so it's always framed when you stop.
-    Arrow keys glide to the next or previous device. */
+ // Escape backs out of a device to the whole desk.
  useEffect(()=>{
-  if(isStatic)return;
-  const track=trackRef.current;if(!track)return;
-  const onKey=(e:KeyboardEvent)=>{
-   if(e.key!=='ArrowDown'&&e.key!=='ArrowUp'||e.repeat||e.altKey||e.ctrlKey||e.metaKey)return;
-   if((e.target as Element)?.closest?.('input,textarea,select,[contenteditable]'))return;
-   const r=track.getBoundingClientRect();if(r.top>1||r.bottom<window.innerHeight-1)return;
-   let cur=0,d=Infinity;for(let i=0;i<stops;i++){const dd=Math.abs(stopY(i)-window.scrollY);if(dd<d){d=dd;cur=i}}
-   const next=cur+(e.key==='ArrowDown'?1:-1);if(next<0||next>=stops)return;
-   e.preventDefault();glideTo(stopY(next),{duration:1.1});
-  };
-  document.addEventListener('keydown',onKey);
-  return()=>document.removeEventListener('keydown',onKey);
- },[isStatic]);
+  if(isStatic||active===0||listOpen)return;
+  const onKey=(e:KeyboardEvent)=>{if(e.key==='Escape')flyRef.current(0)};
+  document.addEventListener('keydown',onKey);return()=>document.removeEventListener('keydown',onKey);
+ },[isStatic,active,listOpen]);
  // The list is a quick pop-up over the tour, not a second copy of it under the desk.
  useEffect(()=>{
   if(!listOpen)return;
@@ -443,7 +393,7 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
 
  return <section id="fun" className={`ahSection ${isStatic?'isStatic':''}`} aria-label="Fun things I’ve built">
   {isStatic&&heading}
-  <section ref={trackRef} className={`ahTrack ${ready?'isReady':''}`} style={{'--stops':stops} as React.CSSProperties}>
+  <section ref={trackRef} className={`ahTrack ${ready?'isReady':''}`} >
    <div className="ahPin">
     <div ref={viewRef} className="ahView">
       {!isStatic&&<div className="ahShield" aria-hidden="true"/>}
@@ -466,11 +416,11 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
     </div>
     {!isStatic&&<>
      <div className="ahCaption" aria-live="polite">
-      {cur?<div key={cur.id} className="ahCapCard"><h3>{cur.title}</h3><p>{cur.line}</p>{cur.hint&&<small>{cur.hint}</small>}{cur.caseId&&<button type="button" className="ahOpen" onClick={()=>onOpen(cur.caseId!)}>Read the case study <span aria-hidden="true">→</span></button>}</div>:heading}
+      {cur?<div key={cur.id} className="ahCapCard"><h3>{cur.title}</h3><p>{cur.line}</p>{cur.hint&&<small>{cur.hint}</small>}{cur.caseId&&<button type="button" className="ahOpen" onClick={()=>onOpen(cur.caseId!)}>Read the case study <span aria-hidden="true">→</span></button>}<button type="button" className="ahBack" onClick={()=>goTo(0)}><span aria-hidden="true">←</span> Back to the desk</button></div>:heading}
      </div>
      <div className="ahRail" aria-label="After hours tour">
       <ol>{Array.from({length:stops},(_,i)=><li key={i}><button type="button" className={active===i?'isOn':''} onClick={()=>goTo(i)} aria-label={i===0?'The whole desk':devices[i-1].title} aria-current={active===i?'step':undefined}><span>{i===0?'Desk':devices[i-1].title}</span></button></li>)}
-       <li><button type="button" className="ahNext" onClick={()=>document.getElementById('about')?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})} aria-label="Skip to the next section: About me"><span>Next: About me</span></button></li></ol>
+       <li><button type="button" className="ahNext" onClick={()=>glideToHash('#about')} aria-label="Skip to the next section: About me"><span>Next: About me</span></button></li></ol>
       <div ref={listRef} className="ahListPop">
        <button type="button" className="ahSkip" aria-expanded={listOpen} aria-controls="fun-pop" onClick={()=>setListOpen(o=>!o)}>{listOpen?'Close list':'Show list'}</button>
        {listOpen&&<div id="fun-pop" className="ahPop" role="dialog" aria-label="All fun builds">

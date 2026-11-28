@@ -29,7 +29,7 @@
 /* Safari lets the desk's 3D-tilted planes (desk top, keyboard, mouse) escape overflow:hidden,
    so the scene clips with clip-path; once Neha OS covers the room it isn't drawn at all.
    Opacity, not visibility: hiding it that way restyled every object in the room (~70ms). */
-.dhTrack.osCovers .dhPin>.dhScene{visibility:hidden}
+.dhTrack.osCovers .dhPin>.dhScene{opacity:0}
 .dhScene::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse 75% 70% at 55% 50%,transparent 60%,rgba(40,24,10,.16))}
 .isStatic .dhScene::after{display:none}
 /* Promoted to its own layer only while the camera moves (DeskHero.tsx). Kept promoted at rest,
@@ -89,7 +89,7 @@
 /* The sun overexposes: a white core, and a wide bloom that lifts the sky around it. */
 .dhView .core1{stop-color:#fff}.dhView .core2{stop-color:color-mix(in srgb,#fff 55%,var(--sun))}.dhView .core3{stop-color:var(--sun)}
 .tod-evening .dhView .core1,.tod-night .dhView .core1{stop-color:color-mix(in srgb,#fff 40%,var(--sun))}
-.dhView .bloom1{stop-color:var(--sun);stop-opacity:.32}.dhView .bloom2{stop-color:var(--sun);stop-opacity:0}
+.dhBloomIn{stop-color:var(--sun);stop-opacity:.32}.dhBloomOut{stop-color:var(--sun);stop-opacity:0}
 .dhView .cloud1{stop-color:var(--cloud);stop-opacity:.95}.dhView .cloud2{stop-color:color-mix(in srgb,var(--cloud),var(--cloudLow));stop-opacity:.7}.dhView .cloud3{stop-color:var(--cloudLow);stop-opacity:0}
 .dhRim{fill:none;stroke:var(--rim);stroke-width:.9;opacity:.55}.dhRimFar{opacity:.35}.tod-night .dhRim{opacity:.18}
 /* The sun's path on the water sits under the sun (the moon at night). */
@@ -97,34 +97,13 @@
 .tod-evening .dhGlitter{transform:translateX(-40px)}.tod-night .dhGlitter{transform:translateX(-150px)}
 .tod-morning .dhSunDisc{transform:translateY(90px)}.tod-evening .dhSunDisc{transform:translate(-40px,100px)}.tod-night .dhSunDisc{transform:translate(-150px,-30px) scale(.7);transform-origin:226px 92px}
 .dhStars{fill:#fff;opacity:var(--starOp)}
-.dhClouds>g{animation:dhCloudDrift 48s ease-in-out infinite alternate}
-.dhClouds>g:nth-child(even){animation-duration:65s;animation-direction:alternate-reverse}
-@keyframes dhCloudDrift{from{transform:translateX(-7px)}to{transform:translateX(12px)}}
-.dhStars circle{animation:dhStarTwinkle 5s ease-in-out infinite alternate}
-.dhStars circle:nth-child(2n){animation-delay:-2.7s;animation-duration:7s}
-.dhStars circle:nth-child(3n){animation-delay:-4.2s}
-@keyframes dhStarTwinkle{from{opacity:.35}to{opacity:1}}
-.dhNightSky{display:none}.tod-night .dhNightSky{display:inline}
-/* One short streak, then a long quiet sky. */
-.dhMeteor{opacity:0;animation:dhShootingStar 34s linear infinite}
-@keyframes dhShootingStar{0%,72%{opacity:0;transform:translate(52px,38px)}73%{opacity:.9}76%{opacity:0;transform:translate(242px,130px)}100%{opacity:0;transform:translate(242px,130px)}}
+.dhStars circle:nth-child(2n){opacity:.6}
 .tod-night .dhDayLife{display:none}
-.dhGullFlight{animation:dhGullCrossing 46s linear infinite}
-.dhGullWings{fill:none;stroke:var(--hillNear);stroke-width:1;stroke-linecap:round;animation:dhGullFlap 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
-@keyframes dhGullCrossing{from{transform:translate(-40px,155px)}50%{transform:translate(150px,132px)}to{transform:translate(340px,145px)}}
-@keyframes dhGullFlap{50%{transform:scaleY(.35)}}
-.dhSailCrossing{animation:dhSailAcross 86s linear infinite;animation-delay:-23s}
-.dhLaunchCrossing{animation:dhLaunchAcross 68s linear infinite;animation-delay:-41s}
-.dhBoatBob{animation:dhBoatBob 4.2s ease-in-out infinite}
-.dhLaunchCrossing .dhBoatBob{animation-delay:-1.8s;animation-duration:3.2s}
+.dhGullWings{fill:none;stroke:var(--hillNear);stroke-width:1;stroke-linecap:round}
 .dhBoatHull{fill:#3b5263}.dhBoatMast{stroke:#6c6459;stroke-width:.65}
 .dhBoatSail{fill:#fff4d9;opacity:.95}
-.dhBoatWake{fill:none;stroke:#fff8e5;stroke-width:.8;opacity:.5;animation:dhWake 3s ease-in-out infinite}
+.dhBoatWake{fill:none;stroke:#fff8e5;stroke-width:.8;opacity:.5}
 .tod-evening .dhBoats{opacity:.7}
-@keyframes dhSailAcross{from{transform:translate(-35px,272px)}to{transform:translate(335px,261px)}}
-@keyframes dhLaunchAcross{from{transform:translate(335px,290px)}to{transform:translate(-35px,300px)}}
-@keyframes dhBoatBob{0%,100%{transform:translateY(-.6px) rotate(-1deg)}50%{transform:translateY(.7px) rotate(1deg)}}
-@keyframes dhWake{50%{opacity:.2;transform:scaleX(.85)}}
 .dhHillFar{fill:color-mix(in srgb,var(--hillFar) 78%,var(--haze))}.dhHillNear{fill:var(--hillNear)}
 /* Aerial perspective: the farther back, the more the air colours it. */
 .dhRidge{fill:color-mix(in srgb,var(--hillFar) 42%,var(--haze))}
@@ -134,11 +113,15 @@
 .dhBridgeRef{fill:var(--bridge);opacity:.45}
 .dhTowerFar rect{fill:color-mix(in srgb,var(--bridge) 74%,var(--haze))}
 .dhTower .dhTowerShade{fill:#3a0d08;opacity:.28}
-.dhGlint rect{fill:#fff;opacity:var(--glintOp);animation:dhGlint 3.4s ease-in-out infinite}
-.dhGlint rect:nth-child(2n){animation-delay:1.3s}.dhGlint rect:nth-child(3n){animation-delay:2.2s}
-@keyframes dhGlint{50%{opacity:calc(var(--glintOp) * .25)}}
-.dhWaves path{fill:none;stroke:#fff;stroke-width:.8;animation:dhWave 8s linear infinite}
-@keyframes dhWave{to{transform:translateX(-20px)}}
+.dhGlint rect{fill:#fff;opacity:var(--glintOp)}
+.dhGlintLayer{animation:dhGlint 3.4s ease-in-out infinite}
+@keyframes dhGlint{50%{opacity:.25}}
+/* The view is sliced to cover the glass, so 20 view units = 20 × max(width/300, height/330). */
+.dhGlass{container-type:size}
+.dhWaveLayer{animation:dhWave 8s linear infinite}
+.dhWaveLayer svg{overflow:visible}
+.dhWave{fill:none;stroke:#fff;stroke-width:.8}
+@keyframes dhWave{to{transform:translateX(calc(max(100cqw / 15, 100cqh / 16.5) * -1))}}
 .dhCable{fill:none;stroke:var(--bridge);stroke-width:2.4}
 .dhCableRim{fill:none;stroke:var(--rim);stroke-width:.5;opacity:.5}
 .dhTruss{fill:color-mix(in srgb,var(--bridge) 45%,#1a0a08)}
@@ -148,35 +131,21 @@
 .dhDeck{fill:var(--bridge)}
 .dhTower rect{fill:var(--bridge)}
 .dhBridgeLights{fill:#ffd88a;opacity:var(--lightsOp)}
-.dhBridgeLights circle{filter:drop-shadow(0 0 2px #ffcf7a)}
+/* A soft halo stroke instead of a per-light drop-shadow filter. */
+.dhBridgeLights circle{stroke:#ffcf7a;stroke-opacity:.35;stroke-width:1.6}
 .tod-evening .dhBridgeLights{opacity:.55}
-.tod-night .dhBridgeLights circle,.tod-evening .dhBridgeLights circle{animation:dhBridgeTwinkle 6s ease-in-out infinite alternate}
-.dhBridgeLights circle:nth-child(3n){animation-delay:-3s;animation-duration:8s}
-.dhBridgeLights circle:nth-child(3n + 1){animation-delay:-5s}
-@keyframes dhBridgeTwinkle{from{opacity:.6}to{opacity:1}}
-.dhCarEast{animation:dhTrafficEast 36s linear infinite}.dhCarWest{animation:dhTrafficWest 41s linear infinite}
 .dhHeadlight{fill:#ffe9ac;opacity:.35}.dhTaillight{fill:#ff6d48;opacity:.35}
 .tod-night .dhCarBody{opacity:.25}
 .tod-night .dhHeadlight,.tod-evening .dhHeadlight,.tod-night .dhTaillight,.tod-evening .dhTaillight{opacity:1}
-@keyframes dhTrafficEast{from{transform:translate(-12px,224px)}to{transform:translate(312px,213.6px)}}
-@keyframes dhTrafficWest{from{transform:translate(312px,215.6px)}to{transform:translate(-12px,226px)}}
-.dhFog{fill:var(--haze);opacity:0}
-.isFoggy .dhFog{animation:dhFogArrival 95s ease-in-out infinite;animation-delay:-26s}
-.tod-day .isFoggy .dhFog{--fogOp:.42}
-.tod-evening .isFoggy .dhFog{--fogOp:.3}
-.tod-night .isFoggy .dhFog{--fogOp:.24}
-@keyframes dhFogArrival{0%,100%{opacity:calc(var(--fogOp) * .08);transform:translateX(-16px)}35%,55%{opacity:var(--fogOp)}75%{opacity:calc(var(--fogOp) * .35)}100%{transform:translateX(16px)}}
-.dhFog ellipse{animation:dhDrift 18s ease-in-out infinite alternate}
-.dhFog ellipse:nth-child(2){animation-duration:24s;animation-direction:alternate-reverse}
-@keyframes dhDrift{to{transform:translateX(26px)}}
+.dhFog{fill:var(--haze);fill-opacity:var(--fogOp,.42)}
+.tod-evening .dhFog{--fogOp:.3}
+.tod-night .dhFog{--fogOp:.24}
+/* Whole-element opacity and transform only: the compositor runs it, the blur is drawn once. */
+.dhFogLayer{animation:dhFogArrival 95s ease-in-out -26s infinite}
+@keyframes dhFogArrival{0%{opacity:.08;transform:translateX(-20px)}35%,55%{opacity:1}75%{opacity:.35}100%{opacity:.08;transform:translateX(20px)}}
 @media(prefers-reduced-motion:reduce){
  .dhView *{animation:none!important}
- .dhMeteor{display:none}
- .isFoggy .dhFog{opacity:calc(var(--fogOp) * .4)}
- .dhSailCrossing{transform:translate(155px,269px)}.dhLaunchCrossing{transform:translate(60px,297px)}
- .dhGullFlight{transform:translate(180px,145px)}
- .dhCarEast{transform:translate(130px,219.4px)}.dhCarWest{transform:translate(180px,219.8px)}
- .dhCar:nth-child(n + 3){display:none}
+ .dhFogLayer{animation:none;opacity:.4}
 }
 
 /* Photo string with fairy lights */
@@ -242,10 +211,9 @@
 .dhDeskEdge{position:absolute;left:0;right:0;top:0}
 .dhLampPool{left:334px;top:680px;width:318px;height:82px;z-index:16;border-radius:50%;background:radial-gradient(ellipse,rgba(255,216,153,.42),rgba(255,201,127,.15) 48%,transparent 74%);opacity:0;pointer-events:none}
 .lampOn .dhLampPool{opacity:.6}
-.dhSteam{position:absolute;left:1px;top:-78px;width:60px;height:80px;overflow:visible}
-.dhSteam path{fill:none;stroke:rgba(255,255,255,.75);stroke-width:3.5;stroke-linecap:round;filter:blur(1.5px);animation:dhSteam 4.2s ease-in-out infinite}
-.dhSteam path+path{animation-delay:2.1s}
-@keyframes dhSteam{0%{opacity:0;transform:translateY(12px) scaleY(.8)}35%{opacity:.8}100%{opacity:0;transform:translateY(-16px) scaleY(1.1)}}
+.dhSteam{position:absolute;left:1px;top:-78px;width:60px;height:80px}
+.dhSteam i,.dhSteam svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.dhSteam path{fill:none;stroke-linecap:round}
 .dhLamp{left:280px;top:416px;width:200px;height:320px;z-index:47;pointer-events:none}
 .dhLamp svg{width:100%;height:100%;display:block;overflow:visible}
 .dhBulb{fill:#6b665f;transition:fill .3s}
@@ -402,8 +370,9 @@
 .dhHelloBody{padding:calc(var(--su) * 14) calc(var(--su) * 16) calc(var(--su) * 16)}
 .dhHelloBody p{margin:0;font:400 calc(var(--su) * 21)/1.05 'Instrument Serif',Georgia,serif;color:#221d19}
 .dhHelloBody small{display:block;margin-top:calc(var(--su) * 8);font:500 calc(var(--su) * 12)/1 Caveat,cursive;color:#b0452f}
-.dhCaret{display:inline-block;width:calc(var(--su) * 1.4);height:calc(var(--su) * 19);margin-left:calc(var(--su) * 2);vertical-align:calc(var(--su) * -2.5);background:#221d19;animation:dhBlink 1s steps(1) infinite}
-@keyframes dhBlink{50%{opacity:0}}
+.dhCaret{display:inline-block;width:calc(var(--su) * 1.4);height:calc(var(--su) * 19);margin-left:calc(var(--su) * 2);vertical-align:calc(var(--su) * -2.5);background:#221d19;animation:dhBlink 1s linear infinite}
+/* Hard on/off with linear timing: steps() timing keeps a loop off the GPU. */
+@keyframes dhBlink{0%,49.99%{opacity:1}50%,100%{opacity:0}}
 
 .dhOs{position:absolute;inset:0;z-index:50;opacity:0;visibility:hidden;--su:calc(100vw / 420);font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif;color:#1d1d1f}
 .dhOs:not(.isLive) .dhWin,.dhOs:not(.isLive) .dhDock,.dhOs:not(.isLive) .dhIcons{pointer-events:none}
@@ -544,7 +513,7 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 
 
 @media(max-width:430px){.isStatic .dhCopy{padding-left:20px;padding-right:20px}.isStatic .dhScene{margin-left:20px;margin-right:20px}.isStatic .dhOs{padding-left:20px;padding-right:20px}}
-@media (prefers-reduced-motion:reduce){.dhFog ellipse,.dhWaves path,.dhGlint rect,.dhSteam path,.dhCaret{animation:none}}
+@media (prefers-reduced-motion:reduce){.dhWaveLayer,.dhGlintLayer,.dhCaret{animation:none}}
 
 /* A small landscape painting complements the original right-hand SF window. */
 .dhSummerScene,.dhBayExtension,.dhBayPainting{display:none}
@@ -672,9 +641,8 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 /* About me: the other corner of the room */
 .aboutCorner{position:relative;width:100%;aspect-ratio:4/5;border-radius:18px;overflow:hidden;background:#e4d4bd;box-shadow:0 24px 50px -24px rgba(40,24,10,.45)}
 .aboutCorner svg{display:block;width:100%;height:100%}
-.aboutCorner .acScreen{animation:acFlicker 5s ease-in-out infinite}
-.aboutCorner .acTvScreen{animation:acFlicker 5s ease-in-out infinite}
-.aboutCorner .acGlow{animation:acFlicker 5s ease-in-out infinite}
+.aboutCorner .acLayer{position:absolute;inset:0}
+.aboutCorner .acFlicker{animation:acFlicker 5s ease-in-out infinite}
 @keyframes acFlicker{0%,100%{opacity:1}40%{opacity:.9}43%{opacity:.97}70%{opacity:.92}}
 .acHot{position:absolute;border:0;padding:0;background:transparent;border-radius:10px;cursor:pointer;transition:background .2s,box-shadow .2s}
 /* Hovering a hotspot warms it with light instead of outlining it. */
@@ -685,7 +653,7 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 .acHotShelf{left:3%;top:13%;width:32%;height:61%}
 .acHotFilm{left:42%;top:10%;width:36%;height:37%}
 .acHotTv{left:61%;top:43%;width:36%;height:28%}
-@media (prefers-reduced-motion:reduce){.aboutCorner .acTvScreen,.aboutCorner .acGlow{animation:none}}
+@media (prefers-reduced-motion:reduce){.aboutCorner .acFlicker{animation:none}}
 
 /* Material and construction pass for the desk set. Keep the camera geometry
    unchanged so the scroll-to-screen transition still meets its target. */
@@ -725,7 +693,7 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 .dhMouse::after{top:13px;bottom:auto;height:38px;width:19px;border-radius:50%;background:linear-gradient(100deg,#ffffffa0,#ffffff08);transform:translateX(-72%) rotate(-12deg)}
 .dhPen{background:linear-gradient(0deg,#0004,transparent 40%,#ffffff50 60%,transparent 85%),linear-gradient(90deg,#712e22 0 8%,#a54631 8% 78%,#e0dfd9 78% 89%,#92928b 89% 96%,#303132 96%);clip-path:polygon(0 10%,89% 10%,100% 50%,89% 90%,0 90%)}
 .dhPen::after{content:"";position:absolute;left:8px;top:1px;width:32px;height:2px;background:#dedcd7;border-radius:2px}
-.dhWaves{opacity:.6}
+.dhWaveLayer{opacity:.6}
 .dhBridge{filter:drop-shadow(1px 1px 0 #522c2433)}
 .dhPaints svg>rect{stroke-width:1.2}
 .dhDeskEdge{height:3px;background:linear-gradient(rgba(60,36,16,.35),transparent)}
@@ -735,13 +703,18 @@ button.dhCappa,button.dhPaints{padding:0;border:0;background:none;color:inherit;
 button.dhCappa:focus-visible,button.dhPaints:focus-visible{outline:2px solid #e2b33a;outline-offset:7px;border-radius:8px}
 .dhCoffeeLevel{transition:transform .75s ease-in-out,opacity .65s ease}
 .dhCappa .dhSteam{opacity:var(--coffee-steam,1);transition:opacity .7s;pointer-events:none}
-.dhCappa .dhSteam path{stroke:#fff8eb;stroke-width:2.4;filter:blur(2.4px);animation:dhSteamWisp 5.8s ease-in-out infinite;transform-origin:50% 100%}
-.dhCappa .dhSteam path:nth-child(2){stroke-width:4;animation-delay:-2.6s;animation-duration:6.8s;filter:blur(3.4px)}
-.dhCappa .dhSteam path:nth-child(3){stroke-width:1.5;animation-delay:-4s;animation-duration:5.2s}
+/* Each wisp is its own element, so the blur is drawn once and the compositor moves it. */
+.dhCappa .dhSteam path{stroke:#fff8eb;stroke-width:2.4;filter:blur(2.4px)}
+/* Blur lives on the path (rastered once); the svg only moves and fades, on the compositor. */
+.dhCappa .dhSteam i{animation:dhSteamWisp 5.8s ease-in-out infinite;transform-origin:50% 100%}
+.dhCappa .dhSteam i:nth-child(2){animation-delay:-2.6s;animation-duration:6.8s}
+.dhCappa .dhSteam i:nth-child(2) path{stroke-width:4;filter:blur(3.4px)}
+.dhCappa .dhSteam i:nth-child(3){animation-delay:-4s;animation-duration:5.2s}
+.dhCappa .dhSteam i:nth-child(3) path{stroke-width:1.5}
 @keyframes dhSteamWisp{0%{opacity:0;transform:translate(0,9px) scale(.8,.7)}30%{opacity:.35}65%{opacity:.2}100%{opacity:0;transform:translate(9px,-22px) scale(1.3,1.12)}}
 .dhWatercolorTin{position:relative;pointer-events:none}
 .dhPaints::before{content:"";position:absolute;inset:-12px;pointer-events:auto}
-@media(prefers-reduced-motion:reduce){.dhCoffeeLevel,.dhCappa .dhSteam{transition:none}.dhCappa .dhSteam path{animation:none}}
+@media(prefers-reduced-motion:reduce){.dhCoffeeLevel,.dhCappa .dhSteam{transition:none}.dhCappa .dhSteam i{animation:none}}
 
 /* The shade points down and right from the left of the portrait. Light lands on the
    print and nearby wood; it stays local rather than washing out the entire room. */

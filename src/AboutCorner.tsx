@@ -89,7 +89,7 @@ export default function AboutCorner({onOpen}:{onOpen:(v:View)=>void}){
    <rect x="168" y="54" width="112" height="86" rx="1.5" fill="#1f1c1a"/>
    <rect x="171" y="57" width="106" height="80" fill="#34302c"/>
    <rect x="174" y="60" width="100" height="74" fill="#f8f4ea"/>
-   <image href={asset('about-lakefront.webp')} x="180" y="66" width="88" height="62" preserveAspectRatio="xMidYMid slice" clipPath="url(#acPhoto)"/>
+   <image href={asset('project-media/about-film/pin/lakefront.jpg')} x="180" y="66" width="88" height="62" preserveAspectRatio="xMidYMid slice" clipPath="url(#acPhoto)"/>
    <path d="M274 60 234 60 264 134H274Z" fill="#fff" opacity=".16"/>
 
    {/* Corkboard of film prints, pinned. */}
@@ -99,7 +99,7 @@ export default function AboutCorner({onOpen}:{onOpen:(v:View)=>void}){
     <rect x="180" y="172" width="120" height="52" fill="#c89c69"/>
     <rect x="180" y="172" width="120" height="52" fill="#fff" filter="url(#acCorkTex)" opacity=".7"/>
     <rect x="180" y="172" width="120" height="52" fill="url(#acWinLight)" opacity=".55"/>
-    {['project-media/about-film/01.jpg','project-media/about-film/06.jpg','project-media/about-film/10.jpg'].map((src,i)=><g key={src} transform={`rotate(${[-5,3,-2][i]} ${201+i*38} 196)`}>
+    {/* small copies (pin/): the full photos decoded at full size to fill a few-unit print */['project-media/about-film/pin/01.jpg','project-media/about-film/pin/06.jpg','project-media/about-film/pin/10.jpg'].map((src,i)=><g key={src} transform={`rotate(${[-5,3,-2][i]} ${201+i*38} 196)`}>
      <rect x={183+i*38} y="180" width="36" height="42" fill="#2a1a0c" opacity=".35" filter="url(#acSoft)" transform="translate(-2 3)"/>
      <rect x={184+i*38} y="179" width="34" height="40" fill="#fffdf8"/>
      <image href={asset(src)} x={187+i*38} y="182" width="28" height="26" preserveAspectRatio="xMidYMid slice" clipPath={`url(#acPrint${i})`}/>
@@ -108,8 +108,12 @@ export default function AboutCorner({onOpen}:{onOpen:(v:View)=>void}){
    </g>
 
    {/* Walnut media console on tapered legs, a thin TV with the show on, bias glow on the wall. */}
-   <g className="acTvSet">
-    <ellipse cx="314" cy="252" rx="92" ry="62" fill="url(#acBias)" className="acGlow"/>
+   {/* The glow and the screen flicker as their own HTML layers (opacity on the GPU); flickering
+       them inside this SVG would repaint the whole room every frame. Gradients are shared by id. */}
+  </svg>
+  <div className="acLayer acFlicker"><svg viewBox="0 0 400 500" aria-hidden="true"><ellipse cx="314" cy="252" rx="92" ry="62" fill="url(#acBias)"/></svg></div>
+  <svg className="acLayer" viewBox="0 0 400 500" aria-hidden="true">
+   <g>
     <ellipse cx="250" cy="374" rx="90" ry="9" fill="#2e1b0c" opacity=".22" filter="url(#acSofter)"/>
     <ellipse cx="312" cy="368" rx="84" ry="6" fill="#2e1b0c" opacity=".4" filter="url(#acSoft)"/>
     <path d="M246 342l-4 24h4l6-24zM378 342l4 24h-4l-6-24z" fill="#3a2414"/>
@@ -120,7 +124,11 @@ export default function AboutCorner({onOpen}:{onOpen:(v:View)=>void}){
     {Array.from({length:14},(_,i)=><rect key={i} x={240+i*10.8} y="308" width="7.5" height="30" rx="1" fill="#4d2f19" opacity=".55"/>)}
     <path d="M292 300l-6-4h10zM332 300l6-4h-10z" fill="#1b1b1d"/>
     <rect x="250" y="222" width="126" height="74" rx="2" fill="#0f0f11"/>
-    <rect x="252.5" y="224.5" width="121" height="69" rx="1" fill="url(#acTv)" className="acTvScreen"/>
+   </g>
+  </svg>
+  <div className="acLayer acFlicker"><svg viewBox="0 0 400 500" aria-hidden="true"><rect x="252.5" y="224.5" width="121" height="69" rx="1" fill="url(#acTv)"/></svg></div>
+  <svg className="acLayer" viewBox="0 0 400 500" aria-hidden="true">
+   <g>
     <text x="313" y="263" textAnchor="middle" fontFamily="'Instrument Serif',Georgia,serif" fontSize="15" fill="#fff">Vanderpump</text>
     <path d="M253 225h44l-22 68h-22Z" fill="#fff" opacity=".07"/>
    </g>

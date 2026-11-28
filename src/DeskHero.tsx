@@ -1,6 +1,7 @@
 import React,{useCallback,useEffect,useLayoutEffect,useRef,useState} from 'react';
 import {getLenis,initAnchors} from './smoothScroll';
 import {pageY} from './perfMode';
+import {rasterPin} from './rasterPin';
 import {waitForSceneImages} from './sceneReadiness';
 import './desk-hero.css';
 import {createPortal} from 'react-dom';
@@ -150,6 +151,13 @@ function SanFranciscoSummerView(){
  </svg>;
 }
 
+// Where the cars, gulls and boats sit: the frame their old loops passed through at load.
+const CARS=Array.from({length:6},(_,i)=>{const t=(i*7.7/(36+i%3*5))%1;return i%2?[312-324*t,215.6+10.4*t]:[-12+324*t,224-10.4*t]});
+const GULLS=[[38,150],[116,145],[129,139]];
+const GLINTS=[[40,258,8],[130,270,12],[180,250,6],[90,292,10],[150,306,12],[60,318,14]];
+// Glints twinkle in three offset groups: every 3rd, else every 2nd, else the rest.
+const GLINT_PHASES=[0,1.3,2.2];
+const glintPhase=(i:number)=>(i+1)%3===0?2:(i+1)%2===0?1:0;
 function GoldenGateView(){
  // Per-instance ids: the hero and the footer each draw this view at a different time of day.
  const u=React.useId().replace(/:/g,'');
@@ -160,16 +168,15 @@ function GoldenGateView(){
  useEffect(()=>{
   const view=viewRef.current;if(!view)return;
   const observer=new IntersectionObserver(([entry])=>{
-   view.getAnimations({subtree:true}).forEach(a=>{if(a.effect?.getTiming().iterations===Infinity)entry.isIntersecting?a.play():a.pause()});
+   (view.parentElement??view).getAnimations({subtree:true}).forEach(a=>{if(a.effect?.getTiming().iterations===Infinity)entry.isIntersecting?a.play():a.pause()});
   });
   observer.observe(view);return()=>observer.disconnect();
  },[]);
- return <svg ref={viewRef} className={`dhView ${foggy?'isFoggy':'isClear'}`} viewBox="0 0 300 330" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+ return <><svg ref={viewRef} className={`dhView ${foggy?'isFoggy':'isClear'}`} viewBox="0 0 300 330" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
   <defs>
    <linearGradient id={`dhSky${u}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" className="sky1"/><stop offset=".7" className="sky2"/><stop offset="1" className="sky3"/></linearGradient>
    <linearGradient id={`dhBay${u}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" className="bay1"/><stop offset="1" className="bay2"/></linearGradient>
    <clipPath id={`dhHangClip${u}`}><path d="M-6 196Q40 222 82 118Q150 214 222 136Q256 196 306 212L306 226L-6 232Z"/></clipPath>
-   <filter id={`dhFogBlur${u}`} x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="7"/></filter>
    <radialGradient id={`dhHalo${u}`}><stop offset="0" className="halo1"/><stop offset="1" className="halo2"/></radialGradient>
    <linearGradient id={`dhHaze${u}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" className="haze0"/><stop offset=".86" className="haze1"/><stop offset="1" className="haze2"/></linearGradient>
    <linearGradient id={`dhSheen${u}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" className="sheen1"/><stop offset="1" className="sheen2"/></linearGradient>
@@ -177,17 +184,16 @@ function GoldenGateView(){
    <mask id={`dhRefMask${u}`}><rect y="232" width="300" height="80" fill={`url(#dhRefFade${u})`}/></mask>
    <radialGradient id={`dhPuff${u}`} cx=".5" cy=".42" r=".5"><stop offset="0" className="cloud1"/><stop offset=".55" className="cloud2"/><stop offset="1" className="cloud3"/></radialGradient>
    <radialGradient id={`dhCore${u}`}><stop offset="0" className="core1"/><stop offset=".6" className="core2"/><stop offset="1" className="core3"/></radialGradient>
-   <radialGradient id={`dhBloom${u}`}><stop offset="0" className="bloom1"/><stop offset="1" className="bloom2"/></radialGradient>
+   <radialGradient id={`dhBloom${u}`}><stop offset="0" className="dhBloomIn"/><stop offset="1" className="dhBloomOut"/></radialGradient>
    {/* Backlit hills: the face toward us sits in shade, darkest at the waterline. */}
    <linearGradient id={`dhHillShade${u}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#000" stopOpacity="0"/><stop offset="1" stopColor="#000" stopOpacity=".28"/></linearGradient>
-   <linearGradient id={`dhMeteor${u}`}><stop stopColor="#fff4cf" stopOpacity="0"/><stop offset="1" stopColor="#fff4cf"/></linearGradient>
   </defs>
   <rect width="300" height="330" fill={`url(#dhSky${u})`}/>
   <g className="dhSunDisc"><circle cx="226" cy="92" r="150" fill={`url(#dhBloom${u})`}/><circle cx="226" cy="92" r="46" fill={`url(#dhHalo${u})`}/><circle cx="226" cy="92" r="17" fill={`url(#dhCore${u})`}/></g>
   <g className="dhClouds">{CLOUDS.map((c,i)=><g key={i}>{c.map(([x,y,rx,ry],k)=><ellipse key={k} cx={x} cy={y} rx={rx} ry={ry} fill={`url(#dhPuff${u})`}/>)}</g>)}</g>
   <g className="dhStars">{[[30,40],[70,22],[120,52],[180,30],[250,46],[280,20],[150,14],[210,70]].map(([x,y],i)=><circle key={i} cx={x} cy={y} r={i%3?0.9:1.3}/>)}</g>
-  <g className="dhNightSky"><g className="dhMeteor"><path d="M-34 -16L0 0" stroke={`url(#dhMeteor${u})`} strokeWidth="1.2"/><circle r="1.2" fill="#fff4cf"/></g></g>
-  <g className="dhDayLife dhGulls">{[0,1,2].map(i=><g key={i} className="dhGullFlight" style={{animationDelay:`${-i*11}s`}}><g transform={`translate(${-i*13} ${i*6})`}><path className="dhGullWings" d="M-5 -1Q-2 -4 0 0Q2 -4 5 -1"/></g></g>)}</g>
+  {/* Still life: only water, fog and steam move (each on its own layer, so nothing else repaints). */}
+  <g className="dhDayLife dhGulls">{GULLS.map(([x,y],i)=><path key={i} className="dhGullWings" transform={`translate(${x} ${y})`} d="M-5 -1Q-2 -4 0 0Q2 -4 5 -1"/>)}</g>
   {/* Distant ridge, far shore, then the near headland: each step back is paler and bluer. */}
   <path className="dhRidge" d="M150 224C176 206 200 200 226 204C252 208 276 196 300 192V236H150Z"/>
   <path className="dhRim dhRimFar" d="M150 224C176 206 200 200 226 204C252 208 276 196 300 192"/>
@@ -202,23 +208,7 @@ function GoldenGateView(){
   <rect y="234" width="300" height="96" fill={`url(#dhBay${u})`}/>
   {/* The sky's reflection brightens the water toward the horizon. */}
   <rect y="234" width="300" height="34" fill={`url(#dhSheen${u})`}/>
-  <g className="dhGlint dhGlitter">{GLITTER.map(([x,y,w,h],i)=><rect key={i} x={x} y={y} width={w} height={h} rx={h/2}/>)}</g>
   <g className="dhBridgeRef" mask={`url(#dhRefMask${u})`}><rect x="77" y="232" width="15" height="70"/><rect x="218" y="230" width="12.4" height="44"/><path d="M-6 232L306 222L306 226L-6 237Z"/></g>
-  <g className="dhWaves">{[246,262,280,300,318].map((y,i)=><path key={y} d={`M-40 ${y}q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0q5 -2.2 10 0q5 2.2 10 0`} style={{animationDuration:`${7+i*1.6}s`,opacity:.18+i*.03}}/>)}</g>
-  <g className="dhGlint">{[[40,258,8],[130,270,12],[180,250,6],[90,292,10],[150,306,12],[60,318,14]].map(([x,y,w],i)=><rect key={i} x={x} y={y} width={w} height="1.2" rx=".6"/>)}</g>
-  <g className="dhDayLife dhBoats">
-   <g className="dhSailCrossing"><g className="dhBoatBob">
-    <path className="dhBoatWake" d="M-25 2Q-17 0 -9 2M-31 5L-13 4"/>
-    <path className="dhBoatHull" d="M-10 0H10L6 4H-6Z"/>
-    <path className="dhBoatMast" d="M0 0V-25"/>
-    <path className="dhBoatSail" d="M-1 -24L-1 -3H-12ZM2 -21L11 -3H2Z"/>
-   </g></g>
-   <g className="dhLaunchCrossing"><g className="dhBoatBob">
-    <path className="dhBoatWake" d="M9 2Q20 0 32 3M13 5L39 6"/>
-    <path className="dhBoatHull" d="M-9 0H9L6 3H-5Z"/>
-    <path className="dhBoatSail" d="M-3 0V-4H4L7 0Z"/>
-   </g></g>
-  </g>
   {/* The bridge, International Orange, receding from the Presidio side */}
   <g className="dhBridge">
    <path className="dhCable" d="M-6 196Q40 222 82 118Q150 214 222 136Q256 196 306 212"/>
@@ -228,7 +218,7 @@ function GoldenGateView(){
    <path className="dhTruss" d="M-6 229L306 218.6L306 221L-6 232.4Z"/>
    <path className="dhCableRim" d="M-6 224L306 214"/>
    {/* Two lanes follow the deck's perspective; towers occlude the tiny cars. */}
-   <g className="dhTraffic">{Array.from({length:6},(_,i)=><g key={i} className={`dhCar ${i%2?'dhCarWest':'dhCarEast'}`} style={{animationDelay:`${-i*7.7}s`,animationDuration:`${36+i%3*5}s`}}>
+   <g className="dhTraffic">{CARS.map(([x,y],i)=><g key={i} className="dhCar" transform={`translate(${x} ${y})`}>
     <path className="dhCarBody" d="M-3 0V-1H-1.5L-.7 -2H1.2L2 -1H3V0Z" style={{fill:['#efe1c3','#596a75','#d3aa68'][i%3]}}/>
     <circle className="dhHeadlight" cx={i%2?-3:3} cy="-.6" r=".75"/><circle className="dhTaillight" cx={i%2?3:-3} cy="-.6" r=".55"/>
    </g>)}</g>
@@ -237,8 +227,36 @@ function GoldenGateView(){
    <g className="dhTower dhTowerFar"><rect x="218" y="134" width="3.4" height="94"/><rect x="227" y="137" width="3.4" height="91"/><rect x="218" y="146" width="12.4" height="2.6"/><rect x="218" y="166" width="12.4" height="2.6"/><rect x="218" y="186" width="12.4" height="2.6"/><rect x="218" y="204" width="12.4" height="2.6"/><rect x="217.6" y="133.6" width="13.2" height="2.2"/><rect className="dhTowerRim" x="220.8" y="137" width=".6" height="88"/><rect className="dhTowerRim" x="229.8" y="139" width=".6" height="86"/></g>
    <g className="dhBridgeLights">{Array.from({length:18},(_,i)=><circle key={i} cx={-2+i*18} cy={225-i*.55} r="1.2"/>)}<circle cx="84" cy="116" r="1.8"/><circle cx="224" cy="134" r="1.6"/></g>
   </g>
-  <g className="dhFog" filter={`url(#dhFogBlur${u})`}><ellipse cx="60" cy="214" rx="90" ry="14"/><ellipse cx="220" cy="224" rx="110" ry="12"/><ellipse cx="150" cy="196" rx="70" ry="8"/></g>
  </svg>
+ {/* Water: each loop moves a whole HTML layer (opacity or transform), which the GPU runs without
+    repainting; animating the SVG shapes themselves repaints on the main thread every frame. */}
+ {GLINT_PHASES.map((delay,ph)=><div key={ph} className="dhView dhGlintLayer" style={{animationDelay:`${delay}s`}} aria-hidden="true"><svg className="dhView" viewBox="0 0 300 330" preserveAspectRatio="xMidYMid slice">
+  <g className="dhGlint dhGlitter">{GLITTER.map(([x,y,w,h],i)=>glintPhase(i)===ph&&<rect key={i} x={x} y={y} width={w} height={h} rx={h/2}/>)}</g>
+  <g className="dhGlint">{GLINTS.map(([x,y,w],i)=>glintPhase(i)===ph&&<rect key={i} x={x} y={y} width={w} height="1.2" rx=".6"/>)}</g>
+ </svg></div>)}
+ {/* One wave period is 20 units; the layer slides exactly that far, so the loop is seamless. */}
+ {[246,262,280,300,318].map((y,i)=><div key={y} className="dhView dhWaveLayer" style={{animationDuration:`${7+i*1.6}s`}} aria-hidden="true"><svg className="dhView" viewBox="0 0 300 330" preserveAspectRatio="xMidYMid slice"><path className="dhWave" d={`M-40 ${y}${'q5 -2.2 10 0q5 2.2 10 0'.repeat(18)}`} style={{opacity:.18+i*.03}}/></svg></div>)}
+ <svg className="dhView" viewBox="0 0 300 330" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <g className="dhDayLife dhBoats">
+   <g transform="translate(64 269)">
+    <path className="dhBoatWake" d="M-25 2Q-17 0 -9 2M-31 5L-13 4"/>
+    <path className="dhBoatHull" d="M-10 0H10L6 4H-6Z"/>
+    <path className="dhBoatMast" d="M0 0V-25"/>
+    <path className="dhBoatSail" d="M-1 -24L-1 -3H-12ZM2 -21L11 -3H2Z"/>
+   </g>
+   <g transform="translate(112 296)">
+    <path className="dhBoatWake" d="M9 2Q20 0 32 3M13 5L39 6"/>
+    <path className="dhBoatHull" d="M-9 0H9L6 3H-5Z"/>
+    <path className="dhBoatSail" d="M-3 0V-4H4L7 0Z"/>
+   </g>
+  </g>
+ </svg>
+ {/* Fog rolls in as one blurred sheet: drawn once, then only moved and faded. */}
+ {foggy&&<div className="dhView dhFogLayer" aria-hidden="true"><svg className="dhView" viewBox="0 0 300 330" preserveAspectRatio="xMidYMid slice">
+  <defs><filter id={`dhFogBlur${u}`} x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="7"/></filter></defs>
+  <g className="dhFog" filter={`url(#dhFogBlur${u})`}><ellipse cx="60" cy="214" rx="90" ry="14"/><ellipse cx="220" cy="224" rx="110" ry="12"/><ellipse cx="150" cy="196" rx="70" ry="8"/></g>
+ </svg></div>}
+ </>
 }
 
 function CanonAE1({onShoot}:{onShoot:()=>void}){
@@ -289,7 +307,7 @@ function CanonAE1({onShoot}:{onShoot:()=>void}){
    <path d="M85 75L94 72L99 82L89 86Z" fill="#dbeaf6" opacity=".22"/>
    <path d="M86 76L96 82M91 74L95 83" stroke="#fff" strokeOpacity=".3" strokeWidth=".6"/>
    <circle cx="108" cy="98" r="1.8" fill="#fff" opacity=".18"/>
-   <FlatText viewBox="0 0 200 150" markup={`<defs><path id="arc" d="M76 90a24 24 0 0 1 48 0"/></defs><text font-family="Helvetica,Arial,sans-serif" font-size="3.6" fill="#cfcfcc" letter-spacing=".5"><textPath href="#arc" startOffset="50%" text-anchor="middle">CANON LENS FD 50mm 1:1.8</textPath></text>`}/>
+   <FlatText viewBox="0 0 200 150" markup={`<defs><path id="arc" d="M78.1 98a23.3 23.3 0 1 1 43.8 0"/></defs><text font-family="Helvetica,Arial,sans-serif" font-weight="600" font-size="5" fill="#ececea" letter-spacing=".3"><textPath href="#arc" startOffset="50%" text-anchor="middle">CANON LENS FD 50mm 1:1.8</textPath></text>`}/>
   </svg>
  </button>
 }
@@ -318,7 +336,7 @@ function MsuCappuccino(){
   return ()=>window.clearTimeout(refill);
  },[sip]);
  const heart='M0 14C-10 8-18 1-18-6C-18-12-13.5-16-9-16C-4.5-16-1.5-13 0-10C1.5-13 4.5-16 9-16C13.5-16 18-12 18-6C18 1 10 8 0 14Z';
- return <button type="button" tabIndex={-1} className={`dhCappa dh3d ${drinking?'isSip':''} ${hi?'isHi':''}`} data-tip={sip===5?'Refilling…':'Take a sip · or hold'} aria-label={sip===5?'Empty cup, refilling':`Take a sip of coffee, ${100-sip*20}% remaining`} aria-disabled={drinking||sip===5} onPointerDown={()=>{hold.current.held=false;window.clearTimeout(hold.current.timer);hold.current.timer=window.setTimeout(()=>{hold.current.held=true;if(sip<5)setHi(v=>v+1)},550)}} onPointerUp={()=>window.clearTimeout(hold.current.timer)} onPointerLeave={()=>window.clearTimeout(hold.current.timer)} onClick={()=>{if(hold.current.held){hold.current.held=false;return}if(!drinking&&sip<5)setDrinking(true)}} style={{'--coffee-steam':sip===5?0:1-sip*.14} as React.CSSProperties}><svg className="dhSteam" viewBox="0 0 60 80" aria-hidden="true"><path d="M19 78C8 64 30 57 20 43S12 22 24 5"/><path d="M32 79C46 65 22 55 34 39S44 20 32 0"/><path d="M42 78C32 67 49 56 42 46S36 28 47 15"/></svg>
+ return <button type="button" tabIndex={-1} className={`dhCappa dh3d ${drinking?'isSip':''} ${hi?'isHi':''}`} data-tip={sip===5?'Refilling…':'Take a sip · or hold'} aria-label={sip===5?'Empty cup, refilling':`Take a sip of coffee, ${100-sip*20}% remaining`} aria-disabled={drinking||sip===5} onPointerDown={()=>{hold.current.held=false;window.clearTimeout(hold.current.timer);hold.current.timer=window.setTimeout(()=>{hold.current.held=true;if(sip<5)setHi(v=>v+1)},550)}} onPointerUp={()=>window.clearTimeout(hold.current.timer)} onPointerLeave={()=>window.clearTimeout(hold.current.timer)} onClick={()=>{if(hold.current.held){hold.current.held=false;return}if(!drinking&&sip<5)setDrinking(true)}} style={{'--coffee-steam':sip===5?0:1-sip*.14} as React.CSSProperties}><span className="dhSteam" aria-hidden="true">{["M19 78C8 64 30 57 20 43S12 22 24 5","M32 79C46 65 22 55 34 39S44 20 32 0","M42 78C32 67 49 56 42 46S36 28 47 15"].map(d=><i key={d}><svg viewBox="0 0 60 80"><path d={d}/></svg></i>)}</span>
   {hi>0&&<svg className="dhSteamHi" key={hi} viewBox="0 0 60 70" aria-hidden="true"><path d="M14 52C15 38 17 22 19 10M18 38C22 30 30 30 30 38V52"/><path d="M41 52V36"/><path d="M40.6 26.4l.9.9"/></svg>}
   <svg viewBox="0 0 120 104" aria-hidden="true">
    <defs>
@@ -700,7 +718,8 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
   let raf=0,lastKey='',warmed=false,toastAt=0,toastGone=false,toastTimer=0;
   // The camera follows the scroll position exactly; Lenis (smoothScroll.ts) does the smoothing.
   let shown=-1,lastT=0,snap=true;
-  let promotedAt=0,restTimer=0;
+  // The room and its 3D planes (desk top, wood, photo frame) stay rastered at a fixed zoom (rasterPin.ts).
+  const raster=rasterPin([stage,...stage.querySelectorAll<HTMLElement>('.dhWood,.dhTop,.dhFrame')],{canRest:()=>!track.classList.contains('osCovers')});
   let SH=262,SY=334,CX0=740,START_SCALE=1,TRACK_TOP=0,TRACK_H=1;
   const measure=()=>{
    const vw=window.innerWidth,vh=window.innerHeight;
@@ -762,7 +781,8 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
    holdAll(away);
    // Off screen, the room isn't drawn at all: paused loops still kept its huge GPU layers alive.
    if(stage.style.visibility!==(away?'hidden':''))stage.style.visibility=away?'hidden':'';
-   if(away){snap=true;return}
+   // Off screen, free the room's GPU layer; it is rebuilt on the way back.
+   if(away){snap=true;raster.release();return}
    const target=cl(-r.top/total),dt=Math.min(.05,Math.max(0,(now-lastT)/1000));lastT=now;
    shown=target;
    snap=false;
@@ -780,11 +800,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
    const s=s0*Math.pow(s1/s0,e);
    const k=(1/s0-1/s)/(1/s0-1/s1||1);
    const cx=L(CX0,SX+SW/2,k),cy=L(510,SY+SH/2,k);
-   // Promote while moving; re-raster when a zoom-out falls well below the promoted zoom (else
-   // the whole room would be drawn at close-up resolution); drop the layer once it rests.
-   if(stage.style.willChange!=='transform'){stage.style.willChange='transform';promotedAt=s}
-   else if(s<promotedAt*.6)stage.style.willChange='auto';
-   window.clearTimeout(restTimer);restTimer=window.setTimeout(()=>{stage.style.willChange='auto'},180);
+   raster.move(s);
    stage.style.transform=`translate(${vw/2-cx*s}px,${vh/2-cy*s}px) scale(${s})`;
 
    // Keep the introduction until the camera starts filling the left side.
@@ -835,7 +851,7 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
   // Draw the first frame now, not on the next animation frame, so a view
   // transition back to the desktop snapshots the windows in place.
   update();
-  return()=>{offLenis?.();cancelAnimationFrame(raf);window.clearTimeout(toastTimer);window.removeEventListener('resize',onResize);window.removeEventListener('scroll',request);document.fonts.removeEventListener('loadingdone',onResize);window.removeEventListener(HOME_SHOWN,onShown);toastEl?.removeEventListener('mouseleave',request);holdRoom(false);holdAll(false);stage.style.visibility='';track.classList.remove('osCovers');setOsLive(false)};
+  return()=>{offLenis?.();cancelAnimationFrame(raf);raster.dispose();window.clearTimeout(toastTimer);window.removeEventListener('resize',onResize);window.removeEventListener('scroll',request);document.fonts.removeEventListener('loadingdone',onResize);window.removeEventListener(HOME_SHOWN,onShown);toastEl?.removeEventListener('mouseleave',request);holdRoom(false);holdAll(false);stage.style.visibility='';track.classList.remove('osCovers');setOsLive(false)};
  },[isStatic]);
 
  // Windows drag by their title bar, like the real thing.

@@ -121,7 +121,7 @@ export function SurveyDemo() {
             {[1, 2, 3, 4, 5, 6].map((q) => (
               <i key={q} />
             ))}
-            <b className="fvLapScore">72</b>
+            <span className="fvLapRun"><b className="fvLapScore">72</b></span>
             <svg className="fvLapFlag" viewBox="0 0 20 20">
               <path d="M5 18V2" stroke="currentColor" strokeWidth="1.6" />
               <path d="M5 3h12v8H5z" fill="#f3f1e9" />

@@ -300,18 +300,49 @@ const tvShows:TvShow[]=[
 
 /* Two paper planes take off from "traveling" on a loop, each leaving a dotted
    trail: one loops the loop off the end of the word, one glides over the top.
-   The trails and the flight paths share the same curves (px, word-relative). */
+   Paths are px, word-relative. Each flight runs from..to of a 7s loop, and the
+   plane and trail move only by transform and opacity so the GPU runs them on its
+   own (an offset-path or a masked dash would redraw on the main thread every frame). */
 const TRAVEL_FLIGHTS=[
- 'M50 26C60 18 71 6 65-1C59-7 48 2 57 8C67 14 84 4 106-4',
- 'M2 29C9 13 24 3 40 5S72 17 92 8'
+ {d:'M50 26C60 18 71 6 65-1C59-7 48 2 57 8C67 14 84 4 106-4',from:0,to:.38,scale:[[0,.6],[.04,1],[.30,1],[.38,.75]]},
+ {d:'M2 29C9 13 24 3 40 5S72 17 92 8',from:.45,to:.80,scale:[[.45,.6],[.49,1],[.72,1],[.80,.7]]}
 ];
+const TRAVEL_MS=7000;
+// The flight's ease, cubic-bezier(.4,0,.3,1): share of the path flown at time share t.
+const travelEase=(t:number)=>{let lo=0,hi=1;for(let i=0;i<30;i++){const m=(lo+hi)/2;if(1.2*m*(1-m)**2+.9*m*m*(1-m)+m**3<t)lo=m;else hi=m}const m=(lo+hi)/2;return 3*m*m*(1-m)+m**3};
+const travelWhen=(share:number)=>{let lo=0,hi=1;for(let i=0;i<30;i++){const m=(lo+hi)/2;if(travelEase(m)<share)lo=m;else hi=m}return (lo+hi)/2};
+const travelAt=(stops:number[][],t:number)=>{const i=stops.findIndex(s=>s[0]>=t);if(i<=0)return stops[i<0?stops.length-1:0][1];const [t0,v0]=stops[i-1],[t1,v1]=stops[i];return v0+(v1-v0)*(t-t0)/(t1-t0)};
 function TravelPlanes(){
- return <span className="travelSky" aria-hidden="true">
-  <svg className="travelTrails" viewBox="0 0 120 40" width="120" height="40">
-   <defs>{TRAVEL_FLIGHTS.map((d,i)=><mask key={i} id={`travelReveal${i}`} maskUnits="userSpaceOnUse" x="-20" y="-40" width="180" height="100"><path className={`travelReveal travelFlight${i}`} d={d} pathLength={1}/></mask>)}</defs>
-   {TRAVEL_FLIGHTS.map((d,i)=><path key={i} className={`travelTrail travelFlight${i}`} d={d} mask={`url(#travelReveal${i})`}/>)}
-  </svg>
-  {TRAVEL_FLIGHTS.map((d,i)=><span key={i} className={`travelPlane travelFlight${i}`} style={{offsetPath:`path('${d}')`}}>
+ const sky=useRef<HTMLSpanElement>(null);
+ useEffect(()=>{
+  const el=sky.current;if(!el||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const loop={duration:TRAVEL_MS,iterations:Infinity},anims:Animation[]=[];
+  const planes=el.querySelectorAll<HTMLElement>('.travelPlane'),trails=el.querySelectorAll<HTMLElement>('.travelTrail');
+  TRAVEL_FLIGHTS.forEach((f,i)=>{
+   const path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d',f.d);
+   const len=path.getTotalLength(),pt=(l:number)=>path.getPointAtLength(Math.min(len,Math.max(0,l)));
+   // The plane: sampled along the path, nose on the tangent (angle unwrapped through the loop).
+   const frames:Keyframe[]=[];let prev=0;
+   for(let k=0;k<=60;k++){
+    const l=travelEase(k/60)*len,c=pt(l),a=pt(l-.5),b=pt(l+.5),t=f.from+k/60*(f.to-f.from);
+    let ang=Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI;while(ang-prev>180)ang-=360;while(ang-prev<-180)ang+=360;prev=ang;
+    frames.push({offset:t,transform:`translate(${c.x-6.5}px,${c.y-4.65}px) rotate(${ang}deg) scale(${travelAt(f.scale,t)})`});
+   }
+   if(f.from>0)frames.unshift({...frames[0],offset:0});
+   frames.push({...frames[frames.length-1],offset:1});
+   anims.push(planes[i].animate(frames,loop));
+   // The trail: a dot every 3.5px that appears as the plane passes it (the trail fades as a whole in CSS).
+   for(let l=0;l<=len;l+=3.5){
+    const c=pt(l),dot=document.createElement('i'),t=f.from+travelWhen(l/len)*(f.to-f.from);
+    dot.style.left=`${c.x}px`;dot.style.top=`${c.y}px`;trails[i].append(dot);
+    anims.push(dot.animate([{offset:0,opacity:0},{offset:t,opacity:0},{offset:t,opacity:1},{offset:1,opacity:1}],loop));
+   }
+  });
+  return ()=>{anims.forEach(a=>a.cancel());trails.forEach(t=>t.replaceChildren())};
+ },[]);
+ return <span ref={sky} className="travelSky" aria-hidden="true">
+  {TRAVEL_FLIGHTS.map((_,i)=><span key={i} className={`travelTrail travelFlight${i}`}/>)}
+  {TRAVEL_FLIGHTS.map((_,i)=><span key={i} className={`travelPlane travelFlight${i}`}>
    <svg viewBox="0 0 14 10"><path className="planeWing" d="M.6 5 13.4.6 8 9.4 6.3 6.1Z"/><path className="planeFold" d="M13.4.6 6.3 6.1 4.8 8.6"/></svg>
   </span>)}
  </span>;
@@ -390,15 +421,20 @@ function Home({openCase,onChangeView}){
  // Phone nav: every link lives in a sheet behind a menu button.
  const [navOpen,setNavOpen]=useState(false);
  const navToggleRef=useRef<HTMLButtonElement>(null);
- const navRef=useRef(null);const [activeSection,setActiveSection]=useState('');const [navInd,setNavInd]=useState<React.CSSProperties>({opacity:0});
+ const navRef=useRef<HTMLElement>(null);
  useEffect(()=>{const ids=['projects','experience','fun','about'];
   // Section tops are measured when the page resizes, not read every scroll frame (each read forced a layout).
   let tops:number[]=[],stale=true;const measure=()=>{if(isParked(navRef.current)){stale=true;return}stale=false;const y=pageY();tops=ids.map(id=>{const el=document.getElementById(id);return el?el.getBoundingClientRect().top+y:Infinity})};
-  const onScroll=()=>{if(isParked(navRef.current))return;if(stale)measure();const y=pageY()+window.innerHeight*.35;let cur='';ids.forEach((id,i)=>{if(tops[i]<y)cur=id==='about'?'':id});setActiveSection(cur)};
+  const onScroll=()=>{if(isParked(navRef.current))return;if(stale)measure();const y=pageY()+window.innerHeight*.35;let cur='';ids.forEach((id,i)=>{if(tops[i]<y)cur=id==='about'?'':id});if(cur!==shown)show(cur)};
+  // The highlight is set on the links directly: as React state it re-rendered all of home (the
+  // whole desk scene) each time the scroll crossed a section, a 150ms stall mid walk-in.
+  let shown:string|null=null;const show=(cur:string)=>{shown=cur;const nav=navRef.current;if(!nav)return;
+   nav.querySelectorAll('a[href^="#"]').forEach(a=>a.classList.toggle('isActive',!!cur&&a.getAttribute('href')==='#'+cur));
+   const a=cur?nav.querySelector<HTMLElement>(`a[href="#${cur}"]`):null,ind=nav.querySelector<HTMLElement>('.navIndicator');if(!ind)return;
+   if(!a){ind.style.opacity='0';return}Object.assign(ind.style,{opacity:'1',width:`${a.offsetWidth}px`,transform:`translateX(${a.offsetLeft}px)`})};
   let raf=0;const request=()=>{if(!raf)raf=requestAnimationFrame(()=>{raf=0;onScroll()})};
   const ro=new ResizeObserver(()=>{measure();request()});ro.observe(document.body);measure();onScroll();
   window.addEventListener('scroll',request,{passive:true});return()=>{cancelAnimationFrame(raf);ro.disconnect();window.removeEventListener('scroll',request)}},[]);
- useEffect(()=>{const nav=navRef.current;if(!nav)return;const a=activeSection&&nav.querySelector(`a[href="#${activeSection}"]`);if(!a){setNavInd(v=>({...v,opacity:0}));return}setNavInd({opacity:1,width:`${a.offsetWidth}px`,transform:`translateX(${a.offsetLeft}px)`})},[activeSection]);
  useEffect(()=>{if(!navOpen)return;const k=e=>{if(e.key==='Escape'){setNavOpen(false);navToggleRef.current?.focus()}};window.addEventListener('keydown',k);return()=>window.removeEventListener('keydown',k)},[navOpen]);
  // The About photo can be taken over by the film camera, the bookshelf, or the TV: one at a time.
  const [aboutView,setAboutView]=useState<'photo'|'film'|'books'|'tv'>('photo');
@@ -434,7 +470,7 @@ function Home({openCase,onChangeView}){
  const serious=['fcvf','accenture','finsimple','kohler','marketExpansion','estee'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
  const fun=['commute','bookclub','scheduler','rep'].map(id=>projects.find(p=>p.id===id)).filter(Boolean);
  return <><button type="button" className="viewSkip" onClick={()=>onChangeView(true)}>Skip the animation: switch to Simple view</button>
- <header className={`siteHeader homeHeader${navOpen?' navIsOpen':''}`}><a className="wordmark" href="#top">Neha Chinimilli</a><button ref={navToggleRef} type="button" className="navToggle" aria-expanded={navOpen} aria-controls="primaryNav" aria-label={navOpen?'Close menu':'Open menu'} onClick={()=>setNavOpen(o=>!o)}><span/><span/></button><nav id="primaryNav" ref={navRef} aria-label="Primary" onClick={e=>{if((e.target as HTMLElement).closest('a'))setNavOpen(false)}}><i className="navIndicator" aria-hidden="true" style={navInd}/><a href="#projects" className={activeSection==='projects'?'isActive':''}>Selected work</a><a href="#experience" className={activeSection==='experience'?'isActive':''}>Experience</a><a href="#fun" className={activeSection==='fun'?'isActive':''}>Fun things I’ve built</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume</a><a href="mailto:chinimi2@msu.edu">Email</a><a className="headerLinkedIn" href="https://github.com/nchinimilli3" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on GitHub"><img src={assetUrl('github.svg')} alt="GitHub"/></a><a className="headerLinkedIn" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on LinkedIn"><img src={assetUrl('linkedin.svg')} alt="LinkedIn"/></a></nav><ViewModeToggle simple={false} onChange={onChangeView}/></header>
+ <header className={`siteHeader homeHeader${navOpen?' navIsOpen':''}`}><a className="wordmark" href="#top">Neha Chinimilli</a><button ref={navToggleRef} type="button" className="navToggle" aria-expanded={navOpen} aria-controls="primaryNav" aria-label={navOpen?'Close menu':'Open menu'} onClick={()=>setNavOpen(o=>!o)}><span/><span/></button><nav id="primaryNav" ref={navRef} aria-label="Primary" onClick={e=>{if((e.target as HTMLElement).closest('a'))setNavOpen(false)}}><i className="navIndicator" aria-hidden="true" style={{opacity:0}}/><a href="#projects">Selected work</a><a href="#experience">Experience</a><a href="#fun">Fun things I’ve built</a><a href="Neha_Chinimilli_Resume.pdf" target="_blank" rel="noreferrer">Resume</a><a href="mailto:chinimi2@msu.edu">Email</a><a className="headerLinkedIn" href="https://github.com/nchinimilli3" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on GitHub"><img src={assetUrl('github.svg')} alt="GitHub"/></a><a className="headerLinkedIn" href="https://www.linkedin.com/in/nchinimilli" target="_blank" rel="noreferrer" aria-label="Neha Chinimilli on LinkedIn"><img src={assetUrl('linkedin.svg')} alt="LinkedIn"/></a></nav><ViewModeToggle simple={false} onChange={onChangeView}/></header>
  <main id="main-content" className="homePage">
   <DeskHero projects={serious} openCase={openCase} onSimple={()=>onChangeView(true)}/>
   {!rest&&<div className="homeRestHold" aria-hidden="true"/>}
@@ -458,7 +494,7 @@ function Home({openCase,onChangeView}){
   {[[-70,-8,34,'wcRose'],[-22,-30,28,'wcPeach'],[34,-22,32,'wcCoral'],[78,6,26,'wcGold'],[-40,26,24,'wcPeach'],[22,30,27,'wcRose'],[-98,14,15,'wcCoral'],[100,-28,13,'wcRose']].map(([x,y,r,f],i)=><circle key={i} className="wcPool" cx={x} cy={y} r={r} fill={`url(#${f})`} style={{"--k":i} as React.CSSProperties}/>)}
   {[[-112,-34,2.6,'#d9587e'],[-86,-48,1.6,'#e8844f'],[112,32,2.2,'#d9604f'],[92,48,1.4,'#e0a13a'],[-60,50,1.8,'#d9587e'],[58,-50,2,'#e8844f'],[124,-6,1.3,'#d9587e'],[-124,40,1.2,'#e0a13a']].map(([x,y,r,c],i)=><circle key={'d'+i} className="wcDrop" cx={x} cy={y} r={r} fill={c as string} style={{"--k":i} as React.CSSProperties}/>)}
  </g>
-</svg></span> at heart, so I care about how a product feels, not only whether it works. I’ve built customer-facing software at Ford and Ford Credit and worked on product and business problems at Accenture and Spectrum. That mix is why I’m pursuing product management.</p><p className="hobbyLine">Outside of work, I’m usually trying a new coffee shop<span className="coffeeCup" aria-hidden="true"><svg viewBox="0 0 24 24"><path className="steam s1" d="M9.5 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/><path className="steam s2" d="M13 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/><path className="cupLine" d="M5 11h13v3.5A5.5 5.5 0 0 1 12.5 20h-2A5.5 5.5 0 0 1 5 14.5z"/><path className="cupLine" d="M18 12.2h.9a2.2 2.2 0 0 1 0 4.4h-1.3"/><path className="cupLine" d="M4 22h15"/></svg></span>, <span className="travelWord">traveling<TravelPlanes/></span>, <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>openAbout('books')} aria-expanded={aboutView==='books'}>reading</button>,<span className="filmPhotoHint" role="tooltip">click to see my shelf</span></span> keeping up with <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>openAbout('tv')} aria-expanded={aboutView==='tv'}>reality TV</button>,<span className="filmPhotoHint" role="tooltip">click to turn it on</span></span> <span className="bakeWord">baking<BakeSprinkles/></span>, hiking, painting, or taking <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>{openAbout('film');setFilmIndex(0)}} aria-expanded={aboutView==='film'}>film photos</button>.<span className="filmPhotoHint" role="tooltip">click to see my photos</span></span></p><div className="aboutActions"><BookRecForm/></div></div></section>
+</svg></span> at heart, so I care about how a product feels, not only whether it works. I’ve built customer-facing software at Ford and Ford Credit and worked on product and business problems at Accenture and Spectrum. That mix is why I’m pursuing product management.</p><p className="hobbyLine">Outside of work, I’m usually trying a new coffee shop<span className="coffeeCup" aria-hidden="true"><span className="steamWin s1"><span><svg viewBox="0 0 24 24"><path className="steam" d="M9.5 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/></svg></span></span><span className="steamWin s2"><span><svg viewBox="0 0 24 24"><path className="steam" d="M13 8.5c-1.3-1.2 1.3-2.3 0-3.6s0-2.4 0-2.4"/></svg></span></span><svg viewBox="0 0 24 24"><path className="cupLine" d="M5 11h13v3.5A5.5 5.5 0 0 1 12.5 20h-2A5.5 5.5 0 0 1 5 14.5z"/><path className="cupLine" d="M18 12.2h.9a2.2 2.2 0 0 1 0 4.4h-1.3"/><path className="cupLine" d="M4 22h15"/></svg></span>, <span className="travelWord">traveling<TravelPlanes/></span>, <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>openAbout('books')} aria-expanded={aboutView==='books'}>reading</button>,<span className="filmPhotoHint" role="tooltip">click to see my shelf</span></span> keeping up with <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>openAbout('tv')} aria-expanded={aboutView==='tv'}>reality TV</button>,<span className="filmPhotoHint" role="tooltip">click to turn it on</span></span> <span className="bakeWord">baking<BakeSprinkles/></span>, hiking, painting, or taking <span className="filmPhotoTriggerWrap"><button type="button" className="filmPhotoTrigger" onClick={()=>{openAbout('film');setFilmIndex(0)}} aria-expanded={aboutView==='film'}>film photos</button>.<span className="filmPhotoHint" role="tooltip">click to see my photos</span></span></p><div className="aboutActions"><BookRecForm/></div></div></section>
   <DeskGoodnight/>
  </>}</main>
  </>
@@ -617,10 +653,12 @@ function App(){
   const warm=(event:Event)=>{if((event.target as Element)?.closest?.('a[href^="#/projects/"],.expCaseStudyLink,.projectCardAction'))loadCaseStudy().catch(()=>{})};
   // Touch visitors have no hover: begin warming while they scroll toward
   // the work, so the first tap can still open a prepared case.
-  const onScroll=()=>{if(pageY()>window.innerHeight*.5){loadCaseStudy().catch(()=>{});window.removeEventListener('scroll',onScroll)}};
+  // Wait for the scroll to pause: evaluating the case bundle mid-gesture stalls the desk zoom.
+  let pause=0;
+  const onScroll=()=>{if(pageY()>window.innerHeight*.5){window.clearTimeout(pause);pause=window.setTimeout(()=>{loadCaseStudy().catch(()=>{});window.removeEventListener('scroll',onScroll)},400)}};
   document.addEventListener('pointerover',warm);document.addEventListener('focusin',warm);
   window.addEventListener('scroll',onScroll,{passive:true});onScroll();
-  return()=>{document.removeEventListener('pointerover',warm);document.removeEventListener('focusin',warm);window.removeEventListener('scroll',onScroll)};
+  return()=>{window.clearTimeout(pause);document.removeEventListener('pointerover',warm);document.removeEventListener('focusin',warm);window.removeEventListener('scroll',onScroll)};
  },[]);
  const homeMounted=useRef(false);
  const isCase=current.type==='case';

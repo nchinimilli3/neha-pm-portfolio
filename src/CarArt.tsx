@@ -80,11 +80,15 @@ export function CarBand({car,label}:{car:'shelby'|'mache';label:string}){
    band.style.setProperty('--band-x',`${x}px`);
    band.style.setProperty('--band-wheel',`${p*1440}deg`);
   };
-  const schedule=()=>{if(!frame)frame=requestAnimationFrame(update)};
+  // Measure only while the band is on screen: the rect read forces a layout every frame.
+  let visible=true;
+  const schedule=()=>{if(visible&&!frame)frame=requestAnimationFrame(update)};
+  const seen=new IntersectionObserver(([e])=>{visible=e.isIntersecting;schedule()},{rootMargin:'100px'});
+  if(host.current)seen.observe(host.current);
   update();
   window.addEventListener('scroll',schedule,{passive:true});
   window.addEventListener('resize',schedule);
-  return()=>{cancelAnimationFrame(frame);window.removeEventListener('scroll',schedule);window.removeEventListener('resize',schedule)};
+  return()=>{cancelAnimationFrame(frame);seen.disconnect();window.removeEventListener('scroll',schedule);window.removeEventListener('resize',schedule)};
  },[]);
  return <section ref={host} className={`carBand carBand-${car}`} aria-label={label}>
   <div className="carBandRoad" aria-hidden="true"><i/></div>

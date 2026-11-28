@@ -1,21 +1,17 @@
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
-import {gsap} from 'gsap';
-import {ScrollTrigger} from 'gsap/ScrollTrigger';
-import {Observer} from 'gsap/Observer';
-
-gsap.registerPlugin(ScrollTrigger,Observer);
-
-/* One Lenis instance for the page: wheel and trackpad input become one steady glide,
-   and ScrollTrigger reads positions from it. Touch keeps the phone's native scrolling,
-   and reduced-motion visitors get no smoothing at all. */
-let lenis:Lenis|null=null;
+/* One Lenis instance for the page: wheel and trackpad input become one steady glide.
+   Touch keeps the phone's native scrolling, and reduced-motion visitors get no smoothing.
+   Its clock runs only while a glide is moving: a clock left running wakes the page's main
+   thread every frame at rest. */
+let lenis:Lenis|null=null,raf=0;
+const frame=(t:number)=>{raf=0;if(!lenis)return;lenis.raf(t);if(lenis.isScrolling==='smooth')raf=requestAnimationFrame(frame)};
+// Lenis steps by the time since its last frame; after a rest, count from one frame ago, not the rest.
+const wake=()=>{if(raf||!lenis)return;raf=requestAnimationFrame(t=>{if(lenis)lenis.time=t-1000/60;frame(t)})};
 export function getLenis(){
  if(lenis||typeof window==='undefined'||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return lenis;
  lenis=new Lenis({lerp:.2,wheelMultiplier:.9});
- lenis.on('scroll',ScrollTrigger.update);
- gsap.ticker.add(t=>lenis?.raf(t*1000));
- gsap.ticker.lagSmoothing(0);
+ lenis.on('virtual-scroll',wake);
  return lenis;
 }
 
@@ -30,11 +26,20 @@ export function glideTo(y:number,{duration=1,linear=false,onComplete}:{duration?
  const l=getLenis();
  // Lenis clamps to the page height it last measured. Home's lower sections mount after the
  // hero, so without a fresh measure every glide past the hero stopped at the hero's end.
- if(l){l.resize();l.scrollTo(y,{duration,force:true,lock:true,easing:linear?t=>t:t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,onComplete});return}
+ if(l){l.resize();l.scrollTo(y,{duration,force:true,lock:true,easing:linear?t=>t:t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,onComplete});wake();return}
  window.scrollTo({top:y,behavior:'auto'});onComplete?.();
 }
 
-export {gsap,ScrollTrigger,Observer};
+/* Go to a section. A long trip cuts to one screen short of it and glides the rest: gliding
+   the whole way played every scroll scene in between (the walk-in, the fun desk) at speed,
+   which no GPU draws smoothly. */
+export function glideToHash(hash:string){
+ const t=hashTarget(hash);if(!t)return false;
+ const l=getLenis(),from=l?l.scroll:window.scrollY,d=t.y-from,vh=window.innerHeight;
+ if(Math.abs(d)>vh*1.5){const near=t.y-Math.sign(d)*vh;if(l){l.resize();l.scrollTo(near,{immediate:true,force:true})}else window.scrollTo(0,near)}
+ glideTo(t.y,{duration:.8});
+ return true;
+}
 
 /* In-page links (#fun, #about, #top…) glide through Lenis. Left to the browser, its own
    smooth scroll and Lenis fight, and the jump stops partway (stranded mid walk-in). The
@@ -55,10 +60,9 @@ export function initAnchors(){
   if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
   const a=(e.target as Element)?.closest?.('a[href^="#"]');const hash=a?.getAttribute('href')||'';
   if(!SECTION_HASH.test(hash))return;
-  const t=hashTarget(hash);if(!t)return;
+  if(!hashTarget(hash))return;
   e.preventDefault();history.pushState(null,'',hash);
-  const d=Math.abs(t.y-window.scrollY);
-  glideTo(t.y,{duration:Math.min(1.6,.5+d/9000)});
+  glideToHash(hash);
  });
  const hash=window.location.hash;
  if(SECTION_HASH.test(hash)&&hash!=='#top'){

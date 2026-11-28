@@ -33,14 +33,10 @@
 }
 /* A zero-size marker at the graphite tip, so the component can aim it. */
 .schPencilTip{position:absolute;right:-26px;top:50%;width:0;height:0}
-@keyframes schInkLoop{
- 0%{stroke-dashoffset:var(--len);opacity:1}
- 7%{stroke-dashoffset:0;opacity:1}
- 94%{stroke-dashoffset:0;opacity:1}
- 96%{stroke-dashoffset:0;opacity:0}
- 96.2%{stroke-dashoffset:var(--len);opacity:0}
- 97.4%,100%{stroke-dashoffset:var(--len);opacity:1}
-}
+/* Fade: one 9s loop per stroke, on the GPU. It starts .342s (3.8%) before the stroke draws, so each loop
+   turns over while the stroke is faded out; the component re-arms the draw there. */
+@keyframes schInkFade{0%,3%{opacity:0}3.1%,97.8%{opacity:1}99.8%,100%{opacity:0}}
+@keyframes schInkDraw{from{stroke-dashoffset:var(--len)}to{stroke-dashoffset:0}}
 .schPlannerHero.isLive .schPlannerCover{animation:schCover .7s backwards}
 .schPlannerHero.isLive .schPlannerPad{animation:schPad .75s .1s backwards}
 .schPlannerPad{transition:transform .5s var(--ease-out),box-shadow .5s}
@@ -48,18 +44,20 @@
 .schPlannerHero.isLive .schPlannerGrid i.selected{animation:schMark .52s var(--d) var(--ease-spring) backwards,schRing .5s calc(var(--d) + 1s) backwards}
 .schPlannerHero.isLive .schPlannerGrid i.selected:after{animation:schBest .4s 1.35s backwards}
 .schPlannerHero.isLive .schPencil{animation:schPencilLoop 9s 1.4s infinite,schPencilIn .6s .45s backwards}
-.schInkDate{display:block;width:38px;height:35px;margin:0 auto 1px;fill:none;stroke:#35473f;stroke-opacity:.93;stroke-width:3.1;stroke-linecap:round;stroke-linejoin:round}
+.schInkDate{display:block;position:relative;width:38px;height:35px;margin:0 auto 1px}
+.schInkDate svg{position:absolute;inset:0;width:100%;height:100%;fill:none;stroke:#35473f;stroke-opacity:.93;stroke-width:3.1;stroke-linecap:round;stroke-linejoin:round}
 .schInkDate path{stroke-dasharray:var(--len);stroke-dashoffset:var(--len)}
 /* Pencil and ink share one clock (both start with .isLive). The tip is down from
    1.76s to 2.84s of each 9s loop; the three strokes draw inside that window. */
-.schPlannerHero.isLive .schInkDate path{animation:schInkLoop 9s calc(1.84s + var(--o)) infinite}
+.schPlannerHero.isLive .schInkDate svg{animation:schInkFade 9s calc(1.498s + var(--o)) infinite}
+.schPlannerHero.isLive .schInkDate path{animation:schInkDraw .63s calc(1.84s + var(--o)) both}
 .schPlannerPad footer em{color:#8a8477;font-style:normal}
 .schPlannerHero:hover .schPlannerPad{transform:perspective(1400px) rotateX(2.5deg) rotate(.35deg) translateY(-7px);box-shadow:0 36px 68px #314e4530,10px 12px 0 #e9e2d6}
 .schPlannerHero:hover .schEventTicket{transform:rotate(-1.6deg) translateY(-4px)}
 .schEventTicket{transition:transform .5s var(--ease-out)}
 @media(max-width:1050px){.case-scheduler .caseLead{grid-template-columns:1fr!important}.schPlannerHero{max-width:760px}.case-scheduler .caseHeader{max-width:760px!important}}
 @media(max-width:650px){.schPlannerHero{min-height:510px;padding-inline:4px}.schPlannerCover{left:0;right:0;bottom:40px}.schPlannerPad{padding:20px 12px}.schPlannerGrid>*{min-height:37px}.schEventTicket{right:-3%;width:94%;grid-template-columns:48px 1fr 28px}.schEventTicket>span{display:none}.schEventTicket time{grid-column:1}.schEventTicket div{grid-column:2}.schEventTicket>b{grid-column:3}.schPlannerPad footer{flex-wrap:wrap}.schPencil{display:none}}
-@media(prefers-reduced-motion:reduce){.schEventTicket,.schPlannerCover,.schPlannerPad,.schPlannerGrid i,.schPlannerGrid i.selected,.schPlannerGrid i.selected:after,.schPencil,.schInkDate path{animation:none!important}.schPlannerPad,.schEventTicket{transition:none!important}.schPlannerHero:hover .schPlannerPad{transform:perspective(1400px) rotateX(5deg) rotate(.8deg)}.schPlannerHero:hover .schEventTicket{transform:rotate(-2.5deg)}.schInkDate path{stroke-dashoffset:0}.schPlannerHero:not(.isLive) .schPlannerCover,.schPlannerHero:not(.isLive) .schPlannerPad,.schPlannerHero:not(.isLive) .schEventTicket,.schPlannerHero:not(.isLive) .schPencil,.schPlannerHero:not(.isLive) .schPlannerGrid i{opacity:1}}
+@media(prefers-reduced-motion:reduce){.schEventTicket,.schPlannerCover,.schPlannerPad,.schPlannerGrid i,.schPlannerGrid i.selected,.schPlannerGrid i.selected:after,.schPencil,.schInkDate svg,.schInkDate path{animation:none!important}.schPlannerPad,.schEventTicket{transition:none!important}.schPlannerHero:hover .schPlannerPad{transform:perspective(1400px) rotateX(5deg) rotate(.8deg)}.schPlannerHero:hover .schEventTicket{transform:rotate(-2.5deg)}.schInkDate path{stroke-dashoffset:0}.schPlannerHero:not(.isLive) .schPlannerCover,.schPlannerHero:not(.isLive) .schPlannerPad,.schPlannerHero:not(.isLive) .schEventTicket,.schPlannerHero:not(.isLive) .schPencil,.schPlannerHero:not(.isLive) .schPlannerGrid i{opacity:1}}
 
 /* Lifecycle road in Scheduler green and gold */
 .schedulerStory{--lc-ink:#1f2b27;--lc-road:#285b4c;--lc-accent:#c9a24a;--lc-accent-2:#e6cf8f;--lc-muted:#56605b;--lc-tint:#e2f0e8f2;--lc-glass:#e8f2ec}

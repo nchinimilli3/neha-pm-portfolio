@@ -205,9 +205,8 @@
 .sfHead small{display:block;font-size:12px;color:#444}
 .sfHead strong{display:block;font-size:17px;font-weight:700;line-height:1.25}
 .sfBtn{display:inline-flex;align-items:center;height:32px;padding:0 16px;border:1px solid #c9c9c9;border-radius:4px;background:#fff;color:#0176d3;font:400 13px/1 system-ui,sans-serif;font-family:inherit;white-space:nowrap}
-.sfBtn.isBrand{border-color:#0176d3;background:#0176d3;color:#fff;cursor:pointer;animation:rqPulse 2.4s ease-in-out 1s infinite}
+.sfBtn.isBrand{border-color:#0176d3;background:#0176d3;color:#fff;cursor:pointer}
 .sfBtn.isBrand:hover{background:#014486}
-@keyframes rqPulse{0%,100%{box-shadow:0 0 0 0 #0176d300}50%{box-shadow:0 0 0 5px #0176d333}}
 .sfTabs{display:flex;gap:24px;padding:0 16px;border-bottom:1px solid #e5e5e5;font-size:13px}
 .sfTabs span{padding:10px 0 8px;color:#444}
 .sfTabs .isOn{box-shadow:inset 0 -2px #0176d3;color:#181818;font-weight:700}
@@ -269,9 +268,8 @@
 .skBtn{display:inline-flex;align-items:center;height:28px;padding:0 12px;border:1px solid #1d1c1d4d;border-radius:4px;background:#fff;color:#1d1c1d;font:700 13px/1 system-ui,sans-serif;font-family:inherit;white-space:nowrap}
 button.skBtn{cursor:pointer}button.skBtn:hover:not(:disabled){background:#f8f8f8;box-shadow:0 1px 3px #00000014}
 .skBtn:disabled{cursor:default;color:#1d1c1d80}
-.skBtn.isPrimary{border-color:#007a5a;background:#007a5a;color:#fff;animation:rqPulseG 2.4s ease-in-out 1s infinite}
+.skBtn.isPrimary{border-color:#007a5a;background:#007a5a;color:#fff}
 .skBtn.isPrimary:hover{background:#148567!important}
-@keyframes rqPulseG{0%,100%{box-shadow:0 0 0 0 #007a5a00}50%{box-shadow:0 0 0 5px #007a5a2e}}
 .skMention{padding:0 2px;border-radius:3px;background:#1d9bd11a;color:#1264a3}
 .skList{display:grid;margin-top:8px;border:1px solid #e8e8e8;border-radius:8px;overflow:hidden}
 .skRow{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px;padding:8px;border-top:1px solid #e8e8e8}
@@ -339,7 +337,7 @@ button.gcSlot:hover{background:#e8f0fe}
 .gcNudge{padding:8px 12px;border-radius:4px;background:#fce8e6;font-size:12px;line-height:1.45;color:#a50e0e;animation:rqIn .3s ease}
 .gcReview{display:grid;gap:8px;justify-items:start;padding:10px 12px;border-radius:8px;background:#fef7e0}
 .gcReview p{font-size:12px;line-height:1.45;color:#5f4b12}
-.gcBtn{height:32px;padding:0 20px;border:0;border-radius:16px;background:#1a73e8;color:#fff;font:500 13px/1 system-ui,sans-serif;font-family:inherit;cursor:pointer;animation:rqPulse 2.4s ease-in-out .6s infinite}
+.gcBtn{height:32px;padding:0 20px;border:0;border-radius:16px;background:#1a73e8;color:#fff;font:500 13px/1 system-ui,sans-serif;font-family:inherit;cursor:pointer;position:relative}
 .gcBtn:hover{background:#1765cc;box-shadow:0 1px 3px #3c404355}
 .rqBooked{display:grid;gap:6px;justify-items:start;padding:10px 12px;border-left:3px solid #188038;border-radius:0 4px 4px 0;background:#e6f4ea;animation:rqIn .4s var(--ease-out,ease)}
 .rqBooked b{font-size:13px;color:#137333}.rqBooked span{font-size:12px;line-height:1.45;color:#3c4043}
@@ -378,12 +376,17 @@ button.gcSlot:hover{background:#e8f0fe}
 .gcGuests em{margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-style:normal;font-size:10px;color:#5f6368}
 .gcGuests em i{width:10px;height:10px;border-radius:2px;background:repeating-linear-gradient(135deg,#dadce0 0 2px,#f1f3f4 2px 4px)}
 @media(max-width:1000px){.rqModeBar{flex-direction:column;align-items:flex-start;gap:16px}.rqLive{--rq-h:460px}}
-@media(prefers-reduced-motion:reduce){.rqIn,.gcEvent,.rqBooked,.gcNudge,.gcOff,.rqFilled,.sfBtn.isBrand,.skBtn.isPrimary,.gcBtn,.sfSpin,.skTyping i{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.rqIn,.gcEvent,.rqBooked,.gcNudge,.gcOff,.rqFilled,.gcBtn:after,.sfSpin,.skTyping i{animation:none!important}}
 @media(prefers-reduced-motion:reduce){.sfToast.isTimed{display:none}}
 
 /* The two ambiguous first moves get a quiet beacon inside the real control. */
-.rqLive .isNextAction{position:relative;isolation:isolate;display:inline-flex;align-items:center;gap:7px;overflow:visible;animation:rqNextGlow 1.8s ease-in-out infinite}
-.rqLive .isNextAction>i{display:block;width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 0 0 currentColor;animation:rqNextDot 1.8s ease-out infinite}
-@keyframes rqNextGlow{0%,100%{box-shadow:0 0 0 0 rgba(123,44,191,0)}50%{box-shadow:0 0 0 5px rgba(123,44,191,.17),0 5px 14px rgba(66,24,83,.16)}}
-@keyframes rqNextDot{0%{box-shadow:0 0 0 0 currentColor;opacity:1}70%,100%{box-shadow:0 0 0 7px transparent;opacity:.7}}
-@media(prefers-reduced-motion:reduce){.rqLive .isNextAction,.rqLive .isNextAction>i{animation:none}.rqLive .isNextAction{box-shadow:0 0 0 3px rgba(123,44,191,.16)}}
+.rqLive .isNextAction{position:relative;isolation:isolate;display:inline-flex;align-items:center;gap:7px;overflow:visible}
+.rqLive .isNextAction>i{display:block;width:7px;height:7px;border-radius:50%;background:currentColor;position:relative;animation:rqDotDim 1.8s ease-out infinite}
+/* Pulses are a fixed ring faded in and out (and the dot's ring scaled): GPU-only, no repaints. */
+.gcBtn:after,.rqLive .isNextAction:after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;box-shadow:0 0 0 5px #0176d333;animation:rqRing 2.4s ease-in-out .6s infinite}
+.rqLive .isNextAction:after{inset:-1px;box-shadow:0 0 0 5px rgba(123,44,191,.17),0 5px 14px rgba(66,24,83,.16);animation-duration:1.8s;animation-delay:0s}
+.rqLive .isNextAction>i:after{content:'';position:absolute;inset:0;border-radius:50%;background:currentColor;animation:rqDotRing 1.8s ease-out infinite}
+@keyframes rqRing{50%{opacity:1}}
+@keyframes rqDotRing{0%{transform:none;opacity:1}70%,100%{transform:scale(3);opacity:0}}
+@keyframes rqDotDim{70%,100%{opacity:.7}}
+@media(prefers-reduced-motion:reduce){.rqLive .isNextAction:after,.rqLive .isNextAction>i,.rqLive .isNextAction>i:after{animation:none}.rqLive .isNextAction>i:after{opacity:0}.rqLive .isNextAction{box-shadow:0 0 0 3px rgba(123,44,191,.16)}}

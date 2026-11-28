@@ -106,11 +106,14 @@ export default function AccentureSFHero(){
       </defs>
       <path d="M461 29 1280 334v34L461 680V522l451-179L461 170Z" fill="#a55eef" opacity=".6"/>
       <use href={`#city-${id}`}/>
-      <g className="sfFog sfFogFront">
+    </svg>
+    {/* The fog is its own HTML layer: its filter rasters once and the drift is a GPU translate. */}
+    <div className="sfFog" aria-hidden="true">
+      <svg viewBox="0 0 1672 735">
         <g mask={`url(#fog-envelope-${id})`}>
           <g filter={`url(#fog-texture-${id})`}><use href={`#fog-${id}`} y="260" opacity=".78"/><use href={`#fog-${id}`} y="305"/></g>
         </g>
-      </g>
-    </svg>
+      </svg>
+    </div>
   </figure>;
 }

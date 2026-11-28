@@ -7,10 +7,14 @@
 .fvLapTrack{position:relative;display:flex;align-items:center;justify-content:space-between;height:44px;padding-right:32px}
 .fvLapTrack:before{content:'';position:absolute;left:0;right:34px;top:50%;height:2px;background:repeating-linear-gradient(90deg,#173e5c66 0 8px,transparent 8px 14px)}
 .fvLapTrack>i{position:relative;width:10px;height:10px;border-radius:50%;background:#f3f1e9;border:2px solid #173e5c88}
-.fvLapScore{position:absolute;top:50%;left:38%;display:grid;place-items:center;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;background:var(--fv-ink);color:#f3f1e9;font:600 13px/1 ui-monospace,monospace;animation:fvLapPark 5.5s var(--ease-in-out) infinite}
+/* The run spans the badge's trip (38% to the flag); sliding it by its own width parks the badge, on the GPU. */
+.fvLapRun{position:absolute;top:50%;left:38%;right:39px;height:0;animation:fvLapPark 5.5s var(--ease-in-out) infinite}
+.fvLapScore{position:absolute;left:0;top:0;isolation:isolate;display:grid;place-items:center;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;background:var(--fv-ink);color:#f3f1e9;font:600 13px/1 ui-monospace,monospace}
+.fvLapScore:before{content:'';position:absolute;inset:0;z-index:-1;border-radius:inherit;background:#083f8c;animation:fvLapTint 5.5s var(--ease-in-out) infinite}
 .fvLapFlag{position:absolute;right:0;top:50%;width:26px;height:26px;margin-top:-20px;color:var(--fv-ink)}
 .fvLapLabels{display:flex;justify-content:space-between;margin-top:8px;font-size:13px;color:#4c6577}
-@keyframes fvLapPark{0%,22%{left:38%;background:#083f8c}48%,88%{left:calc(100% - 39px);background:var(--fv-ink)}100%{left:38%;background:#083f8c}}
+@keyframes fvLapPark{0%,22%{transform:none}48%,88%{transform:translateX(100%)}100%{transform:none}}
+@keyframes fvLapTint{0%,22%{opacity:1}48%,88%{opacity:0}100%{opacity:1}}
 
 /* Dash gauge for the outcome metric. */
 .fvGauge{display:grid;justify-items:center;text-align:center}
@@ -31,7 +35,9 @@
 }
 @media(prefers-reduced-motion:reduce){
  .fvGaugeGain,.fvGaugeNeedle{transition:none}
- .fvLapScore{animation:none;left:calc(100% - 39px)}
+ .fvLapRun,.fvLapScore:before{animation:none}
+ .fvLapRun{transform:translateX(100%)}
+ .fvLapScore:before{opacity:0}
 }
 
 .fvStage{scroll-margin-top:112px}
