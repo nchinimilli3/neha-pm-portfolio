@@ -740,9 +740,11 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
   // The ambient loops (water, fog, steam, the caret) hold still while nobody can see them:
   // everything when the hero is offscreen, the room when the opaque OS covers it. Paused one
   // by one: a class with an `… *` rule restyled the whole page each time it flipped (~120ms).
+  // Cancelled, not paused: a paused loop keeps its GPU layer, and everything drawn over it stays a
+  // layer too (~150 in the room), each re-rastered on every zoom frame. play() restarts the loop.
   const holder=(root:Element)=>{let on=false,held:Animation[]=[];return(v:boolean)=>{if(v===on)return;on=v;
    if(v)held=root.getAnimations({subtree:true}).filter(a=>a.playState==='running'&&a.effect?.getTiming().iterations===Infinity);
-   held.forEach(a=>{if(v)a.pause();else if(a.playState==='paused')a.play()});if(!v)held=[]}};
+   held.forEach(a=>{if(v)a.cancel();else if(a.playState==='idle')a.play()});if(!v)held=[]}};
   const holdAll=holder(track),holdRoom=holder(stage);
 
   const touchControls=([['lamp',280,416,200,320],['window',1130,58,380,410],['camera',1268,622,128,96]] as const).map(([name,x,y,w,h])=>({name,x,y,w,h,el:sceneRef.current?.querySelector<HTMLElement>(`.dhTouch${name[0].toUpperCase()+name.slice(1)}`)}));
@@ -854,14 +856,17 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
   return()=>{offLenis?.();cancelAnimationFrame(raf);raster.dispose();window.clearTimeout(toastTimer);window.removeEventListener('resize',onResize);window.removeEventListener('scroll',request);document.fonts.removeEventListener('loadingdone',onResize);window.removeEventListener(HOME_SHOWN,onShown);toastEl?.removeEventListener('mouseleave',request);holdRoom(false);holdAll(false);stage.style.visibility='';track.classList.remove('osCovers');setOsLive(false)};
  },[isStatic]);
 
- // Windows drag by their title bar, like the real thing.
+ // Windows drag from anywhere; a press that barely moves is still a click that opens the case.
  const startDrag=useCallback((i:number,e:React.PointerEvent)=>{
   if(isStatic||e.button!==0)return;
   const w=winRefs.current[i];if(!w)return;
   e.preventDefault();w.style.zIndex=String(++zTop.current);
-  const start={x:e.clientX,y:e.clientY},from={...drag.current[i]};
-  const move=(ev:PointerEvent)=>{drag.current[i]={x:from.x+ev.clientX-start.x,y:from.y+ev.clientY-start.y};w.style.transform=`translate(${drag.current[i].x}px,${drag.current[i].y}px)`};
-  const up=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up)};
+  const start={x:e.clientX,y:e.clientY},from={...drag.current[i]};let moved=false;
+  const move=(ev:PointerEvent)=>{const dx=ev.clientX-start.x,dy=ev.clientY-start.y;if(!moved&&Math.hypot(dx,dy)<4)return;moved=true;drag.current[i]={x:from.x+dx,y:from.y+dy};w.style.transform=`translate(${drag.current[i].x}px,${drag.current[i].y}px)`};
+  const up=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);
+   // A drag ends with a click on the link underneath; swallow that one click.
+   if(!moved)return;const eat=(ev:MouseEvent)=>{ev.preventDefault();ev.stopPropagation()};
+   window.addEventListener('click',eat,{capture:true,once:true});setTimeout(()=>window.removeEventListener('click',eat,{capture:true}),0)};
   window.addEventListener('pointermove',move);window.addEventListener('pointerup',up);
  },[isStatic]);
 
@@ -1026,10 +1031,10 @@ export default function DeskHero({projects,openCase,onSimple}:{projects:Project[
     <h2 className="dhOsTitle">Selected work</h2>
     <div className="dhWindows">
      {projects.map((p,i)=>{const w=WINDOWS[p.id];if(!w)return null;const [x,y]=SLOTS[i]||[10,10];
-      return <article key={p.id} className="dhWin" data-case={p.id} ref={el=>{winRefs.current[i]=el}} style={isStatic?undefined:{left:`${x}vw`,top:`${y}vh`}}>
-       <header className="dhWinBar" onPointerDown={e=>startDrag(i,e)}><i/><i/><i/><span>{CASE_FILES[p.id]}</span></header>
-       <a href={`#/projects/${p.id}`} onClick={open(p.id)} className="dhWinBody" aria-label={`Open ${p.title} case study`}>
-        <img src={isStatic?asset(w.img):undefined} data-src={asset(w.img)} alt="" loading="lazy" decoding="async" style={w.pos?{objectPosition:w.pos}:undefined}/>
+      return <article key={p.id} className="dhWin" data-case={p.id} ref={el=>{winRefs.current[i]=el}} onPointerDown={e=>startDrag(i,e)} style={isStatic?undefined:{left:`${x}vw`,top:`${y}vh`}}>
+       <header className="dhWinBar"><i/><i/><i/><span>{CASE_FILES[p.id]}</span></header>
+       <a href={`#/projects/${p.id}`} onClick={open(p.id)} draggable={false} className="dhWinBody" aria-label={`Open ${p.title} case study`}>
+        <img src={isStatic?asset(w.img):undefined} data-src={asset(w.img)} alt="" draggable={false} loading="lazy" decoding="async" style={w.pos?{objectPosition:w.pos}:undefined}/>
         <div className="dhWinCap"><div><h3>{p.title}</h3><small>{p.company.split(' · ')[0]}</small></div><em>{w.note}</em></div>
         <span className="dhCaseCue">View case study <span aria-hidden="true">→</span></span>
        </a>
