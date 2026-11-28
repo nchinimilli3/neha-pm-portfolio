@@ -1,10 +1,10 @@
 /* Estée editorial: scoped to this case study, using original project imagery. */
 .case-estee{--el-ink:#07132f;--el-gold:#9c7844;color:var(--el-ink)}
 
-.case-estee .caseLead{display:grid!important;grid-template-columns:.8fr 1.2fr!important;gap:48px!important;align-items:center!important;padding-bottom:64px!important}
-.case-estee .caseHeader h1{font-size:clamp(48px,5.7vw,86px)!important;letter-spacing:-.045em!important}
+.case-estee .caseLead{display:grid;grid-template-columns:.8fr 1.2fr;gap:48px;align-items:center;padding-bottom:64px}
+.case-estee .caseHeader h1{font-size:clamp(48px,5.7vw,86px);letter-spacing:-.045em}
 .case-estee .esteeHeroMockup{border-radius:2px;box-shadow:0 24px 50px #33261920;border:0}
-.case-estee .toolLogoSection{padding-top:20px!important;padding-bottom:32px!important}
+.case-estee .toolLogoSection{padding-top:20px;padding-bottom:32px}
 .elEditorial{font-size:17px;line-height:1.65;color:var(--el-ink)}
 .elEditorial section{width:min(1180px,calc(100% - 64px));margin:0 auto;padding:96px 0}
 .elEditorial h2{font:400 clamp(38px,4.4vw,65px)/1.05 var(--case-font);letter-spacing:-.035em;margin:20px 0 32px}
@@ -31,7 +31,7 @@
 
 .elResponsive header{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}.elSmall{font-size:14px;color:#62646c}.elSizeToggle{display:flex;justify-content:center;gap:8px;margin:24px 0}.elSizeToggle button{padding:8px 20px;border:1px solid #a8a39a;background:transparent;border-radius:30px;color:var(--el-ink);font-size:14px;cursor:pointer}.elSizeToggle button[aria-pressed=true]{background:var(--el-ink);color:white;border-color:var(--el-ink)}.elSizeToggle button:focus-visible{outline:3px solid #a8884f;outline-offset:3px}.elViewport{width:100%;max-width:980px;margin:0 auto;transition:max-width .65s var(--ease-out);filter:drop-shadow(0 20px 20px #33261920)}.elViewportCompact{max-width:390px}.elViewport img{display:block;width:100%;height:auto;cursor:zoom-in}.elEditorial .elViewportCaption{text-align:center;font-size:13px;max-width:none;margin:24px 0 0}
 .elEditorial .elFinal{display:grid;grid-template-columns:.7fr 1.3fr;gap:96px;align-items:center;padding-bottom:112px}
-@media(max-width:800px){.case-estee .caseLead{grid-template-columns:1fr!important;gap:32px!important}.elEditorial section{width:calc(100% - 40px);padding:56px 0}.elVanity,.elInvitation,.elPurchase,.elEditorial .elFinal{grid-template-columns:1fr;gap:40px}.elMirrorScene{width:min(420px,100%);margin:auto}.elMirrorGlass p{font-size:34px}.elProof header,.elResponsive header{grid-template-columns:1fr;gap:0}.elInvitation figure{transform:none}.elEditorial .elProof{padding:56px 20px}.elRetail figure{margin:32px auto 0}.elEditorial .elFinal{gap:40px}.elFinal h2{font-size:42px}.elEditorial h2{font-size:42px}}
+@media(max-width:800px){.case-estee .caseLead{grid-template-columns:1fr;gap:32px}.elEditorial section{width:calc(100% - 40px);padding:56px 0}.elVanity,.elInvitation,.elPurchase,.elEditorial .elFinal{grid-template-columns:1fr;gap:40px}.elMirrorScene{width:min(420px,100%);margin:auto}.elMirrorGlass p{font-size:34px}.elProof header,.elResponsive header{grid-template-columns:1fr;gap:0}.elInvitation figure{transform:none}.elEditorial .elProof{padding:56px 20px}.elRetail figure{margin:32px auto 0}.elEditorial .elFinal{gap:40px}.elFinal h2{font-size:42px}.elEditorial h2{font-size:42px}}
 @media(prefers-reduced-motion:reduce){.elViewport{transition:none}}
 
 @media(max-width:500px){.elEditorial h2{font-size:38px}.elEditorial h2 br{display:none}.elFinal h2{font-size:38px}}
@@ -67,7 +67,7 @@
 .elScopeNotes .is-keep{top:80%;transition-delay:.5s}
 .elScopeNotes b{display:block;font:italic 400 24px/1.1 var(--case-font);color:var(--el-ink)}
 .elScopeNotes span{display:block;margin-top:4px;font-size:14.5px;line-height:1.45;color:#5a5249}
-.elBags{display:flex!important;gap:4px;margin-top:8px!important}
+.elBags{display:flex;gap:4px;margin-top:8px}
 .elBags svg{width:24px;height:28px;overflow:visible;filter:drop-shadow(0 3px 3px #07132f2e)}
 .elBags svg:nth-child(even){transform:translateY(3px) rotate(4deg)}.elBags svg:nth-child(3n){transform:rotate(-5deg)}
 .elBagBody{fill:#0b1a3d}.elBagFold{fill:#1c2d57}.elBagHandle{fill:none;stroke:#c9a25d;stroke-width:1.6;stroke-linecap:round}.elBagEyelet{fill:#c9a25d}

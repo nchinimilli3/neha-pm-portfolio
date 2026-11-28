@@ -75,7 +75,7 @@
 .casePage .cdRow-result .cdMedal{background:var(--cd-accent);box-shadow:none}
 .casePage .cdRow-result .cdMedal svg{stroke:#fff;stroke-width:2.4}
 .casePage .cdRow-result .cdRowText>b{color:var(--cd-accent)}
-.casePage .cdStat{display:flex!important;align-items:baseline;flex-wrap:wrap;gap:4px 12px;margin:2px 0 4px!important}
+.casePage .cdStat{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px;margin:2px 0 4px}
 .casePage .cdStat strong{font-size:clamp(34px,3.4vw,46px);line-height:1;letter-spacing:-.04em;font-weight:600;font-variant-numeric:tabular-nums;color:var(--cd-accent)}
 .casePage .cdStat span{font-size:15px;font-weight:500;color:var(--cd-ink)}
 
@@ -193,4 +193,4 @@
 .casePage .cdMoment.isShown .cdMomentEvidence .cmRule:nth-child(1){transition-delay:1.9s}
 .casePage .cdMoment.isShown .cdMomentEvidence .cmRule:nth-child(2){transition-delay:2.3s}
 .casePage .cdMoment.isShown .cdMomentEvidence .cmRule:nth-child(3){transition-delay:2.7s}
-@media(prefers-reduced-motion:reduce){.casePage .cdMoment .cdMomentGrid>.cdMomentCol,.casePage .cdMoment .cdMomentEvidence .cmRule,.casePage .cdMoment .cdMomentEvidence>*{opacity:1!important;transform:none!important;transition:none!important}}
+@media(prefers-reduced-motion:reduce){.casePage .cdMoment .cdMomentGrid>.cdMomentCol,.casePage .cdMoment .cdMomentEvidence .cmRule,.casePage .cdMoment .cdMomentEvidence>*{opacity:1;transform:none;transition:none}}

@@ -33,9 +33,9 @@
 @keyframes lcIn{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
 .lcNow span{font:600 11px/1 var(--case-font,inherit);letter-spacing:.06em;color:var(--lc-accent);font-variant-numeric:tabular-nums}
 .lcNow b{font:700 16px/1.1 var(--case-font,inherit);color:var(--lc-ink);animation:lcIn .35s ease}
-@media(max-width:900px){.lcRoad{grid-template-columns:1fr!important}.lcNow{display:none!important}.lcRoadTrack b{font-size:11px}}
+@media(max-width:900px){.lcRoad{grid-template-columns:1fr}.lcNow{display:none}.lcRoadTrack b{font-size:11px}}
 @media(max-width:560px){.lcRoadTrack b{visibility:hidden}.lcRoadTrack .isHere b{visibility:visible;white-space:nowrap}}
-@media(prefers-reduced-motion:reduce){.lcNow b,.lcNow small{animation:none}.lcCar,.lcRoad{transition:none!important}.lcRoad.isMoving .lcWheel,.lcRoad.isMoving .lcCar svg{animation:none}}
+@media(prefers-reduced-motion:reduce){.lcNow b,.lcNow small{animation:none}.lcCar,.lcRoad{transition:none}.lcRoad.isMoving .lcWheel,.lcRoad.isMoving .lcCar svg{animation:none}}
 
 /* Travelers */
 .lcShadow{fill:#00000026}
@@ -75,12 +75,12 @@
 [data-traveler=bubble] .lcAsphalt{height:4px;border-radius:4px;background:#c9d9ef;box-shadow:none}
 .lcRoad:not([data-traveler=car]):not([data-traveler=ev]):not([data-traveler=box]) .lcAsphalt:after{display:none}
 .lcRoad:not([data-traveler=car]):not([data-traveler=ev]) .lcFill{opacity:.62}
-[data-traveler=bubble] .lcFill,[data-traveler=cablecar] .lcFill{opacity:.9!important}
-@media(prefers-reduced-motion:reduce){.lcTypeDot,.lcRoad .lcAsphalt,.lcRoad .lcAsphalt:after,.lcRoad .lcCar svg{animation:none!important}}
+[data-traveler=bubble] .lcFill,[data-traveler=cablecar] .lcFill{opacity:.9}
+@media(prefers-reduced-motion:reduce){.lcTypeDot,.lcRoad .lcAsphalt,.lcRoad .lcAsphalt:after,.lcRoad .lcCar svg{animation:none}}
 
 /* Ford cases ride their own artwork in the bar: the same Shelby and Mach-E
    that drive across the page, shrunk to road scale. */
-.lcMarkCar{display:block!important;width:100%;height:auto;overflow:visible}
+.lcMarkCar{display:block;width:100%;height:auto;overflow:visible}
 .lcRoad[data-traveler=mustang] .lcCar,.lcRoad[data-traveler=mache] .lcCar{width:88px;top:-2px}
 .lcRoad[data-traveler=mustang] .lcCar svg,.lcRoad[data-traveler=mache] .lcCar svg{width:88px;height:auto}
 .lcRoad[data-traveler=mache] .lcCar{width:84px;top:-7px}
@@ -99,7 +99,7 @@
 .carBandRider svg{display:block;width:100%;height:auto;overflow:visible}
 .carBand .shelbyWheel,.carBand .meWheel{transform-box:fill-box;transform-origin:center;transform:rotate(var(--band-wheel,0deg))}
 @media(prefers-reduced-motion:reduce){
- .carBandRider{transform:translateX(24px)!important}
+ .carBandRider{transform:translateX(24px)}
  .carBand .shelbyWheel,.carBand .meWheel{transform:none}
 }
 @media(max-width:760px){
@@ -179,7 +179,7 @@
 .lcRoad[data-traveler=bottle] .lcCar{width:34px;top:-7px}.lcRoad[data-traveler=bottle] .lcCar svg{width:34px;height:38px}
 /* Mustang smoke: puffs are placed at the tailpipe where they were emitted and stay
    there as the car moves on, billowing up and fading out toward the top of the bar. */
-[data-traveler=mustang] .lcWake{display:none!important}
+[data-traveler=mustang] .lcWake{display:none}
 .lcSmoke{position:absolute;inset:0;z-index:1;pointer-events:none}
 .lcSmoke i{position:absolute;top:24px;width:10px;height:10px;margin-left:-48px;border-radius:50%;background:radial-gradient(circle,#7f8b95b3 0,#94a0a98c 35%,#aab4bc40 60%,transparent 72%);filter:blur(1.5px);opacity:0;animation:lcRise 2.5s var(--ease-out) forwards}
 @keyframes lcRise{
@@ -190,10 +190,10 @@
 }
 /* Commute: the lifecycle traveler is the same BART car as the case study, with the same gentle ride */
 .lcRoad[data-traveler=train] .lcCar{width:104px;top:4px}
-.lcBartImg{display:block;width:104px;filter:drop-shadow(0 3px 2px rgba(10,20,30,.28));-webkit-user-drag:none;user-select:none}.lcBartImg:before,.lcBartImg:after{display:none}.lcBartImg .rvBody{animation:none!important}
+.lcBartImg{display:block;width:104px;filter:drop-shadow(0 3px 2px rgba(10,20,30,.28));-webkit-user-drag:none;user-select:none}.lcBartImg:before,.lcBartImg:after{display:none}.lcBartImg .rvBody{animation:none}
 .lcRoad.isMoving[data-traveler=train] .lcBartImg{animation:lcBartRide .22s ease-in-out infinite alternate}
 @keyframes lcBartRide{from{transform:translateY(0)}to{transform:translateY(-.8px)}}
-@media(prefers-reduced-motion:reduce){.lcBartImg{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.lcBartImg{animation:none}}
 
 /* Easter egg: click the traveler and it honks. */
 .lcRoad.isShown .lcCar{cursor:pointer}

@@ -103,7 +103,7 @@
 .kohlerSurface.kd .kd-upcoming .kd-step-meta b{background:#ddddd8;border-color:#ddddd8;color:#8d8d88}
 .kohlerSurface.kd .kd-work-footer,.kohlerSurface.kd .kd-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}
 .kohlerSurface.kd .kd-work-footer button,.kohlerSurface.kd .kd-actions button,.kd-dialog .kd-primary{padding:9px 13px;border:1px solid #d6d6d0;border-radius:5px;background:#fff;font-size:11px;color:#555}
-.kohlerSurface.kd .kd-primary,.kd-dialog .kd-primary{background:#151515!important;color:#fff!important;border-color:#151515!important}
+.kohlerSurface.kd .kd-primary,.kd-dialog .kd-primary{background:#151515;color:#fff;border-color:#151515}
 .kohlerSurface.kd .kd-exception{padding:16px;background:#fff3dd;border:1px solid #eed3a6;border-radius:8px;margin-bottom:20px}
 .kohlerSurface.kd .kd-exception label{display:block;font-size:11px;margin-top:12px}
 .kohlerSurface.kd textarea{display:block;width:100%;min-height:70px;resize:vertical;background:#fff;border:1px solid #d6d6d0;border-radius:5px;padding:9px;margin-top:6px}

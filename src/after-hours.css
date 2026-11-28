@@ -137,7 +137,7 @@
 .acRoute b{font-size:23px;font-weight:600;color:#141414}
 .acRoute span{font-size:15px;color:#6e6e70}
 .acTimes{display:grid;justify-items:end;gap:14px}
-.acTimes b{font-size:18px!important;font-weight:700!important}
+.acTimes b{font-size:18px;font-weight:700}
 .acTimes small{font-size:14px}
 .acWhy{margin:12px 4px 0;font-size:16px;color:#6e6e70}
 .acChips{display:flex;gap:10px;margin-top:14px}
@@ -173,12 +173,12 @@
 .imThem{align-self:flex-start;background:#e9e9eb;color:#000}
 .imThem::before{content:"";position:absolute;left:-7px;bottom:0;width:20px;height:20px;background:#e9e9eb;border-bottom-right-radius:15px}
 .imThem::after{content:"";position:absolute;left:-10px;bottom:0;width:10px;height:20px;background:#fff;border-bottom-right-radius:10px}
-.imMe{align-self:flex-end;margin-top:14px!important;background:#0a84ff;color:#fff}
+.imMe{align-self:flex-end;margin-top:14px;background:#0a84ff;color:#fff}
 .imMe::before{content:"";position:absolute;right:-7px;bottom:0;width:20px;height:20px;background:#0a84ff;border-bottom-left-radius:15px}
 .imMe::after{content:"";position:absolute;right:-10px;bottom:0;width:10px;height:20px;background:#fff;border-bottom-left-radius:10px}
 .imTap{position:absolute;top:-17px;right:-13px;z-index:1;display:grid;place-items:center;width:30px;height:30px;border:2.5px solid #fff;border-radius:50%;background:#0a84ff;color:#fff;font-size:15px;font-style:normal}
 .imRead{align-self:flex-end;margin:3px 4px 0;font-size:11px;font-weight:600;color:#8a8a8e}
-.imTyping{display:flex;gap:5px;padding:13px 16px!important}
+.imTyping{display:flex;gap:5px;padding:13px 16px}
 .imTyping i{width:9px;height:9px;border-radius:50%;background:#a9a9ae}
 .imTyping i:nth-child(2){background:#8e8e93}
 .imBar{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:10px;padding:8px 12px 38px;background:#fff}

@@ -154,18 +154,18 @@
 .mlabSearch tbody th{font-size:24px;font-weight:600;letter-spacing:-.03em;text-align:left;white-space:nowrap;color:var(--ml-ink)}
 .mlabSearch tbody td{font-size:14px;color:var(--ml-muted)}
 .mlabSearch tbody td:last-child{padding-right:0;font-size:13.5px;text-align:left}
-.mlabKeyCol{font-size:17px!important;font-weight:600;color:var(--ml-ink)!important}
+.mlabKeyCol{font-size:17px;font-weight:600;color:var(--ml-ink)}
 .mlabMargin{font-size:15px;font-weight:600;color:var(--ml-muted)}
 
 /* chosen reads as chosen: accent and weight, never a grey panel */
-.mlabSearch tr.is-pick th,.mlabSearch tr.is-pick .mlabKeyCol,.mlabSearch tr.is-pick .mlabMargin{color:var(--ml-accent)!important}
+.mlabSearch tr.is-pick th,.mlabSearch tr.is-pick .mlabKeyCol,.mlabSearch tr.is-pick .mlabMargin{color:var(--ml-accent)}
 .mlabSearch tr.is-pick td:last-child{color:var(--ml-accent);font-weight:600}
 .mlabSearch tr.is-pick th em{display:inline-block;margin-left:8px;vertical-align:middle;font-style:normal;padding:4px 8px;border-radius:99px;background:var(--ml-accent);color:#fff;font-size:11px;font-weight:600;letter-spacing:.01em}
 .mlabSearch tr.is-out th,.mlabSearch tr.is-out td{color:color-mix(in srgb,var(--ml-ink) 42%,transparent)}
-.mlabSearch tr.is-out .mlabKeyCol,.mlabSearch tr.is-out .mlabMargin{color:var(--ml-late)!important}
+.mlabSearch tr.is-out .mlabKeyCol,.mlabSearch tr.is-out .mlabMargin{color:var(--ml-late)}
 .mlabSearch tr.is-out td:last-child{color:var(--ml-late)}
 
-.mlabDecisionNote{display:grid;grid-template-columns:144px minmax(0,1fr);width:100%;max-width:none!important;box-sizing:border-box;gap:24px;margin:32px 0 0!important;padding:24px 24px;border-top:2px solid var(--ml-accent);border-bottom:1px solid var(--ml-rule);border-left:3px solid var(--ml-accent);background:linear-gradient(90deg,color-mix(in srgb,var(--ml-accent) 10%,transparent),transparent 72%);font-family:var(--font-serif);font-size:16px;line-height:1.6;color:var(--ml-muted)}
+.mlabDecisionNote{display:grid;grid-template-columns:144px minmax(0,1fr);width:100%;max-width:none;box-sizing:border-box;gap:24px;margin:32px 0 0;padding:24px 24px;border-top:2px solid var(--ml-accent);border-bottom:1px solid var(--ml-rule);border-left:3px solid var(--ml-accent);background:linear-gradient(90deg,color-mix(in srgb,var(--ml-accent) 10%,transparent),transparent 72%);font-family:var(--font-serif);font-size:16px;line-height:1.6;color:var(--ml-muted)}
 .mlabDecisionNote b{align-self:start;padding-top:4px;font-family:var(--case-font,inherit);font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--ml-accent)}
 
 /* three columns, each anchored by the figure from the table that proves it */

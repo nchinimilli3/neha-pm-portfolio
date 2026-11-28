@@ -76,7 +76,7 @@
 .sxBestIcon svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
 .sxBest strong{display:block;font-size:19px;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums;animation:sxPop .35s ease}
 .sxBest p{margin:2px 0 0;font-size:13px;line-height:1.35;color:var(--muted)}
-.sx .sxPrimary{padding:8px 16px;border:0;border-radius:12px;background:var(--green);color:#fff!important;font-size:13px;font-weight:600;transition:background .2s,transform .12s}
+.sx .sxPrimary{padding:8px 16px;border:0;border-radius:12px;background:var(--green);color:#fff;font-size:13px;font-weight:600;transition:background .2s,transform .12s}
 .sx .sxPrimary:hover{background:#1f4d40}
 .sxGrid{display:grid;grid-template-columns:44px repeat(5,1fr);gap:8px;touch-action:none}
 .sxGrid>b{padding-bottom:2px;text-align:center;font-size:12px;font-weight:600;color:var(--muted);transition:color .25s}
@@ -154,8 +154,8 @@
  .schedulerStory>.schedulerProblemStage{grid-template-columns:repeat(12,minmax(0,1fr));column-gap:32px}
  .schedulerProblemStage>div:first-of-type{grid-column:1/6}
  .schedulerProblemStage>.scFlat{grid-column:7/13;max-width:none}
- .case-scheduler .schedulerStory>.caseSection{width:min(1180px,calc(100% - 64px))!important}
- .case-scheduler .schedulerStory>.schedulerDecisionSection{display:grid!important;grid-template-columns:repeat(12,minmax(0,1fr))!important;column-gap:32px!important;row-gap:0!important;align-items:start!important}
- .case-scheduler .schedulerStory .schedulerDecisionSection>h2{grid-column:1/5!important;grid-row:1;position:sticky;top:132px;width:auto!important;max-width:none!important;margin:0!important;text-align:left!important}
- .case-scheduler .schedulerStory .schedulerDecisionSection>.caseSectionBody{grid-column:6/13!important;grid-row:1}
+ .case-scheduler .schedulerStory>.caseSection{width:min(1180px,calc(100% - 64px))}
+ .case-scheduler .schedulerStory>.schedulerDecisionSection{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:32px;row-gap:0;align-items:start}
+ .case-scheduler .schedulerStory .schedulerDecisionSection>h2{grid-column:1/5;grid-row:1;position:sticky;top:132px;width:auto;max-width:none;margin:0;text-align:left}
+ .case-scheduler .schedulerStory .schedulerDecisionSection>.caseSectionBody{grid-column:6/13;grid-row:1}
 }

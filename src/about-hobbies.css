@@ -1,5 +1,5 @@
 /* "reading" and "reality TV" take over the About photo the way the film camera does. */
-.aboutPhoto:has(.hobbyTakeover){align-self:start!important;display:flex!important;justify-content:center;align-items:flex-start!important;height:auto!important;min-height:0!important}
+.aboutPhoto:has(.hobbyTakeover){align-self:start;display:flex;justify-content:center;align-items:flex-start;height:auto;min-height:0}
 .hobbyTakeover{position:relative;width:100%;max-width:460px;margin:0 auto;animation:hobbyIn .45s ease-out}
 @keyframes hobbyIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
 
@@ -195,8 +195,8 @@
 
 @media(max-width:650px){.hobbyTakeover{max-width:400px}.tvCabinet{padding:10px;gap:8px;border-radius:18px}}
 @media(prefers-reduced-motion:reduce){
- .shelfScene *,.shelfScene *:after{animation:none!important;transition:none!important}
- .hobbyTakeover,.shelfReader,.tvEars,.tvProgram,.tvDoodle *,.tvGlow,.tvTwinkle,.tvWave,.tvOsd,.tvStatic,.tvBeam,.tvSet{animation:none!important}
+ .shelfScene *,.shelfScene *:after{animation:none;transition:none}
+ .hobbyTakeover,.shelfReader,.tvEars,.tvProgram,.tvDoodle *,.tvGlow,.tvTwinkle,.tvWave,.tvOsd,.tvStatic,.tvBeam,.tvSet{animation:none}
  .tvDoodle path.tvDraw{stroke-dashoffset:0}.tvGlow{opacity:.95}.tvStatic,.tvBeam{display:none}.hobbyReplay{display:none}
  .tvDial i{transition:none}
 }

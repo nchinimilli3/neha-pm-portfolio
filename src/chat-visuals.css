@@ -35,7 +35,7 @@
 @media(max-width:820px){
  .caPhoneScene{grid-template-columns:1fr;justify-items:center}
  .caNotes{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;max-width:420px}
- .caNotes li{position:static;translate:none;width:auto;max-width:none;padding:0 0 0 16px!important;text-align:left!important;border-left:2px solid #0a7cff}
+ .caNotes li{position:static;translate:none;width:auto;max-width:none;padding:0 0 0 16px;text-align:left;border-left:2px solid #0a7cff}
  .caNotes li:before,.caNotes li:after{display:none}
  .caLeft{order:2}.caRight{order:3}
 }
@@ -43,12 +43,12 @@
 
 /* Live demo as a macOS Messages window, no outer card */
 .case-chat .chatSandbox{max-width:760px;margin:0 auto;border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 30px 70px #0a3d7a2e,0 0 0 1px #0a3d7a1a}
-.case-chat .chatSandbox .chatTitle{display:grid!important;grid-template-columns:auto 1fr auto;align-items:center!important;gap:12px;padding:12px 16px!important;background:linear-gradient(#f4f4f6,#e9eaee);border-bottom:1px solid #d9dbe0}
+.case-chat .chatSandbox .chatTitle{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding:12px 16px;background:linear-gradient(#f4f4f6,#e9eaee);border-bottom:1px solid #d9dbe0}
 .case-chat .chatTitle .caLights{display:flex;gap:8px}
 .case-chat .chatTitle .caLights i{width:12px;height:12px;border-radius:50%;background:#ff5f57}.case-chat .chatTitle .caLights i:nth-child(2){background:#febc2e}.case-chat .chatTitle .caLights i:nth-child(3){background:#28c840}
-.case-chat .chatSandbox .chatTitle h2{margin:0!important;text-align:center;font-size:14px!important;font-weight:600!important;letter-spacing:0!important;color:#1d1d1f}
+.case-chat .chatSandbox .chatTitle h2{margin:0;text-align:center;font-size:14px;font-weight:600;letter-spacing:0;color:#1d1d1f}
 .case-chat .chatSandbox .chatTitle span{font-size:12px;color:#8a8f98}
-.case-chat .chatSandbox .chatWindow{border:0!important;border-radius:0!important}
+.case-chat .chatSandbox .chatWindow{border:0;border-radius:0}
 
 /* Composition (desktop): the live window sits alone (visual) → Discover sets its title as a left rail beside the
    annotated phone → Design keeps a full-width title over the stored/temporary split (analytical) → Build ends with
@@ -57,10 +57,10 @@
  .case-chat .chatStory>.chatRuleStage{width:min(1180px,calc(100% - 64px));grid-template-columns:repeat(12,minmax(0,1fr));column-gap:32px;align-items:center}
  .chatRuleStage>div:first-of-type{grid-column:1/5}
  .chatRuleStage>.caPhoneScene{grid-column:5/13;width:100%}
- .case-chat .chatStory>.caseSection{width:min(1180px,calc(100% - 64px))!important}
- .case-chat .chatStory>.chatBuildSection{display:grid!important;grid-template-columns:repeat(12,minmax(0,1fr))!important;column-gap:32px!important;row-gap:0!important;align-items:start!important}
- .case-chat .chatStory>.chatBuildSection>h2{grid-column:1/4!important;grid-row:1;width:auto!important;max-width:none!important;margin:0!important}
- .case-chat .chatStory>.chatBuildSection>.caseSectionBody{grid-column:4/13!important;grid-row:1}
+ .case-chat .chatStory>.caseSection{width:min(1180px,calc(100% - 64px))}
+ .case-chat .chatStory>.chatBuildSection{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:32px;row-gap:0;align-items:start}
+ .case-chat .chatStory>.chatBuildSection>h2{grid-column:1/4;grid-row:1;width:auto;max-width:none;margin:0}
+ .case-chat .chatStory>.chatBuildSection>.caseSectionBody{grid-column:4/13;grid-row:1}
 }
 
 /* iMessage recreation. Values follow Apple's HIG and the open-source iMessage
@@ -72,7 +72,7 @@
 .imsgAvatars{display:flex}
 .imsgAvatars i{display:grid;place-items:center;width:30px;height:30px;margin-left:-8px;border-radius:50%;border:2px solid #f9f9f9;background:linear-gradient(#a5abb8,#858994);color:#fff;font:600 13px/1 inherit;font-style:normal}
 .imsgAvatars i:first-child{margin-left:0}
-.imsgWho h2{display:flex;align-items:center;gap:4px;margin:0!important;font:400 11px/1.2 -apple-system,BlinkMacSystemFont,sans-serif!important;letter-spacing:0!important;color:var(--ios-label)}
+.imsgWho h2{display:flex;align-items:center;gap:4px;margin:0;font:400 11px/1.2 -apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:0;color:var(--ios-label)}
 .imsgWho h2 svg{width:6px;height:9px;fill:none;stroke:var(--ios-secondary);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .imsgLeave{justify-self:end;padding:8px 4px;border:0;background:none;font:400 17px/1 inherit;letter-spacing:-.02em;color:var(--ios-red);cursor:pointer;transition:opacity .15s}
 .imsgLeave:active{opacity:.35}
@@ -118,7 +118,7 @@
 .imsgSend svg{width:17px;height:17px;fill:none;stroke:#fff;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
 .imsg .sandboxNote{margin:0;padding:8px 20px 16px;font-size:12px;text-align:center;color:var(--ios-secondary);background:#fff}
 @media(prefers-reduced-motion:reduce){.imsgTyping i,.imsgPicker{animation:none}.imsgSend{transition:none}}
-.case-chat .sandboxSection:has(.imsg){background:none!important;box-shadow:none!important;border:0!important}
+.case-chat .sandboxSection:has(.imsg){background:none;box-shadow:none;border:0}
 .imsgSend:not(.isReady){visibility:hidden}
 .imsgAvatars i{font:600 13px/1 -apple-system,BlinkMacSystemFont,sans-serif}
 
@@ -143,7 +143,7 @@
 .isMac .imsgNav{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#fff;border-bottom:.5px solid #0000001f;-webkit-backdrop-filter:none;backdrop-filter:none}
 .isMac .imsgWho{display:flex;align-items:baseline;gap:8px}
 .imsgTo{font-size:13px;color:#8e8e93}
-.isMac .imsgWho h2{font-size:13px!important;font-weight:500!important}
+.isMac .imsgWho h2{font-size:13px;font-weight:500}
 /* macOS toolbar button: small, rounded, destructive tint on hover. */
 .isMac .imsgLeave{padding:4px 12px;border-radius:8px;background:#0000000a;box-shadow:inset 0 0 0 .5px #0000001f;font-size:13px;font-weight:500;color:var(--ios-red)}
 .isMac .imsgLeave:hover{background:#ff3b3014}
@@ -156,4 +156,4 @@
 .isMac .imsgSend{flex-basis:22px;height:22px}.isMac .imsgSend svg{width:13px;height:13px}
 .imsg.isMac .sandboxNote{grid-column:1/-1;border-top:.5px solid #0000001f}
 @media(max-width:640px){.imsg.isMac{grid-template-columns:1fr}.isMac .imsgSide{display:none}}
-.imsgField input:focus,.imsgField input:focus-visible{outline:none!important;box-shadow:none!important}.imsgField:focus-within{border-color:#c6c6c8;box-shadow:0 0 0 3px #0b84fe2e}.imsgMain:focus-within{outline:none}
+.imsgField input:focus,.imsgField input:focus-visible{outline:none;box-shadow:none}.imsgField:focus-within{border-color:#c6c6c8;box-shadow:0 0 0 3px #0b84fe2e}.imsgMain:focus-within{outline:none}

@@ -11,24 +11,24 @@
 }
 /* Open artwork beside the case-study title; no card or background panel. */
 .case-accenture .caseLead{
-  grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr)!important;
-  align-items:center!important;
-  gap:clamp(24px,3vw,56px)!important;
+  grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr);
+  align-items:center;
+  gap:clamp(24px,3vw,56px);
 }
-.case-accenture .caseLead .caseHeader{max-width:none!important}
+.case-accenture .caseLead .caseHeader{max-width:none}
 .case-accenture .caseLead .caseHeroMedia{
   grid-column:2;
   grid-row:1;
-  width:100%!important;
-  max-width:none!important;
-  margin:0!important;
-  border:0!important;
-  border-radius:0!important;
-  box-shadow:none!important;
-  background:transparent!important;
+  width:100%;
+  max-width:none;
+  margin:0;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+  background:transparent;
 }
 @media(max-width:900px){
-  .case-accenture .caseLead{grid-template-columns:1fr!important;gap:20px!important}
+  .case-accenture .caseLead{grid-template-columns:1fr;gap:20px}
   .case-accenture .caseLead .caseHeroMedia{grid-column:1;grid-row:2}
 }
 .accentureSFScene{display:block;width:100%;height:auto}
@@ -37,4 +37,4 @@
 .sfFog svg{display:block;width:100%;height:100%;overflow:visible}
 .accentureSFHero.isInView .sfFog{animation-play-state:running}
 @keyframes sfFogDrift{from{transform:translateX(-33.49%)}to{transform:translateX(101.08%)}}
-@media(prefers-reduced-motion:reduce){.sfFog{animation:none!important;transform:translateX(33.49%)!important}}
+@media(prefers-reduced-motion:reduce){.sfFog{animation:none;transform:translateX(33.49%)}}

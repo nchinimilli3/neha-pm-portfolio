@@ -1,13 +1,13 @@
 /* A quiet reading journal: original screens, open space, and useful marginal notes. */
 .case-bookclub{--bc-ink:#203f3b;--bc-muted:#4c554e;--bc-rule:#d4d9ce;--bc-rust:#895846;}
 
-.case-bookclub .caseHeader h1{text-shadow:none!important}
-.case-bookclub .caseCompanyBar span{color:#687269!important}
-.case-bookclub .caseCompanyBar span{color:#687269!important}
-.case-bookclub .caseLead{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)!important;gap:40px!important;align-items:center!important}
-.case-bookclub .caseLead .caseHeroMedia{border:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important}
-.case-bookclub .caseIntro{font-size:clamp(18px,1.65vw,23px)!important;line-height:1.55!important;color:#56655b!important}
-.case-bookclub .bookclubLiveLink{background:#284b41!important;box-shadow:none!important;border-radius:4px!important}
+.case-bookclub .caseHeader h1{text-shadow:none}
+.case-bookclub .caseCompanyBar span{color:#687269}
+.case-bookclub .caseCompanyBar span{color:#687269}
+.case-bookclub .caseLead{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:center}
+.case-bookclub .caseLead .caseHeroMedia{border:0;background:transparent;box-shadow:none;overflow:visible}
+.case-bookclub .caseIntro{font-size:clamp(18px,1.65vw,23px);line-height:1.55;color:#56655b}
+.case-bookclub .bookclubLiveLink{background:#284b41;box-shadow:none;border-radius:4px}
 .bcHero{position:relative;width:100%;max-width:620px;margin:auto;aspect-ratio:1.15;isolation:isolate}
 .bcHero figure{position:absolute;z-index:1;margin:0;transition:transform .5s ease}
 .bcDevice{display:block;width:100%;height:auto;background:transparent;overflow:visible;filter:drop-shadow(0 16px 15px #1b2e2420)}
@@ -22,8 +22,8 @@
 .bcStory p{font-size:16px;line-height:1.75;color:var(--bc-muted)}
 
 .bcStory a:focus-visible,.bcStory input:focus-visible{outline:3px solid #b89862;outline-offset:6px}
-@media(max-width:1050px){.case-bookclub .caseLead{gap:32px!important}.bcHeroCaption{font-size:11px}}
-@media(max-width:760px){.case-bookclub .caseLead{grid-template-columns:1fr!important}.case-bookclub .caseLead .caseHeroMedia{max-width:550px!important;margin:auto!important}.bcHeroCaption{font-size:12px}.bcHeroLeft,.bcHeroRight{top:13%}}
+@media(max-width:1050px){.case-bookclub .caseLead{gap:32px}.bcHeroCaption{font-size:11px}}
+@media(max-width:760px){.case-bookclub .caseLead{grid-template-columns:1fr}.case-bookclub .caseLead .caseHeroMedia{max-width:550px;margin:auto}.bcHeroCaption{font-size:12px}.bcHeroLeft,.bcHeroRight{top:13%}}
 @media(prefers-reduced-motion:reduce){.bcHero figure{transition:none}.bcHero:hover .bcHeroLeft{transform:rotate(-7deg)}.bcHero:hover .bcHeroRight{transform:rotate(7deg)}}
 /* Bookish artifacts with a job: a stack in the opening and a navigable chapter shelf. */
 .bcHeroBooks{position:absolute;width:48%;left:0;bottom:6%;height:auto;z-index:0;filter:drop-shadow(0 9px 8px #22372617);transform:rotate(-3deg);pointer-events:none}
@@ -91,9 +91,9 @@
 .bcBetPhone{width:62%;margin:0 auto 24px;justify-self:center}
 .bcBets li:nth-child(1) .bcBetPhone{transform:rotate(-3deg)}.bcBets li:nth-child(3) .bcBetPhone{transform:rotate(3deg)}
 .bcBets h3{margin:8px 0 8px;color:var(--bc-ink)}
-.bcStory .bcInstead{margin:0!important;font-size:15px!important;color:#8d948f!important}
+.bcStory .bcInstead{margin:0;font-size:15px;color:#8d948f}
 .bcInstead s{text-decoration-color:#9d4f4599;text-decoration-thickness:1.5px}
-.bcStory .bcTradeoff{margin:8px 0 0!important;font-size:15px!important;line-height:1.5!important}
+.bcStory .bcTradeoff{margin:8px 0 0;font-size:15px;line-height:1.5}
 .bcTradeoff b{display:block;font-size:13px;color:#8a6a45}
 
 /* Validation plan */
@@ -105,7 +105,7 @@
 .bcPlan.isIn .bcPhase{opacity:1;transform:none}
 .bcPhaseNum{position:relative;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#2f5244;color:#fff;font-weight:700;box-shadow:0 0 0 6px #f5f3ed}
 .bcPhase h3{margin:16px 0 8px;color:var(--bc-ink)}
-.bcStory .bcPhase>p{margin:0 0 24px!important;font-size:15px!important;line-height:1.55!important}
+.bcStory .bcPhase>p{margin:0 0 24px;font-size:15px;line-height:1.55}
 .bcPeople{display:flex;gap:8px}
 .bcPeople figure{display:grid;justify-items:center;margin:0;opacity:0;transform:translateY(10px);transition:opacity .4s,transform .4s;transition-delay:calc(.4s + var(--k) * .18s)}
 .bcPlan.isIn .bcPeople figure{opacity:1;transform:none}
@@ -121,7 +121,7 @@
 .bcTaskDots{display:flex;gap:4px}.bcTaskDots i{width:9px;height:9px;border-radius:50%;box-shadow:inset 0 0 0 1.5px #c9c2ae}.bcTaskDots i.ok{background:var(--bc-choose);box-shadow:none}
 
 .bcRules{display:grid;gap:8px;margin-top:64px}
-.bcStory .bcRules p{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 8px;margin:0!important;font-size:17px!important;color:#3f4e45!important}
+.bcStory .bcRules p{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 8px;margin:0;font-size:17px;color:#3f4e45}
 .bcRules span{padding:1px 8px;border-radius:12px;background:#2f5244;color:#fff;font-size:12px;font-weight:700}
 .bcRules i{font-style:normal;color:#b39a73}
 
@@ -148,7 +148,7 @@
  .bcValidate>header{grid-column:1/-1}
  .bcValidate>.bcPlan{grid-column:1/10}
  .bcValidate>.bcRules{grid-column:10/13;margin-top:0;gap:24px;padding-left:24px;border-left:1px solid #2f524422}
- .bcStory .bcValidate>.bcRules p{display:block!important;font-size:15px!important;line-height:1.55!important}
+ .bcStory .bcValidate>.bcRules p{display:block;font-size:15px;line-height:1.55}
  .bcValidate>.bcRules span{margin-right:8px}
  .bcValidate>.bcRules i{margin:0 4px}
 }
@@ -187,7 +187,7 @@
 .bcRank li.isTop b{height:10px;background:linear-gradient(90deg,var(--bc-meet) calc(var(--w)*100%),#2f524414 0)}
 .bcPlan.isIn .bcRank b{transform:none}
 /* Decision rules: condition, then the action it triggers */
-.bcRules .bcRulesHead{margin:0 0 4px!important;font-size:12px!important;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#4f5d55!important}
+.bcRules .bcRulesHead{margin:0 0 4px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#4f5d55}
 .bcRule{display:grid;gap:4px;padding-left:16px;border-left:2px solid #b3a98f}
 .bcRule span{padding:0;background:none;border-radius:0;font-size:14px;font-weight:400;line-height:1.45;color:#4f5d55}
 .bcRule b{position:relative;font-size:15.5px;font-weight:600;line-height:1.4;color:#203f3b}

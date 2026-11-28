@@ -3,7 +3,7 @@
 
 /* Header copy needs darker ink to read over the purple blooms. */
 
-.case-accenture .caseHeader .toolLogoHeading p{color:var(--ax-body)!important}
+.case-accenture .caseHeader .toolLogoHeading p{color:var(--ax-body)}
 
 /* Tool relay: a vertical hand-off line beside the rules it carried. */
 .case-accenture .axRelay{position:relative;min-width:0;padding:8px 0}
@@ -15,7 +15,7 @@
 .case-accenture .axLogo{grid-row:1/3;display:block;width:68px;height:68px;border-radius:50%;background:radial-gradient(circle,#fff 0 58%,#ffffff00 72%)}
 .case-accenture .axLogo:after{content:'';display:block;width:36px;height:36px;margin:16px;background:var(--brand);-webkit-mask:var(--logo) center/contain no-repeat;mask:var(--logo) center/contain no-repeat}
 .case-accenture .axRelay strong{align-self:end;display:block;font-size:18px;line-height:1.25;color:var(--ax-ink)}
-.case-accenture .axRelay p{align-self:start;margin:4px 0 0!important;font-size:15px!important;line-height:1.45!important;color:var(--ax-body)!important}
+.case-accenture .axRelay p{align-self:start;margin:4px 0 0;font-size:15px;line-height:1.45;color:var(--ax-body)}
 @media(prefers-reduced-motion:reduce){.case-accenture .axRelayToken{animation:none}}
 
 /* Automation boundary */
@@ -36,7 +36,7 @@
 .case-accenture .is-human .axStop svg{stroke:#fff}
 .case-accenture .axTrack strong{display:block;margin-top:16px;font-size:18px;line-height:1.3;color:var(--ax-ink)}
 .case-accenture .is-gate strong,.case-accenture .is-human strong{color:var(--ax-rose)}
-.case-accenture .axTrack p{margin:8px 0 0!important;font-size:14px!important;line-height:1.45!important;color:var(--ax-body)!important}
+.case-accenture .axTrack p{margin:8px 0 0;font-size:14px;line-height:1.45;color:var(--ax-body)}
 
 @media(max-width:800px){
  .case-accenture .axTrack{grid-template-columns:1fr;gap:24px;padding-left:80px}
@@ -49,7 +49,7 @@
 
 /* Chapters share one layout: heading beside its summary, then the visual. No divider lines. */
 
-.case-accenture .accentureSchemaWindow{margin:0!important}
+.case-accenture .accentureSchemaWindow{margin:0}
 
 /* The 10:30 PM edge case lives beside the gate it justified. */
 .case-accenture .axProof{display:grid;grid-template-columns:150px 1fr;gap:40px;align-items:center;margin-top:48px}
@@ -59,19 +59,19 @@
 .case-accenture .axClockHour{stroke:#fff;stroke-width:5;stroke-linecap:round}
 .case-accenture .axClockMin{stroke:#d38ae6;stroke-width:3;stroke-linecap:round}
 .case-accenture .axClockPin{fill:#fff}.case-accenture .axClockMoon{fill:#f3d98b}
-.case-accenture .axEdge p{margin:0!important}
-.case-accenture .axEdgeWhen{font-size:18px!important;color:var(--ax-body)!important}
+.case-accenture .axEdge p{margin:0}
+.case-accenture .axEdgeWhen{font-size:18px;color:var(--ax-body)}
 .case-accenture .axEdgeWhen strong{margin-right:8px;font-size:clamp(34px,3.4vw,46px);font-weight:700;letter-spacing:-.04em;color:var(--ax-plum)}
-.case-accenture .axEdgeBefore{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin-top:16px!important;font-size:15px!important;color:var(--ax-body)!important}
+.case-accenture .axEdgeBefore{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin-top:16px;font-size:15px;color:var(--ax-body)}
 .case-accenture .axEdgeBefore s{font-size:17px;font-weight:700;color:var(--ax-rose);text-decoration-thickness:2px}
-.case-accenture .axEdgeAfter{display:flex;gap:12px;align-items:baseline;margin-top:12px!important;font-size:19px!important;font-weight:700;line-height:1.35!important;color:var(--ax-ink)!important}
+.case-accenture .axEdgeAfter{display:flex;gap:12px;align-items:baseline;margin-top:12px;font-size:19px;font-weight:700;line-height:1.35;color:var(--ax-ink)}
 .case-accenture .axEdgeAfter i{font-style:normal;color:var(--ax-violet)}
 @media(max-width:800px){.case-accenture .axProof{grid-template-columns:1fr;gap:20px}.case-accenture .axClock{width:110px;height:110px}}
 
 /* The three request screens share one numbered hand-off line. */
 @media(min-width:1001px){
  .case-accenture .requestScreens{position:relative}
- .case-accenture .requestStep>header>b{position:relative;z-index:1;background:var(--ax-violet)!important;color:#fff!important;box-shadow:0 0 0 5px #7b2fd022}
+ .case-accenture .requestStep>header>b{position:relative;z-index:1;background:var(--ax-violet);color:#fff;box-shadow:0 0 0 5px #7b2fd022}
 }
 
 /* Evidence ride: a Powell-line cable car climbs out of the fog past row houses and SF street signs. */
@@ -124,19 +124,19 @@
 .case-accenture .axRide.stop-2 .axFog{opacity:.4}
 .case-accenture .axRide.stop-3 .axFog{opacity:.2}
 .case-accenture .axRide.stop-4 .axFog{opacity:.06}
-.case-accenture .axRideNow{display:flex;align-items:center;gap:12px;min-height:34px;margin:8px 0 0!important;font-size:18px!important;font-weight:600;color:var(--ax-ink)!important}
+.case-accenture .axRideNow{display:flex;align-items:center;gap:12px;min-height:34px;margin:8px 0 0;font-size:18px;font-weight:600;color:var(--ax-ink)}
 .case-accenture .axRideNow b{display:grid;place-items:center;flex:0 0 30px;height:30px;border-radius:50%;background:var(--sf-sign);color:#fff;font-size:14px}
 .case-accenture .axRideStops{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media(max-width:700px){
  .case-accenture .axSign text{display:none}
- .case-accenture .axRideNow{font-size:16px!important}
+ .case-accenture .axRideNow{font-size:16px}
  .case-accenture .axRideStops{position:static;width:auto;height:auto;clip:auto;display:grid;gap:8px;margin:20px 0 0;padding:0 0 0 16px;list-style:none;border-left:4px solid #6b6474}
  .case-accenture .axRideStops li{display:grid;justify-items:start;width:max-content;padding:8px 16px;border-radius:8px;background:var(--sf-sign);box-shadow:inset 0 0 0 1.5px #1d6b4a,inset 0 0 0 3px #fff;color:#fff;opacity:.45;transition:opacity .5s}
  .case-accenture .axRideStops li.isPassed{opacity:1}
  .case-accenture .axRideStops strong{font-size:18px;line-height:1.1}
  .case-accenture .axRideStops span{font-size:13px}
 }
-@media(prefers-reduced-motion:reduce){.case-accenture .axRide *{animation:none!important;transition:none!important}}
+@media(prefers-reduced-motion:reduce){.case-accenture .axRide *{animation:none;transition:none}}
 
 /* One-by-one reveals for grouped items (added by AccentureStagger, so content stays visible without JS). */
 .case-accenture .axStagger>*{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s var(--ease-out);transition-delay:calc(var(--si,0) * .22s)}
@@ -172,10 +172,10 @@
 /* The live readout belongs to the ride, not under it: a transit placard pinned
    inside the scene's top-left sky, so the number and the car read together. */
 .accentureStory .axRide{position:relative}
-.accentureStory .axRide>.axRideNow{position:absolute;top:18px;left:0;z-index:2;max-width:min(430px,46%);min-height:0;margin:0!important;padding:12px 16px 12px 12px;align-items:flex-start;border-radius:12px;background:color-mix(in srgb,#fff 82%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 10px 26px -14px rgba(31,22,40,.35),inset 0 0 0 1px rgba(31,22,40,.08);font-size:15px!important;font-weight:600;line-height:1.45}
+.accentureStory .axRide>.axRideNow{position:absolute;top:18px;left:0;z-index:2;max-width:min(430px,46%);min-height:0;margin:0;padding:12px 16px 12px 12px;align-items:flex-start;border-radius:12px;background:color-mix(in srgb,#fff 82%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 10px 26px -14px rgba(31,22,40,.35),inset 0 0 0 1px rgba(31,22,40,.08);font-size:15px;font-weight:600;line-height:1.45}
 .accentureStory .axRide>.axRideNow b{flex:0 0 28px;height:28px;margin-top:-1px}
 @media(max-width:760px){
- .accentureStory .axRide>.axRideNow{position:static;max-width:none;margin:12px 0 0!important}
+ .accentureStory .axRide>.axRideNow{position:static;max-width:none;margin:12px 0 0}
 }
 
 /* Close on the analyst's working paper: the 8x signal is shown as a normalized
@@ -194,13 +194,13 @@
 .axSheetGrid>b{justify-items:start;padding-left:8px;background:#faf8fb;color:#55495c;font:600 8px/1 var(--font-ui)}
 .axSheetGrid>i{position:relative;background:#fff;font-style:normal}.axSheetGrid>i.isFilled:after{content:'';width:66%;height:58%;border-radius:2px;background:linear-gradient(135deg,#8d42c5,#c4519a);box-shadow:0 3px 8px rgba(104,37,151,.2);animation:axCellFill .55s var(--ease-out) both;animation-delay:calc(var(--cell,0) * 70ms)}
 .axSheetGrid>i:nth-child(11){--cell:0}.axSheetGrid>i:nth-child(12){--cell:1}.axSheetGrid>i:nth-child(13){--cell:2}.axSheetGrid>i:nth-child(14){--cell:3}.axSheetGrid>i:nth-child(15){--cell:4}.axSheetGrid>i:nth-child(16){--cell:5}.axSheetGrid>i:nth-child(17){--cell:6}.axSheetGrid>i:nth-child(18){--cell:7}
-.axAnalystSheet>p{display:flex;gap:9px;margin:0!important;padding:10px 12px;border-top:1px solid #ddd8df;background:#fff8cf;color:#574e45;font:600 9px/1.35 var(--font-ui)!important}.axAnalystSheet>p span{color:#8b6513;text-transform:uppercase;letter-spacing:.09em}
-.axRatioPull .csPullFigure{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:10px;grid-column:auto!important;margin:0!important}
+.axAnalystSheet>p{display:flex;gap:9px;margin:0;padding:10px 12px;border-top:1px solid #ddd8df;background:#fff8cf;color:#574e45;font:600 9px/1.35 var(--font-ui)}.axAnalystSheet>p span{color:#8b6513;text-transform:uppercase;letter-spacing:.09em}
+.axRatioPull .csPullFigure{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:10px;grid-column:auto;margin:0}
 .axRatioPull .csPullFigure strong{font:500 clamp(62px,7vw,96px)/.78 var(--font-display);letter-spacing:-.075em;color:var(--cd-accent)}
 .axRatioPull .csPullFigure span{max-width:12ch;font:600 11px/1.25 var(--font-ui);letter-spacing:.11em;text-transform:uppercase;color:var(--cd-muted)}
-.axRatioPull>.axClose{grid-column:8 / -1!important;align-self:center}
+.axRatioPull>.axClose{grid-column:8 / -1;align-self:center}
 @keyframes axCellFill{from{opacity:0;transform:scaleX(.2);transform-origin:left}to{opacity:1;transform:none}}
-@media(max-width:980px){.axRatioPull .axEightfold,.axRatioPull>.axClose{grid-column:1 / -1!important}.axRatioPull .axEightfold{width:100%;max-width:720px}.axRatioPull>.axClose{max-width:60ch!important}}
+@media(max-width:980px){.axRatioPull .axEightfold,.axRatioPull>.axClose{grid-column:1 / -1}.axRatioPull .axEightfold{width:100%;max-width:720px}.axRatioPull>.axClose{max-width:60ch}}
 @media(max-width:640px){.axRatioPull .axEightfold{grid-template-columns:1fr}.axRatioPull .csPullFigure{flex-direction:row;align-items:flex-end;justify-content:flex-start}.axRatioPull .csPullFigure span{padding-bottom:2px}}
 @media(max-width:520px){.axSheetGrid{grid-template-columns:76px repeat(8,1fr);margin:8px}.axFormula code{font-size:7px}.axAnalystSheet>header em{display:none}}
 @media(prefers-reduced-motion:reduce){.axSheetGrid>i.isFilled:after{animation:none}}
