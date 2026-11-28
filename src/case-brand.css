@@ -1,21 +1,20 @@
 /* Case studies as maximized windows, each in its company's palette and type voice.
-   One palette per case, set on <body> so the maximize ghost (added to body
-   before the case mounts) and the case page read the same values.
+   One palette per case, set on the case page and the maximize ghost (both carry
+   case-<id>), not on <body>: a custom property there restyles the whole page.
    --b-band / --b-page: the tinted page, deeper at the top
    --b-title-*: the case title set in that brand's type voice */
-body:has(.case-fcvf){--b-band:#d9e4f4;--b-page:#eef3f9;--b-title-font:Inter,system-ui,sans-serif;--b-title-weight:700;--b-title-track:-.035em}
-body:has(.case-finsimple){--b-band:#d6e8f2;--b-page:#edf5f8;--b-title-font:Inter,system-ui,sans-serif;--b-title-weight:600;--b-title-track:-.03em}
-body:has(.case-accenture){--b-band:#eadcfb;--b-page:#f6f1fc;--b-title-font:Inter,system-ui,sans-serif;--b-title-weight:700;--b-title-track:-.04em}
-body:has(.case-kohler){--b-band:#e3e8e6;--b-page:#f3f4f3;--b-title-font:Inter,system-ui,sans-serif;--b-title-weight:300;--b-title-track:-.02em}
-body:has(.case-marketExpansion){--b-band:#f1e1e8;--b-page:#faf4f1;--b-title-font:Poppins,Inter,sans-serif;--b-title-weight:700;--b-title-track:-.03em}
-body:has(.case-estee){--b-band:#e1e4ef;--b-page:#f6f3ee;--b-title-font:'Instrument Serif',Georgia,serif;--b-title-weight:400;--b-title-track:.01em}
-body:has(.case-commute){--b-band:#e6dff5;--b-page:#f9f0ea;--b-title-font:-apple-system,BlinkMacSystemFont,Inter,sans-serif;--b-title-weight:700;--b-title-track:-.03em}
-body:has(.case-bookclub){--b-band:#dde8df;--b-page:#f4f1e8;--b-title-font:'Instrument Serif',Georgia,serif;--b-title-weight:400;--b-title-track:-.01em}
-body:has(.case-scheduler){--b-band:#e9efd0;--b-page:#f7f7ea;--b-title-font:Poppins,Inter,sans-serif;--b-title-weight:600;--b-title-track:-.03em}
-body:has(.case-rep){--b-band:#e4f5d6;--b-page:#f3f8ec;--b-title-font:-apple-system,BlinkMacSystemFont,Inter,sans-serif;--b-title-weight:700;--b-title-track:-.03em}
-body:has(.case-chat){--b-band:#d9e8fb;--b-page:#f1f6fd;--b-title-font:-apple-system,BlinkMacSystemFont,Inter,sans-serif;--b-title-weight:700;--b-title-track:-.03em}
+.case-fcvf{--b-band:#d9e4f4;--b-page:#eef3f9;--b-title-font:Inter,system-ui,sans-serif;--b-title-weight:700;--b-title-track:-.035em}
+.case-finsimple{--b-band:#d6e8f2;--b-page:#edf5f8;--b-title-font:Inter,system-ui,sans-serif;--b-title-weight:600;--b-title-track:-.03em}
+.case-accenture{--b-band:#eadcfb;--b-page:#f6f1fc;--b-title-font:Inter,system-ui,sans-serif;--b-title-weight:700;--b-title-track:-.04em}
+.case-kohler{--b-band:#e3e8e6;--b-page:#f3f4f3;--b-title-font:Inter,system-ui,sans-serif;--b-title-weight:300;--b-title-track:-.02em}
+.case-marketExpansion{--b-band:#f1e1e8;--b-page:#faf4f1;--b-title-font:Poppins,Inter,sans-serif;--b-title-weight:700;--b-title-track:-.03em}
+.case-estee{--b-band:#e1e4ef;--b-page:#f6f3ee;--b-title-font:'Instrument Serif',Georgia,serif;--b-title-weight:400;--b-title-track:.01em}
+.case-commute{--b-band:#e6dff5;--b-page:#f9f0ea;--b-title-font:-apple-system,BlinkMacSystemFont,Inter,sans-serif;--b-title-weight:700;--b-title-track:-.03em}
+.case-bookclub{--b-band:#dde8df;--b-page:#f4f1e8;--b-title-font:'Instrument Serif',Georgia,serif;--b-title-weight:400;--b-title-track:-.01em}
+.case-scheduler{--b-band:#e9efd0;--b-page:#f7f7ea;--b-title-font:Poppins,Inter,sans-serif;--b-title-weight:600;--b-title-track:-.03em}
+.case-rep{--b-band:#e4f5d6;--b-page:#f3f8ec;--b-title-font:-apple-system,BlinkMacSystemFont,Inter,sans-serif;--b-title-weight:700;--b-title-track:-.03em}
+.case-chat{--b-band:#d9e8fb;--b-page:#f1f6fd;--b-title-font:-apple-system,BlinkMacSystemFont,Inter,sans-serif;--b-title-weight:700;--b-title-track:-.03em}
 
-body:has(.casePage){background:var(--b-page,#f3ede3)}
 .casePage{position:relative;--cw-bar:46px}
 .caseWinSpacer{height:78px}
 .casePage>.caseBackdrop{position:absolute;top:-400px;bottom:-200px;left:50%;width:100vw;margin-left:-50vw;z-index:0;pointer-events:none;
@@ -55,13 +54,13 @@ html[data-vt=fade]::view-transition-old(root){animation:cwFadeOut .24s ease both
 /* Home while a case is open (see isParked in CaseWindow.tsx): kept, laid out, not drawn. */
 .homeKeep[data-parked]{content-visibility:hidden}
 @keyframes cwZoomIn{
- from{transform:translate(var(--vt-l,30%),var(--vt-t,30%)) scale(var(--vt-sx,.4),var(--vt-sy,.4));opacity:0;border-radius:24px}
+ from{transform:translate(var(--vt-l,30%),var(--vt-t,30%)) scale(var(--vt-sx,.4),var(--vt-sy,.4));opacity:0}
  12%{opacity:1}
- to{transform:none;opacity:1;border-radius:0}}
+ to{transform:none;opacity:1}}
 @keyframes cwZoomOut{
- from{transform:none;opacity:1;border-radius:0}
+ from{transform:none;opacity:1}
  88%{opacity:1}
- to{transform:translate(var(--vt-l,30%),var(--vt-t,30%)) scale(var(--vt-sx,.4),var(--vt-sy,.4));opacity:0;border-radius:24px}}
+ to{transform:translate(var(--vt-l,30%),var(--vt-t,30%)) scale(var(--vt-sx,.4),var(--vt-sy,.4));opacity:0}}
 @keyframes cwFadeOut{to{opacity:0}}
 
 /* Fallback for browsers without view transitions */

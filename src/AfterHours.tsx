@@ -340,8 +340,10 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
   // The desk and the laptop's tilted lid (a 3D layer of its own) stay rastered at a fixed zoom (rasterPin.ts).
   const raster=rasterPin([stage,...stage.querySelectorAll<HTMLElement>('.ahLid')]);
   let cam=camFor(0),target=0,raf=0;
+  // Only on screen: a resize or a closed case reframes the desk while it's out of view.
+  let onScreen=false;
   const draw=(c:Cam)=>{
-   cam=c;raster.move(c.s);
+   cam=c;if(onScreen)raster.move(c.s);
    // Whole-pixel translation keeps the desk's edges and objects from shimmering apart.
    stage.style.transform=`translate(${Math.round(c.X-c.cx*c.s)}px,${Math.round(c.Y-c.cy*c.s)}px) scale(${c.s.toFixed(4)})`;
   };
@@ -363,7 +365,7 @@ export default function AfterHours({projects,onOpen}:{projects:Project[];onOpen:
   };
   const reframe=()=>{cancelAnimationFrame(raf);raf=0;draw(camFor(target));setActive(target)};
   // Off screen: free the desk's GPU layer; it's rebuilt on the next flight or frame.
-  const seen=new IntersectionObserver(([e])=>{if(!e.isIntersecting)raster.release()});seen.observe(track);
+  const seen=new IntersectionObserver(([e])=>{onScreen=e.isIntersecting;if(!onScreen)raster.release()});seen.observe(track);
   window.addEventListener('resize',reframe);window.addEventListener(HOME_SHOWN,reframe);
   return()=>{seen.disconnect();window.removeEventListener('resize',reframe);window.removeEventListener(HOME_SHOWN,reframe);cancelAnimationFrame(raf);raster.dispose();flyRef.current=()=>{}};
  },[isStatic]);

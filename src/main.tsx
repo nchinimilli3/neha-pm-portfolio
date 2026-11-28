@@ -338,7 +338,9 @@ function TravelPlanes(){
     anims.push(dot.animate([{offset:0,opacity:0},{offset:t,opacity:0},{offset:t,opacity:1},{offset:1,opacity:1}],loop));
    }
   });
-  return ()=>{anims.forEach(a=>a.cancel());trails.forEach(t=>t.replaceChildren())};
+  // Paused out of view, so ~65 loops don't keep the GPU busy on every page view.
+  const seen=new IntersectionObserver(([e])=>anims.forEach(a=>e.isIntersecting?a.play():a.pause()));seen.observe(el);
+  return ()=>{seen.disconnect();anims.forEach(a=>a.cancel());trails.forEach(t=>t.replaceChildren())};
  },[]);
  return <span ref={sky} className="travelSky" aria-hidden="true">
   {TRAVEL_FLIGHTS.map((_,i)=><span key={i} className={`travelTrail travelFlight${i}`}/>)}
