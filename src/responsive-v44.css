@@ -6,7 +6,6 @@
    so each of these drops one step. Art and device mockups are left alone:
    they are drawn to a fixed aspect and shrink correctly. */
 @media(min-width:851px) and (max-width:1200px){
-  .kohlerWorkspaceGrid,.kohlerSurfaceBody{grid-template-columns:1fr!important}
   .bcPlan{grid-template-columns:repeat(2,minmax(0,1fr))!important}
   .cdSupporting{grid-template-columns:1fr!important}
   .expColumns{grid-template-columns:repeat(2,minmax(0,1fr))!important}
@@ -26,7 +25,6 @@
 @media(min-width:1700px){
   .homePage{--cs-max:1480px}
   .siteHeader{padding-inline:max(48px,calc((100% - 1480px)/2))!important}
-  .siteFooter{width:min(1480px,calc(100% - 96px))!important;max-width:1480px!important}
 
   main.casePage{width:100%!important;max-width:none!important}
 }

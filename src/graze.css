@@ -16,7 +16,6 @@
 .grazeHeroMenu>small{display:block;margin-top:12px;color:#9a876b;font-size:10px}
 .grazeHeroSeal{position:absolute;left:5%;bottom:8%;display:grid;place-content:center;width:83px;height:83px;border:1px solid #8a4c5a;border-radius:50%;color:#783e50;text-align:center;font:700 11px/1.4 system-ui;letter-spacing:.1em;transform:rotate(-14deg)}
 .grazeHeroSeal i{font:italic 19px Georgia,serif}
-.project-marketExpansion .grazeHero{max-height:100%;aspect-ratio:1.3}.project-marketExpansion .grazeHeroMenu{bottom:3%;right:4%}.project-marketExpansion .grazeHeroSeal{bottom:8%}
 
 .grazeStory{--graze-ink:#254c42;--graze-plum:#6c394c}
 .grazeBrief,.grazeSection{width:min(1180px,calc(100% - 64px));margin:0 auto;padding:64px 0}
@@ -78,7 +77,6 @@
    grid, 1.98:1 on a wide screen). The collage keeps its own 4:3 and is fitted
    inside that slot like a contained image — centred, never stretched — so the
    composition never distorts and never spills past the clipped edge. */
-.project-marketExpansion .projectCardMedia{container-type:size;display:grid;place-items:center;background:radial-gradient(ellipse at 68% 24%,#f5f6ef,transparent 65%),linear-gradient(145deg,#dadfd6,#e8e7dd)}
 
 /* Lifecycle road in Graze plum, gold, and sage */
 .grazeStory{--lc-ink:#2d2226;--lc-road:#6c394c;--lc-accent:#d9a441;--lc-accent-2:#f0cf86;--lc-muted:#625a56;--lc-tint:#f4e6ecf2;--lc-glass:#f6ecef}

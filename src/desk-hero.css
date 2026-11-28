@@ -552,12 +552,6 @@ html.deskOsLive .siteHeader{opacity:0;transform:translateY(-100%);pointer-events
 }
 
 /* Below the hero: fun builds wear the same window chrome as Neha OS; each role gets a margin note. */
-.osWin{border-radius:12px;overflow:hidden;background:#fffdf8;box-shadow:0 22px 40px -22px rgba(40,24,14,.45),0 0 0 .5px rgba(0,0,0,.14);transition:box-shadow .25s,transform .25s}
-.osWinBar{height:28px;display:flex;align-items:center;gap:6px;padding:0 11px;background:linear-gradient(#f4efe8,#ebe4da);font:400 11.5px/1 Inter,sans-serif;color:#6d6258}
-.osWinBar i{width:10px;height:10px;border-radius:50%;background:#ff5f57}.osWinBar i:nth-child(2){background:#febc2e}.osWinBar i:nth-child(3){background:#28c840;margin-right:6px}
-.osWinBar span{flex:1;text-align:center;margin-right:36px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.homePage .osWin>:is(.moreBuildVisual,.techVisual){border-radius:0!important;border:0!important;box-shadow:none!important}
-.homePage :is(.moreBuildCard,.smallBuild):hover .osWin{transform:translateY(-4px);box-shadow:0 30px 50px -22px rgba(40,24,14,.55),0 0 0 .5px rgba(0,0,0,.16)}
 
 .expHead{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:14px}
 .expNote{font:500 22px/1 Caveat,cursive;font-style:normal;color:#b0452f;transform:rotate(-2deg);white-space:nowrap}

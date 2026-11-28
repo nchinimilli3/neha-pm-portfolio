@@ -120,7 +120,6 @@
 .expSparty .expSpartyBubble{position:relative;margin-top:14px;padding:9px 12px;border-radius:14px 14px 14px 4px;background:#18453b;color:#fff;font:500 18px/1.1 Caveat,cursive;transform:rotate(-3deg)}
 /* Drawn objects (slide, map) and the Shelby share one footprint. */
 .expSvg{display:block;width:100%;height:auto;max-height:140px}
-.expSvg.expSlide{max-height:none;width:calc(100% + 20px)}
 .expShelby{width:100%}
 .expShelby .lcMarkCar{display:block;width:100%;height:auto}/* Ford Credit: the Mach-E with a dealership hang tag on the mirror. */
 .expCar{width:calc(100% + 40px);margin:-28px 0 0 -20px!important}

@@ -2,7 +2,6 @@
 .case-accenture{--ax-ink:#1f1628;--ax-body:#3a3043;--ax-plum:#4e1b78;--ax-violet:#7b2fd0;--ax-accent:#a100ff;--ax-rose:#8c2f58}
 
 /* Header copy needs darker ink to read over the purple blooms. */
-.case-accenture .caseHeader .ownershipLine span{color:#3a2352!important}
 
 .case-accenture .caseHeader .toolLogoHeading p{color:var(--ax-body)!important}
 
